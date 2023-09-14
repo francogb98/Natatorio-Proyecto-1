@@ -44,7 +44,7 @@ export const fetchConTokenHours = async ({
   data,
   method = "GET",
 }) => {
-  const url = `${baseUrl}/hour/${endpoint}`;
+  const url = `${baseUrl}hour/${endpoint}`;
   const token = localStorage.getItem("token");
 
   if (method === "GET") {
@@ -67,7 +67,7 @@ export const fetchConToken = async ({
   data,
   method = "GET",
 }) => {
-  const url = `${baseUrl}/${endpoint}`;
+  const url = `${baseUrl}${endpoint}`;
   const token = localStorage.getItem("token");
 
   if (method === "GET") {
