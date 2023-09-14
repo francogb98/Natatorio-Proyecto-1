@@ -29,35 +29,36 @@ function User({ user }) {
         {user.customId}
       </h3>
 
-      {user.activity == undefined ? (
-        <p>No estas inscripto a ninguna actividad</p>
-      ) : !user.status ? (
-        <p
-          className="alert alert-danger fw-bold"
-          style={{ width: "fit-content" }}
-        >
-          Esperando confirmacion de inscripcion
-        </p>
-      ) : (
-        <>
-          <p>
-            <span> Actividad:</span>
-            {user.activity[0].name}
+      {user.activity &&
+        (user.activity == undefined ? (
+          <p>No estas inscripto a ninguna actividad</p>
+        ) : !user.status ? (
+          <p
+            className="alert alert-danger fw-bold"
+            style={{ width: "fit-content" }}
+          >
+            Esperando confirmacion de inscripcion
           </p>
-          <p>
-            <span>Horario Ingreso:</span>
-            {user.activity[0].hourStart}
-          </p>
-          <p>
-            <span>Horario Salida:</span>
-            {user.activity[0].hourFinish}
-          </p>
-          <p>
-            <span>Dias : </span>
-            {user.activity[0].date.join(" - ")}
-          </p>
-        </>
-      )}
+        ) : (
+          <>
+            <p>
+              <span> Actividad:</span>
+              {user.activity[0].name}
+            </p>
+            <p>
+              <span>Horario Ingreso:</span>
+              {user.activity[0].hourStart}
+            </p>
+            <p>
+              <span>Horario Salida:</span>
+              {user.activity[0].hourFinish}
+            </p>
+            <p>
+              <span>Dias : </span>
+              {user.activity[0].date.join(" - ")}
+            </p>
+          </>
+        ))}
       <div
         style={{
           display: "flex",
