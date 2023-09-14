@@ -38,9 +38,9 @@ export const sendEmailConfirmActivity = (data) => {
     Podra acceder a sus credenciales desde el perfil de usuario`,
     reply_to: "natatorio@correo.com",
   };
-  const serviceID = import.meta.env.VITE_SERVICE_ID;
+  const serviceID = import.meta.env.VITE_REACT_APP_SERVICE_ID;
   const templateID = "template_4cnpj3s";
-  const publicKey = import.meta.env.VITE_PUBLIK_KEY;
+  const publicKey = import.meta.env.VITE_REACT_APP_PUBLIK_KEY;
 
   emailjs.send(serviceID, templateID, form, publicKey).then(
     (result) => {
