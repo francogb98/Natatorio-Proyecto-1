@@ -127,7 +127,7 @@ function Registro() {
             <div className="mb-2">
               <label htmlFor="Repetir Password">Repetir Password</label>
               <input
-                type="repetir password"
+                type="password"
                 name="repetir password"
                 className="form-control"
                 placeholder="Enter Password"

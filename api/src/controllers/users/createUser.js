@@ -94,7 +94,7 @@ const createUser = async (req, res) => {
       password: hashedPassword,
       emailVerified: false,
       asistencia: false,
-      role: null,
+      role: "registrado",
       qr: null,
       emailVerificationToken: verificationToken,
     });
