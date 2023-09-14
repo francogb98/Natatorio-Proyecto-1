@@ -9,9 +9,9 @@ export const sendEmail = (data) => {
     enlace: `${frontUrl}verificar-cuenta?token=${data.token}`,
     reply_to: "natatorio@correo.com",
   };
-  const serviceID = import.meta.env.VITE_SERVICE_ID;
-  const templateID = import.meta.env.VITE_TEMPALTE_ID;
-  const publicKey = import.meta.env.VITE_PUBLIK_KEY;
+  const serviceID = import.meta.env.VITE_REACT_APP_SERVICE_ID;
+  const templateID = import.meta.env.VITE_REACT_APP_TEMPALTE_ID;
+  const publicKey = import.meta.env.VITE_REACT_APP_PUBLIK_KEY;
 
   emailjs.send(serviceID, templateID, form, publicKey).then(
     (result) => {
