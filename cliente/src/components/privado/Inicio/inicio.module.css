@@ -1,0 +1,63 @@
+.body {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+}
+
+.formBody {
+  height: fit-content;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+  margin: auto 20px;
+}
+
+.formBody > form {
+  height: 50%;
+  display: flex;
+  justify-content: center;
+
+  align-items: center;
+  flex-direction: column;
+}
+
+.formBody > form > h1 {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.formBody > form > input {
+  width: 80%;
+
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  margin: 10px;
+}
+
+/* hacer responsive el body */
+@media (max-width: 850px) {
+  .body {
+    grid-template-columns: 1fr;
+    padding: 40px;
+    overflow: auto;
+    /* Cambia a una sola columna */
+  }
+
+  .formBody {
+    padding: 8px;
+    width: fit-content;
+    margin: 0 auto;
+  }
+  .formBody > h1 {
+    margin-bottom: -25px;
+  }
+  .buttonEnd {
+    margin-top: -25px;
+  }
+}

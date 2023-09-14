@@ -1,0 +1,22 @@
+.body {
+  margin-top: 50px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.bodyPerfil img {
+  width: 150px;
+  height: 150px;
+}
+
+.bodyPerfil > p > span {
+  color: red;
+  font-weight: bold;
+}
+
+.bodyFicha {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}

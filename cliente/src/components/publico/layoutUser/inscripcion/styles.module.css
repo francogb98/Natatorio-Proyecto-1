@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  padding: 20px 0px;
+}
+
+.title {
+  margin: 0 auto;
+  padding: 20px;
+  width: fit-content;
+}
+
+.td__bg {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.td__bg:hover {
+  background-color: rgb(204, 204, 204, 0.5);
+
+  cursor: pointer;
+}
