@@ -18,7 +18,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(cors());
+const corsOptions = {
+  origin: "https://natatorio-proyecto-1.vercel.app",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/user", router);
 app.use("/activity", routerActivity);
