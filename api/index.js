@@ -19,7 +19,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const corsOptions = {
-  origin: "https://natatorio-proyecto-1.vercel.app",
+  origin: ["https://natatorio-proyecto-1.vercel.app", "http://localhost:5173"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,

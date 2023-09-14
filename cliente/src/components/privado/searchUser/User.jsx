@@ -29,8 +29,8 @@ function User({ user }) {
         {user.customId}
       </h3>
 
-      {user.activity &&
-        (user.activity == undefined ? (
+      {user.activity === null ? (
+        user.activity == undefined ? (
           <p>No estas inscripto a ninguna actividad</p>
         ) : !user.status ? (
           <p
@@ -58,7 +58,15 @@ function User({ user }) {
               {user.activity[0].date.join(" - ")}
             </p>
           </>
-        ))}
+        )
+      ) : (
+        <>
+          <div>
+            <span> Actividad:</span>
+            <p>No hay actividades registradas</p>
+          </div>
+        </>
+      )}
       <div
         style={{
           display: "flex",
