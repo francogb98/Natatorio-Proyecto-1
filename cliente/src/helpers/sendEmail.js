@@ -13,6 +13,7 @@ export const sendEmail = (data) => {
   const templateID = import.meta.env.VITE_REACT_APP_TEMPALTE_ID;
   const publicKey = import.meta.env.VITE_REACT_APP_PUBLIK_KEY;
 
+  console.log(serviceID, templateID, publicKey);
   emailjs.send(serviceID, templateID, form, publicKey).then(
     (result) => {
       return result;
