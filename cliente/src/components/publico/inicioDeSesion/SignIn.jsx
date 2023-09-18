@@ -9,6 +9,8 @@ import Swal from "sweetalert2";
 import style from "./styleSignIn.module.css";
 import { AuthContext } from "../../../context/AuthContext";
 
+import Logo from "./Logo.jpg";
+
 function SignIn() {
   const { dispatch } = useContext(AuthContext);
 
@@ -95,6 +97,7 @@ function SignIn() {
   return (
     <div className={style.container}>
       <div className={`form-group ${style.formBody}`}>
+        <img src={Logo} alt="" style={{ width: "160px" }} />
         <h1>Inicio De Sesion</h1>
         <form action="" className={`form-group `} onSubmit={handleSubmit}>
           <div className="mb-2">

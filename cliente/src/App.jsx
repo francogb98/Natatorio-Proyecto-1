@@ -4,7 +4,13 @@ import Routing from "./routes/Routing";
 
 function App() {
   return (
-    <div>
+    <div
+      style={{
+        height: "100vh",
+        overflow: "auto",
+        backgroundColor: "aqua",
+      }}
+    >
       <Routing></Routing>
     </div>
   );
