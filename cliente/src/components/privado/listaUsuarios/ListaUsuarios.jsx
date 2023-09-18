@@ -9,7 +9,7 @@ import { getUser } from "../../../helpers/getInfoUser";
 import TablaAllUsers from "./TablaAllUsers";
 
 import { changeRol } from "../../../helpers/cambiarRole";
-import User from "../searchUser/User";
+import User from "../UserInfo/User";
 
 function ListaUsuarios() {
   const { isLoading, error, data, refetch } = useQuery({

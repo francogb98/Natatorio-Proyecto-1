@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 import avatar from "../../../helpers/avatar.webp";
 
 function User({ getUserById }) {
+  const [showFicha, setShowFicha] = useState(false);
+  const [ficha, setFicha] = useState("");
+
+  const handleViewFicha = ({ img }) => {
+    setShowFicha(true);
+    setFicha(img);
+  };
   return (
     <>
-      {getUserById.isSuccess && getUserById.data.status == "success" ? (
+      {getUserById.isSuccess &&
+      !showFicha &&
+      getUserById.data.status == "success" ? (
         <div className="card">
           <img
             src={
@@ -54,18 +63,24 @@ function User({ getUserById }) {
                   <p className="card-text">Actividad: No esta inscripto</p>
                 )}
 
-                <div>
+                <div className="mt-1">
                   Ficha Medica:{" "}
                   {getUserById.data.user.fichaMedica ? (
-                    <a href={getUserById.data.user.fichaMedica}>
+                    <button
+                      onClick={() =>
+                        handleViewFicha({
+                          img: getUserById.data.user.fichaMedica,
+                        })
+                      }
+                    >
                       Ver ficha medica
-                    </a>
+                    </button>
                   ) : (
                     "No presentada"
                   )}
                 </div>
 
-                <div>
+                <div className="mt-1">
                   Role:
                   {getUserById.data.user.role}
                 </div>
@@ -85,7 +100,7 @@ function User({ getUserById }) {
           </div>
         </div>
       ) : null}
-      {getUserById.isLoading ? (
+      {getUserById.isLoading && !showFicha ? (
         <div className="card" aria-hidden="true">
           <img
             src={avatar}
@@ -112,7 +127,9 @@ function User({ getUserById }) {
         </div>
       ) : null}
       .
-      {getUserById.isSuccess && getUserById.data.status == "error" ? (
+      {getUserById.isSuccess &&
+      !showFicha &&
+      getUserById.data.status == "error" ? (
         <>
           <h1>Usuario no encontrado</h1>
           <button
@@ -124,6 +141,53 @@ function User({ getUserById }) {
             Close
           </button>
         </>
+      ) : null}
+      {showFicha ? (
+        <div
+          className="modal fade show"
+          id="exampleModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+          style={{ display: "block", paddingRight: "17px" }}
+        >
+          <div className="modal-dialog modal-lg">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5
+                  className="modal-title"
+                  id="exampleModalLabel"
+                  style={{ color: "black" }}
+                >
+                  Ficha Medica
+                </h5>
+                <button
+                  className="btn-close"
+                  onClick={() => {
+                    setShowFicha(false);
+                  }}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <img
+                  src={ficha}
+                  alt="ficha medica"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setShowFicha(false);
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       ) : null}
     </>
   );

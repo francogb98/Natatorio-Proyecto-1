@@ -8,7 +8,7 @@ import { useMutation, useQuery } from "react-query";
 import { baseUrl } from "../../../helpers/url";
 import getAllPiletas from "../../../helpers/piletasFetch";
 import { getUser } from "../../../helpers/getUsers";
-import User from "../searchUser/User";
+import User from "../UserInfo/User";
 
 function Piletas() {
   const { socket, online, conectarSocket, desconectarSocket } =

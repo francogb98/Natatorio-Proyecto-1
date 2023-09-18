@@ -7,7 +7,7 @@ import { getUser } from "../../../helpers/getInfoUser";
 
 import { getUsuarios } from "../../../helpers/getUsers";
 
-import User from "../searchUser/User";
+import User from "../UserInfo/User";
 
 function Habilitar() {
   const { data, status, isLoading, refetch, isRefetching } = useQuery({

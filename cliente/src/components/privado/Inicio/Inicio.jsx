@@ -11,7 +11,7 @@ import getAllPiletas from "../../../helpers/piletasFetch";
 import { baseUrl } from "../../../helpers/url";
 import Modal from "./Modal";
 import { getUser } from "../../../helpers/getUsers";
-import User from "../searchUser/User";
+import User from "../UserInfo/User";
 
 const fetchHours = async () => {
   const res = await fetch(baseUrl + "hour/getAll");
@@ -109,7 +109,7 @@ function Inicio() {
       } else {
         // quiero reiniciar el campo de nombre id con javascript
         setIdUser("");
-        console.log(updatedUsers.result);
+
         if (updatedUsers.result.pileta === "pileta 50") {
           setPileta50(updatedUsers.result.users);
         }

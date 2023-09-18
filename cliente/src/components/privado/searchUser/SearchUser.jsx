@@ -1,6 +1,6 @@
 import React from "react";
-import { useMutation, useQuery } from "react-query";
-import User from "./User";
+import { useMutation } from "react-query";
+import User from "../UserInfo/User";
 
 import { getUser } from "../../../helpers/getUsers";
 import FormSearch from "./FormSearch";
