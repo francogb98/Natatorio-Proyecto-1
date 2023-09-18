@@ -131,6 +131,7 @@ function CreateActivity() {
                   hourStart: hour.hourStart,
                   hourFinish: hour.hourFinish,
                 })}
+                key={i}
               >
                 {hour.hourStart} - {hour.hourFinish}
               </option>
@@ -181,8 +182,8 @@ function CreateActivity() {
           }}
         >
           {args.date.length > 0 &&
-            args.date.map((day) => (
-              <p>
+            args.date.map((day, i) => (
+              <p key={i}>
                 {day}{" "}
                 <span
                   onClick={() => {

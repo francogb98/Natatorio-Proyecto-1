@@ -1,8 +1,16 @@
 .bodyHome {
   /* tengo 2 columnas quiero que la primera ocupe 200 px pero la segunda ocupe el resto de la pantalla */
   display: grid;
+  height: 100vh;
   grid-template-columns: 15% 1fr;
   background-color: aqua;
+}
+
+.header {
+  background: #ccc;
+  display: flex;
+  justify-content: end;
+  height: 30px;
 }
 
 .navBar {
@@ -15,6 +23,11 @@
   justify-content: space-between;
   align-items: center;
   z-index: 100;
+}
+
+.buttonMenu {
+  margin: auto 0;
+  margin-right: auto;
 }
 
 .navBar > ul {
@@ -32,7 +45,7 @@
 .link {
   width: 100%;
   height: 100%;
-  padding: 10px;
+  padding-inline: 10px;
   font-size: larger;
   font-weight: bold;
   display: flex;

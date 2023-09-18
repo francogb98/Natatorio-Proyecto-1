@@ -3,15 +3,28 @@ import { useSocket } from "../../../hooks/useSocket";
 import { AuthContext } from "../../../context/AuthContext";
 import TablaUsuarios from "../Inicio/TablaUsuarios";
 
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import { baseUrl } from "../../../helpers/url";
 import getAllPiletas from "../../../helpers/piletasFetch";
+import { getUser } from "../../../helpers/getUsers";
+import User from "../searchUser/User";
 
 function Piletas() {
   const { socket, online, conectarSocket, desconectarSocket } =
     useSocket(baseUrl);
   const { auth } = useContext(AuthContext);
+
+  const getUserById = useMutation({
+    mutationFn: getUser,
+    onSuccess: (data) => {
+      if (data.status == "error") {
+        setTimeout(() => {
+          getUserById.reset();
+        }, 3000);
+      }
+    },
+  });
 
   const [pileta25, setPileta25] = useState([]);
   const [pileta50, setPileta50] = useState([]);
@@ -88,6 +101,10 @@ function Piletas() {
     };
   }, [socket]);
 
+  if (getUserById.isLoading || getUserById.isSuccess) {
+    return <User getUserById={getUserById} />;
+  }
+
   return (
     <div>
       {finalizando && (
@@ -96,7 +113,11 @@ function Piletas() {
         </div>
       )}
 
-      <TablaUsuarios pileta25={pileta25} pileta50={pileta50} />
+      <TablaUsuarios
+        pileta25={pileta25}
+        pileta50={pileta50}
+        getUserById={getUserById}
+      />
     </div>
   );
 }

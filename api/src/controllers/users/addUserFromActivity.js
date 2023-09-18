@@ -100,6 +100,15 @@ export const HabilitarUser = async (req, res) => {
   //buscamos el usuario a habilitar por el id y lo actualizamos su stats a true
   const { id } = req.body;
   try {
+    //acccedo al dia de la semana y lo guardo en una variable
+
+    const dateNow = new Date();
+    const day = dateNow.getDate();
+    const month = dateNow.getMonth() + 1;
+    const year = dateNow.getFullYear();
+
+    const dateNowSave = `${day}/${month}/${year}`;
+
     const user = await User.findOneAndUpdate(
       { _id: id },
       { $set: { status: true } },
@@ -110,6 +119,10 @@ export const HabilitarUser = async (req, res) => {
         path: "name",
       },
     });
+
+    user.asistencia = dateNowSave;
+    await user.save();
+
     return res.status(200).json({
       status: "success",
       message: "Usuario habilitado",

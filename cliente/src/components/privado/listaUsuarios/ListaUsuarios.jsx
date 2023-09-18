@@ -9,6 +9,7 @@ import { getUser } from "../../../helpers/getInfoUser";
 import TablaAllUsers from "./TablaAllUsers";
 
 import { changeRol } from "../../../helpers/cambiarRole";
+import User from "../searchUser/User";
 
 function ListaUsuarios() {
   const { isLoading, error, data, refetch } = useQuery({
@@ -68,6 +69,13 @@ function ListaUsuarios() {
 
   const getUserById = useMutation({
     mutationFn: getUser,
+    onSuccess: (data) => {
+      if (data.status == "error") {
+        setTimeout(() => {
+          getUserById.reset();
+        }, 3000);
+      }
+    },
   });
 
   const [editRole, setEditRole] = useState({
@@ -79,8 +87,6 @@ function ListaUsuarios() {
     id: "",
     status: false,
   });
-
-  const cambiarRol = (id) => {};
 
   if (isLoading) return <h1>Cargando...</h1>;
 
@@ -109,6 +115,10 @@ function ListaUsuarios() {
     }
   };
 
+  if (getUserById.isLoading || getUserById.isSuccess) {
+    return <User getUserById={getUserById} />;
+  }
+
   return (
     <div style={{ width: "92%" }}>
       <h1>Lista de usuarios</h1>
@@ -119,8 +129,8 @@ function ListaUsuarios() {
           setEditRole={setEditRole}
           suspender={suspender}
           setSuspender={setSuspender}
-          getUserById={getUserById}
           handleChange={handleChange}
+          getUserById={getUserById}
         />
       </div>
     </div>

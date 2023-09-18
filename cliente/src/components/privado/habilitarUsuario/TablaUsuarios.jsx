@@ -61,7 +61,7 @@ function TablaUsuarios({ data, getUserById, refetch }) {
   return (
     <div>
       <h1>Usuarios</h1>
-      <table className="table table-striped-columns table-hover">
+      <table className="table table-striped-columns">
         <thead>
           <tr>
             <th>Id</th>
@@ -75,30 +75,41 @@ function TablaUsuarios({ data, getUserById, refetch }) {
           </tr>
         </thead>
         <tbody>
-          {data.users.map((usuario) => (
-            <tr key={usuario._id} style={{ cursor: "pointer" }}>
-              <td>{usuario.customId}</td>
-              <td onClick={() => handleSearch(usuario.customId)}>
-                {usuario.nombre}
-              </td>
-
-              <td>{usuario.activity[0].name}</td>
-              <td>{usuario.activity[0].date.join("-")}</td>
-              <td>
-                {usuario.activity[0].hourStart} -{" "}
-                {usuario.activity[0].hourFinish}
-              </td>
-              <td>
-                <button
-                  className="btn btn-success"
-                  onClick={() => handleHabilitar(usuario._id)}
-                >
-                  Habilitar
-                </button>
-                <button className="btn btn-danger">No Habilitar</button>
-              </td>
-            </tr>
-          ))}
+          {data.users.length > 0 ? (
+            data.users.map((usuario) => (
+              <tr key={usuario._id} style={{ cursor: "pointer" }}>
+                <td>{usuario.customId}</td>
+                <td style={{ cursor: "pointer" }}>
+                  <a
+                    className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                    onClick={() => getUserById.mutate({ id: usuario.customId })}
+                  >
+                    {usuario.nombre}
+                  </a>
+                </td>
+                <td>{usuario.activity[0].name}</td>
+                <td>{usuario.activity[0].date.join("-")}</td>
+                <td>
+                  {usuario.activity[0].hourStart} -{" "}
+                  {usuario.activity[0].hourFinish}
+                </td>
+                <td>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => {
+                      handleHabilitar(usuario._id);
+                    }}
+                  >
+                    {" "}
+                    Habilitar
+                  </button>
+                  <button className="btn btn-danger">No Habilitar</button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <h2>No hay usuarios por habilitar</h2>
+          )}
         </tbody>
       </table>
     </div>

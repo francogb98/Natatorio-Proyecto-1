@@ -125,7 +125,15 @@ function Inscripcion() {
             </h6>
           </li>
         </ol>
-
+        {registerInActivity.isLoading && (
+          <div
+            class="alert alert-danger"
+            role="alert"
+            style={{ position: "absolute" }}
+          >
+            Procesando Inscripcion...
+          </div>
+        )}
         <table className="table table-light table-striped-columns">
           <thead>
             <tr>

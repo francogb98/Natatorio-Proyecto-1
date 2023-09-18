@@ -7,8 +7,8 @@ function TablaAllUsers({
   setEditRole,
   suspender,
   setSuspender,
-  getUserById,
   handleChange,
+  getUserById,
 }) {
   const [usuarios, setUsuario] = useState(data.users);
 
@@ -45,6 +45,7 @@ function TablaAllUsers({
           <th>Horario</th>
           <th>Dias</th>
           <th>Asistencia</th>
+
           <th>Acciones</th>
         </tr>
       </thead>
@@ -59,8 +60,13 @@ function TablaAllUsers({
             }
           >
             <td>{user.customId}</td>
-            <td onClick={() => getUserById.mutate({ id: usuario.customId })}>
-              {user.nombre}
+            <td style={{ cursor: "pointer" }}>
+              <a
+                className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                onClick={() => getUserById.mutate({ id: user.customId })}
+              >
+                {user.nombre}
+              </a>
             </td>
             {
               // si el editrol es tru y elid es igual al custom id poner un select con los roles
@@ -116,6 +122,7 @@ function TablaAllUsers({
                 ? user.asistencia
                 : "no tiene asistencias registradas"}
             </td>
+
             {user.role === null ? null : (
               <td>
                 {(editRole.status || suspender.status) &&

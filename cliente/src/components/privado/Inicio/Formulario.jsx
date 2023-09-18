@@ -1,5 +1,5 @@
 // BuscarUsuariosForm.js
-import React from "react";
+import React, { useState } from "react";
 
 import style from "./inicio.module.css";
 
@@ -14,6 +14,13 @@ function BuscarUsuariosForm({
   error,
   data,
 }) {
+  const [days, setDays] = useState([
+    "Lunes",
+    "Martes",
+    "Miercoles",
+    "Jueves",
+    "Viernes",
+  ]);
   return (
     <form onSubmit={onSubmit} style={{ padding: "40px" }}>
       <div className={style.selectInput} style={{ gap: "20px" }}>
@@ -31,11 +38,11 @@ function BuscarUsuariosForm({
             value={args.date}
           >
             <option value="null">--Dia--</option>
-            <option value="Lunes">Lunes</option>
-            <option value="Martes">Martes</option>
-            <option value="Miercoles">Miercoles</option>
-            <option value="Jueves">Jueves</option>
-            <option value="Viernes">Viernes</option>
+            {days.map((day, i) => (
+              <option value={day} key={i}>
+                {day}
+              </option>
+            ))}
           </select>
         </div>
         <div className="mb-2">

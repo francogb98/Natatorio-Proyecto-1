@@ -1,100 +1,131 @@
 import React from "react";
 
-import style from "./style.module.css";
-
 import avatar from "../../../helpers/avatar.webp";
 
-function User({ user }) {
-  const [show, setShow] = React.useState(false);
-
+function User({ getUserById }) {
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-    >
-      <img
-        src={user.foto == undefined || user.foto ? avatar : user.foto}
-        alt=""
-        style={{ width: "100px" }}
-      />
-
-      <h2>Nombre: {user.nombre}</h2>
-      <h2>Correo: {user.email}</h2>
-
-      <p>
-        <span>DNI:</span>
-        {user.dni}
-      </p>
-      <h3 style={{ color: "blue" }}>
-        <span style={{ color: "red" }}>ID Usuario:</span>
-        {user.customId}
-      </h3>
-
-      {user.activity === null ? (
-        user.activity == undefined ? (
-          <p>No estas inscripto a ninguna actividad</p>
-        ) : !user.status ? (
-          <p
-            className="alert alert-danger fw-bold"
-            style={{ width: "fit-content" }}
-          >
-            Esperando confirmacion de inscripcion
-          </p>
-        ) : (
-          <>
-            <p>
-              <span> Actividad:</span>
-              {user.activity[0].name}
-            </p>
-            <p>
-              <span>Horario Ingreso:</span>
-              {user.activity[0].hourStart}
-            </p>
-            <p>
-              <span>Horario Salida:</span>
-              {user.activity[0].hourFinish}
-            </p>
-            <p>
-              <span>Dias : </span>
-              {user.activity[0].date.join(" - ")}
-            </p>
-          </>
-        )
-      ) : (
-        <>
-          <div>
-            <span> Actividad:</span>
-            <p>No hay actividades registradas</p>
-          </div>
-        </>
-      )}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "15px",
-        }}
-      >
-        {user.fichaMedica == undefined ? (
-          <p>No has cargado tu ficha medica</p>
-        ) : (
-          <button
-            onClick={() => setShow(!show)}
-            className="btn btn-success"
-            style={{ width: "fit-content" }}
-          >
-            {show ? "Ocultar ficha" : "Ver ficha"}
-          </button>
-        )}
-        {show ? (
+    <>
+      {getUserById.isSuccess && getUserById.data.status == "success" ? (
+        <div className="card">
           <img
-            src={user.fichaMedica}
-            alt=""
-            style={{ height: "700px", width: "400px" }}
+            src={
+              getUserById.data.user.foto ? getUserById.data.user.foto : avatar
+            }
+            className="card-img-top"
+            style={{ width: "250px", height: "250px", margin: "auto" }}
+            alt="..."
           />
-        ) : null}
-      </div>
-    </div>
+
+          <div className="card-body">
+            <h5 className="card-title">{getUserById.data.user.nombre}</h5>
+            <h6>Id: {getUserById.data.user.customId}</h6>
+            <div style={{ display: "flex" }}>
+              <div>
+                <p className="card-text">DNI: {getUserById.data.user.dni}</p>
+                <p className="card-text">Edad: {getUserById.data.user.edad}</p>
+                <p className="card-text">
+                  Correo: {getUserById.data.user.email}
+                </p>
+                <p className="card-text">
+                  Telefono: {getUserById.data.user.telefono}
+                </p>
+                <p className="card-text">
+                  Telefono-Contacto: {getUserById.data.user.telefonoContacto}
+                </p>
+              </div>
+
+              <div>
+                {getUserById.data.user.activity.length ? (
+                  <div>
+                    <p className="card-text">
+                      Actividad {getUserById.data.user.activity[0].name}
+                    </p>
+                    <p className="card-text">
+                      Horario:
+                      {getUserById.data.user.activity[0].hourStart} -{" "}
+                      {getUserById.data.user.activity[0].hourFinish}
+                    </p>
+                    <p className="card-text">
+                      Dias:
+                      {getUserById.data.user.activity[0].date.join(" - ")}
+                    </p>
+                  </div>
+                ) : (
+                  <p className="card-text">Actividad: No esta inscripto</p>
+                )}
+
+                <div>
+                  Ficha Medica:{" "}
+                  {getUserById.data.user.fichaMedica ? (
+                    <a href={getUserById.data.user.fichaMedica}>
+                      Ver ficha medica
+                    </a>
+                  ) : (
+                    "No presentada"
+                  )}
+                </div>
+
+                <div>
+                  Role:
+                  {getUserById.data.user.role}
+                </div>
+              </div>
+            </div>
+
+            <hr />
+            <button
+              href="#"
+              className="btn btn-danger"
+              onClick={() => {
+                getUserById.reset();
+              }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ) : null}
+      {getUserById.isLoading ? (
+        <div className="card" aria-hidden="true">
+          <img
+            src={avatar}
+            className="card-img-top"
+            alt="..."
+            style={{ width: "250px", height: "250px", margin: "auto" }}
+          />
+          <div className="card-body">
+            <h5 className="card-title placeholder-glow">
+              <span className="placeholder col-6"></span>
+            </h5>
+            <p className="card-text placeholder-glow">
+              <span className="placeholder col-7"></span>
+              <span className="placeholder col-4"></span>
+              <span className="placeholder col-4"></span>
+              <span className="placeholder col-6"></span>
+              <span className="placeholder col-8"></span>
+            </p>
+            <a
+              className="btn btn-primary disabled placeholder col-6"
+              aria-disabled="true"
+            ></a>
+          </div>
+        </div>
+      ) : null}
+      .
+      {getUserById.isSuccess && getUserById.data.status == "error" ? (
+        <>
+          <h1>Usuario no encontrado</h1>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              getUserById.reset();
+            }}
+          >
+            Close
+          </button>
+        </>
+      ) : null}
+    </>
   );
 }
 

@@ -88,7 +88,6 @@ const schema = new mongoose.Schema({
     type: Boolean,
     required: false,
   },
-
   foto: {
     type: String,
     minlength: 3,

@@ -9,6 +9,9 @@ import BuscarUsuariosForm from "./Formulario";
 import getAllPiletas from "../../../helpers/piletasFetch";
 
 import { baseUrl } from "../../../helpers/url";
+import Modal from "./Modal";
+import { getUser } from "../../../helpers/getUsers";
+import User from "../searchUser/User";
 
 const fetchHours = async () => {
   const res = await fetch(baseUrl + "hour/getAll");
@@ -21,6 +24,18 @@ function Inicio() {
     queryKey: "hours",
     queryFn: fetchHours,
   });
+
+  const getUserById = useMutation({
+    mutationFn: getUser,
+    onSuccess: (data) => {
+      if (data.status == "error") {
+        setTimeout(() => {
+          getUserById.reset();
+        }, 3000);
+      }
+    },
+  });
+
   const { socket, online, conectarSocket, desconectarSocket } =
     useSocket(baseUrl);
   const { auth } = useContext(AuthContext);
@@ -169,17 +184,20 @@ function Inicio() {
   };
 
   const handleEnd = () => {
-    confirm("¿Estas seguro de finalizar el turno?") &&
-      socket?.emit("finalizar-turno");
+    socket?.emit("finalizar-turno");
   };
 
   if (isLoading) return <h1>Cargando...</h1>;
 
+  if (getUserById.isLoading || getUserById.isSuccess) {
+    return <User getUserById={getUserById} />;
+  }
   return (
     <div className={style.body}>
       {/* cargar usuarios */}
+
       <section className={style.formBody}>
-        <h1>Buscar Usuarios</h1>
+        <h1>Agregar Usuarios</h1>
         <BuscarUsuariosForm
           args={args}
           setArgs={setArgs}
@@ -191,18 +209,26 @@ function Inicio() {
           error={error}
           data={data}
         />
+
         <button
-          onClick={handleEnd}
+          type="button"
           className={`btn btn-lg btn-warning ${style.buttonEnd}`}
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
         >
-          {" "}
           Finalizar Turno
         </button>
+
+        <Modal handleEnd={handleEnd} />
       </section>
 
       {/* usuario en el ambiente */}
 
-      <TablaUsuarios pileta25={pileta25} pileta50={pileta50} />
+      <TablaUsuarios
+        pileta25={pileta25}
+        pileta50={pileta50}
+        getUserById={getUserById}
+      />
     </div>
   );
 }

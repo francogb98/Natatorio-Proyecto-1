@@ -1,6 +1,6 @@
 import React from "react";
 
-function TablaUsuarios({ pileta25, pileta50 }) {
+function TablaUsuarios({ pileta25, pileta50, getUserById }) {
   return (
     <div>
       <h1>Usuarios en pileta</h1>
@@ -30,7 +30,16 @@ function TablaUsuarios({ pileta25, pileta50 }) {
                 pileta25.map((user, id) => (
                   <tr key={id} style={{ cursor: "pointer" }}>
                     <td>{user.customId}</td>
-                    <td>{user.nombre}</td>
+                    <td style={{ cursor: "pointer" }}>
+                      <a
+                        className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                        onClick={() =>
+                          getUserById.mutate({ id: user.customId })
+                        }
+                      >
+                        {user.nombre}
+                      </a>
+                    </td>
                     <td>{user.activity[0].name}</td>
                   </tr>
                 ))}
@@ -60,7 +69,16 @@ function TablaUsuarios({ pileta25, pileta50 }) {
                   .map((user, i) => (
                     <tr key={i} style={{ cursor: "pointer" }}>
                       <td>{user.customId}</td>
-                      <td>{user.nombre}</td>
+                      <td style={{ cursor: "pointer" }}>
+                        <a
+                          className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                          onClick={() =>
+                            getUserById.mutate({ id: user.customId })
+                          }
+                        >
+                          {user.nombre}
+                        </a>
+                      </td>
                       <td>{user.activity[0].name}</td>
                     </tr>
                   ))}

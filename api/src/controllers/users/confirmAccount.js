@@ -28,6 +28,7 @@ export const confirmAccount = async (req, res) => {
           $set: {
             emailVerified: true,
             emailVerificationToken: null,
+            role: "usuario",
             qr: url,
           },
         },
