@@ -102,7 +102,7 @@ function InsertarFoto({ setImageUrl, imageUrl }) {
 
         <button
           type="button"
-          className="btn btn-light fw-bold mt-3"
+          className="btn btn-dark fw-bold mt-3"
           disabled={imageUrl}
           onClick={uploadImage}
         >
