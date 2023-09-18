@@ -210,6 +210,7 @@ function Registro() {
           {registro.isLoading && !registro.isSuccess && (
             <div className="alert alert-info">Cargando datos...</div>
           )}
+
           <button>Registrate</button>
         </form>
         <div className="mt-3">
