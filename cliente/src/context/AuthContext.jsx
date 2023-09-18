@@ -57,9 +57,6 @@ export function AuthProvider({ children }) {
         return data;
       }
     },
-    onError: (error) => {
-      console.log(error.message);
-    },
   });
 
   const cerrarSesion = () => {

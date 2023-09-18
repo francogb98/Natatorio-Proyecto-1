@@ -37,7 +37,6 @@ function Piletas() {
 
   useEffect(() => {
     if (!isLoading && data.piletas.length) {
-      console.log(data.piletas[0]);
       if (data.piletas[0] && data.piletas[0].users.length > 0) {
         data.piletas[0].pileta === "pileta 50"
           ? setPileta50(data.piletas[0].users)

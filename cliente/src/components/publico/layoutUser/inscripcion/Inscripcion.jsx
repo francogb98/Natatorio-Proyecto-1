@@ -126,12 +126,10 @@ function Inscripcion() {
           </li>
         </ol>
         {registerInActivity.isLoading && (
-          <div
-            class="alert alert-danger"
-            role="alert"
-            style={{ position: "absolute" }}
-          >
-            Procesando Inscripcion...
+          <div style={{ position: "fixed", top: "0", width: "350px" }}>
+            <div class="alert alert-danger" role="alert">
+              <h4>Procesando Inscripcion...</h4>
+            </div>
           </div>
         )}
         <table className="table table-light table-striped-columns">

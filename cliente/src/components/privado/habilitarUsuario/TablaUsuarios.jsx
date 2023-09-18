@@ -24,9 +24,7 @@ function TablaUsuarios({ data, getUserById, refetch }) {
 
   const mutation = useMutation({
     mutationFn: habilitar,
-    onError: (error) => {
-      console.log(error);
-    },
+    onError: (error) => {},
   });
 
   if (mutation.isSuccess) {

@@ -10,7 +10,6 @@ export const getInfoPiletas = async (req, res) => {
     });
     res.json({ ok: true, piletas });
   } catch (error) {
-    console.log(error);
     res.json({
       ok: false,
       msg: "Error al obtener la informacion de las piletas",

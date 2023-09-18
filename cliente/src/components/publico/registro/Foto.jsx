@@ -53,9 +53,7 @@ function InsertarFoto({ setImageUrl, imageUrl }) {
     setPreviewUrl(imageUrl);
   }, []);
 
-  useEffect(() => {
-    console.log(imageUrl);
-  }, [imageUrl]);
+  useEffect(() => {}, [imageUrl]);
 
   return (
     <div>

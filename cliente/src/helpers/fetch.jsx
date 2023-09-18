@@ -100,9 +100,7 @@ export const getInfoUser = async () => {
     );
     const data = await resp.json();
     return data;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const getAllUsers = async () => {
@@ -110,7 +108,5 @@ export const getAllUsers = async () => {
     const resp = await fetch(`${baseUrl}user/getAllUsers`);
     const data = await resp.json();
     return data;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };

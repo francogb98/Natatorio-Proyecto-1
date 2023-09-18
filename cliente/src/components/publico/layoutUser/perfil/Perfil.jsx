@@ -30,7 +30,14 @@ function Perfil() {
   const { getUser } = useContext(AuthContext);
 
   const [imageUrl, setImageUrl] = useState(null);
-  const [show, setShow] = useState(false);
+
+  const [showFicha, setShowFicha] = useState(false);
+  const [fichaMedica, setFicha] = useState("");
+
+  const handleViewFicha = ({ img }) => {
+    setShowFicha(true);
+    setFicha(img);
+  };
 
   const ficha = useMutation({
     mutationFn: postFicha,
@@ -66,10 +73,7 @@ function Perfil() {
     return (
       <div className={style.body}>
         <div className={style.bodyPerfil}>
-          <img
-            src={user.foto == undefined || user.foto ? avatar : user.foto}
-            alt=""
-          />
+          <img src={user.foto == undefined ? avatar : user.foto} alt="" />
 
           <h2>{user.nombre}</h2>
           <h2>{user.email}</h2>
@@ -112,83 +116,149 @@ function Perfil() {
               </p>
             </>
           )}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "15px",
-            }}
-          >
+          <div>
             {user.fichaMedica == undefined ? (
               <p>No has cargado tu ficha medica</p>
             ) : (
               <button
-                onClick={() => setShow(!show)}
-                className="btn btn-success"
-                style={{ width: "fit-content" }}
+                onClick={() =>
+                  handleViewFicha({
+                    img: user.fichaMedica,
+                  })
+                }
               >
-                {show ? "Ocultar ficha" : "Ver ficha"}
+                Ver ficha
               </button>
             )}
-            {show ? (
-              <img
-                src={user.fichaMedica}
-                alt=""
-                style={{ height: "700px", width: "400px" }}
-              />
-            ) : null}
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-          }}
-        >
-          <div>
-            <h3>Descagar Ficha</h3>
-            <a
-              href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
-              download="fichaMedica.pdf"
-            >
-              <button className="btn btn-lg btn-info text-white fw-bold">
-                Descargar ficha médica
+
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item" style={{ width: "400px" }}>
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="true"
+                aria-controls="collapseOne"
+              >
+                Cargar Ficha
               </button>
-            </a>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              alignItems: "center",
-            }}
-          >
-            <h3 htmlFor="imagen">Cargar Ficha</h3>
-            <InsertarFoto imageUrl={imageUrl} setImageUrl={setImageUrl} />
-            {ficha.isLoading ? (
-              <div className="text-center">
-                <p className="text-primary">Puede tardar unos segundos</p>
+            </h2>
+            <div
+              id="collapseOne"
+              class="accordion-collapse collapse show"
+              data-bs-parent="#accordionExample"
+            >
+              <div class="accordion-body">
                 <div
-                  className="spinner-border"
-                  role="status"
-                  style={{ width: "3rem", height: "3rem" }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                  }}
                 >
-                  <span className="visually-hidden">Loading...</span>
+                  <div>
+                    <h3>Descagar Ficha</h3>
+                    <a
+                      href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
+                      download="fichaMedica.pdf"
+                    >
+                      <button className="btn btn-lg btn-info text-white fw-bold">
+                        Descargar ficha médica
+                      </button>
+                    </a>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h3 htmlFor="imagen">Cargar Ficha</h3>
+                    <InsertarFoto
+                      imageUrl={imageUrl}
+                      setImageUrl={setImageUrl}
+                    />
+                    {ficha.isLoading ? (
+                      <div className="text-center">
+                        <p className="text-primary">
+                          Puede tardar unos segundos
+                        </p>
+                        <div
+                          className="spinner-border"
+                          role="status"
+                          style={{ width: "3rem", height: "3rem" }}
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    ) : null}
+                    <button
+                      className="btn btn-success"
+                      disabled={imageUrl == null}
+                      onClick={cargarFicha}
+                    >
+                      Subir Ficha
+                    </button>
+                  </div>
                 </div>
               </div>
-            ) : null}
-            <button
-              className="btn btn-success"
-              disabled={imageUrl == null}
-              onClick={cargarFicha}
-            >
-              Subir Ficha
-            </button>
+            </div>
           </div>
         </div>
+
+        {showFicha ? (
+          <div
+            className="modal fade show"
+            id="exampleModal"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+            style={{ display: "block", paddingRight: "17px" }}
+          >
+            <div className="modal-dialog modal-lg">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5
+                    className="modal-title"
+                    id="exampleModalLabel"
+                    style={{ color: "black" }}
+                  >
+                    Ficha Medica
+                  </h5>
+                  <button
+                    className="btn-close"
+                    onClick={() => {
+                      setShowFicha(false);
+                    }}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <img
+                    src={fichaMedica}
+                    alt="ficha medica"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </div>
+                <div className="modal-footer">
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      setShowFicha(false);
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     );
   } else {

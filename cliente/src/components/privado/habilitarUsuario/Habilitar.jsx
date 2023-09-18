@@ -10,9 +10,16 @@ import { getUsuarios } from "../../../helpers/getUsers";
 import User from "../UserInfo/User";
 
 function Habilitar() {
-  const { data, status, isLoading, refetch, isRefetching } = useQuery({
-    queryKey: ["usuarios"],
-    queryFn: getUsuarios,
+  const { data, isSuccess, status, isLoading, refetch, isRefetching } =
+    useQuery({
+      queryKey: ["usuarios"],
+      queryFn: getUsuarios,
+    });
+
+  const getUserById = useMutation({
+    mutationFn: getUser,
+    onSuccess: (data) => {},
+    onError: (error) => {},
   });
 
   if (isLoading) {
@@ -27,17 +34,7 @@ function Habilitar() {
     return <div>No hay usuarios para habilitar</div>;
   }
 
-  const getUserById = useMutation({
-    mutationFn: getUser,
-    onSuccess: (data) => {
-      if (data.status == "error") {
-        setTimeout(() => {
-          getUserById.reset();
-        }, 3000);
-      }
-    },
-  });
-  if (getUserById.isLoading || getUserById.isSuccess) {
+  if (getUserById.isSuccess) {
     return <User getUserById={getUserById} />;
   }
 
@@ -57,21 +54,23 @@ function Habilitar() {
         </div>
       ) : null}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "800px 1fr",
-          padding: "50px",
-          gap: "20px",
-          marginTop: "-35px",
-        }}
-      >
-        <TablaUsuarios
-          data={data}
-          getUserById={getUserById}
-          refetch={refetch}
-        />
-      </div>
+      {isSuccess && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "800px 1fr",
+            padding: "50px",
+            gap: "20px",
+            marginTop: "-35px",
+          }}
+        >
+          <TablaUsuarios
+            data={data}
+            getUserById={getUserById}
+            refetch={refetch}
+          />
+        </div>
+      )}
     </div>
   );
 }

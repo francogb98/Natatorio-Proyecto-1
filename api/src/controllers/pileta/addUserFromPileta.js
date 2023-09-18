@@ -107,7 +107,6 @@ export const addUser = async ({ args }) => {
 
     // si es asi lo agregamos a la lista de usuarios de la pileta
   } catch (error) {
-    console.log(error);
     return { ok: false, msg: "Error en el servidor" };
   }
 };
