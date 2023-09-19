@@ -9,10 +9,10 @@ function NavBar() {
 
   return (
     <div className={style.body}>
-      <Link to={"/home/actividades"} className={style.link}>
+      <Link to={"/"} className={style.link}>
         Actividades
       </Link>
-      <Link to={"/"} className={style.link}>
+      <Link to={"/perfil"} className={style.link}>
         Perfil
       </Link>
 

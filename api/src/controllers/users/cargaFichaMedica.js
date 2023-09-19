@@ -3,6 +3,7 @@ import User from "../../models/models/User.js";
 export const cargaFicha = async (req, res) => {
   try {
     const { fichaMedica, id } = req.body;
+    console.log(fichaMedica, id);
     if (!fichaMedica)
       return res.status(400).json({
         status: "error",

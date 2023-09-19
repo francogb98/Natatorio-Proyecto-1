@@ -49,16 +49,6 @@ export function AuthProvider({ children }) {
     },
   });
 
-  const getUser = useQuery({
-    queryKey: ["getUser"],
-    queryFn: getInfoUser,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        return data;
-      }
-    },
-  });
-
   const cerrarSesion = () => {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
@@ -72,7 +62,7 @@ export function AuthProvider({ children }) {
         registro,
         auth: authState,
         dispatch,
-        getUser,
+        // getUser,
         user,
         cerrarSesion,
       }}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { baseUrl } from "../../../../helpers/url";
 
 import style from "./style.module.css";
@@ -11,6 +11,7 @@ import ficaMedica from "./fichaMedica.pdf";
 import avatar from "../../../../helpers/avatar.webp";
 import InsertarFoto from "../../registro/Foto";
 import Swal from "sweetalert2";
+import { getInfoUser } from "../../../../helpers/fetch";
 
 const postFicha = async (data) => {
   const response = await fetch(baseUrl + "user/cargaFicha", {
@@ -27,7 +28,15 @@ const postFicha = async (data) => {
 };
 
 function Perfil() {
-  const { getUser } = useContext(AuthContext);
+  const getUser = useQuery({
+    queryKey: ["getUser"],
+    queryFn: getInfoUser,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        return data;
+      }
+    },
+  });
 
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -73,7 +82,9 @@ function Perfil() {
     return (
       <div className={style.body}>
         <div className={style.bodyPerfil}>
-          <img src={user.foto == undefined ? avatar : user.foto} alt="" />
+          {user.foto && (
+            <img src={user.foto == undefined ? avatar : user.foto} alt="" />
+          )}
 
           <h2>{user.nombre}</h2>
           <h2>{user.email}</h2>
@@ -133,11 +144,11 @@ function Perfil() {
           </div>
         </div>
 
-        <div class="accordion" id="accordionExample">
-          <div class="accordion-item" style={{ width: "400px" }}>
-            <h2 class="accordion-header">
+        <div className="accordion" id="accordionExample">
+          <div className="accordion-item" style={{ width: "400px" }}>
+            <h2 className="accordion-header">
               <button
-                class="accordion-button"
+                className="accordion-button"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#collapseOne"
@@ -149,10 +160,10 @@ function Perfil() {
             </h2>
             <div
               id="collapseOne"
-              class="accordion-collapse collapse show"
+              className="accordion-collapse collapse show"
               data-bs-parent="#accordionExample"
             >
-              <div class="accordion-body">
+              <div className="accordion-body">
                 <div
                   style={{
                     display: "flex",
@@ -170,6 +181,11 @@ function Perfil() {
                         Descargar ficha médica
                       </button>
                     </a>
+                    <p className="text-danger">
+                      {" "}
+                      Una vez descargada la ficha y completada, deberas sacar
+                      una foto nitida y subirla a continuacion.
+                    </p>
                   </div>
                   <div
                     style={{
@@ -211,6 +227,8 @@ function Perfil() {
             </div>
           </div>
         </div>
+
+        {/* //input de prueba para leer un archivo pdf y cargarlo en la bdd */}
 
         {showFicha ? (
           <div

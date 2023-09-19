@@ -19,14 +19,12 @@ import ListaUsuarios from "../components/privado/listaUsuarios/ListaUsuarios";
 function Routing() {
   const { auth } = useContext(AuthContext);
 
-  useEffect(() => {}, [auth]);
-
   if (auth.logged && auth.role === "usuario") {
     return (
       <Routes>
         <Route path="/" element={<HomeUserPublic />}>
-          <Route path="/home/actividades" element={<Inscripcion />} />
-          <Route path="/" element={<Perfil />} />
+          <Route path="/" element={<Inscripcion />} />
+          <Route path="/perfil" element={<Perfil />} />
         </Route>
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>

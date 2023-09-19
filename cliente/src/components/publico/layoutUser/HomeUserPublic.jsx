@@ -1,5 +1,4 @@
 import React from "react";
-import Inscripcion from "./inscripcion/Inscripcion";
 
 import style from "./home.module.css";
 import NavBar from "./navBar.jsx/NavBar";

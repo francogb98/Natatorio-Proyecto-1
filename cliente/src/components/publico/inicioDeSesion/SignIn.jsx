@@ -43,15 +43,8 @@ function SignIn() {
 
         setTimeout(() => {
           Swal.close();
-          if (usuario.role === "ADMIN" || usuario.role === "SUPER_ADMIN") {
-            return navigate("/");
-          } else {
-            if (usuario.activity.length === 0) {
-              return navigate("/home/actividades");
-            } else {
-              return navigate("/");
-            }
-          }
+
+          return navigate("/");
 
           // window.location.href = "/home";
         }, 1000);
