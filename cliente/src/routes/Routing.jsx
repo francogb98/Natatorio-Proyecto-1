@@ -1,5 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { useQuery } from "react-query";
+import { getInfoUser } from "../helpers/fetch";
+
 import HomeUserPublic from "../components/publico/layoutUser/HomeUserPublic";
 import Registro from "../components/publico/registro/Registro";
 import Confirm from "../components/publico/confirmEmail/ConfirmEmail";
@@ -13,11 +17,31 @@ import CreateActivity from "../components/privado/createActivity/CreateActivity"
 import SearchUser from "../components/privado/searchUser/SearchUser";
 import Habilitar from "../components/privado/habilitarUsuario/Habilitar";
 import Piletas from "../components/privado/Piletas/Piletas";
-import { AuthContext } from "../context/AuthContext";
 import ListaUsuarios from "../components/privado/listaUsuarios/ListaUsuarios";
 
 function Routing() {
-  const { auth } = useContext(AuthContext);
+  const { auth, dispatch } = useContext(AuthContext);
+
+  const getUser = useQuery({
+    queryKey: ["getUser"],
+    queryFn: getInfoUser,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        return data;
+      }
+    },
+  });
+
+  if (getUser.data?.status === "success" && !auth.logged) {
+    dispatch({
+      type: "LOGIN",
+      payload: {
+        logged: true,
+        role: getUser.data.user.role,
+        user: getUser.data.user,
+      },
+    });
+  }
 
   if (auth.logged && auth.role === "usuario") {
     return (

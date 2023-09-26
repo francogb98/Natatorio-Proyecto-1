@@ -13,6 +13,8 @@ export const createActivity = async (req, res) => {
       });
     }
 
+    name = name.toLowerCase();
+
     if (pileta !== "pileta 25" && pileta !== "pileta 50") {
       return res.status(400).json({
         status: "error",

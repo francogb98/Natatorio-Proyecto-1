@@ -1,5 +1,5 @@
 import { set } from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function TablaAllUsers({
   data,
@@ -10,10 +10,14 @@ function TablaAllUsers({
   handleChange,
   getUserById,
 }) {
-  const [usuarios, setUsuario] = useState(data.users);
+  const [usuarios, setUsuario] = useState(data);
+
+  useEffect(() => {
+    setUsuario(data);
+  }, [data]);
 
   const orderByRole = (role) => {
-    const sortedUsers = [...data.users].sort((a, b) => {
+    const sortedUsers = [...data].sort((a, b) => {
       if (a.role < b.role) return -1;
       if (a.role > b.role) return 1;
       return 0;
@@ -23,9 +27,7 @@ function TablaAllUsers({
   };
 
   const orderById = () => {
-    const sortedUsersById = [...data.users].sort(
-      (a, b) => a.customId - b.customId
-    );
+    const sortedUsersById = [...data].sort((a, b) => a.customId - b.customId);
 
     setUsuario(sortedUsersById);
   };

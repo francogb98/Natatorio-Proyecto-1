@@ -36,7 +36,8 @@ function TablaUsuarios({ data, getUserById, refetch }) {
         icon: mutation.data.status,
         confirmButtonText: "Aceptar",
       });
-
+      //reiniciar estado de mutation
+      mutation.reset();
       return true;
     } else {
       Swal.fire({

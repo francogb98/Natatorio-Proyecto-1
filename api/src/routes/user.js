@@ -18,12 +18,18 @@ import getAllUsers from "../controllers/users/getAllUsers.js";
 import { suspenderUsuario } from "../controllers/users/suspenderUsuario.js";
 import { cambiarRole } from "../controllers/users/cambiarRole.js";
 
+import { searchUserByname } from "../controllers/users/searchUserByName.js";
+
 const router = Router();
 
 router.get("/infoUser/:token", getUser);
 router.get("/getAllUser", getAllUserForHability);
 
 router.get("/getAllUsers", getAllUsers);
+
+//busqueda por nombre por
+
+router.get("/searchUserByName/:name", validarJWT, searchUserByname);
 
 router.post("/infoUser", getUserById);
 router.post("/cargaFicha", cargaFicha);

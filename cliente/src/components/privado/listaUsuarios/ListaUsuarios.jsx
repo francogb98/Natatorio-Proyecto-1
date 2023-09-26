@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { useQuery, useMutation } from "react-query";
 import { getAllUsers } from "../../../helpers/fetch";
@@ -11,8 +11,26 @@ import TablaAllUsers from "./TablaAllUsers";
 import { changeRol } from "../../../helpers/cambiarRole";
 import User from "../UserInfo/User";
 
+import style from "./listaUsuarios.module.css";
+import SearchUser from "./SearchUser";
+
+import { set } from "lodash";
+
 function ListaUsuarios() {
-  const { isLoading, error, data, refetch } = useQuery({
+  const [users, setUsers] = useState([]);
+  const [errorSearch, setErrorSearch] = useState({
+    status: false,
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const {
+    isLoading,
+    error,
+    data: firstData,
+    refetch,
+    isSuccess,
+  } = useQuery({
     queryKey: ["listaUsuarios"],
     queryFn: getAllUsers,
   });
@@ -119,12 +137,37 @@ function ListaUsuarios() {
     return <User getUserById={getUserById} />;
   }
 
+  if (isSuccess && users.length === 0) {
+    setUsers(firstData.users);
+  }
+
   return (
     <div style={{ width: "92%" }}>
-      <h1>Lista de usuarios</h1>
+      <div className={style.searchUser}>
+        <h1>Lista de usuarios</h1>
+
+        <SearchUser
+          setLoading={setLoading}
+          setUsers={setUsers}
+          setErrorSearch={setErrorSearch}
+        />
+      </div>
       <div style={{ height: "550px", overflowY: "scroll" }}>
+        {loading && (
+          <div
+            className={`spinner-border text-danger mb-2  ${style.spinner}`}
+            role="status"
+          >
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
+        {!loading && errorSearch.status && (
+          <div className="alert alert-danger" role="alert">
+            {errorSearch.message}
+          </div>
+        )}
         <TablaAllUsers
-          data={data}
+          data={users}
           editRole={editRole}
           setEditRole={setEditRole}
           suspender={suspender}

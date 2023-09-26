@@ -1,10 +1,5 @@
 import React, { createContext, useState, useReducer } from "react";
-import {
-  fetchConToken,
-  fetchConTokenHours,
-  fetchSinToken,
-  getInfoUser,
-} from "../helpers/fetch";
+import { fetchSinToken, getInfoUser } from "../helpers/fetch";
 import { useMutation, useQuery } from "react-query";
 
 import Swal from "sweetalert2";
