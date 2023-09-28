@@ -21,7 +21,7 @@ function NavBar() {
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasRight"
         aria-controls="offcanvasRight"
-        style={{ position: "fixed", top: "0", left: "0" }}
+        style={{ position: "fixed", top: "0", left: "0", height: "50px" }}
       >
         Mostrar Menu
       </button>
