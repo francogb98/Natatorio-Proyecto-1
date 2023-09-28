@@ -8,13 +8,20 @@ import style from "./home.module.css";
 function NavBar() {
   const { cerrarSesion } = useContext(AuthContext);
   return (
-    <div style={{ display: "flex", height: "100%", justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        height: "100%",
+        justifyContent: "center",
+      }}
+    >
       <button
         className={`btn btn-primary ${style.buttonMenu}`}
         type="button"
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasRight"
         aria-controls="offcanvasRight"
+        style={{ position: "fixed", top: "0", left: "0" }}
       >
         Mostrar Menu
       </button>
