@@ -5,6 +5,8 @@ import User from "../UserInfo/User";
 import { getUser } from "../../../helpers/getUsers";
 import FormSearch from "./FormSearch";
 
+import style from "./style.module.css";
+
 function SearchUser() {
   const getUserById = useMutation({
     mutationFn: getUser,
@@ -18,15 +20,7 @@ function SearchUser() {
   });
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100%",
-      }}
-    >
+    <div className={style.body}>
       {getUserById.isLoading || getUserById.isSuccess ? (
         <User getUserById={getUserById} />
       ) : (

@@ -105,7 +105,15 @@ function Piletas() {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       {finalizando && (
         <div className="alert alert-danger">
           <h1>Finalizando turno...</h1>

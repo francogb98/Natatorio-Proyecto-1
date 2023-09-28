@@ -37,6 +37,7 @@ function CreateActivity() {
           hourStart: "",
           hourFinish: "",
           pileta: "",
+          cupos: "",
         });
 
         //volver los valores de los select a default
@@ -75,7 +76,16 @@ function CreateActivity() {
   if (isLoading) return <h1>Cargando...</h1>;
 
   return (
-    <div>
+    <div
+      style={{
+        padding: "30px",
+        overflow: "hidden",
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       {" "}
       <form
         action=""

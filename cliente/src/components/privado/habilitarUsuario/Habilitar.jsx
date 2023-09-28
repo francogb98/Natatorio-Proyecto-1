@@ -39,20 +39,33 @@ function Habilitar() {
   }
 
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <button
-        onClick={refetch}
-        className="btn btn-lg btn-warning mt-3 mb-3"
-        style={{ width: "400px", margin: "auto", display: "block" }}
-      >
-        Recargar
-      </button>
+    <div
+      style={{
+        width: "100%",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <div>
+        <button
+          onClick={refetch}
+          className="btn btn-lg btn-warning mt-3 mb-3"
+          style={{ width: "400px", margin: "auto", display: "block" }}
+        >
+          Recargar
+        </button>
 
-      {isRefetching ? (
-        <div style={{ margin: "auto", display: "block", width: "fit-content" }}>
-          <h3>Recargando...</h3>
-        </div>
-      ) : null}
+        {isRefetching ? (
+          <div
+            style={{ margin: "auto", display: "block", width: "fit-content" }}
+          >
+            <h3>Recargando...</h3>
+          </div>
+        ) : null}
+      </div>
 
       {isSuccess && (
         <div
