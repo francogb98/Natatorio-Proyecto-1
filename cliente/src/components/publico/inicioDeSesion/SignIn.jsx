@@ -44,7 +44,14 @@ function SignIn() {
         setTimeout(() => {
           Swal.close();
 
-          return navigate("/");
+          if (
+            data.usuario.role === "ADMIN" ||
+            data.usuario.role === "SUPER_ADMIN"
+          ) {
+            return navigate("/admin/panel/inicio");
+          }
+
+          return navigate("/user/inscripcion");
 
           // window.location.href = "/home";
         }, 1000);

@@ -36,25 +36,25 @@ function NavBar() {
         </div>
         {/* <div className="offcanvas-body"> */}
         <nav className={style.navBar}>
-          <Link to="/" className={style.link}>
+          <Link to="panel/inicio" className={style.link}>
             Inicio
           </Link>
-          <Link to="/panel/piletas" className={style.link}>
+          <Link to="panel/piletas" className={style.link}>
             Piletas
           </Link>
-          <Link to="/panel/usuarios" className={style.link}>
+          <Link to="panel/usuarios" className={style.link}>
             Lista Usuarios
           </Link>
 
-          <Link to="/panel/buscar-usuario" className={style.link}>
+          <Link to="panel/buscar-usuario" className={style.link}>
             Buscar Usuario
           </Link>
 
-          <Link to="/panel/habilitar-usuario" className={style.link}>
+          <Link to="panel/habilitar-usuario" className={style.link}>
             Habilitar Usuario
           </Link>
 
-          <Link to="/panel/create" className={style.link}>
+          <Link to="panel/create" className={style.link}>
             Crear Actividad
           </Link>
 

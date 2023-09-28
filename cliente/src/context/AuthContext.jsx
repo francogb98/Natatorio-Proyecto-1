@@ -7,6 +7,8 @@ import { sendEmail } from "../helpers/sendEmail";
 
 import { authReducer } from "../reducer/reducer";
 
+import { useNavigate } from "react-router-dom";
+
 export const AuthContext = createContext();
 
 const initialState = {
@@ -17,6 +19,8 @@ const initialState = {
 
 export function AuthProvider({ children }) {
   const [authState, dispatch] = useReducer(authReducer, initialState);
+
+  const navigate = useNavigate();
 
   const [user, setUser] = useState({});
 
@@ -48,7 +52,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
     //redirigir al login
-    window.location.href = "/";
+    return navigate("/");
   };
 
   return (

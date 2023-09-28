@@ -95,12 +95,15 @@ export const fetchConToken = async ({
 
 export const getInfoUser = async () => {
   try {
+    if (!localStorage.getItem("token")) return;
     const resp = await fetch(
       `${baseUrl}user/infoUser/${localStorage.getItem("token")}`
     );
     const data = await resp.json();
     return data;
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getAllUsers = async () => {
