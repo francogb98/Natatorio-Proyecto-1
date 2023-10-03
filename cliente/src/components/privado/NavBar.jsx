@@ -64,6 +64,9 @@ function NavBar() {
           <Link to="panel/create" className={style.link}>
             Crear Actividad
           </Link>
+          <Link to="panel/estadisticas" className={style.link}>
+            Estadisticas{" "}
+          </Link>
 
           {/* boton para cerrar secion */}
           <div className="py-2 px-1">

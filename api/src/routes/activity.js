@@ -1,7 +1,10 @@
 import { Router } from "express";
 
 import { validarJWT } from "../middlewares/validar-jwt.js";
-import { getActivities } from "../controllers/activitys/getAllActivity.js";
+import {
+  getActivities,
+  getActivitiesByDate,
+} from "../controllers/activitys/getAllActivity.js";
 import { createActivity } from "../controllers/activitys/createActivity.js";
 
 const routerActivity = Router();
@@ -10,5 +13,6 @@ const routerActivity = Router();
 
 routerActivity.get("/getAll", getActivities);
 routerActivity.post("/createActivity", validarJWT, createActivity);
+routerActivity.post("/getActivitiesByDate", validarJWT, getActivitiesByDate);
 
 export default routerActivity;

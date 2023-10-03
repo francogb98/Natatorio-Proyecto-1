@@ -1,56 +1,74 @@
 import User from "../../models/models/User.js";
 import Pileta from "../../models/models/Pileta.js";
+import Stadistics from "../../models/models/Stadistics.js";
 
-export const addUser = async ({ args }) => {
-  const { hourStart, hourFinish, date, idUser } = args;
-
-  // buscamos al usuario en la base de datos
-
+const updateStadistics = async ({ user, dateNowSave }) => {
   try {
-    const user = await User.findOne({ customId: idUser }).populate({
-      path: "activity",
-      populate: {
-        path: "pileta",
-      },
+    //busco si existe un campo con el id de stadistics en la bdd
+    const stadistics = await Stadistics.findOne({
+      activityId: user.activity[0]._id,
     });
 
-    if (!user) {
-      return { ok: false, msg: "El usuario no existe" };
+    //si no existe lo creo
+
+    if (stadistics == null) {
+      try {
+        const newStadistics = new Stadistics({
+          activityId: user.activity[0]._id,
+          usersQuantity: 1,
+          date: dateNowSave,
+        });
+        await newStadistics.save();
+        return { ok: true };
+      } catch (error) {
+        return { ok: false, msg: "Error en el servidor" };
+      }
     }
 
-    // si existe verifcamos que el horario y el dia sean iguales a los de los arg
-    if (user.activity.length === 0) {
-      return {
-        ok: false,
-        msg: "El usuario no esta registrado en ninguna actividad",
-        user,
-      };
-    }
+    //si existe busco si existe un campo con la fecha actual
 
-    if (
-      user.activity[0].hourStart !== hourStart ||
-      user.activity[0].hourFinish !== hourFinish
-    ) {
-      return {
-        ok: false,
-        msg: "El usuario no esta registrado en este horario",
-        user,
-      };
+    if (stadistics) {
+      const dateStadistics = stadistics.date.includes(dateNowSave);
+      //si no existe lo creo
+      if (!dateStadistics) {
+        stadistics.date.push(dateNowSave);
+        await stadistics.save();
+      }
+      //si existe actualizo la cantidad de usuarios
+      if (dateStadistics) {
+        stadistics.usersQuantity = stadistics.usersQuantity + 1;
+        await stadistics.save();
+      }
     }
+    return { ok: true };
+  } catch (error) {
+    return { ok: false, msg: "Error en el servidor" };
+  }
+};
 
-    // como date es un array busco si esta incluido el dia que me pasan por arg
-    const dateActivity = user.activity[0].date.includes(date);
-    if (!dateActivity) {
-      return {
-        ok: false,
-        msg: "El usuario no esta registrado en esta actividad",
-      };
+export const addUser = async ({ user }) => {
+  try {
+    //verificar que no haya niguna pileta creada, si la hay, vverifico que el hoario sea igual al que me pasan por args
+    const piletaExist = await Pileta.findOne();
+
+    console.log(piletaExist);
+    if (piletaExist) {
+      if (
+        piletaExist.hourStart !== user.activity[0].hourStart ||
+        piletaExist.hourFinish !== user.activity[0].hourFinish
+      ) {
+        return {
+          ok: false,
+          msg: "El usuario no esta registrado en este horario",
+        };
+      }
     }
     //verifico si la pileta ya existe en mi bdd si no la creo
     const { pileta: piletaActivity } = user.activity[0];
-    const pileta = await Pileta.findOne({ pileta: piletaActivity }).populate({
+    const pileta = await Pileta.findOne({
+      pileta: piletaActivity,
+    }).populate({
       path: "users",
-
       populate: {
         path: "customId",
       },
@@ -63,7 +81,11 @@ export const addUser = async ({ args }) => {
 
     const dateNowSave = `${day}/${month}/${year}`;
     if (!pileta) {
-      const newPileta = new Pileta({ pileta: piletaActivity });
+      const newPileta = new Pileta({
+        pileta: piletaActivity,
+        hourStart: user.activity[0].hourStart,
+        hourFinish: user.activity[0].hourFinish,
+      });
       await newPileta.save();
       newPileta.users.push(user);
       await newPileta.save();
@@ -73,20 +95,35 @@ export const addUser = async ({ args }) => {
           path: "activity",
         },
       });
+      //buscamos el ususario en la BDD y actualizamos la asistencia
 
-      //accedemos a la fecha actual y actualizamos el campo de asistencia del usuario con dicho valor
+      User.findByIdAndUpdate(user._id, { asistencia: dateNowSave });
 
-      user.asistencia = dateNowSave;
-      await user.save();
+      await updateStadistics({ user, dateNowSave });
 
       return { ok: true, result };
     }
 
+    // //verifico que el horario de ingreso del usuario sea igual que el de la pileta
+    // if (
+    //   user.activity[0].hourStart !== pileta.hourStart ||
+    //   user.activity[0].hourFinish !== pileta.hourFinish
+    // ) {
+    //   return {
+    //     ok: false,
+    //     msg: "El usuario no esta registrado en este horario",
+    //   };
+    // }
+
     // si todo es correcto verifico que el usuario no este en la lista de usuarios de la pileta
-    const userInPileta = pileta.users.find((u) => u.customId == idUser);
+    const userInPileta = pileta.users.find((u) => u.customId == user.customId);
 
     if (userInPileta) {
-      return { ok: false, msg: "El usuario ya esta en la lista", user };
+      return {
+        ok: false,
+        msg: "El usuario " + user.nombre + " ya esta en la lista",
+        user,
+      };
     }
     // si no esta lo agrego a la lista de usuarios de la pileta
     pileta.users.push(user);
@@ -100,13 +137,15 @@ export const addUser = async ({ args }) => {
     });
 
     //accedemos a la fecha actual y actualizamos el campo de asistencia del usuario con dicho valor
-    user.asistencia = dateNowSave;
-    await user.save();
+    User.findByIdAndUpdate(user._id, { asistencia: dateNowSave });
+
+    await updateStadistics({ user, dateNowSave });
 
     return { ok: true, result };
 
     // si es asi lo agregamos a la lista de usuarios de la pileta
   } catch (error) {
+    console.log(error.message);
     return { ok: false, msg: "Error en el servidor" };
   }
 };

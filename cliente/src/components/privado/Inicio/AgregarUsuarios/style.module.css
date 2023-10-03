@@ -1,0 +1,11 @@
+.linkToTable {
+  text-decoration: underline;
+  color: #000;
+  cursor: pointer;
+  margin-bottom: 30px;
+  margin-top: -15px;
+}
+
+.linkToTable:hover {
+  color: blue;
+}

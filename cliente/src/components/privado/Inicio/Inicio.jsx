@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import style from "./inicio.module.css";
 import { useMutation, useQuery } from "react-query";
 import { useSocket } from "../../../hooks/useSocket";
 import { AuthContext } from "../../../context/AuthContext";
-import TablaUsuarios from "./TablaUsuarios";
 
-import BuscarUsuariosForm from "./Formulario";
+import TablaUsuarios from "./TablaUsuarios";
+import BuscarUsuariosForm from "./AgregarUsuarios/Formulario";
 import getAllPiletas from "../../../helpers/piletasFetch";
 
 import { baseUrl } from "../../../helpers/url";
-import Modal from "./Modal";
+import Modal from "./modal/Modal";
 import { getUser } from "../../../helpers/getUsers";
 import User from "../UserInfo/User";
+import FormularioInicioDia from "./empezarHorario/FormularioInicioDia";
+
+import style from "./inicio.module.css";
+
+import useHook from "./socket/sokcet";
 
 const fetchHours = async () => {
   const res = await fetch(baseUrl + "hour/getAll");
@@ -46,7 +50,7 @@ function Inicio() {
     hourFinish: "",
     idUser: "",
   });
-  const [idUser, setIdUser] = useState("");
+
   const [pileta25, setPileta25] = useState([]);
   const [pileta50, setPileta50] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -55,6 +59,18 @@ function Inicio() {
     msg: "",
     nombre: "",
   });
+
+  const [inicioHorario, setInicioHorario] = useState({
+    status: false,
+    hourStart: "",
+    hourFinish: "",
+    date: "",
+  });
+  const [usersRegistered, setUsersRegistered] = useState([]);
+
+  useEffect(() => {
+    console.log(usersRegistered);
+  }, [inicioHorario]);
 
   //cargar informacion de piletas
 
@@ -108,7 +124,6 @@ function Inicio() {
         }, 3000);
       } else {
         // quiero reiniciar el campo de nombre id con javascript
-        setIdUser("");
 
         if (updatedUsers.result.pileta === "pileta 50") {
           setPileta50(updatedUsers.result.users);
@@ -153,38 +168,9 @@ function Inicio() {
     });
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-
-    setLoading(true);
-
-    if (
-      args.date === "" ||
-      args.hourStart === "" ||
-      args.hourFinish === "" ||
-      idUser === ""
-    ) {
-      setLoading(false);
-      setError({
-        error: true,
-        msg: "Faltan campos por completar",
-        nombre: "",
-      });
-      setTimeout(() => {
-        setError({
-          error: false,
-          msg: "",
-          nombre: "",
-        });
-      }, 3000);
-      return;
-    }
-
-    socket?.emit("agregar-usuario", { args });
-  };
-
   const handleEnd = () => {
     socket?.emit("finalizar-turno");
+    setInicioHorario(false);
   };
 
   if (isLoading) return <h1>Cargando...</h1>;
@@ -192,43 +178,87 @@ function Inicio() {
   if (getUserById.isLoading || getUserById.isSuccess) {
     return <User getUserById={getUserById} />;
   }
+
   return (
     <div className={style.body}>
       {/* cargar usuarios */}
 
-      <section className={style.formBody}>
-        <h1>Agregar Usuarios</h1>
-        <BuscarUsuariosForm
-          args={args}
-          setArgs={setArgs}
-          handleChange={handleChange}
-          idUser={idUser}
-          setIdUser={setIdUser}
-          onSubmit={onSubmit}
-          loading={loading}
-          error={error}
-          data={data}
-        />
+      {!inicioHorario.status &&
+      pileta25.length === 0 &&
+      pileta50.length === 0 ? (
+        <>
+          <section className={style.formBodyInicio}>
+            <FormularioInicioDia
+              data={data}
+              setInicioHorario={setInicioHorario}
+              setUsersRegistered={setUsersRegistered}
+            />
+          </section>
+        </>
+      ) : usersRegistered.length > 0 ? (
+        <>
+          <section className={style.formBody}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: "20px",
+              }}
+            >
+              <div>
+                <span className="fw-bold">Horario:</span>
+                {inicioHorario.hourStart} - {inicioHorario.hourFinish}
+              </div>
 
-        <button
-          type="button"
-          className={`btn btn-lg btn-warning ${style.buttonEnd}`}
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          Finalizar Turno
-        </button>
+              <div>
+                <span className="fw-bold"> Dia:</span> {inicioHorario.date}
+              </div>
+            </div>
+            <hr />
+            <BuscarUsuariosForm
+              args={args}
+              setArgs={setArgs}
+              handleChange={handleChange}
+              socket={socket}
+              loading={loading}
+              error={error}
+              setLoading={setLoading}
+              setError={setError}
+              usersRegistered={usersRegistered}
+            />
 
-        <Modal handleEnd={handleEnd} />
-      </section>
+            <button
+              type="button"
+              className={`btn btn-lg btn-warning ${style.buttonEnd}`}
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Finalizar Turno
+            </button>
+          </section>
+          <Modal handleEnd={handleEnd} />
 
-      {/* usuario en el ambiente */}
+          {/* usuario en el ambiente */}
 
-      <TablaUsuarios
-        pileta25={pileta25}
-        pileta50={pileta50}
-        getUserById={getUserById}
-      />
+          <TablaUsuarios
+            pileta25={pileta25}
+            pileta50={pileta50}
+            getUserById={getUserById}
+          />
+        </>
+      ) : (
+        <div>
+          <h1>No hay usuarios registrados en este horario</h1>
+          <button
+            className="btn btn-danger"
+            onClick={() => {
+              setInicioHorario(false);
+            }}
+          >
+            Volver
+          </button>
+        </div>
+      )}
     </div>
   );
 }

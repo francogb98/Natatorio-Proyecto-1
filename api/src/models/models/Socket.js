@@ -10,7 +10,7 @@ export const Socket = (io) => {
     });
 
     socket.on("agregar-usuario", async ({ args }) => {
-      const result = await addUser({ args });
+      const result = await addUser({ user: args });
 
       //si el resultado es un error lo enviamos al cliente pero solo al cliente que lo envio quiero que lo escuche solo el
 

@@ -18,6 +18,7 @@ import SearchUser from "../components/privado/searchUser/SearchUser";
 import Habilitar from "../components/privado/habilitarUsuario/Habilitar";
 import Piletas from "../components/privado/Piletas/Piletas";
 import ListaUsuarios from "../components/privado/listaUsuarios/ListaUsuarios";
+import Estadisticas from "../components/privado/estadisticas/Estadisticas";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -78,6 +79,7 @@ function Routing() {
           <Route path="panel/buscar-usuario" element={<SearchUser />} />
           <Route path="panel/habilitar-usuario" element={<Habilitar />} />
           <Route path="panel/usuarios" element={<ListaUsuarios />} />
+          <Route path="panel/estadisticas" element={<Estadisticas />} />
         </Route>
       ) : (
         <Route

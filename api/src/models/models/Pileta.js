@@ -4,6 +4,8 @@ const piletaSchema = new mongoose.Schema({
   pileta: String,
 
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  hourStart: String,
+  hourFinish: String,
 });
 
 const Pileta = mongoose.model("Pileta", piletaSchema);

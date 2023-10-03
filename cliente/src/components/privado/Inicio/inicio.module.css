@@ -2,9 +2,19 @@
   height: 100vh;
   width: 100%;
   display: grid;
-  grid-template-columns: 3fr 4fr;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.formBodyInicio {
+  height: fit-content;
+  width: fit-content;
+  display: block;
+  margin: auto;
+  padding: 30px;
+  flex-direction: column;
+  background-color: white;
+  color: black;
+}
 .formBody {
   height: fit-content;
   padding: 10px;
@@ -52,6 +62,8 @@
   .formBody {
     padding: 8px;
     width: fit-content;
+    height: fit-content;
+
     margin: 0 auto;
   }
   .formBody > h1 {
