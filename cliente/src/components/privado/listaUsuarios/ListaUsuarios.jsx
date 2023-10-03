@@ -110,10 +110,6 @@ function ListaUsuarios() {
 
   if (error) return <h1>Error...</h1>;
 
-  //   useEffect(() => {
-  //     console.log(suspender);
-  //   }, [suspender]);
-
   const handleChange = (user) => {
     if (editRole.status) {
       cambiarRole.mutate({

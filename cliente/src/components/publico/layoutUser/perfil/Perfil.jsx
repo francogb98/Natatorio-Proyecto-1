@@ -68,15 +68,26 @@ function Perfil() {
     },
   });
 
-  useEffect(() => {
-    getUser;
-  }, []);
-
   const cargarFicha = () => {
     ficha.mutate({ fichaMedica: imageUrl, id: getUser.data.user._id });
   };
 
   if (getUser.isSuccess) {
+    if (!getUser.data) {
+      return (
+        <>
+          <h1>Usuario no encontrado </h1>
+          <button
+            onClick={() => {
+              getUser.refetch();
+            }}
+          >
+            Recargar
+          </button>
+        </>
+      );
+    }
+
     const user = getUser.data.user;
 
     return (

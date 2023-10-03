@@ -55,10 +55,6 @@ function SubirFicha({ id }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log("llegeue aqui");
-
-    console.log(ficha);
-    console.log(id);
     if (ficha === null) {
       Swal.fire({
         title: "Error",

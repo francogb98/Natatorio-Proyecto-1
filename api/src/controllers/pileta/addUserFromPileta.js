@@ -1,47 +1,52 @@
 import User from "../../models/models/User.js";
 import Pileta from "../../models/models/Pileta.js";
-import Stadistics from "../../models/models/Stadistics.js";
+import Activity from "../../models/models/Actividades.js";
 
 const updateStadistics = async ({ user, dateNowSave }) => {
   try {
     //busco si existe un campo con el id de stadistics en la bdd
-    const stadistics = await Stadistics.findOne({
-      activityId: user.activity[0]._id,
+    console.log(user.activity[0]._id);
+    const activity = await Activity.find({
+      _id: user.activity[0]._id,
+    }).populate({
+      path: "stadistics",
     });
+    console.log(activity);
 
     //si no existe lo creo
 
-    if (stadistics == null) {
-      try {
-        const newStadistics = new Stadistics({
-          activityId: user.activity[0]._id,
-          usersQuantity: 1,
-          date: dateNowSave,
-        });
-        await newStadistics.save();
-        return { ok: true };
-      } catch (error) {
-        return { ok: false, msg: "Error en el servidor" };
-      }
-    }
+    // if (stadistics == null) {
+    //   try {
+    //     const newStadistics = new Stadistics({
+    //       activityId: user.activity[0]._id,
+    //       usersQuantity: 1,
+    //       date: dateNowSave,
+    //     });
+    //     await newStadistics.save();
+    //     return { ok: true };
+    //   } catch (error) {
+    //     return { ok: false, msg: "Error en el servidor" };
+    //   }
+    // }
 
-    //si existe busco si existe un campo con la fecha actual
+    // //si existe busco si existe un campo con la fecha actual
 
-    if (stadistics) {
-      const dateStadistics = stadistics.date.includes(dateNowSave);
-      //si no existe lo creo
-      if (!dateStadistics) {
-        stadistics.date.push(dateNowSave);
-        await stadistics.save();
-      }
-      //si existe actualizo la cantidad de usuarios
-      if (dateStadistics) {
-        stadistics.usersQuantity = stadistics.usersQuantity + 1;
-        await stadistics.save();
-      }
-    }
+    // if (stadistics) {
+    //   const dateStadistics = stadistics.date.includes(dateNowSave);
+    //   //si no existe lo creo
+    //   if (!dateStadistics) {
+    //     stadistics.date.push(dateNowSave);
+    //     await stadistics.save();
+    //   }
+    //   //si existe actualizo la cantidad de usuarios
+    //   if (dateStadistics) {
+    //     stadistics.usersQuantity = stadistics.usersQuantity + 1;
+    //     await stadistics.save();
+    //   }
+    // }
     return { ok: true };
   } catch (error) {
+    console.log(error.message);
     return { ok: false, msg: "Error en el servidor" };
   }
 };
@@ -51,7 +56,6 @@ export const addUser = async ({ user }) => {
     //verificar que no haya niguna pileta creada, si la hay, vverifico que el hoario sea igual al que me pasan por args
     const piletaExist = await Pileta.findOne();
 
-    console.log(piletaExist);
     if (piletaExist) {
       if (
         piletaExist.hourStart !== user.activity[0].hourStart ||
@@ -99,32 +103,21 @@ export const addUser = async ({ user }) => {
 
       User.findByIdAndUpdate(user._id, { asistencia: dateNowSave });
 
-      await updateStadistics({ user, dateNowSave });
+      // await updateStadistics({ user, dateNowSave });
 
       return { ok: true, result };
     }
 
-    // //verifico que el horario de ingreso del usuario sea igual que el de la pileta
-    // if (
-    //   user.activity[0].hourStart !== pileta.hourStart ||
-    //   user.activity[0].hourFinish !== pileta.hourFinish
-    // ) {
+    // si todo es correcto verifico que el usuario no este en la lista de usuarios de la pileta
+    // const userInPileta = pileta.users.find((u) => u.customId == user.customId);
+
+    // if (userInPileta) {
     //   return {
     //     ok: false,
-    //     msg: "El usuario no esta registrado en este horario",
+    //     msg: "El usuario " + user.nombre + " ya esta en la lista",
+    //     user,
     //   };
     // }
-
-    // si todo es correcto verifico que el usuario no este en la lista de usuarios de la pileta
-    const userInPileta = pileta.users.find((u) => u.customId == user.customId);
-
-    if (userInPileta) {
-      return {
-        ok: false,
-        msg: "El usuario " + user.nombre + " ya esta en la lista",
-        user,
-      };
-    }
     // si no esta lo agrego a la lista de usuarios de la pileta
     pileta.users.push(user);
     await pileta.save();
@@ -139,7 +132,7 @@ export const addUser = async ({ user }) => {
     //accedemos a la fecha actual y actualizamos el campo de asistencia del usuario con dicho valor
     User.findByIdAndUpdate(user._id, { asistencia: dateNowSave });
 
-    await updateStadistics({ user, dateNowSave });
+    // await updateStadistics({ user, dateNowSave });
 
     return { ok: true, result };
 

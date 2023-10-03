@@ -68,9 +68,7 @@ function Inicio() {
   });
   const [usersRegistered, setUsersRegistered] = useState([]);
 
-  useEffect(() => {
-    console.log(usersRegistered);
-  }, [inicioHorario]);
+  useEffect(() => {}, [inicioHorario]);
 
   //cargar informacion de piletas
 
@@ -252,7 +250,14 @@ function Inicio() {
           <button
             className="btn btn-danger"
             onClick={() => {
-              setInicioHorario(false);
+              setInicioHorario({
+                status: false,
+                hourStart: "",
+                hourFinish: "",
+                date: "",
+              });
+              setPileta25([]);
+              setPileta50([]);
             }}
           >
             Volver

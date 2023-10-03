@@ -42,6 +42,7 @@ function CreateActivity() {
 
         //volver los valores de los select a default
         document.getElementById("name").value = "";
+        document.getElementById("cupos").value = "";
         document.getElementById("hours").selectedIndex = 0;
         document.getElementById("date").selectedIndex = 0;
         document.getElementById("pileta").selectedIndex = 0;

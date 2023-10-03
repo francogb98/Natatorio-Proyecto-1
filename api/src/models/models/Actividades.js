@@ -10,6 +10,7 @@ const activitySchema = new mongoose.Schema({
   date: Array,
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   userRegister: Number,
+  stadistics: [{ type: mongoose.Schema.Types.ObjectId, ref: "Stadistics" }],
   cupos: Number,
   // Otros campos de la actividad
 });
