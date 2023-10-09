@@ -59,3 +59,12 @@
   background-color: aqua;
   cursor: pointer;
 }
+
+.buttonNav {
+  background-color: #ccc;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
+  cursor: pointer;
+}

@@ -64,6 +64,9 @@ function NavBar() {
           <Link to="panel/create" className={style.link}>
             Crear Actividad
           </Link>
+          <Link to="panel/actividades" className={style.link}>
+            Lista Actividades
+          </Link>
           <Link to="panel/estadisticas" className={style.link}>
             Estadisticas{" "}
           </Link>

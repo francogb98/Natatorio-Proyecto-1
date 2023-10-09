@@ -86,11 +86,11 @@ function TablaUsuarios({ data, getUserById, refetch }) {
                     {usuario.nombre}
                   </a>
                 </td>
-                <td>{usuario.activity[0].name}</td>
-                <td>{usuario.activity[0].date.join("-")}</td>
+                <td>{usuario.activity[0]?.name}</td>
+                <td>{usuario.activity[0]?.date.join("-")}</td>
                 <td>
-                  {usuario.activity[0].hourStart} -{" "}
-                  {usuario.activity[0].hourFinish}
+                  {usuario.activity[0]?.hourStart} -{" "}
+                  {usuario.activity[0]?.hourFinish}
                 </td>
                 <td>
                   <button
@@ -107,7 +107,11 @@ function TablaUsuarios({ data, getUserById, refetch }) {
               </tr>
             ))
           ) : (
-            <h2>No hay usuarios por habilitar</h2>
+            <tr>
+              <td colSpan="6" style={{ textAlign: "center" }}>
+                No hay Usuarios por Habilitar
+              </td>
+            </tr>
           )}
         </tbody>
       </table>

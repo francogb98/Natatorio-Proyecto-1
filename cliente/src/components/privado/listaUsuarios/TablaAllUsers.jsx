@@ -1,5 +1,6 @@
-import { set } from "lodash";
+import { useMutation } from "react-query";
 import React, { useEffect, useState } from "react";
+import { suspenderUser } from "../../../helpers/suspendUser";
 
 function TablaAllUsers({
   data,
@@ -11,6 +12,8 @@ function TablaAllUsers({
   getUserById,
 }) {
   const [usuarios, setUsuario] = useState(data);
+
+  const suspenderUsuario = useMutation(suspenderUser);
 
   useEffect(() => {
     setUsuario(data);
@@ -30,6 +33,14 @@ function TablaAllUsers({
     const sortedUsersById = [...data].sort((a, b) => a.customId - b.customId);
 
     setUsuario(sortedUsersById);
+  };
+
+  const suspenderUpdate = ({ id, idActivity }) => {
+    setEditRole({
+      id: id,
+      status: true,
+    });
+    suspenderUsuario.mutate({ id, idActivity });
   };
 
   return (
@@ -88,7 +99,7 @@ function TablaAllUsers({
                     <option value={null}>-- seleccione rol --</option>
                     <option value="ADMIN">Admin</option>
                     <option value="SUPER_ADMIN">Super_admin</option>
-                    <option value="Usuario">Usuario</option>
+                    <option value="usuario">Usuario</option>
                   </select>
                 </td>
               ) : (
@@ -171,9 +182,9 @@ function TablaAllUsers({
                     <button
                       className="btn btn-sm btn-danger"
                       onClick={() => {
-                        setSuspender({
+                        suspenderUpdate({
                           id: user.customId,
-                          status: true,
+                          idActivity: user.activity._id,
                         });
                       }}
                     >
