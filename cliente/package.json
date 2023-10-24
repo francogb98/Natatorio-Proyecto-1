@@ -13,6 +13,7 @@
     "@emailjs/browser": "^3.11.0",
     "axios": "^1.5.0",
     "bootstrap": "^5.3.1",
+    "dayjs": "^1.11.10",
     "emailjs": "^4.0.2",
     "just-debounce-it": "^3.2.0",
     "lodash": "^4.17.21",

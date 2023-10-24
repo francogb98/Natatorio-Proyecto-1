@@ -12,6 +12,7 @@ const activitySchema = new mongoose.Schema({
   userRegister: Number,
   stadistics: [{ type: mongoose.Schema.Types.ObjectId, ref: "Stadistics" }],
   cupos: Number,
+  actividadEspecial: Boolean,
   // Otros campos de la actividad
 });
 

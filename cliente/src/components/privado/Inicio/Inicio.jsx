@@ -1,112 +1,59 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import React, { useContext, useEffect, useRef, useState } from "react";
+
 import { useSocket } from "../../../hooks/useSocket";
 import { AuthContext } from "../../../context/AuthContext";
 
-import TablaUsuarios from "./TablaUsuarios";
-import BuscarUsuariosForm from "./AgregarUsuarios/Formulario";
-import getAllPiletas from "../../../helpers/piletasFetch";
-
 import { baseUrl } from "../../../helpers/url";
-import Modal from "./modal/Modal";
-import { getUser } from "../../../helpers/getUsers";
-import User from "../UserInfo/User";
-import FormularioInicioDia from "./empezarHorario/FormularioInicioDia";
 
-import style from "./inicio.module.css";
+import useDiaYHoraActual from "./UseDay";
+import FormularioTurnoSiguiente from "./FormularioTurnoSiguiente";
+import FormularioPrueba from "./FormularioPrueba";
+import Piletas from "./Piletas";
 
-import useHook from "./socket/sokcet";
-
-const fetchHours = async () => {
-  const res = await fetch(baseUrl + "hour/getAll");
-  const data = await res.json();
-  return data;
-};
+import { reinicarPileta } from "../../../helpers/piletas/reiniciarPileta";
 
 function Inicio() {
-  const { data, isSuccess, isLoading } = useQuery({
-    queryKey: "hours",
-    queryFn: fetchHours,
-  });
+  //traigo el dia, la hora, las piletas
+  const { horaActual, diaActualEnEspanol, data, refetch, isRefetching } =
+    useDiaYHoraActual();
 
-  const getUserById = useMutation({
-    mutationFn: getUser,
-    onSuccess: (data) => {
-      if (data.status == "error") {
-        setTimeout(() => {
-          getUserById.reset();
-        }, 3000);
-      }
-    },
-  });
-
-  const { socket, online, conectarSocket, desconectarSocket } =
-    useSocket(baseUrl);
-  const { auth } = useContext(AuthContext);
-
-  const [args, setArgs] = useState({
-    date: "",
-    hourStart: "",
-    hourFinish: "",
-    idUser: "",
-  });
-
-  const [pileta25, setPileta25] = useState([]);
-  const [pileta50, setPileta50] = useState([]);
-  const [loading, setLoading] = useState(false);
+  // -----------------Estados-----------------
   const [error, setError] = useState({
     error: false,
     msg: "",
     nombre: "",
   });
-
-  const [inicioHorario, setInicioHorario] = useState({
+  const [success, setSuccess] = useState({
+    success: false,
+    msg: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [cambiandoTurno, setCambiandoTurno] = useState({
     status: false,
-    hourStart: "",
-    hourFinish: "",
-    date: "",
-  });
-  const [usersRegistered, setUsersRegistered] = useState([]);
-
-  useEffect(() => {}, [inicioHorario]);
-
-  //cargar informacion de piletas
-
-  const { data: dataPiletas, isLoading: cargo } = useQuery({
-    queryKey: ["piletas"],
-    queryFn: getAllPiletas,
+    msg: "",
   });
 
-  useEffect(() => {
-    if (!cargo && dataPiletas.piletas.length) {
-      if (dataPiletas.piletas[0] && dataPiletas.piletas[0].users.length > 0) {
-        dataPiletas.piletas[0].pileta === "pileta 50"
-          ? setPileta50(dataPiletas.piletas[0].users)
-          : setPileta25(dataPiletas.piletas[0].users);
-      }
-      if (dataPiletas.piletas[1] && dataPiletas.piletas[1].users.length > 0) {
-        dataPiletas.piletas[1].pileta === "pileta 50"
-          ? setPileta50(dataPiletas.piletas[1].users)
-          : setPileta25(dataPiletas.piletas[1].users);
-      }
-    }
-    //
-    //
-  }, [dataPiletas, cargo]);
+  //obtengo todas las actividades del dia que esten en este horario
+  //obtengo todas las piletas en este horario
+  useEffect(() => {}, [horaActual, diaActualEnEspanol]);
 
+  // -----------------Socket-----------------
+  const { socket, online, conectarSocket, desconectarSocket } =
+    useSocket(baseUrl);
+  const { auth } = useContext(AuthContext);
   useEffect(() => {
     if (auth.logged) {
       conectarSocket();
     }
   }, [auth, conectarSocket]);
 
+  // ----------------------Escuchar eventos del socket----------------------
+
   useEffect(() => {
     // Escuchar el evento "lista-usuarios" y actualizar el estado users
     const handleUserListUpdate = (updatedUsers) => {
-      //   setPileta50(updatedUsers.pileta50);
-      //   setPileta25(updatedUsers.pileta25);
       setLoading(false);
-
+      console.log(updatedUsers);
       if (!updatedUsers.ok) {
         setError({
           error: true,
@@ -119,16 +66,14 @@ function Inicio() {
             msg: "",
             nombre: "",
           });
-        }, 3000);
+        }, 2000);
       } else {
         // quiero reiniciar el campo de nombre id con javascript
-
-        if (updatedUsers.result.pileta === "pileta 50") {
-          setPileta50(updatedUsers.result.users);
-        }
-        if (updatedUsers.result.pileta === "pileta 25") {
-          setPileta25(updatedUsers.result.users);
-        }
+        refetch();
+        setSuccess({
+          success: true,
+          msg: `Usuario registrado en ${updatedUsers.user.activity[0].pileta} correctamente`,
+        });
         setError({
           error: false,
           msg: "",
@@ -137,135 +82,243 @@ function Inicio() {
       }
     };
 
-    const handleDeleteUsers = () => {
-      setPileta50([]);
-      setPileta25([]);
+    const handleCambiarTurno = (resp) => {
+      if (resp.ok) {
+        refetch();
+      } else {
+        setError({
+          error: true,
+          msg: resp.msg,
+        });
+        setTimeout(() => {
+          setError({
+            error: false,
+            msg: "",
+            nombre: "",
+          });
+        }, 2000);
+      }
     };
 
     if (socket) {
       socket.on("lista-usuarios", handleUserListUpdate);
     }
     if (socket) {
-      socket.on("finalizar-turno", handleDeleteUsers);
+      socket.on("lista-usuarios-siguient-turno", handleUserListUpdate);
     }
-
-    return () => {
+    if (socket) {
       if (socket) {
-        socket.off("lista-usuarios", handleUserListUpdate);
-        socket.off("finalizar-turno", handleDeleteUsers);
+        socket.on("cambiar-turno", handleCambiarTurno);
       }
-    };
+      // if (socket) {
+      //   socket.on("finalizar-turno", handleDeleteUsers);
+      // }
+
+      return () => {
+        if (socket) {
+          socket.off("lista-usuarios", handleUserListUpdate);
+          // socket.off("finalizar-turno", handleDeleteUsers);
+        }
+      };
+    }
   }, [socket]);
 
-  const handleChange = (e) => {
-    const selectedValue = JSON.parse(e.target.value); // Parse the JSON string
-    setArgs({
-      ...args,
-      hourStart: selectedValue.hourStart,
-      hourFinish: selectedValue.hourFinish,
+  // -----------------Registrar Uusario Turno Actual-----------------
+  const registrarUsuario = (id) => {
+    setLoading(true);
+    socket?.emit("agregar-usuario", {
+      id,
+      horaActual: horaActual + ":00",
+      HoraFinalTurno: parseInt(horaActual) + 1 + ":00",
+      dia: diaActualEnEspanol,
+    });
+  };
+  // -----------------Registrar Uusario Turno Siguiente-----------------
+  const registrarUsuarioTurnoSiguiente = ({ id }) => {
+    setLoading(true);
+    socket?.emit("agregar-usuario-turno-siguiente", {
+      id,
+      horaSiguienteTurno: parseInt(horaActual) + 1 + ":00",
+      dia: diaActualEnEspanol,
     });
   };
 
+  //-----------------------Finalizar turno y Cambiar de horario -----------------------
   const handleEnd = () => {
-    socket?.emit("finalizar-turno");
-    setInicioHorario(false);
+    console.log("me ejecute a las", horaActual + ":00");
+    setCambiandoTurno({
+      status: true,
+      msg: "Cargando turno por favor espere...",
+    });
+    socket?.emit("cambiar-turno", {
+      horaActual: horaActual + ":00",
+    });
   };
 
-  if (isLoading) return <h1>Cargando...</h1>;
+  //-----------se ejecutara cuando se cambie la hora, solo si la hora es distinta------
 
-  if (getUserById.isLoading || getUserById.isSuccess) {
-    return <User getUserById={getUserById} />;
-  }
+  const [horaAnterior, setHoraAnterior] = useState(horaActual);
+
+  useEffect(() => {
+    if (horaActual !== horaAnterior) {
+      console.log("cambio la hora");
+      handleEnd();
+    }
+    setHoraAnterior(horaActual);
+  }, [horaActual]);
+
+  // -----------------Actualizar data de tabla y loading-----------------
+
+  useEffect(() => {
+    if (loading && !isRefetching) {
+      setLoading(isRefetching);
+    }
+    if (success.success && !isRefetching) {
+      setTimeout(() => {
+        setSuccess({ success: false, msg: "" });
+      }, 1000);
+    }
+    if (cambiandoTurno && !isRefetching) {
+      setCambiandoTurno({ status: false, msg: "" });
+    }
+  }, [isRefetching]);
 
   return (
-    <div className={style.body}>
-      {/* cargar usuarios */}
-
-      {!inicioHorario.status &&
-      pileta25.length === 0 &&
-      pileta50.length === 0 ? (
-        <>
-          <section className={style.formBodyInicio}>
-            <FormularioInicioDia
-              data={data}
-              setInicioHorario={setInicioHorario}
-              setUsersRegistered={setUsersRegistered}
-            />
-          </section>
-        </>
-      ) : usersRegistered.length > 0 ? (
-        <>
-          <section className={style.formBody}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: "20px",
-              }}
-            >
-              <div>
-                <span className="fw-bold">Horario:</span>
-                {inicioHorario.hourStart} - {inicioHorario.hourFinish}
-              </div>
-
-              <div>
-                <span className="fw-bold"> Dia:</span> {inicioHorario.date}
-              </div>
-            </div>
-            <hr />
-            <BuscarUsuariosForm
-              args={args}
-              setArgs={setArgs}
-              handleChange={handleChange}
-              socket={socket}
-              loading={loading}
-              error={error}
-              setLoading={setLoading}
-              setError={setError}
-              usersRegistered={usersRegistered}
-            />
-
-            <button
-              type="button"
-              className={`btn btn-lg btn-warning ${style.buttonEnd}`}
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-            >
-              Finalizar Turno
-            </button>
-          </section>
-          <Modal handleEnd={handleEnd} />
-
-          {/* usuario en el ambiente */}
-
-          <TablaUsuarios
-            pileta25={pileta25}
-            pileta50={pileta50}
-            getUserById={getUserById}
-          />
-        </>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-around",
+        width: "100%",
+      }}
+    >
+      {cambiandoTurno.status ? (
+        <h1 className={"text-danger"}>{cambiandoTurno.msg}</h1>
       ) : (
-        <div>
-          <h1>No hay usuarios registrados en este horario</h1>
-          <button
-            className="btn btn-danger"
-            onClick={() => {
-              setInicioHorario({
-                status: false,
-                hourStart: "",
-                hourFinish: "",
-                date: "",
-              });
-              setPileta25([]);
-              setPileta50([]);
+        // <h1 className="text-danger">Cambiando turno por favor espere...</h1>
+        <>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              marginTop: "30px",
             }}
           >
-            Volver
-          </button>
-        </div>
+            <h1>Inicio</h1>
+            <h4>{diaActualEnEspanol}</h4>
+            <h4>
+              Turno Actual {parseFloat(horaActual)}:00 -{" "}
+              {parseFloat(horaActual) + 1}:00
+            </h4>
+            {loading && <h1>Cargando...</h1>}
+            {!loading && error.error && (
+              <h3 className="text-danger">{error.msg}</h3>
+            )}
+            {!loading && success.success && (
+              <h3 className="text-success">{success.msg}</h3>
+            )}
+
+            <FormularioPrueba registrarUsuario={registrarUsuario} />
+            <FormularioTurnoSiguiente
+              registrarUsuarioTurnoSiguiente={registrarUsuarioTurnoSiguiente}
+            />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              marginTop: "30px",
+            }}
+          >
+            {data?.piletas.map((pileta, i) => {
+              // creo un componenete que se llame piletas al cual le voy a pasar, nombre de pileta y usuarios
+              return (
+                <div style={{ minWidth: "450px" }}>
+                  <header
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      <h3>{pileta.pileta}</h3>
+                      <h5>Total Usuarios:{pileta.users.length}</h5>
+                    </div>
+                    <button
+                      className="btn btn-danger"
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                    >
+                      Reiniciar
+                    </button>
+                  </header>
+                  <Piletas
+                    key={i}
+                    pileta={pileta.pileta}
+                    users={pileta.users}
+                    refetch={refetch}
+                  />
+
+                  {/* <!-- Modal --> */}
+                  <div
+                    className="modal fade"
+                    id="exampleModal"
+                    tabindex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1
+                            className="modal-title fs-5"
+                            id="exampleModalLabel"
+                          >
+                            Seguro que desea reiniciar la {pileta.pileta}?
+                          </h1>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body">
+                          Una vez de click en reiniciar se borraran los usuarios
+                          de dicha pileta
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            data-bs-dismiss="modal"
+                            onClick={() => {
+                              reinicarPileta(pileta.pileta);
+                            }}
+                          >
+                            Reiniciar
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </div>
   );
 }
-
 export default Inicio;

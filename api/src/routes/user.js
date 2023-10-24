@@ -19,6 +19,7 @@ import { suspenderUsuario } from "../controllers/users/suspenderUsuario.js";
 import { cambiarRole } from "../controllers/users/cambiarRole.js";
 
 import { searchUserByname } from "../controllers/users/searchUserByName.js";
+import { getAllUsersForHour } from "../controllers/users/getAllUserForHour.js";
 
 const router = Router();
 
@@ -26,6 +27,7 @@ router.get("/infoUser/:token", getUser);
 router.get("/getAllUser", getAllUserForHability);
 
 router.get("/getAllUsers", getAllUsers);
+router.get("/getAllUsers/:hour", getAllUsersForHour);
 
 //busqueda por nombre por
 

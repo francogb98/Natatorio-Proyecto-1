@@ -14,7 +14,6 @@ function FormularioInicioDia({ data, setInicioHorario, setUsersRegistered }) {
           status: true,
           date: args.date,
           hourStart: args.hourStart,
-          hourFinish: args.hourFinish,
         });
       }
     },
@@ -29,7 +28,7 @@ function FormularioInicioDia({ data, setInicioHorario, setUsersRegistered }) {
   const [args, setArgs] = useState({
     date: "",
     hourStart: "",
-    hourFinish: "",
+
     idUser: "",
   });
 
@@ -38,7 +37,6 @@ function FormularioInicioDia({ data, setInicioHorario, setUsersRegistered }) {
     setArgs({
       ...args,
       hourStart: selectedValue.hourStart,
-      hourFinish: selectedValue.hourFinish,
     });
   };
   const handleSubmit = (e) => {
@@ -72,7 +70,7 @@ function FormularioInicioDia({ data, setInicioHorario, setUsersRegistered }) {
         </div>
         <div className="mb-2">
           <label htmlFor="dni" className={`form-label  mt-2 fw-bold`}>
-            Horario
+            Horario Ingreso
           </label>
           <select
             className="form-select"
@@ -85,11 +83,10 @@ function FormularioInicioDia({ data, setInicioHorario, setUsersRegistered }) {
               <option
                 value={JSON.stringify({
                   hourStart: hour.hourStart,
-                  hourFinish: hour.hourFinish,
                 })}
                 key={i}
               >
-                {hour.hourStart} - {hour.hourFinish}
+                {hour.hourStart}
               </option>
             ))}
           </select>
@@ -107,10 +104,7 @@ function FormularioInicioDia({ data, setInicioHorario, setUsersRegistered }) {
         <button
           className="btn btn-lg btn-danger"
           disabled={
-            getActivities.isLoading ||
-            args.date == "" ||
-            args.hourStart == "" ||
-            args.hourFinish == ""
+            getActivities.isLoading || args.date == "" || args.hourStart == ""
           }
         >
           Comenzar

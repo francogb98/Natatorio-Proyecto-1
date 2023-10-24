@@ -49,6 +49,7 @@ export const fetchConTokenHours = async ({
 
   if (method === "GET") {
     const resp = await fetch(url);
+
     return await resp.json();
   } else {
     const resp = await fetch(url, {
@@ -59,6 +60,7 @@ export const fetchConTokenHours = async ({
       },
       body: JSON.stringify(data),
     });
+
     return await resp.json();
   }
 };

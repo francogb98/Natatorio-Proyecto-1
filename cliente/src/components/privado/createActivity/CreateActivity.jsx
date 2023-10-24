@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "react-query";
 import Swal from "sweetalert2";
 
 import { fetchHours, postActivity } from "../../../helpers/createActivity";
+import Modal from "./Modal";
 
 function CreateActivity() {
   const [args, setArgs] = useState({
@@ -12,7 +13,10 @@ function CreateActivity() {
     hourFinish: "",
     pileta: "",
     cupos: "",
+    actividadEspecial: false,
   });
+
+  const [isSpecialActivity, setIsSpecialActivity] = useState(false);
 
   // traemos los horarios disponibles
   const { data, isSuccess, isLoading } = useQuery({
@@ -43,9 +47,15 @@ function CreateActivity() {
         //volver los valores de los select a default
         document.getElementById("name").value = "";
         document.getElementById("cupos").value = "";
-        document.getElementById("hours").selectedIndex = 0;
         document.getElementById("date").selectedIndex = 0;
         document.getElementById("pileta").selectedIndex = 0;
+        if (!isSpecialActivity) {
+          document.getElementById("hours").selectedIndex = 0;
+        } else {
+          document.getElementById("hourStart").value = "";
+          document.getElementById("hourFinish").value = "";
+        }
+        document.getElementById("isSpecial").checked = false;
         Swal.fire({
           icon: "success",
           title: "Actividad creada",
@@ -71,10 +81,19 @@ function CreateActivity() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    createActivity.mutate(args);
   };
 
   if (isLoading) return <h1>Cargando...</h1>;
+
+  data.data.hours.sort((a, b) => {
+    if (a.hourStart < b.hourStart) {
+      return -1;
+    }
+    if (a.hourStart > b.hourStart) {
+      return 1;
+    }
+    return 0;
+  });
 
   return (
     <div
@@ -113,6 +132,20 @@ function CreateActivity() {
             placeholder="pileta libre, escuela de natacion..."
           />
         </div>
+
+        <div className="mb-2">
+          <label htmlFor="isSpecial">Actividad Especial</label>
+          <input
+            type="checkbox"
+            id="isSpecial"
+            name="isSpecial"
+            onChange={(e) => {
+              setIsSpecialActivity(e.target.checked);
+              setArgs({ ...args, actividadEspecial: e.target.checked });
+            }}
+          />
+        </div>
+
         <div className="mb-2">
           <label htmlFor="cupos">Cupos</label>
           <input
@@ -125,30 +158,59 @@ function CreateActivity() {
             }}
           />
         </div>
-        <div className="mb-2">
-          <label htmlFor="dni" className={`form-label  mt-2`}>
-            Horario
-          </label>
-          <select
-            className="form-select"
-            name="hours"
-            id="hours"
-            onChange={handleChange}
-          >
-            <option value="null">--Horario--</option>
-            {data.data.hours.map((hour, i) => (
-              <option
-                value={JSON.stringify({
-                  hourStart: hour.hourStart,
-                  hourFinish: hour.hourFinish,
-                })}
-                key={i}
-              >
-                {hour.hourStart} - {hour.hourFinish}
-              </option>
-            ))}
-          </select>
-        </div>
+
+        {/* horario */}
+        {!isSpecialActivity ? (
+          <div className="mb-2">
+            <label htmlFor="dni" className={`form-label  mt-2`}>
+              Horario
+            </label>
+            <select
+              className="form-select"
+              name="hours"
+              id="hours"
+              onChange={handleChange}
+            >
+              <option value="null">--Horario--</option>
+              {data.data.hours.map((hour, i) => (
+                <option
+                  value={JSON.stringify({
+                    hourStart: hour.hourStart,
+                    hourFinish: hour.hourFinish,
+                  })}
+                  key={i}
+                >
+                  {hour.hourStart} - {hour.hourFinish}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <div className="mb-2">
+            <label htmlFor="hourStart">Horario Ingreso</label>
+            <input
+              type="text"
+              id="hourStart"
+              name="hourStart"
+              className="form-control"
+              onChange={(e) => {
+                setArgs({ ...args, hourStart: e.target.value });
+              }}
+              placeholder="8:00"
+            />
+            <label htmlFor="hourFinish">Horario Salida</label>
+            <input
+              type="text"
+              id="hourFinish"
+              name="hourFinish"
+              className="form-control"
+              onChange={(e) => {
+                setArgs({ ...args, hourFinish: e.target.value });
+              }}
+              placeholder="10:00"
+            />
+          </div>
+        )}
 
         <div className="mb-2">
           <label htmlFor="dni" className={`form-label  mt-2`}>
@@ -220,11 +282,14 @@ function CreateActivity() {
           type="submit"
           value="Iniciar Sesion"
           className="mt-2 btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#modalCreateActivity"
         >
           {" "}
           Crear Actividad
         </button>
       </form>
+      <Modal args={args} createActivity={createActivity} />
     </div>
   );
 }

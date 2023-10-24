@@ -3,7 +3,6 @@ import React from "react";
 function TablaUsuarios({ pileta25, pileta50, getUserById }) {
   return (
     <div style={{ paddingTop: "30px", paddingBottom: "30px" }}>
-      <h1>Usuarios en pileta</h1>
       <div
         style={{
           display: "flex",
@@ -13,7 +12,7 @@ function TablaUsuarios({ pileta25, pileta50, getUserById }) {
         }}
       >
         <div>
-          <h3>pileta25</h3>
+          <h3>Pileta25</h3>
           <h4>
             Total: <span style={{ color: "red" }}>{pileta25.length}</span>
           </h4>
@@ -24,6 +23,7 @@ function TablaUsuarios({ pileta25, pileta50, getUserById }) {
                   <th>Id</th>
                   <th>Usuario</th>
                   <th>Actividad</th>
+                  <th>Horario</th>
                 </tr>
               </thead>
               <tbody>
@@ -42,6 +42,10 @@ function TablaUsuarios({ pileta25, pileta50, getUserById }) {
                         </a>
                       </td>
                       <td>{user.activity[0].name}</td>
+                      <td>
+                        {user.activity[0].hourStart} -{" "}
+                        {user.activity[0].hourFinish}
+                      </td>
                     </tr>
                   ))}
               </tbody>
@@ -49,7 +53,7 @@ function TablaUsuarios({ pileta25, pileta50, getUserById }) {
           </div>
         </div>
         <div>
-          <h3>pileta50</h3>
+          <h3>Pileta50</h3>
           <h4>
             Total: <span style={{ color: "red" }}>{pileta50.length}</span>
           </h4>
@@ -60,6 +64,7 @@ function TablaUsuarios({ pileta25, pileta50, getUserById }) {
                   <th>Id</th>
                   <th>Usuario</th>
                   <th>Actividad</th>
+                  <th>Horario</th>
                 </tr>
               </thead>
               <tbody>
@@ -85,6 +90,10 @@ function TablaUsuarios({ pileta25, pileta50, getUserById }) {
                           </a>
                         </td>
                         <td>{user.activity[0].name}</td>
+                        <td>
+                          {user.activity[0].hourStart} -{" "}
+                          {user.activity[0].hourFinish}
+                        </td>
                       </tr>
                     ))}
               </tbody>

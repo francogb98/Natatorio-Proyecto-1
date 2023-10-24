@@ -166,7 +166,7 @@ function ListActivity() {
           <tbody>
             {filteredActivities.length === 0 && (
               <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
+                <td colSpan="7" style={{ textAlign: "center" }}>
                   No hay actividades
                 </td>
               </tr>

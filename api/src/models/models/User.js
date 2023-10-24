@@ -76,10 +76,10 @@ const schema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  //quiero que asistencia sea un array de strings
   asistencia: {
-    type: String,
-    required: true,
-    minlength: 3,
+    type: Array,
+    required: false,
   },
   // qr: {
   //   type: String,

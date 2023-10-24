@@ -1,4 +1,8 @@
-import { addUser } from "../../controllers/pileta/addUserFromPileta.js";
+import {
+  addUser,
+  addUserNextTurn,
+  cambioDeTurno,
+} from "../../controllers/pileta/addUserFromPileta.js";
 import { finalizar } from "../../controllers/pileta/finalizarTurno.js";
 
 export const Socket = (io) => {
@@ -9,9 +13,8 @@ export const Socket = (io) => {
       console.log("User disconnected");
     });
 
-    socket.on("agregar-usuario", async ({ args }) => {
-      const result = await addUser({ user: args });
-
+    socket.on("agregar-usuario", async (args) => {
+      const result = await addUser(args);
       //si el resultado es un error lo enviamos al cliente pero solo al cliente que lo envio quiero que lo escuche solo el
 
       if (!result.ok) {
@@ -20,6 +23,21 @@ export const Socket = (io) => {
         //si no es un error enviamos el resultado a todos los clientes conectados
         io.emit("lista-usuarios", result);
       }
+    });
+    socket.on("agregar-usuario-turno-siguiente", async (args) => {
+      const result = await addUserNextTurn(args);
+      if (!result.ok) {
+        socket.emit("lista-usuarios-siguient-turno", result);
+      } else {
+        //si no es un error enviamos el resultado a todos los clientes conectados
+        io.emit("lista-usuarios-siguient-turno", result);
+      }
+    });
+
+    socket.on("cambiar-turno", async (args) => {
+      const result = await cambioDeTurno(args);
+
+      io.emit("cambiar-turno", result);
     });
 
     socket.on("finalizar-turno", async () => {

@@ -67,6 +67,18 @@ function Inscripcion() {
   }
 
   if (getActivity.isSuccess && getHours.isSuccess) {
+    // quiero que getHours.data.data.hours se ordene de menor a mayor
+
+    getHours.data.data.hours.sort((a, b) => {
+      if (a.hourStart < b.hourStart) {
+        return -1;
+      }
+      if (a.hourStart > b.hourStart) {
+        return 1;
+      }
+      return 0;
+    });
+
     return (
       <div className={style.container}>
         <ol

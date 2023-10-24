@@ -3,13 +3,14 @@ import Day from "../../models/models/Days.js";
 import Horarios from "../../models/models/Horarios.js";
 
 export const createActivity = async (req, res) => {
-  let { name, pileta, hourStart, hourFinish, date, cupos } = req.body;
+  let { name, pileta, hourStart, hourFinish, date, cupos, actividadEspecial } =
+    req.body;
 
   try {
     if (!name || !pileta || !hourStart || !hourFinish || !date) {
       return res.status(400).json({
         status: "error",
-        message: "missing data",
+        message: "Faltan datos por Completar",
       });
     }
 
@@ -39,13 +40,23 @@ export const createActivity = async (req, res) => {
     }
 
     let hour = await Horarios.findOne({ hourStart, hourFinish });
-
+    if (actividadEspecial) {
+      hour = true;
+    }
     if (!hour) {
       //si  no existe devolvemos un error
       return res.status(400).json({
         status: "error",
         message: "el horario ingresado no es correcto",
       });
+    }
+
+    //si hour start o hour finish tienen este formato 8:00 lo convertimos en 08:00, osea que si antes de los dos puntos hay un solo numero le agregamos un 0
+    if (hourStart.length === 4) {
+      hourStart = `0${hourStart}`;
+    }
+    if (hourFinish.length === 4) {
+      hourFinish = `0${hourFinish}`;
     }
 
     //verificamos que el cupo sea un numero
@@ -87,13 +98,14 @@ export const createActivity = async (req, res) => {
       date,
       cupos,
       userRegister: 0,
+      actividadEspecial: actividadEspecial ? true : false,
     });
 
     activity.save();
 
     res.status(200).json({
       status: "success",
-      message: "activity created",
+      message: "Actividad creada con exito",
     });
   } catch (error) {
     res.status(500).json({
