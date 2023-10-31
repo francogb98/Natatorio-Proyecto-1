@@ -102,11 +102,12 @@ function SignIn() {
         <img src={Logo} alt="" style={{ width: "160px" }} />
         <h1>Inicio De Sesion</h1>
         <form action="" className={`form-group `} onSubmit={handleSubmit}>
-          <div className="mb-2">
+          <div className={`mb-2 ${style.input_body}`}>
             <label htmlFor="Dni">Dni</label>
             <input type="text" name="dni" className="form-control" />
           </div>
-          <div className="mb-2">
+
+          <div className={`mb-2 ${style.input_body}`}>
             <label htmlFor="password">Contraseña</label>
             <div className="d-flex">
               <input
