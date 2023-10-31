@@ -136,7 +136,7 @@ function Perfil() {
               setShowCard(true);
             }}
           >
-            <i className="bi bi-pencil-fill me-2"></i>Estado
+            <i class="bi bi-person me-2"></i>Estado
           </button>
           <button
             className="btn btn-success"
@@ -164,7 +164,7 @@ function Perfil() {
       <div className={style.seccionBody}>
         {!showCard && (
           <div className={style.card_section}>
-            <CardPerfil user={user} />
+            <CardPerfil user={user} handleViewFicha={handleViewFicha} />
           </div>
         )}
         {/* //input de prueba para leer un archivo pdf y cargarlo en la bdd */}
@@ -182,8 +182,10 @@ function Perfil() {
             </a>
           </div> */}
 
+        {showCard ? (
+          <CardPerfil user={user} handleViewFicha={handleViewFicha} />
+        ) : null}
         {editarPerfil ? <EditarPerfil usuario={user} /> : null}
-        {showCard ? <CardPerfil user={user} /> : null}
 
         {cargarArchivos ? <CargarArchivos usuario={user} /> : null}
       </div>
