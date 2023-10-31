@@ -8,7 +8,7 @@ export const addUserFromActivity = async (req, res) => {
       _id: req.user.id,
     });
     //verificamos si el usuario ya esta registrado en la actividad
-    if (user.activity.length) {
+    if (user.activity) {
       return res.status(400).json({
         status: "error",
         message: "El usuario ya se encuentra inscripto en una actividad",
@@ -46,7 +46,8 @@ export const addUserFromActivity = async (req, res) => {
       { _id: user._id },
 
       //el status es un boolean no un array de objetos
-      { $push: { activity: activityUpdate._id }, $set: { status: false } },
+      { activity: activityUpdate._id },
+      { $set: { status: false } },
 
       { new: true }
     );

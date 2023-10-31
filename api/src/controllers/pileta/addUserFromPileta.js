@@ -2,6 +2,8 @@ import User from "../../models/models/User.js";
 import Pileta from "../../models/models/Pileta.js";
 import Activity from "../../models/models/Actividades.js";
 
+import { actualizarEstadisticas } from "../stadistics/actualizarEstadisticas.js";
+
 const updateStadistics = async ({ user, dateNowSave }) => {
   try {
     //busco si existe un campo con el id de stadistics en la bdd
@@ -101,9 +103,9 @@ export const addUser = async (args) => {
       },
     });
 
-    if (!piletaExist) {
-      return { ok: false, msg: "El usuario ya esta en la lista" };
-    }
+    // if (!piletaExist) {
+    //   return { ok: false, msg: "El usuario ya esta en la lista" };
+    // }
 
     const dateNow = new Date();
     const day = dateNow.getDate();
@@ -116,6 +118,25 @@ export const addUser = async (args) => {
     user.asistencia.push(dateNowSave);
     await user.save();
 
+    //-----------------ACTUALIZO LAS ESTADISTICAS-------------
+    //necesito acceder al mes en espyearl
+    const monthSpanish = dateNow.toLocaleString("es-ES", { month: "long" });
+    //acceder al year con los 4 digitos
+    const yearSpanish = dateNow.toLocaleString("es-ES", { year: "numeric" });
+
+    const resp = await actualizarEstadisticas({
+      activity: user.activity[0]._id,
+      mes: monthSpanish,
+      year: yearSpanish,
+    });
+
+    if (!resp.ok) {
+      return { ok: false, msg: "Error al actualizar las estadisticas" };
+    }
+    console.log(resp.stadistics);
+
+    //----------------------------------------------------------
+
     return { ok: true, piletaExist, user };
   } catch (error) {
     console.log(error.message);
@@ -124,14 +145,14 @@ export const addUser = async (args) => {
 };
 
 export const addUserNextTurn = async (args) => {
-  const { id, horaSiguienteTurno, dia } = args;
+  let { id, horaSiguienteTurno, dia } = args;
   try {
     if (horaSiguienteTurno.length < 5) {
       horaSiguienteTurno = `0${horaSiguienteTurno}`;
     }
     //busco al usuario
 
-    const user = await User.findOne({ customId: id }).populate({
+    let user = await User.findOne({ customId: id }).populate({
       path: "activity",
     });
 
@@ -184,6 +205,24 @@ export const addUserNextTurn = async (args) => {
     user.asistencia.push(dateNowSave);
     await user.save();
 
+    //-----------------ACTUALIZO LAS ESTADISTICAS-------------
+    //necesito acceder al mes en espyearl
+    const monthSpanish = dateNow.toLocaleString("es-ES", { month: "long" });
+    //acceder al year con los 4 digitos
+    const yearSpanish = dateNow.toLocaleString("es-ES", { year: "numeric" });
+
+    const resp = await actualizarEstadisticas({
+      activity: user.activity[0]._id,
+      mes: monthSpanish,
+      year: yearSpanish,
+    });
+
+    if (!resp.ok) {
+      return { ok: false, msg: "Error al actualizar las estadisticas" };
+    }
+
+    //----------------------------------------------------------
+
     return { ok: true, piletaExist };
   } catch (error) {
     console.log(error.message);
@@ -228,6 +267,14 @@ export const cambioDeTurno = async (args) => {
     const users50 = data50.users.filter((user) => {
       return user.activity[0].hourFinish == horaActual;
     });
+
+    const date = new Date();
+    const day = date.toLocaleDateString("es-AR", { weekday: "long" });
+    const hour = date.getHours();
+
+    //hago que l apirmera letra del dia sea en mayuscula
+    const dayCapitalized = day.charAt(0).toUpperCase() + day.slice(1);
+
     //eliminar de su respectiva pileta los usuarios filtrados
     for (const user of users25) {
       const updatedPileta = await Pileta.findOneAndUpdate(
@@ -237,6 +284,11 @@ export const cambioDeTurno = async (args) => {
         {
           $pull: {
             users: user._id,
+          },
+          //ademas actualizo el cmapo de hora y dia
+          $set: {
+            dia: dayCapitalized,
+            hora: hour,
           },
         },
         {
@@ -253,6 +305,11 @@ export const cambioDeTurno = async (args) => {
           $pull: {
             users: user._id,
           },
+          //ademas actualizo el cmapo de hora y dia
+          $set: {
+            dia: dayCapitalized,
+            hora: hour,
+          },
         },
         {
           new: true,
@@ -266,7 +323,7 @@ export const cambioDeTurno = async (args) => {
       const updatedPileta = await Pileta.findOneAndUpdate(
         {
           pileta: user.activity[0].pileta,
-          // users: { $ne: user._id }, // Asegura que el usuario no esté en la lista ya
+          users: { $ne: user._id }, // Asegura que el usuario no esté en la lista ya
         },
         {
           $push: {
@@ -287,12 +344,16 @@ export const cambioDeTurno = async (args) => {
       {
         $set: {
           users: [],
+          dia: dayCapitalized,
+          hora: hour,
         },
       },
       {
         new: true,
       }
     );
+
+    console.log("llegueaqui", updatedPileta);
 
     return { ok: true, msg: "Cambio de turno realizado con exito!" };
   } catch (error) {

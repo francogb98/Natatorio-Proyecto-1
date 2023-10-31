@@ -1,7 +1,7 @@
 import React from "react";
 import { barriosLaBanda, barrios, ciudades } from "./dataBarrios";
 
-function Barrio() {
+function Barrio({ setUsuario, usuario }) {
   const [ciudad, setCiudad] = React.useState("");
   const [barrio, setBarrio] = React.useState("");
 
@@ -12,10 +12,13 @@ function Barrio() {
       </label>
       <select
         className={`form-select `}
-        value={ciudad}
         name="ciudad"
         id="ciudad"
-        onChange={(e) => setCiudad(e.target.value)}
+        onChange={(e) => {
+          setCiudad(e.target.value);
+          setUsuario({ ...usuario, ciudad: e.target.value });
+        }}
+        defaultValue={usuario.ciudad}
       >
         <option value="null">--Ciudad--</option>
         {ciudades &&
@@ -25,20 +28,24 @@ function Barrio() {
             </option>
           ))}
       </select>
-      {ciudad === "Santiago del Estero" || ciudad === "La Banda" ? (
+      {usuario.ciudad === "Santiago del Estero" ||
+      usuario.ciudad === "La Banda" ? (
         <div key="barrio">
           <label htmlFor="barrio" className={`form-label  mt-2`}>
             Barrio
           </label>
           <select
             className="form-select"
-            value={barrio}
             name="barrio"
             id="barrio"
-            onChange={(e) => setBarrio(e.target.value)}
+            onChange={(e) => {
+              setBarrio(e.target.value);
+              setUsuario({ ...usuario, barrio: e.target.value });
+            }}
+            defaultValue={usuario.barrio}
           >
             <option value="null">--Barrio--</option>
-            {ciudad === "Santiago del Estero"
+            {usuario.ciudad === "Santiago del Estero"
               ? barrios.map((barrio, i) => (
                   <option key={i} value={barrio}>
                     {barrio}

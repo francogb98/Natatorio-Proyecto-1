@@ -9,11 +9,14 @@ import { baseUrl } from "../../../helpers/url";
 import getAllPiletas from "../../../helpers/piletasFetch";
 import { getUser } from "../../../helpers/getUsers";
 import User from "../UserInfo/User";
+import useDiaYHoraActual from "../Inicio/UseDay";
 
 function Piletas() {
   const { socket, online, conectarSocket, desconectarSocket } =
     useSocket(baseUrl);
   const { auth } = useContext(AuthContext);
+
+  const { data, isRefetching, refetch } = useDiaYHoraActual();
 
   const getUserById = useMutation({
     mutationFn: getUser,
@@ -26,29 +29,7 @@ function Piletas() {
     },
   });
 
-  const [pileta25, setPileta25] = useState([]);
-  const [pileta50, setPileta50] = useState([]);
   const [finalizando, setFinalizando] = useState(false);
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["piletas"],
-    queryFn: getAllPiletas,
-  });
-
-  useEffect(() => {
-    if (!isLoading && data.piletas.length) {
-      if (data.piletas[0] && data.piletas[0].users.length > 0) {
-        data.piletas[0].pileta === "pileta 50"
-          ? setPileta50(data.piletas[0].users)
-          : setPileta25(data.piletas[0].users);
-      }
-      if (data.piletas[1] && data.piletas[1].users.length > 0) {
-        data.piletas[1].pileta === "pileta 50"
-          ? setPileta50(data.piletas[1].users)
-          : setPileta25(data.piletas[1].users);
-      }
-    }
-  }, [data, isLoading]);
 
   useEffect(() => {
     if (auth.logged) {
@@ -58,46 +39,76 @@ function Piletas() {
 
   useEffect(() => {
     // Escuchar el evento "lista-usuarios" y actualizar el estado users
-
     const handleUserListUpdate = (updatedUsers) => {
-      //   setPileta50(updatedUsers.pileta50);
-      //   setPileta25(updatedUsers.pileta25);
-
+      setLoading(false);
+      console.log(updatedUsers);
       if (!updatedUsers.ok) {
-        return;
+        setError({
+          error: true,
+          msg: updatedUsers.msg,
+          nombre: updatedUsers.user ? updatedUsers.user.nombre : "null",
+        });
+        setTimeout(() => {
+          setError({
+            error: false,
+            msg: "",
+            nombre: "",
+          });
+        }, 2000);
       } else {
-        if (updatedUsers.result.pileta === "pileta 50") {
-          setPileta50(updatedUsers.result.users);
-        }
-        if (updatedUsers.result.pileta === "pileta 25") {
-          setPileta25(updatedUsers.result.users);
-        }
+        // quiero reiniciar el campo de nombre id con javascript
+        refetch();
+        setSuccess({
+          success: true,
+          msg: `Usuario registrado en ${updatedUsers.user.activity[0].pileta} correctamente`,
+        });
+        setError({
+          error: false,
+          msg: "",
+          nombre: "",
+        });
       }
     };
 
-    const handleDeleteUsers = () => {
-      setFinalizando(true);
-
-      setTimeout(() => {
-        setFinalizando(false);
-        setPileta50([]);
-        setPileta25([]);
-      }, 3000);
+    const handleCambiarTurno = (resp) => {
+      if (resp.ok) {
+        refetch();
+      } else {
+        setError({
+          error: true,
+          msg: resp.msg,
+        });
+        setTimeout(() => {
+          setError({
+            error: false,
+            msg: "",
+            nombre: "",
+          });
+        }, 2000);
+      }
     };
 
     if (socket) {
       socket.on("lista-usuarios", handleUserListUpdate);
     }
     if (socket) {
-      socket.on("finalizar-turno", handleDeleteUsers);
+      socket.on("lista-usuarios-siguient-turno", handleUserListUpdate);
     }
-
-    return () => {
+    if (socket) {
       if (socket) {
-        socket.off("lista-usuarios", handleUserListUpdate);
-        socket.off("finalizar-turno", handleDeleteUsers);
+        socket.on("cambiar-turno", handleCambiarTurno);
       }
-    };
+      // if (socket) {
+      //   socket.on("finalizar-turno", handleDeleteUsers);
+      // }
+
+      return () => {
+        if (socket) {
+          socket.off("lista-usuarios", handleUserListUpdate);
+          // socket.off("finalizar-turno", handleDeleteUsers);
+        }
+      };
+    }
   }, [socket]);
 
   if (getUserById.isLoading || getUserById.isSuccess) {
@@ -114,17 +125,29 @@ function Piletas() {
         alignItems: "center",
       }}
     >
-      {finalizando && (
-        <div className="alert alert-danger">
-          <h1>Finalizando turno...</h1>
-        </div>
-      )}
-
-      <TablaUsuarios
-        pileta25={pileta25}
-        pileta50={pileta50}
-        getUserById={getUserById}
-      />
+      {data?.piletas.map((pileta, i) => {
+        // creo un componenete que se llame piletas al cual le voy a pasar, nombre de pileta y usuarios
+        return (
+          <div style={{ minWidth: "450px" }}>
+            <div>
+              <h3>{pileta.pileta}</h3>
+              <button
+                onClick={() => {
+                  reinicarPileta(pileta.pileta);
+                }}
+              >
+                reiniciar
+              </button>
+            </div>
+            <Piletas
+              key={i}
+              pileta={pileta.pileta}
+              users={pileta.users}
+              refetch={refetch}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }

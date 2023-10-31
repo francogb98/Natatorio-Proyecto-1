@@ -206,16 +206,43 @@ function Inicio() {
           >
             <h1>Inicio</h1>
             <h4>{diaActualEnEspanol}</h4>
+            <button onClick={handleEnd}>cambiarTurno</button>
             <h4>
               Turno Actual {parseFloat(horaActual)}:00 -{" "}
               {parseFloat(horaActual) + 1}:00
             </h4>
             {loading && <h1>Cargando...</h1>}
             {!loading && error.error && (
-              <h3 className="text-danger">{error.msg}</h3>
+              <h3
+                className="alert alert-danger"
+                role="alert"
+                style={{
+                  position: "absolute",
+                  bottom: "0",
+                  right: "0",
+                  marginRight: "20px",
+                  width: "fit-content",
+                  textAlign: "center",
+                }}
+              >
+                {error.msg}
+              </h3>
             )}
             {!loading && success.success && (
-              <h3 className="text-success">{success.msg}</h3>
+              <h4
+                className="alert alert-success "
+                role="alert"
+                style={{
+                  position: "absolute",
+                  bottom: "0",
+                  right: "0",
+                  marginRight: "20px",
+                  width: "fit-content",
+                  textAlign: "center",
+                }}
+              >
+                {success.msg}
+              </h4>
             )}
 
             <FormularioPrueba registrarUsuario={registrarUsuario} />
@@ -236,82 +263,22 @@ function Inicio() {
               // creo un componenete que se llame piletas al cual le voy a pasar, nombre de pileta y usuarios
               return (
                 <div style={{ minWidth: "450px" }}>
-                  <header
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div>
-                      <h3>{pileta.pileta}</h3>
-                      <h5>Total Usuarios:{pileta.users.length}</h5>
-                    </div>
+                  <div>
+                    <h3>{pileta.pileta}</h3>
                     <button
-                      className="btn btn-danger"
-                      data-bs-toggle="modal"
-                      data-bs-target="#exampleModal"
+                      onClick={() => {
+                        reinicarPileta(pileta.pileta);
+                      }}
                     >
-                      Reiniciar
+                      reiniciar
                     </button>
-                  </header>
+                  </div>
                   <Piletas
                     key={i}
                     pileta={pileta.pileta}
                     users={pileta.users}
                     refetch={refetch}
                   />
-
-                  {/* <!-- Modal --> */}
-                  <div
-                    className="modal fade"
-                    id="exampleModal"
-                    tabindex="-1"
-                    aria-labelledby="exampleModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h1
-                            className="modal-title fs-5"
-                            id="exampleModalLabel"
-                          >
-                            Seguro que desea reiniciar la {pileta.pileta}?
-                          </h1>
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          ></button>
-                        </div>
-                        <div className="modal-body">
-                          Una vez de click en reiniciar se borraran los usuarios
-                          de dicha pileta
-                        </div>
-                        <div className="modal-footer">
-                          <button
-                            type="button"
-                            className="btn btn-primary"
-                            data-bs-dismiss="modal"
-                            onClick={() => {
-                              reinicarPileta(pileta.pileta);
-                            }}
-                          >
-                            Reiniciar
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                          >
-                            Close
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               );
             })}

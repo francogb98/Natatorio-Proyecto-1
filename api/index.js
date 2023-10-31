@@ -13,6 +13,7 @@ dotenv.config();
 import "./src/db.js";
 import routerHours from "./src/routes/hours.js";
 import { Socket } from "./src/models/models/Socket.js";
+import routerStadistics from "./src/routes/stadistics.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -31,6 +32,7 @@ app.use("/user", router);
 app.use("/activity", routerActivity);
 app.use("/hour", routerHours);
 app.use("/pileta", routerPileta);
+app.use("/stadistics", routerStadistics);
 
 Socket(io);
 

@@ -14,6 +14,8 @@ import Logo from "./Logo.jpg";
 function SignIn() {
   const { dispatch } = useContext(AuthContext);
 
+  const [viewPass, setViewPass] = React.useState(false);
+
   const navigate = useNavigate();
   const login = useMutation({
     mutationFn: fetchSinToken,
@@ -102,21 +104,30 @@ function SignIn() {
         <form action="" className={`form-group `} onSubmit={handleSubmit}>
           <div className="mb-2">
             <label htmlFor="Dni">Dni</label>
-            <input
-              type="text"
-              name="dni"
-              className="form-control"
-              placeholder="Enter Dni"
-            />
+            <input type="text" name="dni" className="form-control" />
           </div>
           <div className="mb-2">
             <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              name="password"
-              className="form-control"
-              placeholder="Enter Password"
-            />
+            <div className="d-flex">
+              <input
+                type={viewPass ? "text" : "password"}
+                name="password"
+                className="form-control"
+              />
+              {!viewPass ? (
+                <i
+                  className="bi bi-eye ms-1"
+                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  onClick={() => setViewPass(!viewPass)}
+                ></i>
+              ) : (
+                <i
+                  class="bi bi-eye-slash ms-1"
+                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  onClick={() => setViewPass(!viewPass)}
+                ></i>
+              )}
+            </div>
           </div>
 
           <button type="submit" value="Iniciar Sesion" className="mt-2">

@@ -5,10 +5,15 @@ const schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  date: {
+  mes: {
     type: String,
     required: true,
   },
+  year: {
+    type: String,
+    required: true,
+  },
+  activity: { type: mongoose.Schema.Types.ObjectId, ref: "Activity" },
 });
 
 export default mongoose.model("Stadistics", schema);

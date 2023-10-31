@@ -95,8 +95,13 @@ const createUser = async (req, res) => {
       emailVerified: false,
       asistencia: false,
       role: "registrado",
-      qr: null,
       emailVerificationToken: verificationToken,
+      natacionAdaptada: args.natacionAdaptada,
+      cud: null,
+      activity: null,
+      certificadoHongos: null,
+      fechaCargaCertificadoHongos: null,
+      barrio: args.barrio ? args.barrio : null,
     });
     await user.save();
 

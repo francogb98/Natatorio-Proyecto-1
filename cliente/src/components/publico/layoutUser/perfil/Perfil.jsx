@@ -1,17 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../../context/AuthContext";
 import { useMutation, useQuery } from "react-query";
 import { baseUrl } from "../../../../helpers/url";
 
 import style from "./style.module.css";
 
-import ficaMedica from "./fichaMedica.pdf";
-
 //traigo la imagen de helpers
 import avatar from "../../../../helpers/avatar.webp";
-import InsertarFoto from "../../registro/Foto";
 import Swal from "sweetalert2";
 import { getInfoUser } from "../../../../helpers/fetch";
+import EditarPerfil from "./EditarPerfil";
+import CargarArchivos from "./CargarArchivos";
+import CardPerfil from "./CardPerfil";
 
 const postFicha = async (data) => {
   const response = await fetch(baseUrl + "user/cargaFicha", {
@@ -43,6 +42,10 @@ function Perfil() {
   const [showFicha, setShowFicha] = useState(false);
   const [fichaMedica, setFicha] = useState("");
 
+  const [editarPerfil, setEditarPerfil] = useState(false);
+  const [cargarArchivos, setCargarArchivos] = useState(false);
+  const [showCard, setShowCard] = useState(true);
+
   const handleViewFicha = ({ img }) => {
     setShowFicha(true);
     setFicha(img);
@@ -72,227 +75,167 @@ function Perfil() {
     ficha.mutate({ fichaMedica: imageUrl, id: getUser.data.user._id });
   };
 
-  if (getUser.isSuccess) {
-    if (!getUser.data) {
-      return (
-        <>
-          <h1>Usuario no encontrado </h1>
-          <button
-            onClick={() => {
-              getUser.refetch();
-            }}
-          >
-            Recargar
-          </button>
-        </>
-      );
-    }
-
-    const user = getUser.data.user;
-
+  if (!getUser.data) {
     return (
-      <div className={style.body}>
-        <div className={style.bodyPerfil}>
+      <>
+        <h1>Usuario no encontrado </h1>
+        <button
+          onClick={() => {
+            getUser.refetch();
+          }}
+          className="btn btn-primary"
+        >
+          Recargar
+        </button>
+      </>
+    );
+  }
+
+  const user = getUser.data.user;
+
+  console.log(user.activity);
+
+  return (
+    <div className={style.body}>
+      <div className={style.header}>
+        <div className={style.seccionFoto}>
           {user.foto && (
             <img src={user.foto == undefined ? avatar : user.foto} alt="" />
           )}
 
-          <h2>{user.nombre}</h2>
-          <h2>{user.email}</h2>
-
-          <p>
-            <span>DNI:</span>
-            {user.dni}
-          </p>
-          <h3 style={{ color: "blue" }}>
-            <span style={{ color: "red" }}>ID Usuario:</span>
-            {user.customId}
-          </h3>
-
-          {user.activity[0] == undefined ? (
-            <p>No estas inscripto a ninguna actividad</p>
-          ) : !user.status ? (
-            <p
-              className="alert alert-danger fw-bold"
-              style={{ width: "fit-content" }}
-            >
-              Esperando confirmacion de inscripcion
-            </p>
-          ) : (
-            <>
-              <p>
-                <span> Actividad:</span>
-                {user.activity[0].name}
-              </p>
-              <p>
-                <span>Horario Ingreso:</span>
-                {user.activity[0].hourStart}
-              </p>
-              <p>
-                <span>Horario Salida:</span>
-                {user.activity[0].hourFinish}
-              </p>
-              <p>
-                <span>Dias : </span>
-                {user.activity[0].date.join(" - ")}
-              </p>
-            </>
-          )}
           <div>
-            {user.fichaMedica == undefined ? (
-              <p>No has cargado tu ficha medica</p>
-            ) : (
-              <button
-                onClick={() =>
-                  handleViewFicha({
-                    img: user.fichaMedica,
-                  })
-                }
-              >
-                Ver ficha
-              </button>
+            <h2>
+              {user.nombre
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}{" "}
+              {user.apellido
+                .split(" ")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
+            </h2>
+
+            <h3 style={{ color: "blue" }}>
+              <span style={{ color: "red" }}>ID Usuario:</span>
+              {user.customId}
+            </h3>
+            {user.natacionAdaptada && (
+              <p style={{ color: "blue" }}>
+                <span style={{ color: "blue" }}>Natacion Adaptada</span>
+              </p>
             )}
           </div>
         </div>
 
-        <div className="accordion" id="accordionExample">
-          <div className="accordion-item" style={{ width: "400px" }}>
-            <h2 className="accordion-header">
-              <button
-                className="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                Cargar Ficha
-              </button>
-            </h2>
-            <div
-              id="collapseOne"
-              className="accordion-collapse collapse show"
-              data-bs-parent="#accordionExample"
+        <div className={style.button_group}>
+          <button
+            className={`btn btn-warning ${style.button_estado}`}
+            onClick={() => {
+              setEditarPerfil(false);
+              setCargarArchivos(false);
+              setShowCard(true);
+            }}
+          >
+            <i className="bi bi-pencil-fill me-2"></i>Estado
+          </button>
+          <button
+            className="btn btn-success"
+            onClick={() => {
+              setEditarPerfil(true);
+              setCargarArchivos(false);
+              setShowCard(false);
+            }}
+          >
+            <i className="bi bi-pencil-fill me-2"></i>Editar perfil
+          </button>
+          <button
+            className="btn btn-primary "
+            onClick={() => {
+              setEditarPerfil(false);
+              setCargarArchivos(true);
+              setShowCard(false);
+            }}
+          >
+            <i className="bi bi-file-earmark-arrow-up-fill"></i> Cargar Archivos
+          </button>
+        </div>
+      </div>
+
+      <div className={style.seccionBody}>
+        {!showCard && (
+          <div className={style.card_section}>
+            <CardPerfil user={user} />
+          </div>
+        )}
+        {/* //input de prueba para leer un archivo pdf y cargarlo en la bdd */}
+
+        {/* <div>
+            <h3>Cargar ficha medica</h3>
+            <p>
+              Si no tiene una ficha medica descargala en el siguiente enlace
+            </p>
+            <a
+              href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
+              download="fichaMedica.pdf"
             >
-              <div className="accordion-body">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
+              Descargar ficha médica
+            </a>
+          </div> */}
+
+        {editarPerfil ? <EditarPerfil usuario={user} /> : null}
+        {showCard ? <CardPerfil user={user} /> : null}
+
+        {cargarArchivos ? <CargarArchivos usuario={user} /> : null}
+      </div>
+
+      {showFicha ? (
+        <div
+          className="modal fade show"
+          id="exampleModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+          style={{ display: "block", paddingRight: "17px" }}
+        >
+          <div className="modal-dialog modal-lg">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5
+                  className="modal-title"
+                  id="exampleModalLabel"
+                  style={{ color: "black" }}
+                >
+                  Ficha Medica
+                </h5>
+                <button
+                  className="btn-close"
+                  onClick={() => {
+                    setShowFicha(false);
+                  }}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <img
+                  src={fichaMedica}
+                  alt="ficha medica"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+              <div className="modal-footer">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => {
+                    setShowFicha(false);
                   }}
                 >
-                  <div>
-                    <h3>Descagar Ficha</h3>
-                    <a
-                      href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
-                      download="fichaMedica.pdf"
-                    >
-                      <button className="btn btn-lg btn-info text-white fw-bold">
-                        Descargar ficha médica
-                      </button>
-                    </a>
-                    <p className="text-danger">
-                      {" "}
-                      Una vez descargada la ficha y completada, deberas sacar
-                      una foto nitida y subirla a continuacion.
-                    </p>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "10px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <h3 htmlFor="imagen">Cargar Ficha</h3>
-                    <InsertarFoto
-                      imageUrl={imageUrl}
-                      setImageUrl={setImageUrl}
-                    />
-                    {ficha.isLoading ? (
-                      <div className="text-center">
-                        <p className="text-primary">
-                          Puede tardar unos segundos
-                        </p>
-                        <div
-                          className="spinner-border"
-                          role="status"
-                          style={{ width: "3rem", height: "3rem" }}
-                        >
-                          <span className="visually-hidden">Loading...</span>
-                        </div>
-                      </div>
-                    ) : null}
-                    <button
-                      className="btn btn-success"
-                      disabled={imageUrl == null}
-                      onClick={cargarFicha}
-                    >
-                      Subir Ficha
-                    </button>
-                  </div>
-                </div>
+                  Close
+                </button>
               </div>
             </div>
           </div>
         </div>
-
-        {/* //input de prueba para leer un archivo pdf y cargarlo en la bdd */}
-
-        {showFicha ? (
-          <div
-            className="modal fade show"
-            id="exampleModal"
-            tabIndex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-            style={{ display: "block", paddingRight: "17px" }}
-          >
-            <div className="modal-dialog modal-lg">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5
-                    className="modal-title"
-                    id="exampleModalLabel"
-                    style={{ color: "black" }}
-                  >
-                    Ficha Medica
-                  </h5>
-                  <button
-                    className="btn-close"
-                    onClick={() => {
-                      setShowFicha(false);
-                    }}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <img
-                    src={fichaMedica}
-                    alt="ficha medica"
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                </div>
-                <div className="modal-footer">
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => {
-                      setShowFicha(false);
-                    }}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        ) : null}
-      </div>
-    );
-  } else {
-    return <h1>Cargando...</h1>;
-  }
+      ) : null}
+    </div>
+  );
 }
-
 export default Perfil;

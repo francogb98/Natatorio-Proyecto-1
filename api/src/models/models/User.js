@@ -11,6 +11,11 @@ const schema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
+  apellido: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
   telefono: {
     type: String,
     required: true,
@@ -28,6 +33,10 @@ const schema = new mongoose.Schema({
     maxlength: 2,
   },
   nombreTutor: {
+    type: String,
+    minlength: 3,
+  },
+  apellidoTutor: {
     type: String,
     minlength: 3,
   },
@@ -63,9 +72,14 @@ const schema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-  barrio: {
+  ciudad: {
     type: String,
     required: true,
+    minlength: 3,
+  },
+  barrio: {
+    type: String,
+
     minlength: 3,
   },
   activity: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activity" }],
@@ -81,9 +95,14 @@ const schema = new mongoose.Schema({
     type: Array,
     required: false,
   },
-  // qr: {
-  //   type: String,
-  // },
+  natacionAdaptada: {
+    type: Boolean,
+    required: false,
+  },
+  cud: {
+    type: String,
+    required: false,
+  },
   status: {
     type: Boolean,
     required: false,
@@ -94,6 +113,14 @@ const schema = new mongoose.Schema({
   },
 
   fichaMedica: {
+    type: String,
+    minlength: 3,
+  },
+  certificadoHongos: {
+    type: String,
+    minlength: 3,
+  },
+  fechaCargaCertificadoHongos: {
     type: String,
     minlength: 3,
   },

@@ -20,6 +20,7 @@ import { cambiarRole } from "../controllers/users/cambiarRole.js";
 
 import { searchUserByname } from "../controllers/users/searchUserByName.js";
 import { getAllUsersForHour } from "../controllers/users/getAllUserForHour.js";
+import editarUsuario from "../controllers/users/editarUsuario.js";
 
 const router = Router();
 
@@ -48,5 +49,7 @@ router.post("/suspenderUsuario", validarJWT, suspenderUsuario);
 router.post("/cambiarRole", validarJWT, cambiarRole);
 
 router.post("/resgisterActivity", validarJWT, addUserFromActivity);
+
+router.post("/editarUsuario", editarUsuario);
 
 export default router;

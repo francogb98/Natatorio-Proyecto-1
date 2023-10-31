@@ -2,7 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 
 import style from "./styles.module.css";
 
-import { fetchConToken, fetchConTokenHours } from "../../../../helpers/fetch";
+import {
+  fetchConToken,
+  fetchConTokenHours,
+  getInfoUser,
+} from "../../../../helpers/fetch";
 import { useMutation, useQuery } from "react-query";
 
 import isEqual from "lodash/isEqual";
@@ -10,6 +14,32 @@ import isEqual from "lodash/isEqual";
 import Swal from "sweetalert2";
 
 function Inscripcion() {
+  const getUser = useQuery({
+    queryKey: ["getUser"],
+    queryFn: getInfoUser,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        return data;
+      }
+    },
+  });
+
+  if (!getUser.data) {
+    return (
+      <>
+        <h1>Usuario no encontrado </h1>
+        <button
+          onClick={() => {
+            getUser.refetch();
+          }}
+          className="btn btn-primary"
+        >
+          Recargar
+        </button>
+      </>
+    );
+  }
+
   const registerInActivity = useMutation({
     mutationKey: "registerUser",
     mutationFn: fetchConToken,
@@ -144,117 +174,121 @@ function Inscripcion() {
             </div>
           </div>
         )}
-        <table className="table table-light table-striped-columns">
-          <thead>
-            <tr>
-              <th scope="col">Horario (ingreso/salida)</th>
-              <th scope="col">Actividad</th>
-            </tr>
-          </thead>
-          <tbody>
-            {getHours.data.data.hours.map((hour) => (
-              <tr key={hour._id}>
-                <td style={{ width: "10px" }}>
-                  {hour.hourStart} - {hour.hourFinish}
-                </td>
-                <td>
-                  {getActivity.data.data.activity.filter(
-                    (activity) => activity.hourStart === hour.hourStart
-                  ).length === 0 ? (
-                    <option defaultValue={null}>
-                      No hay actividades disponibles
-                    </option>
-                  ) : (
-                    <>
-                      {getActivity.data.data.activity
-                        .filter(
-                          (activity) => activity.hourStart === hour.hourStart
-                        )
-                        .map((activity, i) => (
-                          <div
-                            key={i}
-                            className={style.td__bg}
-                            style={
-                              activity.userRegister >= 50
-                                ? {
-                                    background: "rgb(250,0,0,0.2)",
-                                  }
-                                : null
-                            }
-                          >
-                            <div>
-                              <p>
-                                Actividad:{" "}
-                                <span
-                                  style={{
-                                    color: "red",
-                                    fontWeight: "550",
-                                  }}
-                                >
-                                  {activity.name}
-                                </span>
-                              </p>
-                              <p>
-                                Dias:
-                                <span
-                                  style={{
-                                    color: "blue",
-                                    fontWeight: "550",
-                                  }}
-                                >
-                                  {activity.date.join(" - ")}
-                                </span>
-                              </p>
-                              <p>
-                                Pileta:
-                                <span
-                                  style={{
-                                    color: "violet",
-                                    fontWeight: "550",
-                                  }}
-                                >
-                                  {activity.pileta}
-                                </span>
-                              </p>
-                              <p>
-                                <span
-                                  style={
-                                    activity.userRegister >= 50
-                                      ? {
-                                          color: "red",
-                                          fontWeight: "550",
-                                        }
-                                      : {
-                                          color: "green",
-                                          fontWeight: "550",
-                                        }
-                                  }
-                                >
-                                  {activity.userRegister >= 50
-                                    ? "No Hay cupos disponibles"
-                                    : "Disponible"}
-                                </span>
-                              </p>
-                            </div>
-                            {activity.userRegister < 50 && (
-                              <button
-                                className="btn btn-primary"
-                                style={{ height: "70px" }}
-                                disabled={activity.userRegister >= 50}
-                                onClick={() => handleRegister(activity._id)}
-                              >
-                                Inscribirse
-                              </button>
-                            )}
-                          </div>
-                        ))}
-                    </>
-                  )}
-                </td>
+
+        {getUser.data.user.fichaMedica &&
+        getUser.data.user.certificadoHongos ? (
+          <table className="table table-light table-striped-columns">
+            <thead>
+              <tr>
+                <th scope="col">Horario (ingreso/salida)</th>
+                <th scope="col">Actividad</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {getHours.data.data.hours.map((hour) => (
+                <tr key={hour._id}>
+                  <td style={{ width: "10px" }}>
+                    {hour.hourStart} - {hour.hourFinish}
+                  </td>
+                  <td>
+                    {getActivity.data.data.activity.filter(
+                      (activity) => activity.hourStart === hour.hourStart
+                    ).length === 0 ? (
+                      <option defaultValue={null}>
+                        No hay actividades disponibles
+                      </option>
+                    ) : (
+                      <>
+                        {getActivity.data.data.activity
+                          .filter(
+                            (activity) => activity.hourStart === hour.hourStart
+                          )
+                          .map((activity, i) => (
+                            <div
+                              key={i}
+                              className={style.td__bg}
+                              style={
+                                activity.userRegister >= 50
+                                  ? {
+                                      background: "rgb(250,0,0,0.2)",
+                                    }
+                                  : null
+                              }
+                            >
+                              <div>
+                                <p>
+                                  Actividad:{" "}
+                                  <span
+                                    style={{
+                                      color: "red",
+                                      fontWeight: "550",
+                                    }}
+                                  >
+                                    {activity.name}
+                                  </span>
+                                </p>
+                                <p>
+                                  Dias:
+                                  <span
+                                    style={{
+                                      color: "blue",
+                                      fontWeight: "550",
+                                    }}
+                                  >
+                                    {activity.date.join(" - ")}
+                                  </span>
+                                </p>
+                                <p>
+                                  Pileta:
+                                  <span
+                                    style={{
+                                      color: "violet",
+                                      fontWeight: "550",
+                                    }}
+                                  >
+                                    {activity.pileta}
+                                  </span>
+                                </p>
+                                <p>
+                                  <span
+                                    style={
+                                      activity.userRegister >= 50
+                                        ? {
+                                            color: "red",
+                                            fontWeight: "550",
+                                          }
+                                        : {
+                                            color: "green",
+                                            fontWeight: "550",
+                                          }
+                                    }
+                                  >
+                                    {activity.userRegister >= 50
+                                      ? "No Hay cupos disponibles"
+                                      : "Disponible"}
+                                  </span>
+                                </p>
+                              </div>
+                              {activity.userRegister < 50 && (
+                                <button
+                                  className="btn btn-primary"
+                                  style={{ height: "70px" }}
+                                  disabled={activity.userRegister >= 50}
+                                  onClick={() => handleRegister(activity._id)}
+                                >
+                                  Inscribirse
+                                </button>
+                              )}
+                            </div>
+                          ))}
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : null}
       </div>
     );
   }
