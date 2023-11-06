@@ -11,16 +11,16 @@ function NavBar({ user, location }) {
     <div className={style.body}>
       <Link to={"home"} className={style.link}>
         {location.pathname === "/user/home" ? (
-          <i class="bi bi-house-door-fill"></i>
+          <i className="bi bi-house-door-fill"></i>
         ) : (
-          <i class="bi bi-house-door"></i>
+          <i className="bi bi-house-door"></i>
         )}
       </Link>
       <Link to={"updateFiles"} className={style.link}>
         {location.pathname === "/user/updateFiles" ? (
-          <i class="bi bi-file-earmark-arrow-up-fill"></i>
+          <i className="bi bi-file-earmark-arrow-up-fill"></i>
         ) : (
-          <i class="bi bi-file-earmark-arrow-up"></i>
+          <i className="bi bi-file-earmark-arrow-up"></i>
         )}
       </Link>
       <Link
@@ -33,23 +33,23 @@ function NavBar({ user, location }) {
       >
         {user.certificadoHongos == undefined ||
         user.fichaMedica == undefined ? (
-          <i class="bi bi-calendar-x-fill"></i>
+          <i className="bi bi-calendar-x-fill"></i>
         ) : location.pathname === "/user/inscripcion" ? (
-          <i class="bi bi-calendar2-check-fill"></i>
+          <i className="bi bi-calendar2-check-fill"></i>
         ) : (
-          <i class="bi bi-calendar2-check"></i>
+          <i className="bi bi-calendar2-check"></i>
         )}
       </Link>
       <Link to={"perfil"} className={style.link}>
         {location.pathname === "/user/perfil" ? (
-          <i class="bi bi-person-fill"></i>
+          <i className="bi bi-person-fill"></i>
         ) : (
-          <i class="bi bi-person"></i>
+          <i className="bi bi-person"></i>
         )}
       </Link>
 
       <Link to={"/"} className={style.link}>
-        <i onClick={() => cerrarSesion()} class="bi bi-box-arrow-left"></i>
+        <i onClick={() => cerrarSesion()} className="bi bi-box-arrow-left"></i>
       </Link>
     </div>
   );
