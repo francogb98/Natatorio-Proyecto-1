@@ -1,27 +1,50 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  padding: 20px 0px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
-.title {
-  margin: 0 auto;
-  padding: 20px;
-  width: fit-content;
-}
-
-.td__bg {
-  padding: 10px;
+.buttonGroup {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  gap: 10px;
+  width: fit-content;
+  padding: 10px;
+  font-weight: bold;
 }
 
-.td__bg:hover {
-  background-color: rgb(204, 204, 204, 0.5);
+.noLook {
+  display: none;
+}
 
-  cursor: pointer;
+.tablaActividades {
+  padding: 0;
+  font-size: 18px;
+}
+
+.bodyTable {
+  width: max-content;
+  font-size: 12px;
+  margin: 0 auto;
+}
+
+.bodyTable tbody tr td {
+  background-color: #f5f5f5;
+  border: 1px solid black;
+  text-wrap: wrap;
+  width: 60px;
+}
+
+.letterActividad {
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  display: flex;
+  /* border: 1px solid black; */
 }

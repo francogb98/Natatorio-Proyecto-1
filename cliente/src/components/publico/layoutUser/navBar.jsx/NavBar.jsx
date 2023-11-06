@@ -4,21 +4,53 @@ import { Link } from "react-router-dom";
 import style from "./navBar.module.css";
 import { AuthContext } from "../../../../context/AuthContext";
 
-function NavBar() {
+function NavBar({ user, location }) {
   const { cerrarSesion } = useContext(AuthContext);
 
   return (
     <div className={style.body}>
-      <Link to={"inscripcion"} className={style.link}>
-        Actividades
+      <Link to={"home"} className={style.link}>
+        {location.pathname === "/user/home" ? (
+          <i class="bi bi-house-door-fill"></i>
+        ) : (
+          <i class="bi bi-house-door"></i>
+        )}
+      </Link>
+      <Link to={"updateFiles"} className={style.link}>
+        {location.pathname === "/user/updateFiles" ? (
+          <i class="bi bi-file-earmark-arrow-up-fill"></i>
+        ) : (
+          <i class="bi bi-file-earmark-arrow-up"></i>
+        )}
+      </Link>
+      <Link
+        to={`${
+          user.certificadoHongos == undefined || user.fichaMedica == undefined
+            ? "home"
+            : "inscripcion"
+        }`}
+        className={style.link}
+      >
+        {user.certificadoHongos == undefined ||
+        user.fichaMedica == undefined ? (
+          <i class="bi bi-calendar-x-fill"></i>
+        ) : location.pathname === "/user/inscripcion" ? (
+          <i class="bi bi-calendar2-check-fill"></i>
+        ) : (
+          <i class="bi bi-calendar2-check"></i>
+        )}
       </Link>
       <Link to={"perfil"} className={style.link}>
-        Perfil
+        {location.pathname === "/user/perfil" ? (
+          <i class="bi bi-person-fill"></i>
+        ) : (
+          <i class="bi bi-person"></i>
+        )}
       </Link>
 
-      <button className="btn btn-warning" onClick={() => cerrarSesion()}>
-        Cerrar Sesion
-      </button>
+      <Link to={"/"} className={style.link}>
+        <i onClick={() => cerrarSesion()} class="bi bi-box-arrow-left"></i>
+      </Link>
     </div>
   );
 }

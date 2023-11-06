@@ -12,8 +12,23 @@ import { useMutation, useQuery } from "react-query";
 import isEqual from "lodash/isEqual";
 
 import Swal from "sweetalert2";
+import TablaActividades from "./TablaActividades";
+import { getActividadesNombre } from "../../../../helpers/activitiesFetch/getActividadesNombre";
 
 function Inscripcion() {
+  const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
+
+  const [colors, setColors] = useState([
+    "primary",
+    "secondary",
+    "success",
+    "danger",
+    "warning",
+    "info",
+    "light",
+    "dark",
+  ]);
+
   const getUser = useQuery({
     queryKey: ["getUser"],
     queryFn: getInfoUser,
@@ -40,44 +55,9 @@ function Inscripcion() {
     );
   }
 
-  const registerInActivity = useMutation({
-    mutationKey: "registerUser",
-    mutationFn: fetchConToken,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        Swal.fire({
-          title: data.status.toUpperCase(),
-          text: "Se ha inscripto correctamente en la actividad",
-          icon: data.status,
-          confirmButtonText: "Aceptar",
-        });
-      } else {
-        Swal.fire({
-          title: data.status.toUpperCase(),
-          text: data.message,
-          icon: data.status,
-          confirmButtonText: "Aceptar",
-        });
-      }
-    },
-    onError: (error) => {
-      Swal.fire({
-        title: error.status.toUpperCase(),
-        text: error.message,
-        icon: error.status,
-        confirmButtonText: "Aceptar",
-      });
-    },
-  });
-
   const getActivity = useQuery({
     queryKey: ["activitys"],
-    queryFn: fetchConToken,
-  });
-
-  const getHours = useQuery({
-    queryKey: ["hours"],
-    queryFn: fetchConTokenHours,
+    queryFn: getActividadesNombre,
   });
 
   const handleRegister = (id) => {
@@ -88,94 +68,60 @@ function Inscripcion() {
     });
   };
 
-  if (getActivity.isError || getHours.isError) {
+  if (getActivity.isError) {
     return <h1>ERROR</h1>;
   }
 
-  if (getActivity.isLoading || getHours.isLoading) {
+  if (getActivity.isLoading) {
     return <h1>Cargando...</h1>;
   }
 
-  if (getActivity.isSuccess && getHours.isSuccess) {
+  if (getActivity.isSuccess) {
     // quiero que getHours.data.data.hours se ordene de menor a mayor
 
-    getHours.data.data.hours.sort((a, b) => {
-      if (a.hourStart < b.hourStart) {
-        return -1;
-      }
-      if (a.hourStart > b.hourStart) {
-        return 1;
-      }
-      return 0;
-    });
-
+    //necesito traer todos los nombre de actividades y guardarlos en un estadom, sin que se reptina
     return (
       <div className={style.container}>
-        <ol
-          style={{
-            background: "#fff",
-
-            maxWidth: "550px",
-            padding: "50px",
-          }}
-        >
-          <li>
-            <h6>
-              Antes de poder inscribirte en una actividad deberas verificar que
-              en la seccion de perfil tus datos esten completos{" "}
-              <span style={{ color: "green" }}>
-                (recuerda debes cargar tu ficha medica){" "}
-              </span>
-            </h6>
-          </li>
-
-          <li>
-            <h6>
-              Debajo de este mensaje podras ver las actividades disponibles, en
-              la parte izquierda veras los horarios y en la parte derecha las
-              actividades disponibles
-            </h6>
-          </li>
-          <li>
-            <h6>
-              En la columna derecha podras observar que la actividad cuenta con
-              el nombre de la mismsa, los dias que se dicta, la pileta donde se
-              dicta dicha actividad y si tiene cupos disponibles
-            </h6>
-          </li>
-          <li>
-            <h6>
-              Si la actividad tiene cupos disponibles podras inscribirte
-              presionando el boton "Inscribirse"
-            </h6>
-          </li>
-          <li>
-            <h6>
-              Una vez que te hayas inscripto, verificaremos que tus datos esten
-              completos y que no te hayas inscripto en otra actividad, si todo
-              esta correcto te enviaremos un correo de confirmacion.
-              <span style={{ color: "green" }}>
-                (en la seccion de perfil aparecera el estado de tu solicitud)
-              </span>
-            </h6>
-          </li>
-          <li>
-            <h6 style={{ color: "red" }}>
-              Recuerda cargar tu ficha medica en la seccion de perfil, de lo
-              contrario tu solicitud sera denegada hasta que cargues dicha
-              documentacion
-            </h6>
-          </li>
-        </ol>
         {registerInActivity.isLoading && (
           <div style={{ position: "fixed", top: "0", width: "350px" }}>
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               <h4>Procesando Inscripcion...</h4>
             </div>
           </div>
         )}
 
-        {getUser.data.user.fichaMedica &&
+        <h1 className={style.title}>Inscripciones</h1>
+
+        <div
+          className={`${
+            actividadSeleccionada ? style.noLook : style.buttonGroup
+          }`}
+        >
+          <h4>Elige tu actividad:</h4>
+          {getActivity.data.map((activity, i) => (
+            <button
+              key={i}
+              className={`btn btn-${colors[i]}`}
+              onClick={() => setActividadSeleccionada(activity)}
+            >
+              {activity}
+            </button>
+          ))}
+        </div>
+        {actividadSeleccionada && (
+          <div
+            className={`${
+              actividadSeleccionada ? style.tablaActividades : style.noLook
+            }`}
+          >
+            <TablaActividades
+              actividad={actividadSeleccionada}
+              colors={colors}
+            />
+          </div>
+        )}
+
+        {/* {getUser.data.user.fichaMedica &&
         getUser.data.user.certificadoHongos ? (
           <table className="table table-light table-striped-columns">
             <thead>
@@ -288,7 +234,7 @@ function Inscripcion() {
               ))}
             </tbody>
           </table>
-        ) : null}
+        ) : null} */}
       </div>
     );
   }

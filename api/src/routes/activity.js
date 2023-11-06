@@ -8,12 +8,17 @@ import {
 import { createActivity } from "../controllers/activitys/createActivity.js";
 
 import { deleteActivity } from "../controllers/activitys/deleteActivity.js";
+import { getNameActivitys } from "../controllers/activitys/getNameActivitys.js";
+import { getActividadesByNames } from "../controllers/activitys/getActivitysByName.js";
 
 const routerActivity = Router();
 
 // routerActivity.post("/activity/create", validarJWT, createActivity);
 
 routerActivity.get("/getAll", getActivities);
+routerActivity.get("/getActividadesNombre", getNameActivitys);
+
+routerActivity.post("/getActivityByName", validarJWT, getActividadesByNames);
 routerActivity.post("/createActivity", validarJWT, createActivity);
 routerActivity.post("/getActivitiesByDate", validarJWT, getActivitiesByDate);
 

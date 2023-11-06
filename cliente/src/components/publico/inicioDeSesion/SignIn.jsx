@@ -53,7 +53,7 @@ function SignIn() {
             return navigate("/admin/panel/inicio");
           }
 
-          return navigate("/user/inscripcion");
+          return navigate("/user/home");
 
           // window.location.href = "/home";
         }, 1000);
@@ -123,7 +123,7 @@ function SignIn() {
                 ></i>
               ) : (
                 <i
-                  class="bi bi-eye-slash ms-1"
+                  className="bi bi-eye-slash ms-1"
                   style={{ fontSize: "1.5rem", cursor: "pointer" }}
                   onClick={() => setViewPass(!viewPass)}
                 ></i>

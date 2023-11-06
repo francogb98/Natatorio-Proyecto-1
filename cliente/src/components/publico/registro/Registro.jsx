@@ -149,7 +149,7 @@ function Registro() {
         <img src={Logo} alt="" style={{ width: "160px" }} />
         <h1>Formulario de registro</h1>
         <div
-          class="progress"
+          className="progress"
           role="progressbar"
           aria-label="Warning example"
           aria-valuenow="75"
@@ -158,7 +158,7 @@ function Registro() {
           style={{ width: "100%" }}
         >
           <div
-            class="progress-bar text-bg-warning"
+            className="progress-bar text-bg-warning"
             style={{ width: `${cargaDeDatos * 20 - 20}%` }}
           ></div>
         </div>

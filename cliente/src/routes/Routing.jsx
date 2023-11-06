@@ -20,6 +20,8 @@ import Piletas from "../components/privado/Piletas/Piletas";
 import ListaUsuarios from "../components/privado/listaUsuarios/ListaUsuarios";
 import Estadisticas from "../components/privado/estadisticas/Estadisticas";
 import ListActivity from "../components/privado/actividadesLista/ListActivity";
+import UpdateFiles from "../components/publico/layoutUser/updateFiles/UpdateFiles";
+import HomeUser from "../components/publico/layoutUser/home/HomeUser";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -49,6 +51,8 @@ function Routing() {
       <Route path="/verificar-cuenta" element={<Confirm />} />
       {auth.logged && auth.role === "usuario" ? (
         <Route path="/user" element={<HomeUserPublic />}>
+          <Route path="home" element={<HomeUser />} />
+          <Route path="updateFiles" element={<UpdateFiles />} />
           <Route path="inscripcion" element={<Inscripcion />} />
           <Route path="perfil" element={<Perfil />} />
         </Route>

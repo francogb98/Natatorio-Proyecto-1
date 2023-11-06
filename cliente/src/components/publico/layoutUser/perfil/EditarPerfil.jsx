@@ -81,7 +81,10 @@ function EditarPerfil({ usuario }) {
             clave === "foto" ||
             clave === "activity" ||
             clave === "cud" ||
-            clave === "asistencia"
+            clave === "asistencia" ||
+            clave == "certificadoHongos" ||
+            clave == "fichaMedica" ||
+            clave == "fechaCargaCertificadoHongos"
           ) {
             return null;
           }
@@ -137,7 +140,7 @@ function EditarPerfil({ usuario }) {
         <div>
           <button
             type="submit"
-            className="btn btn-dark "
+            className="btn btn-dark mt-3"
             style={{ height: "fit-content" }}
           >
             Guardar Cambios

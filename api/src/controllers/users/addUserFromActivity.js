@@ -2,13 +2,17 @@ import Activity from "../../models/models/Actividades.js";
 import User from "../../models/models/User.js";
 
 export const addUserFromActivity = async (req, res) => {
-  const { id } = req.body;
+  const { idActividad } = req.body;
+
+  console.log(idActividad);
   try {
     const user = await User.findOne({
       _id: req.user.id,
     });
+
+    console.log(user);
     //verificamos si el usuario ya esta registrado en la actividad
-    if (user.activity) {
+    if (user.activity.length) {
       return res.status(400).json({
         status: "error",
         message: "El usuario ya se encuentra inscripto en una actividad",
@@ -16,7 +20,7 @@ export const addUserFromActivity = async (req, res) => {
     }
 
     const isActivityExist = await Activity.findById({
-      _id: id,
+      _id: idActividad,
     });
 
     if (!isActivityExist) {
@@ -42,15 +46,13 @@ export const addUserFromActivity = async (req, res) => {
     );
 
     //   //le añadimos al usuario la actividad, con sus respectivos horarios
-    const userUpdate = await User.findOneAndUpdate(
-      { _id: user._id },
+    user.activity = activityUpdate;
 
-      //el status es un boolean no un array de objetos
-      { activity: activityUpdate._id },
-      { $set: { status: false } },
+    user.status = false;
 
-      { new: true }
-    );
+    const userUpdate = await user.save();
+
+    console.log(userUpdate);
 
     return res.status(200).json({
       status: "success",

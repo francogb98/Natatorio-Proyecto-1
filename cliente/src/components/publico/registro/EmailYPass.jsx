@@ -41,7 +41,7 @@ function EmailYPass({ registro, usuario, setUsuario }) {
             ></i>
           ) : (
             <i
-              class="bi bi-eye-slash"
+              className="bi bi-eye-slash"
               style={{ fontSize: "1.5rem", cursor: "pointer" }}
               onClick={() => setViewPass(!viewPass)}
             ></i>
@@ -70,7 +70,7 @@ function EmailYPass({ registro, usuario, setUsuario }) {
             ></i>
           ) : (
             <i
-              class="bi bi-eye-slash"
+              className="bi bi-eye-slash"
               style={{ fontSize: "1.5rem", cursor: "pointer" }}
               onClick={() => setViewPass2(!viewPass2)}
             ></i>

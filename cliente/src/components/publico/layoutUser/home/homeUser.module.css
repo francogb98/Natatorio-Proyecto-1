@@ -1,0 +1,12 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 15px;
+  margin-bottom: 55px;
+}
+
+.body p {
+  text-wrap: wrap;
+}

@@ -14,7 +14,7 @@ function CardPerfil({ user, handleViewFicha }) {
         >
           {user.fichaMedica && user.certificadoHongos
             ? "Archivos cargados correctamente"
-            : "Dirijase a la seccion de carga de archivos para subir los archivosfaltantes"}
+            : null}
         </h6>
         {user.natacionAdaptada ? (
           <p className="card-text">
@@ -56,7 +56,7 @@ function CardPerfil({ user, handleViewFicha }) {
 
         <div className="card-text">
           <span>Actividades:</span>{" "}
-          {user.activity == null ? (
+          {user.activity == undefined ? (
             <p className="text-danger">
               No estas inscripto a ninguna actividad
             </p>
@@ -89,21 +89,19 @@ function CardPerfil({ user, handleViewFicha }) {
           )}
         </div>
 
-        <p className="card-text">
-          Asistencia:{" "}
-          <span
-            className={
-              user.asistencia[user.asistencia.length]
-                ? "text-success"
-                : "text-danger"
-            }
-          >
-            {" "}
-            {user.asistencia[user.asistencia.length]
-              ? user.asistencia[user.asistencia.length]
-              : "No se registran asistencias"}
-          </span>
-        </p>
+        {user.asistencia && (
+          <p className="card-text">
+            Asistencia:{" "}
+            <span
+              className={user.asistencia[0] ? "text-success" : "text-danger"}
+            >
+              {" "}
+              {user.asistencia[0]
+                ? user.asistencia[user.asistencia.length]
+                : "No se registran asistencias"}
+            </span>
+          </p>
+        )}
       </div>
     </div>
   );

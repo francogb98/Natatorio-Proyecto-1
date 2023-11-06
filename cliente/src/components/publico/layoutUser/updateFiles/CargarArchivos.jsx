@@ -79,9 +79,7 @@ function CargarArchivos({ usuario }) {
     }
   }, [success]);
 
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
+  useEffect(() => {}, [loading]);
   useEffect(() => {
     if (postFicha.isSuccess) {
       setLoading(false);
@@ -91,11 +89,8 @@ function CargarArchivos({ usuario }) {
 
   return (
     <div>
-      {usuario.natacionAdaptada ? (
-        <div
-          className="mb-3"
-          style={{ border: "1px solid black", padding: "15px" }}
-        >
+      {usuario.natacionAdaptada && (
+        <div className="mb-3">
           <h5 for="formFile" className="form-label">
             Cargar CUD
           </h5>
@@ -114,12 +109,9 @@ function CargarArchivos({ usuario }) {
             Cargar archivo
           </button>
         </div>
-      ) : null}
+      )}
 
-      <div
-        className="mb-3"
-        style={{ border: "1px solid black", padding: "15px" }}
-      >
+      <div className="mb-3">
         <h5 for="formFile" className="form-label">
           Cargar Certificado de hongos
         </h5>
@@ -139,10 +131,7 @@ function CargarArchivos({ usuario }) {
         </button>
       </div>
 
-      <div
-        className="mb-3"
-        style={{ border: "1px solid black", padding: "15px" }}
-      >
+      <div className="mb-3">
         <h5 for="formFile" className="form-label">
           Cargar Ficha Medica
         </h5>
@@ -161,7 +150,10 @@ function CargarArchivos({ usuario }) {
           Cargar archivo
         </button>
         <div className="mt-2 text-danger">
-          <p>Si no tiene una ficha medica descargala haciendo click aqui</p>
+          <p>
+            Si no tiene una ficha medica descargala haciendo{" "}
+            <span style={{ color: "blue" }}>CLICK AQUI</span>
+          </p>
           <a
             href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
             download="fichaMedica.pdf"
