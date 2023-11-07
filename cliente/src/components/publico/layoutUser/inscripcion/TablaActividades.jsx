@@ -8,7 +8,7 @@ import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/regi
 
 import Swal from "sweetalert2";
 
-function TablaActividades({ actividad }) {
+function TablaActividades({ actividad, setActividadSeleccionada }) {
   //crear una tabla con todos los horarios y dias de la semana
   const [days, setDays] = useState([
     "Lunes",
@@ -18,7 +18,16 @@ function TablaActividades({ actividad }) {
     "Viernes",
   ]);
 
-  const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
+  const colors = [
+    //solo colores claros
+    "#FFC300",
+    "#FF5733",
+    "#C70039",
+    "#900C3F",
+    "#581845",
+  ];
+
+  const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
   const getHours = useQuery({
     queryKey: ["hours"],
@@ -79,6 +88,14 @@ function TablaActividades({ actividad }) {
     console.log(getActividades.data);
   }, [getActividades.isLoading]);
 
+  if (getActividades.isLoading || getHours.isLoading) {
+    return <h1>Cargando...</h1>;
+  }
+
+  if (getActividades.isError || getHours.isError) {
+    return <h1>ERROR</h1>;
+  }
+
   if (getHours.isSuccess) {
     getHours.data.data.hours.sort((a, b) => {
       if (a.hourStart < b.hourStart) {
@@ -91,9 +108,26 @@ function TablaActividades({ actividad }) {
     });
   }
 
+  const getNextColor = (i) => {
+    const color = colors[(i + 1) % colors.length];
+
+    return color;
+  };
+
   return (
     <>
       <h4>Actividad : {actividad}</h4>
+      <i
+        class="bi bi-arrow-left-circle"
+        onClick={() => {
+          setActividadSeleccionada(null);
+        }}
+        style={{
+          fontSize: "35px",
+          color: "blue",
+          cursor: "pointer",
+        }}
+      ></i>
       <table className={style.bodyTable}>
         <thead>
           <tr>
@@ -111,26 +145,36 @@ function TablaActividades({ actividad }) {
               <td style={{ width: "30px" }}>
                 {hour.hourStart} - {hour.hourFinish}
               </td>
-              {days.map((day) => (
+              {days.map((day, i) => (
                 <td key={day}>
                   {getActividades.data?.map((activity, i) => (
                     <div
                       key={activity._id}
-                      className={`${style.letterActividad}`}
+                      style={{
+                        backgroundColor: getNextColor(i),
+                      }}
+                      className={`${
+                        activity.date.includes(day) &&
+                        (activity.hourStart === hour.hourStart ||
+                          activity.hourFinish === hour.hourFinish) &&
+                        activity.name
+                          ? style.letterActividad
+                          : null
+                      }`}
                       type="button"
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                       onClick={() => {
-                        setActividadSeleccionada(activity);
+                        setActividadRegistrarse(activity);
                       }}
                       //quiero que le ponga un color random a cada actividad
                     >
                       {activity.date.includes(day) &&
                       (activity.hourStart === hour.hourStart ||
                         activity.hourFinish === hour.hourFinish) &&
-                      activity.name
-                        ? activity.name + i
-                        : null}
+                      activity.name ? (
+                        <div>{activity.name} </div>
+                      ) : null}
                     </div>
                   ))}
                 </td>
@@ -159,18 +203,18 @@ function TablaActividades({ actividad }) {
                 data-bs-dismiss="modal"
                 aria-label="Close"
                 onClick={() => {
-                  setActividadSeleccionada(null);
+                  setActividadRegistrarse(null);
                 }}
               ></button>
             </div>
             <div className="modal-body">
-              Nombre: {actividadSeleccionada?.name}
+              Nombre: {actividadRegistrarse?.name}
               <br />
-              Dias: {actividadSeleccionada?.date.join(" - ")}
+              Dias: {actividadRegistrarse?.date.join(" - ")}
               <br />
-              Hora de inicio: {actividadSeleccionada?.hourStart}
+              Hora de inicio: {actividadRegistrarse?.hourStart}
               <br />
-              Hora de fin: {actividadSeleccionada?.hourFinish}
+              Hora de fin: {actividadRegistrarse?.hourFinish}
               <br />
             </div>
             <div className="modal-footer">
@@ -179,7 +223,7 @@ function TablaActividades({ actividad }) {
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
                 onClick={() => {
-                  setActividadSeleccionada(null);
+                  setActividadRegistrarse(null);
                 }}
               >
                 Cancelar
@@ -188,7 +232,7 @@ function TablaActividades({ actividad }) {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  handleSubmit(actividadSeleccionada?._id);
+                  handleSubmit(actividadRegistrarse?._id);
                 }}
                 data-bs-dismiss="modal"
               >
