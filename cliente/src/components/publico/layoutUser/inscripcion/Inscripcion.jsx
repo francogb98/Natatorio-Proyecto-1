@@ -1,17 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import style from "./styles.module.css";
 
-import {
-  fetchConToken,
-  fetchConTokenHours,
-  getInfoUser,
-} from "../../../../helpers/fetch";
-import { useMutation, useQuery } from "react-query";
+import { getInfoUser } from "../../../../helpers/fetch";
+import { useQuery } from "react-query";
 
-import isEqual from "lodash/isEqual";
-
-import Swal from "sweetalert2";
 import TablaActividades from "./TablaActividades";
 import { getActividadesNombre } from "../../../../helpers/activitiesFetch/getActividadesNombre";
 
@@ -60,14 +53,6 @@ function Inscripcion() {
     queryFn: getActividadesNombre,
   });
 
-  const handleRegister = (id) => {
-    registerInActivity.mutate({
-      endpoint: "user/resgisterActivity",
-      data: id,
-      method: "POST",
-    });
-  };
-
   if (getActivity.isError) {
     return <h1>ERROR</h1>;
   }
@@ -82,14 +67,6 @@ function Inscripcion() {
     //necesito traer todos los nombre de actividades y guardarlos en un estadom, sin que se reptina
     return (
       <div className={style.container}>
-        {registerInActivity.isLoading && (
-          <div style={{ position: "fixed", top: "0", width: "350px" }}>
-            <div className="alert alert-danger" role="alert">
-              <h4>Procesando Inscripcion...</h4>
-            </div>
-          </div>
-        )}
-
         <h1 className={style.title}>Inscripciones</h1>
 
         <div
