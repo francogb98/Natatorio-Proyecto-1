@@ -84,7 +84,8 @@ function EditarPerfil({ usuario }) {
             clave === "asistencia" ||
             clave == "certificadoHongos" ||
             clave == "fichaMedica" ||
-            clave == "fechaCargaCertificadoHongos"
+            clave == "fechaCargaCertificadoHongos" ||
+            clave == "status"
           ) {
             return null;
           }
