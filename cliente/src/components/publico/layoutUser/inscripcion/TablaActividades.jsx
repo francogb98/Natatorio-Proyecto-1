@@ -77,7 +77,7 @@ function TablaActividades({ actividad, setActividadSeleccionada }) {
       idActividad: id,
     });
 
-    setActividadSeleccionada(null);
+    setActividadRegistrarse(null);
   };
 
   useEffect(() => {
