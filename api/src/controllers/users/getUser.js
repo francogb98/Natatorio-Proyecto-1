@@ -19,6 +19,7 @@ export const getUser = async (req, res) => {
   }
 };
 export const getUserById = async (req, res) => {
+  console.log("me ejcute");
   try {
     const { id } = req.body;
     console.log(id);
@@ -33,6 +34,8 @@ export const getUserById = async (req, res) => {
       return res
         .status(404)
         .json({ status: "error", message: "Usuario no Encontrado" });
+
+    console.log(user);
 
     res.status(200).json({ status: "success", user });
   } catch (error) {

@@ -91,9 +91,7 @@ function CargarArchivos({ usuario }) {
     <div>
       {usuario.natacionAdaptada && (
         <div className="mb-3">
-          <h5 for="formFile" className="form-label">
-            Cargar CUD
-          </h5>
+          <h5 className="form-label">Cargar CUD</h5>
           <input
             className="form-control"
             type="file"
@@ -112,9 +110,7 @@ function CargarArchivos({ usuario }) {
       )}
 
       <div className="mb-3">
-        <h5 for="formFile" className="form-label">
-          Cargar Certificado de hongos
-        </h5>
+        <h5 className="form-label">Cargar Certificado de hongos</h5>
         <input
           className="form-control"
           type="file"
@@ -132,9 +128,7 @@ function CargarArchivos({ usuario }) {
       </div>
 
       <div className="mb-3">
-        <h5 for="formFile" className="form-label">
-          Cargar Ficha Medica
-        </h5>
+        <h5 className="form-label">Cargar Ficha Medica</h5>
         <input
           className="form-control"
           type="file"

@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { baseUrl } from "../../../../helpers/url";
-
 import Swal from "sweetalert2";
-import { AuthContext } from "../../../../context/AuthContext";
 
 import style from "./style.module.css";
 
@@ -65,90 +63,133 @@ function EditarPerfil({ usuario }) {
     editarPerfil.mutate(formValues);
   };
 
+  const verificarKey = (key) => {
+    if (
+      key !== "activity" &&
+      key !== "customId" &&
+      key !== "status" &&
+      key !== "role" &&
+      key !== "password" &&
+      key !== "email" &&
+      key !== "id" &&
+      key !== "createdAt" &&
+      key !== "updatedAt" &&
+      key !== "_id" &&
+      key !== "asistencia" &&
+      key !== "__v" &&
+      key !== "dni" &&
+      key !== "foto" &&
+      key !== "emailVerified" &&
+      key !== "emailVerificationToken" &&
+      key !== "cud" &&
+      key !== "certificadoHongos" &&
+      key !== "fechaCargaCertificadoHongos" &&
+      key !== "fichaMedica"
+    ) {
+      return true;
+    }
+  };
+
+  const [edicionActiva, setEdicionActiva] = useState(false);
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div className={style.body_editarPerfil}>
-        {Object.keys(formValues).map((clave) => {
-          if (
-            clave === "_id" ||
-            clave === "customId" ||
-            clave === "role" ||
-            clave === "email" ||
-            clave === "emailVerificationToken" ||
-            clave === "emailVerified" ||
-            clave === "__v" ||
-            clave === "password" ||
-            clave === "foto" ||
-            clave === "activity" ||
-            clave === "cud" ||
-            clave === "asistencia" ||
-            clave == "certificadoHongos" ||
-            clave == "fichaMedica" ||
-            clave == "fechaCargaCertificadoHongos" ||
-            clave == "status"
-          ) {
-            return null;
-          }
-
-          const valor = formValues[clave];
-
-          if (valor == null) {
-            return null;
-          }
-
-          return (
-            <div key={clave}>
-              <label htmlFor={clave} className="form-label">
-                {clave.charAt(0).toUpperCase() + clave.slice(1)}
-              </label>
-              {clave === "sexo" ? (
-                <select
-                  className="form-select"
-                  name={clave}
-                  id={clave}
-                  onChange={handleInputChange}
-                  value={valor}
-                >
-                  <option value="null">--Sexo--</option>
-                  <option value="masculino">Masculino</option>
-                  <option value="femenino">Femenino</option>
-                  <option value="otro">Otro</option>
-                </select>
-              ) : clave === "natacionAdaptada" ? (
-                <select
-                  className="form-select"
-                  name={clave}
-                  id={clave}
-                  onChange={handleInputChange}
-                  value={valor ? "Si" : "No"}
-                >
-                  <option value="null">--Seleccionar opción--</option>
-                  <option value="Si">Si</option>
-                  <option value="No">No</option>
-                </select>
-              ) : (
-                <input
-                  type="text"
-                  value={valor}
-                  name={clave}
-                  className="form-control"
-                  onChange={handleInputChange}
-                />
-              )}
-            </div>
-          );
-        })}
-        <div>
-          <button
-            type="submit"
-            className="btn btn-dark mt-3"
-            style={{ height: "fit-content" }}
-          >
-            Guardar Cambios
-          </button>
-        </div>
+    <div>
+      <div className={style.info}>
+        <label htmlFor="">Numero De Usuario</label>
+        <p>{usuario.customId}</p>
       </div>
-    </form>
+
+      <div>
+        {!usuario.status && usuario.activity?.length > 0 ? (
+          <div className={style.info}>
+            <label htmlFor="">Actividad:</label>
+            <p>Esperando confirmacion</p>
+          </div>
+        ) : null}
+        {usuario.status && usuario.activity?.length > 0 ? (
+          <>
+            <div className={style.body__activity}>
+              <div className={style.info}>
+                <label htmlFor="">Actividad:</label>
+
+                <p>{usuario.activity[0].name}</p>
+                {/* icono de X para dar de baja */}
+              </div>
+              <div className={style.info}>
+                <label htmlFor="">Dias:</label>
+                <p>{usuario.activity[0].date.join(" - ")}</p>
+              </div>
+              <div className={style.info}>
+                <label htmlFor="">Horario:</label>
+                <p>
+                  {usuario.activity[0].hourStart} -{" "}
+                  {usuario.activity[0].hourFinish}
+                </p>
+              </div>
+              <button>Dar de baja</button>
+            </div>
+          </>
+        ) : null}
+        {usuario.status && usuario.activity?.length === 0 ? (
+          <div className={style.info}>
+            <label htmlFor="">Actividad:</label>
+            <p>No tienes actividad</p>
+          </div>
+        ) : null}
+      </div>
+
+      <form action="">
+        {Object.keys(usuario).map((key) => {
+          if (verificarKey(key)) {
+            return (
+              <div className={style.info}>
+                {usuario[key] == null ? null : (
+                  <>
+                    <label htmlFor="">
+                      {key.charAt(0).toUpperCase() + key.slice(1)}:
+                    </label>
+                    {edicionActiva ? (
+                      <input
+                        type="text"
+                        value={usuario[key]}
+                        onChange={(e) => handleInputChange(key, e.target.value)}
+                      />
+                    ) : (
+                      <p>{usuario[key] ? usuario[key] : "No"}</p>
+                    )}
+                  </>
+                )}
+              </div>
+            );
+          }
+        })}
+
+        {!edicionActiva ? (
+          <button
+            className={style.button__editar}
+            onClick={() => setEdicionActiva(!edicionActiva)}
+          >
+            Editar Informacion
+            <i class="bi bi-pencil"></i>
+          </button>
+        ) : (
+          <div className={style.buttons}>
+            <button
+              className={style.button__cancel}
+              onClick={() => setEdicionActiva(!edicionActiva)}
+            >
+              <i className="bi bi-x-lg"></i>
+            </button>
+            <button
+              className={style.button__confirm}
+              onClick={(e) => handleSubmit(e)}
+            >
+              <i className="bi bi-check-lg"></i>
+            </button>
+          </div>
+        )}
+      </form>
+    </div>
   );
 }
 

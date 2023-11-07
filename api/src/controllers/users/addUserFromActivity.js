@@ -46,7 +46,7 @@ export const addUserFromActivity = async (req, res) => {
     );
 
     //   //le añadimos al usuario la actividad, con sus respectivos horarios
-    user.activity = activityUpdate;
+    user.activity.push(activityUpdate);
 
     user.status = false;
 
