@@ -8,7 +8,7 @@ export const inhabilitarUsuario = async (data) => {
     method: "POST",
     headers: {
       "Content-type": "application/json",
-      authorization: `${localStorage.getItem("token")}`,
+      authorization: localStorage.getItem("token"),
     },
     body: JSON.stringify(data),
   });

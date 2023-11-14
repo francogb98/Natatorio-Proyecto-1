@@ -6,7 +6,7 @@ export const HabilitarUsuario = async ({ id }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        authorization: `${localStorage.getItem("token")}`,
+        authorization: localStorage.getItem("token"),
       },
     });
 
