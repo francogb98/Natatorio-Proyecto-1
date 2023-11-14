@@ -278,6 +278,7 @@ function User() {
                     }}
                     defaultValue={user.role}
                   >
+                    <option value="SUPER_ADMIN">--Seleccionar Rol--</option>
                     <option value="SUPER_ADMIN">SUPER_ADMIN</option>
                     <option value="COORDINADOR_ADAPTADA">
                       COORDINADOR_ADAPTADA
