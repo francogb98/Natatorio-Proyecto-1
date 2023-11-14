@@ -232,9 +232,9 @@ function User() {
                 <p className="card-text">
                   Email: <span>{user.email}</span>
                 </p>
-                <div className="card-text">
+                <p className="card-text">
                   Ciudad: <span>{user.ciudad}</span>
-                </div>
+                </p>
                 {user.barrio && (
                   <p className="card-text">
                     Barrio: <span>{user.barrio}</span>
