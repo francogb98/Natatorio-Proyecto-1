@@ -229,9 +229,9 @@ function User() {
                 <p className="card-text">
                   Telefono Contacto: <span>{user.telefonoContacto}</span>
                 </p>
-                <p className="card-text">
+                <div className="card-text">
                   Email: <span>{user.email}</span>
-                </p>
+                </div>
                 <p className="card-text">
                   Ciudad: <span>{user.ciudad}</span>
                 </p>
