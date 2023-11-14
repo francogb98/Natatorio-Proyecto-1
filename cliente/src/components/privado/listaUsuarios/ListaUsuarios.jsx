@@ -1,179 +1,96 @@
-import React, { useCallback, useEffect, useState } from "react";
-
-import { useQuery, useMutation } from "react-query";
-import { getAllUsers } from "../../../helpers/fetch";
-
-import Swal from "sweetalert2";
-import { suspenderUser } from "../../../helpers/suspendUser";
-import { getUser } from "../../../helpers/getInfoUser";
-import TablaAllUsers from "./TablaAllUsers";
-
-import { changeRol } from "../../../helpers/cambiarRole";
-import User from "../UserInfo/User";
-
-import style from "./listaUsuarios.module.css";
-import SearchUser from "./SearchUser";
-
-import { set } from "lodash";
+import { useQuery } from "react-query";
+import { getAllUsuarios } from "../../../helpers/getUsers";
+import Tabla from "../../../utilidades/Tabla";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function ListaUsuarios() {
-  const [users, setUsers] = useState([]);
-  const [errorSearch, setErrorSearch] = useState({
-    status: false,
-    message: "",
-  });
-  const [loading, setLoading] = useState(false);
-
-  const {
-    isLoading,
-    error,
-    data: firstData,
-    refetch,
-    isSuccess,
-  } = useQuery({
-    queryKey: ["listaUsuarios"],
-    queryFn: getAllUsers,
-  });
-
-  const suspendUser = useMutation({
-    mutationKey: ["listaUsuarios"],
-    mutationFn: suspenderUser,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        Swal.fire({
-          title: data.message,
-          icon: data.status,
-          confirmButtonText: "Aceptar",
-        });
-        setSuspender({
-          id: "",
-          status: false,
-        });
-        refetch();
-      } else {
-        Swal.fire({
-          title: data.message,
-          icon: data.status,
-          confirmButtonText: "Aceptar",
-        });
-      }
-    },
-  });
-
-  const cambiarRole = useMutation({
-    mutationKey: ["listaUsuarios"],
-    mutationFn: changeRol,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        Swal.fire({
-          title: data.message,
-          icon: data.status,
-          confirmButtonText: "Aceptar",
-        });
-        setEditRole({
-          id: "",
-          status: false,
-        });
-        refetch();
-      } else {
-        Swal.fire({
-          title: data.message,
-          icon: data.status,
-          confirmButtonText: "Aceptar",
-        });
-      }
-    },
-  });
-
-  const getUserById = useMutation({
-    mutationFn: getUser,
-    onSuccess: (data) => {
-      if (data.status == "error") {
-        setTimeout(() => {
-          getUserById.reset();
-        }, 3000);
-      }
-    },
-  });
-
-  const [editRole, setEditRole] = useState({
-    id: "",
-    status: false,
-    role: "",
-  });
-  const [suspender, setSuspender] = useState({
-    id: "",
-    status: false,
-  });
-
-  if (isLoading) return <h1>Cargando...</h1>;
-
-  if (error) return <h1>Error...</h1>;
-
-  const handleChange = (user) => {
-    if (editRole.status) {
-      cambiarRole.mutate({
-        content: {
-          id: user._id,
-          role: editRole.role,
-        },
-      });
-    }
-    if (suspender.status) {
-      suspendUser.mutate({
-        content: {
-          id: user._id,
-          idActivity: user.activity[0]._id,
-        },
-      });
-    }
-  };
-
-  if (getUserById.isLoading || getUserById.isSuccess) {
-    return <User getUserById={getUserById} />;
-  }
-
-  if (isSuccess && users.length === 0) {
-    setUsers(firstData.users);
-  }
-
-  return (
-    <div style={{ width: "92%" }}>
-      <div className={style.searchUser}>
-        <h1>Lista de usuarios</h1>
-
-        <SearchUser
-          setLoading={setLoading}
-          setUsers={setUsers}
-          setErrorSearch={setErrorSearch}
-        />
-      </div>
-      <div style={{ height: "550px", overflowY: "scroll" }}>
-        {loading && (
-          <div
-            className={`spinner-border text-danger mb-2  ${style.spinner}`}
-            role="status"
-          >
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        )}
-        {!loading && errorSearch.status && (
-          <div className="alert alert-danger" role="alert">
-            {errorSearch.message}
-          </div>
-        )}
-        <TablaAllUsers
-          data={users}
-          editRole={editRole}
-          setEditRole={setEditRole}
-          suspender={suspender}
-          setSuspender={setSuspender}
-          handleChange={handleChange}
-          getUserById={getUserById}
-        />
-      </div>
-    </div>
+  const { data, isLoading, isError, error } = useQuery(
+    "usuarios",
+    getAllUsuarios
   );
+
+  useEffect(() => {}, [data]);
+
+  const columns = [
+    {
+      header: "ID",
+      accessorKey: "customId",
+    },
+    {
+      header: "Nombre y Apellido",
+      accessorKey: "apellido",
+      cell: ({ row }) => (
+        <Link
+          to={`/admin/panel/usuario/${row.original._id}`}
+        >{`${row.original.apellido} ${row.original.nombre}`}</Link>
+      ),
+    },
+
+    {
+      header: "Actividad",
+      accessorKey: "activity",
+      accessorFn: (row) => {
+        if (row.activity && row.status) {
+          return row.activity[0]?.name;
+        }
+        if (row.activity && !row.status) {
+          return "-";
+        }
+        if (!row.activity) {
+          return "-";
+        }
+      },
+    },
+    {
+      header: "Horario",
+      accessorKey: "horario",
+      accessorFn: (row) => {
+        if (row.activity && row.status) {
+          return `${row.activity[0]?.hourStart} - ${row.activity[0]?.hourFinish}`;
+        }
+        if (row.activity && !row.status) {
+          return "Esperando Habilitacion";
+        }
+        if (!row.activity) {
+          return "No tiene actividad";
+        }
+      },
+    },
+    {
+      header: "Dias",
+      accessorKey: "dias",
+      accessorFn: (row) => {
+        if (row.activity && row.status) {
+          return row.activity[0]?.date.join(" - ");
+        }
+        if (row.activity && !row.status) {
+          return "-";
+        }
+        if (!row.activity) {
+          return "-";
+        }
+      },
+    },
+
+    //hacer buttons para habilitar y deshabilitar
+    {
+      header: "Asistencia",
+      accessorKey: "asistencia",
+      accessorFn: (row) => {
+        return row.asistencia[row.asistencia.length]
+          ? row.asistencia[row.asistencia.length]
+          : "No se registran";
+      },
+    },
+  ];
+  if (data?.users) {
+    return (
+      <div>
+        <Tabla data={data.users} columns={columns} />
+      </div>
+    );
+  }
 }
 
 export default ListaUsuarios;

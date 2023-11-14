@@ -15,26 +15,25 @@ export const Socket = (io) => {
 
     socket.on("agregar-usuario", async (args) => {
       const result = await addUser(args);
-      //si el resultado es un error lo enviamos al cliente pero solo al cliente que lo envio quiero que lo escuche solo el
 
       if (!result.ok) {
         socket.emit("lista-usuarios", result);
       } else {
-        //si no es un error enviamos el resultado a todos los clientes conectados
         io.emit("lista-usuarios", result);
       }
     });
+
     socket.on("agregar-usuario-turno-siguiente", async (args) => {
       const result = await addUserNextTurn(args);
       if (!result.ok) {
         socket.emit("lista-usuarios-siguient-turno", result);
       } else {
-        //si no es un error enviamos el resultado a todos los clientes conectados
         io.emit("lista-usuarios-siguient-turno", result);
       }
     });
 
     socket.on("cambiar-turno", async (args) => {
+      console.log(args);
       const result = await cambioDeTurno(args);
 
       io.emit("cambiar-turno", result);

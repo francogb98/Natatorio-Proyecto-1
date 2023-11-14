@@ -10,6 +10,7 @@ import { createActivity } from "../controllers/activitys/createActivity.js";
 import { deleteActivity } from "../controllers/activitys/deleteActivity.js";
 import { getNameActivitys } from "../controllers/activitys/getNameActivitys.js";
 import { getActividadesByNames } from "../controllers/activitys/getActivitysByName.js";
+import { getUsersFromActivity } from "../controllers/activitys/usuariosSegunDiaYHora.js";
 
 const routerActivity = Router();
 
@@ -24,5 +25,7 @@ routerActivity.post("/getActivitiesByDate", validarJWT, getActivitiesByDate);
 
 //ruta para eliminar actividad
 routerActivity.delete("/deleteActivity/:id", validarJWT, deleteActivity);
+
+routerActivity.get("/getUsersFromActivity", validarJWT, getUsersFromActivity);
 
 export default routerActivity;

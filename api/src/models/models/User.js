@@ -124,6 +124,10 @@ const schema = new mongoose.Schema({
     type: String,
     minlength: 3,
   },
+  mensaje: {
+    type: String,
+    minlength: 3,
+  },
 });
 
 export default mongoose.model("User", schema);

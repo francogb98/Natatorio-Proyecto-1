@@ -3,84 +3,107 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
+import { useLocation } from "react-router-dom";
+
 import style from "./home.module.css";
 
 function NavBar() {
   const { cerrarSesion } = useContext(AuthContext);
+
+  const location = useLocation();
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100%",
-        justifyContent: "center",
-      }}
-    >
-      <button
-        className={`btn btn-primary ${style.buttonMenu}`}
-        type="button"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasRight"
-        aria-controls="offcanvasRight"
-        style={{ position: "fixed", top: "0", left: "0", height: "50px" }}
-      >
-        Mostrar Menu
-      </button>
+    <nav className={style.menu}>
+      <Link to="panel/inicio" className={style.link}>
+        {location.pathname === "/admin/panel/inicio" ? (
+          <i className="bi bi-house-fill"></i>
+        ) : (
+          <i className="bi bi-house"></i>
+        )}
+        Inicio
+      </Link>
 
-      <div
-        className="offcanvas offcanvas-start"
-        tabIndex="-1"
-        id="offcanvasRight"
-        aria-labelledby="offcanvasRightLabel"
-        style={{ width: "250px" }}
-      >
-        <div className={`offcanvas-header ${style.header}`}>
-          <button
-            type="button"
-            className="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          ></button>
-        </div>
-        {/* <div className="offcanvas-body"> */}
-        <nav className={style.navBar}>
-          <Link to="panel/inicio" className={style.link}>
-            Inicio
-          </Link>
-          <Link to="panel/piletas" className={style.link}>
-            Piletas
-          </Link>
-          <Link to="panel/usuarios" className={style.link}>
-            Lista Usuarios
-          </Link>
+      <Link to="panel/piletas" className={style.link}>
+        {
+          location.pathname === "/admin/panel/piletas" ? (
+            <i className="bi bi-tablet-landscape-fill"></i>
+          ) : (
+            <i className="bi bi-tablet-landscape"></i>
+          )
+          // <i className="bi bi-swimming"></i>
+        }
+        Piletas
+      </Link>
 
-          <Link to="panel/buscar-usuario" className={style.link}>
-            Buscar Usuario
-          </Link>
+      <Link to="panel/estadisticas" className={style.link}>
+        Estadisticas{" "}
+      </Link>
 
-          <Link to="panel/habilitar-usuario" className={style.link}>
-            Habilitar Usuario
-          </Link>
-
-          <Link to="panel/create" className={style.link}>
-            Crear Actividad
-          </Link>
-          <Link to="panel/actividades" className={style.link}>
-            Lista Actividades
-          </Link>
-          <Link to="panel/estadisticas" className={style.link}>
-            Estadisticas{" "}
-          </Link>
-
-          {/* boton para cerrar secion */}
-          <div className="py-2 px-1">
-            <button onClick={cerrarSesion} className="btn btn-danger ">
-              Cerrar Sesion
-            </button>
-          </div>
-        </nav>
-        {/* </div> */}
+      <div className="dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Actividades
+        </button>
+        <ul className="dropdown-menu">
+          <li>
+            <Link to="panel/create" className={style.link}>
+              Crear Actividad
+            </Link>
+          </li>
+          <li>
+            <Link to="panel/actividades" className={style.link}>
+              Lista Actividades
+            </Link>
+          </li>
+        </ul>
       </div>
-    </div>
+      <div className="dropdown">
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Usuarios
+        </button>
+        <ul className="dropdown-menu">
+          <li>
+            <Link to="panel/usuarios" className={style.link}>
+              {location.pathname === "/admin/panel/usuarios" ? (
+                <i className="bi bi-person-lines-fill"></i>
+              ) : (
+                <i
+                  className="bi bi-person-lines-fill"
+                  style={{ color: "red" }}
+                ></i>
+              )}
+              Lista Usuarios
+            </Link>
+          </li>
+          <li>
+            {" "}
+            <Link to="panel/buscar-usuario" className={style.link}>
+              Buscar Usuario
+            </Link>
+          </li>
+          <li>
+            {" "}
+            <Link to="panel/habilitar-usuario" className={style.link}>
+              Habilitar Usuario
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      <div className="py-2 px-1">
+        <button onClick={cerrarSesion} className="btn btn-danger ">
+          Cerrar Sesion
+        </button>
+      </div>
+    </nav>
   );
 }
 

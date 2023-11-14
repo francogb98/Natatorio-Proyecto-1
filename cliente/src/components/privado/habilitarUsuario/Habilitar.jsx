@@ -1,13 +1,18 @@
-import { useQuery, useMutation } from "react-query";
-import TablaUsuarios from "./TablaUsuarios";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
-import { getUser } from "../../../helpers/getInfoUser";
+import { getUser } from "../../../helpers/usersFetch/getInfoUser";
 
 //traigo todos los usuarios para habilitar
 
 import { getUsuarios } from "../../../helpers/getUsers";
 
+import { inhabilitarUsuario } from "../../../helpers/usersFetch/inhabilitarUsuario";
+
 import User from "../UserInfo/User";
+import Tabla from "../../../utilidades/Tabla";
+import style from "./style.module.css";
+import avatar from "../../../helpers/avatar.webp";
+import { Link } from "react-router-dom";
 
 function Habilitar() {
   const { data, isSuccess, status, isLoading, refetch, isRefetching } =
@@ -16,11 +21,59 @@ function Habilitar() {
       queryFn: getUsuarios,
     });
 
-  const getUserById = useMutation({
-    mutationFn: getUser,
-    onSuccess: (data) => {},
-    onError: (error) => {},
-  });
+  const columns = [
+    {
+      header: "ID",
+      accessorKey: "customId",
+    },
+    {
+      header: "Nombre y Apellido",
+      accessorKey: "apellido",
+      cell: ({ row }) => (
+        <div>{`${row.original.apellido} ${row.original.nombre}`}</div>
+      ),
+    },
+
+    {
+      header: "Actividad",
+      accessorKey: "activity",
+      accessorFn: (row) => {
+        return row.activity ? row.activity[0]?.name : "no tiene";
+      },
+    },
+    {
+      header: "Horario",
+      accessorKey: "horario",
+      accessorFn: (row) => {
+        return row.activity
+          ? `${row.activity[0]?.hourStart} - ${row.activity[0]?.hourFinish}`
+          : "no tiene";
+      },
+    },
+    {
+      header: "Dias",
+      accessorKey: "dias",
+      accessorFn: (row) => {
+        return row.activity
+          ? `${row.activity[0]?.date.join(" - ")}`
+          : "no tiene";
+      },
+    },
+
+    //hacer buttons para habilitar y deshabilitar
+    {
+      header: "Habilitar",
+      accessorKey: "habilitar",
+      cell: ({ row }) => (
+        <Link
+          to={`/admin/panel/usuario/${row.original._id}`}
+          className="btn btn-success"
+        >
+          Habilitar
+        </Link>
+      ),
+    },
+  ];
 
   if (isLoading) {
     return <div>Cargando...</div>;
@@ -34,56 +87,27 @@ function Habilitar() {
     return <div>No hay usuarios para habilitar</div>;
   }
 
-  if (getUserById.isSuccess) {
-    return <User getUserById={getUserById} />;
-  }
-
   return (
-    <div
-      style={{
-        width: "100%",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div>
-        <button
-          onClick={refetch}
-          className="btn btn-lg btn-warning mt-3 mb-3"
-          style={{ width: "400px", margin: "auto", display: "block" }}
-        >
-          Recargar
-        </button>
-
-        {isRefetching ? (
-          <div
-            style={{ margin: "auto", display: "block", width: "fit-content" }}
-          >
-            <h3>Recargando...</h3>
-          </div>
-        ) : null}
-      </div>
-
-      {isSuccess && (
-        <div
+    <div className={style.body}>
+      <section>
+        <header
           style={{
-            display: "grid",
-            gridTemplateColumns: "800px 1fr",
-            padding: "50px",
-            gap: "20px",
-            marginTop: "-35px",
+            width: "fit-content",
+            margin: "10px auto",
           }}
         >
-          <TablaUsuarios
-            data={data}
-            getUserById={getUserById}
-            refetch={refetch}
-          />
-        </div>
-      )}
+          <button className="btn btn-lg btn-warning" onClick={() => refetch()}>
+            Recargar
+          </button>
+        </header>
+        {isRefetching && (
+          <div className="alert alert-info" role="alert">
+            Recargando...
+          </div>
+        )}
+
+        <Tabla data={data.users} columns={columns} />
+      </section>
     </div>
   );
 }

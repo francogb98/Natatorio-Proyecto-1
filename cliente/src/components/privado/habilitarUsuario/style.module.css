@@ -1,0 +1,22 @@
+.body {
+  display: flex;
+}
+
+.body section {
+  padding-left: 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+@media screen and (max-width: 360px) {
+  .body section {
+    padding: 40px;
+    overflow: auto;
+  }
+}

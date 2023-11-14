@@ -1,6 +1,6 @@
-import { baseUrl } from "./url";
+import { baseUrl } from "../url";
 
-export const changeRol = async ({ content }) => {
+export const changeRol = async (content) => {
   const resp = await fetch(baseUrl + "user/cambiarRole", {
     method: "POST",
     headers: {

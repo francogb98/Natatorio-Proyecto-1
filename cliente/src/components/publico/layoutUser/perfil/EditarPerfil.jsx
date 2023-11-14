@@ -1,27 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { baseUrl } from "../../../../helpers/url";
+
 import Swal from "sweetalert2";
 
 import style from "./style.module.css";
 
-const editarPerfilFetch = async (data) => {
-  const response = await fetch(baseUrl + "user/editarUsuario", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  const res = await response.json();
-
-  return res;
-};
+import Actividades from "./Actividades";
+import { editarPerfilFetch } from "../../../../helpers/usersFetch/editarPerfli";
 
 function EditarPerfil({ usuario }) {
   // Crear un estado local para rastrear los cambios
   const [formValues, setFormValues] = useState(usuario);
+
+  const [edicionActiva, setEdicionActiva] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -36,6 +27,7 @@ function EditarPerfil({ usuario }) {
       });
 
       queryClient.invalidateQueries("getUser");
+      setEdicionActiva(!edicionActiva);
     },
     onError: (error) => {
       Swal.fire({
@@ -50,15 +42,21 @@ function EditarPerfil({ usuario }) {
   // Manejar cambios en los campos del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormValues({
       ...formValues,
       [name]: value,
     });
   };
 
+  useEffect(() => {
+    setFormValues(usuario);
+  }, [usuario]);
+
   // Enviar la solicitud al backend
   const handleSubmit = (e) => {
     e.preventDefault();
+
     // Aquí puedes enviar 'formValues' al backend usando una función o biblioteca para hacer peticiones HTTP.
     editarPerfil.mutate(formValues);
   };
@@ -77,7 +75,6 @@ function EditarPerfil({ usuario }) {
       key !== "_id" &&
       key !== "asistencia" &&
       key !== "__v" &&
-      key !== "dni" &&
       key !== "foto" &&
       key !== "emailVerified" &&
       key !== "emailVerificationToken" &&
@@ -90,8 +87,6 @@ function EditarPerfil({ usuario }) {
     }
   };
 
-  const [edicionActiva, setEdicionActiva] = useState(false);
-
   return (
     <div>
       <div className={style.info}>
@@ -99,46 +94,9 @@ function EditarPerfil({ usuario }) {
         <p>{usuario.customId}</p>
       </div>
 
-      <div>
-        {!usuario.status && usuario.activity?.length > 0 ? (
-          <div className={style.info}>
-            <label htmlFor="">Actividad:</label>
-            <p>Esperando confirmacion</p>
-          </div>
-        ) : null}
-        {usuario.status && usuario.activity?.length > 0 ? (
-          <>
-            <div className={style.body__activity}>
-              <div className={style.info}>
-                <label htmlFor="">Actividad:</label>
+      <Actividades usuario={usuario} />
 
-                <p>{usuario.activity[0].name}</p>
-                {/* icono de X para dar de baja */}
-              </div>
-              <div className={style.info}>
-                <label htmlFor="">Dias:</label>
-                <p>{usuario.activity[0].date.join(" - ")}</p>
-              </div>
-              <div className={style.info}>
-                <label htmlFor="">Horario:</label>
-                <p>
-                  {usuario.activity[0].hourStart} -{" "}
-                  {usuario.activity[0].hourFinish}
-                </p>
-              </div>
-              <button>Dar de baja</button>
-            </div>
-          </>
-        ) : null}
-        {usuario.status && usuario.activity?.length === 0 ? (
-          <div className={style.info}>
-            <label htmlFor="">Actividad:</label>
-            <p>No tienes actividad</p>
-          </div>
-        ) : null}
-      </div>
-
-      <form action="">
+      <form action="" className={style.form}>
         {Object.keys(usuario).map((key) => {
           if (verificarKey(key)) {
             return (
@@ -151,11 +109,14 @@ function EditarPerfil({ usuario }) {
                     {edicionActiva ? (
                       <input
                         type="text"
-                        value={usuario[key]}
-                        onChange={(e) => handleInputChange(key, e.target.value)}
+                        name={key}
+                        value={formValues[key]}
+                        onChange={handleInputChange}
                       />
                     ) : (
-                      <p>{usuario[key] ? usuario[key] : "No"}</p>
+                      <div className={style.text}>
+                        <p>{usuario[key] ? usuario[key] : "No"}</p>
+                      </div>
                     )}
                   </>
                 )}
@@ -164,13 +125,24 @@ function EditarPerfil({ usuario }) {
           }
         })}
 
+        {
+          editarPerfil.isLoading ? (
+            //spinner
+            <div style={{ width: "100%", textAlign: "center" }}>
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          ) : null // Si la solicitud está en progreso, deshabilita el botón de enviar
+        }
+
         {!edicionActiva ? (
           <button
             className={style.button__editar}
             onClick={() => setEdicionActiva(!edicionActiva)}
           >
             Editar Informacion
-            <i class="bi bi-pencil"></i>
+            <i className="bi bi-pencil"></i>
           </button>
         ) : (
           <div className={style.buttons}>

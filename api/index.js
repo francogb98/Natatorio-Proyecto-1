@@ -15,6 +15,8 @@ import routerHours from "./src/routes/hours.js";
 import { Socket } from "./src/models/models/Socket.js";
 import routerStadistics from "./src/routes/stadistics.js";
 
+import morgan from "morgan";
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -33,6 +35,8 @@ app.use("/activity", routerActivity);
 app.use("/hour", routerHours);
 app.use("/pileta", routerPileta);
 app.use("/stadistics", routerStadistics);
+
+app.use(morgan("dev"));
 
 Socket(io);
 

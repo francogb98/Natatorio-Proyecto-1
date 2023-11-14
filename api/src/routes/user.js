@@ -21,11 +21,12 @@ import { cambiarRole } from "../controllers/users/cambiarRole.js";
 import { searchUserByname } from "../controllers/users/searchUserByName.js";
 import { getAllUsersForHour } from "../controllers/users/getAllUserForHour.js";
 import editarUsuario from "../controllers/users/editarUsuario.js";
+import { darDeBajaActividad } from "../controllers/users/darDeBajaActividad.js";
 
 const router = Router();
 
 router.get("/infoUser/:token", getUser);
-router.get("/getAllUser", getAllUserForHability);
+router.get("/getAllUsers/paraHabilitar", getAllUserForHability);
 
 router.get("/getAllUsers", getAllUsers);
 router.get("/getAllUsers/:hour", getAllUsersForHour);
@@ -33,8 +34,8 @@ router.get("/getAllUsers/:hour", getAllUsersForHour);
 //busqueda por nombre por
 
 router.get("/searchUserByName/:name", validarJWT, searchUserByname);
+router.get("/getinfoUser/:id", validarJWT, getUserById);
 
-router.post("/infoUser", getUserById);
 router.post("/cargaFicha", cargaFicha);
 
 router.post("/create", createUser);
@@ -43,7 +44,7 @@ router.post("/login", loginUser);
 
 //creo las dos rutas para habilitar y desabilitar ususarios
 router.post("/deshabilitar", validarJWT, DeshabilitarUser);
-router.post("/habilitar", validarJWT, HabilitarUser);
+router.post("/habilitar/:id", validarJWT, HabilitarUser);
 
 router.post("/suspenderUsuario", validarJWT, suspenderUsuario);
 router.post("/cambiarRole", validarJWT, cambiarRole);
@@ -51,5 +52,7 @@ router.post("/cambiarRole", validarJWT, cambiarRole);
 router.post("/resgisterActivity", validarJWT, addUserFromActivity);
 
 router.post("/editarUsuario", editarUsuario);
+
+router.post("/darDeBajaActividad", validarJWT, darDeBajaActividad);
 
 export default router;

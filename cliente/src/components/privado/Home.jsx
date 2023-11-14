@@ -9,13 +9,7 @@ function Home() {
     <div className={style.bodyHome}>
       <NavBar />
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <div>
         <Outlet />
       </div>
     </div>

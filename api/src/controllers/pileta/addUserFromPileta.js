@@ -60,10 +60,15 @@ export const addUser = async (args) => {
     if (horaActual.length < 5) {
       horaActual = `0${horaActual}`;
     }
+    if (HoraFinalTurno.length < 5) {
+      HoraFinalTurno = `0${HoraFinalTurno}`;
+    }
     //busco al usuario
-    const user = await User.findOne({ customId: id.id }).populate({
+    const user = await User.findOne({ customId: id }).populate({
       path: "activity",
     });
+
+    console.log(user);
 
     //si el usuario no existe devolvemos un error
     if (!user) {
@@ -89,7 +94,6 @@ export const addUser = async (args) => {
       },
       {
         $addToSet: {
-          // Utiliza $addToSet en lugar de $push
           users: user._id,
         },
       },
@@ -103,10 +107,6 @@ export const addUser = async (args) => {
       },
     });
 
-    // if (!piletaExist) {
-    //   return { ok: false, msg: "El usuario ya esta en la lista" };
-    // }
-
     const dateNow = new Date();
     const day = dateNow.getDate();
     const month = dateNow.getMonth() + 1;
@@ -117,25 +117,6 @@ export const addUser = async (args) => {
     //actualiso el campo de asistncia del suario que es un array
     user.asistencia.push(dateNowSave);
     await user.save();
-
-    //-----------------ACTUALIZO LAS ESTADISTICAS-------------
-    //necesito acceder al mes en espyearl
-    const monthSpanish = dateNow.toLocaleString("es-ES", { month: "long" });
-    //acceder al year con los 4 digitos
-    const yearSpanish = dateNow.toLocaleString("es-ES", { year: "numeric" });
-
-    const resp = await actualizarEstadisticas({
-      activity: user.activity[0]._id,
-      mes: monthSpanish,
-      year: yearSpanish,
-    });
-
-    if (!resp.ok) {
-      return { ok: false, msg: "Error al actualizar las estadisticas" };
-    }
-    console.log(resp.stadistics);
-
-    //----------------------------------------------------------
 
     return { ok: true, piletaExist, user };
   } catch (error) {
@@ -234,6 +215,11 @@ export const cambioDeTurno = async (args) => {
   const { horaActual } = args;
 
   try {
+    if (horaActual.length < 5) {
+      horaActual = `0${horaActual}`;
+    }
+
+    console.log(horaActual);
     // -------------extraigo informacion de las piletas -----------
     const resp = await Pileta.findOne({
       pileta: "turnoSiguiente",

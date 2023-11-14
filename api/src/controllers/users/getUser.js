@@ -19,11 +19,10 @@ export const getUser = async (req, res) => {
   }
 };
 export const getUserById = async (req, res) => {
-  console.log("me ejcute");
   try {
-    const { id } = req.body;
-    console.log(id);
-    const user = await User.findOne({ customId: id }).populate({
+    const { id } = req.params;
+
+    const user = await User.findOne({ _id: id }).populate({
       path: "activity",
       populate: {
         path: "name",
@@ -35,8 +34,6 @@ export const getUserById = async (req, res) => {
         .status(404)
         .json({ status: "error", message: "Usuario no Encontrado" });
 
-    console.log(user);
-
     res.status(200).json({ status: "success", user });
   } catch (error) {
     res.status(404).json({ status: "error", message: error.message });
@@ -44,14 +41,18 @@ export const getUserById = async (req, res) => {
 };
 
 export const getAllUserForHability = async (req, res) => {
+  console.log("llegue aca");
   try {
     //quiero devolver solo los usuarios que tengn sus status en false
-    const users = await User.find({ status: false }).populate({
+    let users = await User.find({ status: false }).populate({
       path: "activity",
       populate: {
         path: "name",
       },
     });
+
+    //los usuarios que tengan un array vacio o no tengan actividad, los borro del array de usuarios asi no los retorne al cleinte
+    users = users.filter((user) => user.activity.length > 0);
 
     res.status(200).json({ status: "success", users });
   } catch (error) {

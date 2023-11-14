@@ -90,13 +90,17 @@ function HomeUserPublic() {
       <div className={style.containerHome}>
         <header>
           <img src={user.foto} alt="" width="100" />
-          <h1>
+          <h4>
             Bienvienida {user.nombre} {user.apellido}
-          </h1>
+          </h4>
+          <h5>
+            Numero de usuario :{" "}
+            <span className="text-danger">{user.customId}</span>
+          </h5>
           <hr />
         </header>
 
-        <main>
+        <main className="mt-3">
           {location.pathname === "/user/home" ? <HomeUser user={user} /> : null}
           {location.pathname === "/user/inscripcion" ? (
             <Inscripcion user={user} />

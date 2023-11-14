@@ -11,6 +11,8 @@ export default async (req, res) => {
     dniTutor,
     nombreTutor,
     apellidoTutor,
+    telefono,
+    telefonoContacto,
   } = req.body;
 
   console.log(req.body);
@@ -37,7 +39,8 @@ export default async (req, res) => {
     user.dniTutor = dniTutor;
     user.nombreTutor = nombreTutor;
     user.apellidoTutor = apellidoTutor;
-
+    user.telefono = telefono;
+    user.telefonoContacto = telefonoContacto;
     await user.save();
 
     res.status(200).json({

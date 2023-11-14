@@ -118,7 +118,7 @@ function TablaActividades({ actividad, setActividadSeleccionada }) {
     <>
       <h4>Actividad : {actividad}</h4>
       <i
-        class="bi bi-arrow-left-circle"
+        className="bi bi-arrow-left-circle"
         onClick={() => {
           setActividadSeleccionada(null);
         }}
