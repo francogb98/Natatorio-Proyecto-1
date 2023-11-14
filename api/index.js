@@ -40,6 +40,6 @@ app.use(morgan("dev"));
 
 Socket(io);
 
-server.listen(process.env.PORT, () => {
+server.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("Socket.IO server listening on port", process.env.PORT);
 });
