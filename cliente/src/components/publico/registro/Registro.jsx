@@ -87,6 +87,11 @@ function Registro() {
   };
 
   const handleNext = () => {
+    setError({
+      status: false,
+      message: "",
+    });
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     function esCorreoElectronico(email) {
