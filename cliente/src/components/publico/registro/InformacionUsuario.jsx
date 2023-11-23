@@ -2,7 +2,13 @@ import React from "react";
 
 import style from "./styleFormulario.module.css";
 
-function InformacionUsuario({ setUsuario, usuario, esMenor, handleDni }) {
+function InformacionUsuario({
+  setUsuario,
+  usuario,
+  esMenor,
+  handleDni,
+  handleTelefono,
+}) {
   return (
     <div>
       <div className="mb-2">
@@ -35,6 +41,7 @@ function InformacionUsuario({ setUsuario, usuario, esMenor, handleDni }) {
         <input
           type="number"
           name="dni"
+          placeholder="38568955"
           value={usuario.dni}
           className="form-control"
           onChange={handleDni}
@@ -49,10 +56,9 @@ function InformacionUsuario({ setUsuario, usuario, esMenor, handleDni }) {
               type="number"
               name="telefono"
               value={usuario.telefono}
+              placeholder="3856895566"
               className="form-control"
-              onChange={(e) => {
-                setUsuario({ ...usuario, telefono: e.target.value });
-              }}
+              onChange={handleTelefono}
             />
           </div>
           <div className="mb-2">
@@ -64,9 +70,8 @@ function InformacionUsuario({ setUsuario, usuario, esMenor, handleDni }) {
               name="telefonoContacto"
               className="form-control"
               id="telefonoContacto"
-              onChange={(e) => {
-                setUsuario({ ...usuario, telefonoContacto: e.target.value });
-              }}
+              placeholder="3856895566"
+              onChange={handleTelefono}
               value={usuario.telefonoContacto}
             />
           </div>
@@ -76,7 +81,7 @@ function InformacionUsuario({ setUsuario, usuario, esMenor, handleDni }) {
               type="email"
               name="email"
               className="form-control"
-              placeholder="Enter Email"
+              placeholder="correo@gmail.com"
               onChange={(e) => {
                 setUsuario({ ...usuario, email: e.target.value });
               }}

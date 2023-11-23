@@ -95,6 +95,15 @@ function Registro() {
     setUsuario({ ...usuario, [e.target.name]: e.target.value });
   };
 
+  const handleTelefono = (e) => {
+    //que no pueda escribir mas de 8 numeros
+    if (e.target.value.length > 15) {
+      return null;
+    }
+
+    setUsuario({ ...usuario, [e.target.name]: e.target.value });
+  };
+
   const handleNext = () => {
     setError({
       status: false,
@@ -343,6 +352,7 @@ function Registro() {
                   usuario={usuario}
                   esMenor={esMenor}
                   handleDni={handleDni}
+                  handleTelefono={handleTelefono}
                 />
                 <Barrio setUsuario={setUsuario} usuario={usuario} />
               </>
@@ -355,6 +365,7 @@ function Registro() {
                 setUsuario={setUsuario}
                 usuario={usuario}
                 handleDni={handleDni}
+                handleTelefono={handleTelefono}
               />
             )}
 

@@ -2,7 +2,7 @@ import React from "react";
 
 import style from "./styleFormulario.module.css";
 
-function InformacionTutor({ setUsuario, usuario, handleDni }) {
+function InformacionTutor({ setUsuario, usuario, handleDni, handleTelefono }) {
   return (
     <div>
       <div className={`${style.formularioTutor}`}>
@@ -41,6 +41,7 @@ function InformacionTutor({ setUsuario, usuario, handleDni }) {
           name="dniTutor"
           className="form-control"
           id="dniTutor"
+          placeholder="38568955"
           onChange={handleDni}
           value={usuario.dniTutor}
         />
@@ -52,6 +53,7 @@ function InformacionTutor({ setUsuario, usuario, handleDni }) {
           name="emailTutor"
           className="form-control"
           id="emailTutor"
+          placeholder="correo@gmail.com"
           onChange={(e) => {
             setUsuario({ ...usuario, emailTutor: e.target.value });
           }}
@@ -66,9 +68,8 @@ function InformacionTutor({ setUsuario, usuario, handleDni }) {
           name="telefonoTutor"
           className="form-control"
           id="telefonoTutor"
-          onChange={(e) => {
-            setUsuario({ ...usuario, telefonoTutor: e.target.value });
-          }}
+          placeholder="3856895566"
+          onChange={handleTelefono}
           value={usuario.telefonoTutor}
         />
 
@@ -80,9 +81,8 @@ function InformacionTutor({ setUsuario, usuario, handleDni }) {
           name="telefonoContacto"
           className="form-control"
           id="telefonoContacto"
-          onChange={(e) => {
-            setUsuario({ ...usuario, telefonoContacto: e.target.value });
-          }}
+          placeholder="3856895566"
+          onChange={handleTelefono}
           value={usuario.telefonoContacto}
         />
       </div>
