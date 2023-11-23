@@ -1,7 +1,7 @@
 import { baseUrl } from "../url";
 
 export const reinicarPileta = async (pileta) => {
-  console.log(pileta);
+  pileta;
   const url = `${baseUrl}pileta/restart`;
   const token = localStorage.getItem("token") || "";
 

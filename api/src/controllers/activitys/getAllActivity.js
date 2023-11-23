@@ -1,5 +1,6 @@
-import User from "../../models/models/User.js";
 import Activity from "../../models/models/Actividades.js";
+
+import Pileta from "../../models/models/Pileta.js";
 
 export const getActivities = async (req, res) => {
   try {
@@ -24,13 +25,22 @@ export const getActivities = async (req, res) => {
 };
 
 export const getActivitiesByDate = async (req, res) => {
-  let { date, hourStart } = req.body;
+  //accedo al dia y hora
 
-  console.log(date, hourStart);
-  //si hour start teiene este formato 8:00 lo convertimos en 08:00, osea que si antes de los dos puntos hay un solo numero le agregamos un 0
+  let hourStart = new Date().getHours();
+
+  //accedi al da en español
+
+  let date = new Date().toLocaleDateString("es-ES", {
+    weekday: "long",
+  });
+
+  date = date.charAt(0).toUpperCase() + date.slice(1);
 
   if (hourStart.length === 4) {
-    hourStart = `0${hourStart}`;
+    hourStart = `0${hourStart}:00`;
+  } else {
+    hourStart = `${hourStart}:00`;
   }
 
   try {
@@ -42,16 +52,34 @@ export const getActivitiesByDate = async (req, res) => {
       ],
     }).populate({
       path: "users",
-      populate: { path: "activity" },
     });
 
-    const usersData = activity.map((item) => item.users);
+    const usersArray = [];
+
+    const userPileta = [];
+
+    activity.map((item) => item.users.map((user) => usersArray.push(user)));
+
+    const piletas = await Pileta.find({}).populate({
+      path: "users",
+    });
+
+    //de la propiedad users de piletas, filtro los usuarios que coincidan con los de usersArray
+    piletas.map((item) => item.users.map((user) => userPileta.push(user)));
+
+    const sonIguales = (usuario1, usuario2) =>
+      usuario1._id.toString() === usuario2._id.toString();
+
+    // Filtrar usuarios únicos en arr1
+    const uniqueArr1 = usersArray.filter(
+      (user1) => !userPileta.some((user2) => sonIguales(user1, user2))
+    );
 
     return res.status(200).json({
       status: "success",
       message: "Actividades encontradas",
-
-      users: usersData,
+      users: uniqueArr1,
+      totalUsuarios: uniqueArr1.length,
     });
   } catch (error) {
     return res.status(400).json({

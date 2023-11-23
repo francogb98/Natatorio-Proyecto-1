@@ -6,7 +6,7 @@ function Estadisticas() {
   const { data, isLoading } = useQuery("getEstadisticas", getEstadisticas);
 
   useEffect(() => {
-    console.log(data);
+    data;
   }, [data]);
 
   return (

@@ -85,7 +85,7 @@ function TablaActividades({ actividad, setActividadSeleccionada }) {
   }, []);
 
   useEffect(() => {
-    console.log(getActividades.data);
+    getActividades.data;
   }, [getActividades.isLoading]);
 
   if (getActividades.isLoading || getHours.isLoading) {

@@ -15,7 +15,7 @@ export default async (req, res) => {
     telefonoContacto,
   } = req.body;
 
-  console.log(req.body);
+  req.body;
   try {
     //busco el usuario por su id
 

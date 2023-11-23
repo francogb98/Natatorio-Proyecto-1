@@ -4,10 +4,10 @@ export const getAllUsersForHour = async (req, res) => {
   const { hour } = req.params;
 
   try {
-    console.log(hour);
+    hour;
     const users = await User.find({ hourStart: hour });
     res.json(users);
   } catch (error) {
-    console.log(error.message);
+    error.message;
   }
 };

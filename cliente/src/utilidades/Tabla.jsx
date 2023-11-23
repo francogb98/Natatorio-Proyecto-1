@@ -76,34 +76,43 @@ function Tabla({ data, columns }) {
       {/* paginacion */}
 
       <div className={style.pagination}>
-        <button
-          onClick={() => {
-            table.setPageIndex(0);
-          }}
-        >
-          Primera Pagina
-        </button>
-        <button
-          onClick={() => {
-            table.previousPage();
-          }}
-        >
-          <i className="bi bi-arrow-left"></i>
-        </button>
-        <button
-          onClick={() => {
-            table.nextPage();
-          }}
-        >
-          <i className="bi bi-arrow-right"></i>
-        </button>
-        <button
-          onClick={() => {
-            table.setPageIndex(table.getPageCount() - 1);
-          }}
-        >
-          Ultima Pagina
-        </button>
+        {table.getCanPreviousPage() && (
+          <>
+            <button
+              onClick={() => {
+                table.setPageIndex(0);
+              }}
+            >
+              Primera Pagina
+            </button>
+            <button
+              onClick={() => {
+                table.previousPage();
+              }}
+            >
+              <i className="bi bi-arrow-left"></i>
+            </button>
+          </>
+        )}
+
+        {table.getCanNextPage() && (
+          <>
+            <button
+              onClick={() => {
+                table.nextPage();
+              }}
+            >
+              <i className="bi bi-arrow-right"></i>
+            </button>
+            <button
+              onClick={() => {
+                table.setPageIndex(table.getPageCount() - 1);
+              }}
+            >
+              Ultima Pagina
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

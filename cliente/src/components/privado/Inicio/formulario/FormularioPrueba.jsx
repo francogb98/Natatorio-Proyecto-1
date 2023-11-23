@@ -1,25 +1,19 @@
 import React from "react";
 
-function FormularioPrueba({
-  setLoading,
-  socket,
-  horaActual,
-  diaActualEnEspanol,
-}) {
+function FormularioPrueba({ setLoading, socket }) {
   const registrarUsuario = (e) => {
     e.preventDefault();
     setLoading(true);
-    socket?.emit("agregar-usuario", {
+    socket?.emit("autorizar", {
       id: e.target[0].value,
-      horaActual: horaActual + ":00",
-      HoraFinalTurno: parseInt(horaActual) + 1 + ":00",
-      dia: diaActualEnEspanol,
     });
+
+    e.target[0].value = "";
   };
 
   return (
     <form onSubmit={(e) => registrarUsuario(e)}>
-      <h5>Registrar Turno Actual</h5>
+      <h5>Autorizar</h5>
 
       <input type="text" />
       <button>Registrar</button>

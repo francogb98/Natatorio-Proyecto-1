@@ -41,7 +41,7 @@ export const getUserById = async (req, res) => {
 };
 
 export const getAllUserForHability = async (req, res) => {
-  console.log("llegue aca");
+  ("llegue aca");
   try {
     //quiero devolver solo los usuarios que tengn sus status en false
     let users = await User.find({ status: false }).populate({

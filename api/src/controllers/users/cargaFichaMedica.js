@@ -4,7 +4,7 @@ export const cargaFicha = async (req, res) => {
   try {
     const { archivo, id, tipo } = req.body;
 
-    console.log(req.body);
+    req.body;
 
     const user = await User.findOne({ _id: id });
 
@@ -41,7 +41,7 @@ export const cargaFicha = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    error;
     res.status(500).json({ status: "error", message: error.message });
   }
 };

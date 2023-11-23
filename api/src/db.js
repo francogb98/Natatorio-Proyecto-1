@@ -10,7 +10,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("connected MongoDB");
+    ("connected MongoDB");
   })
   .catch((error) => {
     console.error("error onnection to mongodb", error.message);

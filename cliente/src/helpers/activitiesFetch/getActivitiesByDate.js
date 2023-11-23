@@ -1,9 +1,8 @@
 import { baseUrl } from "../url";
 
-export const getActivitiesByDate = async (args) => {
-  const res = await fetch(baseUrl + "activity/getActivitiesByDate", {
-    method: "POST",
-    body: JSON.stringify(args),
+export const getActivitiesByDate = async () => {
+  const res = await fetch(baseUrl + "activity/getActividadesPorHora", {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       authorization: localStorage.getItem("token"),

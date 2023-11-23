@@ -22,7 +22,7 @@ function InsertarFoto({ setImageUrl, imageUrl, setUsuario, usuario }) {
     const fileReader = new FileReader();
     fileReader.onloadend = () => {
       setPreviewUrl(fileReader.result);
-      console.log(previewUrl);
+      previewUrl;
     };
     fileReader.readAsDataURL(selectedFile);
   };

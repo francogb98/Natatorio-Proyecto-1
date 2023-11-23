@@ -6,13 +6,13 @@ import { Resend } from "resend";
 export const addUserFromActivity = async (req, res) => {
   const { idActividad } = req.body;
 
-  console.log(idActividad);
+  idActividad;
   try {
     const user = await User.findOne({
       _id: req.user.id,
     });
 
-    console.log(user);
+    user;
     //verificamos si el usuario ya esta registrado en la actividad
     if (user.activity?.length) {
       return res.status(400).json({
@@ -54,7 +54,7 @@ export const addUserFromActivity = async (req, res) => {
 
     const userUpdate = await user.save();
 
-    console.log(userUpdate);
+    userUpdate;
 
     return res.status(200).json({
       status: "success",
@@ -106,7 +106,7 @@ export const DeshabilitarUser = async (req, res) => {
         `,
       })
       .then((response) => {
-        console.log("Email sent successfully:", response);
+        "Email sent successfully:", response;
       })
       .catch((error) => {
         console.error("Error sending email:", error);
@@ -182,7 +182,7 @@ export const HabilitarUser = async (req, res) => {
         `,
       })
       .then((response) => {
-        console.log("Email sent successfully:", response);
+        "Email sent successfully:", response;
       })
       .catch((error) => {
         console.error("Error sending email:", error);

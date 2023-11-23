@@ -13,7 +13,7 @@ routerStadistics.get("/getStadistics", validarJWT, async (req, res) => {
     });
     res.json({ status: "ok", stadistics });
   } catch (error) {
-    console.log(error);
+    error;
     res.json({ status: "error", message: "Error al obtener las estadisticas" });
   }
 });

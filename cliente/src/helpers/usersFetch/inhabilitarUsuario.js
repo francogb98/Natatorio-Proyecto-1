@@ -1,7 +1,7 @@
 import { baseUrl } from "../url";
 
 export const inhabilitarUsuario = async (data) => {
-  console.log(data);
+  data;
   const url = `${baseUrl}user/deshabilitar`;
 
   const resp = await fetch(url, {

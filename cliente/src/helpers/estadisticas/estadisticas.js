@@ -13,7 +13,7 @@ export const getEstadisticas = async () => {
     const data = await resp.json();
     return data;
   } catch (error) {
-    console.log(error);
+    error;
     return { status: "error", message: "Error al obtener las estadisticas" };
   }
 };

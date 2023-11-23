@@ -12,7 +12,7 @@ routerPileta.get("/getAll", getInfoPiletas);
 routerPileta.get("/getPiletas", getPiletasOrCreate);
 
 routerPileta.post("/add", (req, res) => {
-  console.log(req.body);
+  req.body;
   res.json({ status: "success", message: "Pileta Agregada" });
 });
 routerPileta.post("/restart", validarJWT, reiniciarPiletaManual);

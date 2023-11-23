@@ -7,13 +7,13 @@ import { actualizarEstadisticas } from "../stadistics/actualizarEstadisticas.js"
 const updateStadistics = async ({ user, dateNowSave }) => {
   try {
     //busco si existe un campo con el id de stadistics en la bdd
-    console.log(user.activity[0]._id);
+    user.activity[0]._id;
     const activity = await Activity.find({
       _id: user.activity[0]._id,
     }).populate({
       path: "stadistics",
     });
-    console.log(activity);
+    activity;
 
     //si no existe lo creo
 
@@ -48,27 +48,38 @@ const updateStadistics = async ({ user, dateNowSave }) => {
     // }
     return { ok: true };
   } catch (error) {
-    console.log(error.message);
+    error.message;
     return { ok: false, msg: "Error en el servidor" };
   }
 };
 
 export const addUser = async (args) => {
-  let { id, horaActual, dia, HoraFinalTurno } = args;
+  let { id } = args;
 
   try {
+    //acceder a la hora actual
+    const fechaActual = new Date();
+    let hora = fechaActual.getHours();
+    let horaActual = hora.toString() + ":00";
+    let HoraFinalTurno = parseInt(hora) + 1 + ":00";
+
     if (horaActual.length < 5) {
       horaActual = `0${horaActual}`;
     }
     if (HoraFinalTurno.length < 5) {
       HoraFinalTurno = `0${HoraFinalTurno}`;
     }
+
+    //accedo al dia actual en español
+
+    let dia = fechaActual.toLocaleDateString("es-AR", { weekday: "long" });
+
+    dia = dia.charAt(0).toUpperCase() + dia.slice(1);
+
     //busco al usuario
     const user = await User.findOne({ customId: id }).populate({
       path: "activity",
     });
-
-    console.log(user);
 
     //si el usuario no existe devolvemos un error
     if (!user) {
@@ -120,7 +131,7 @@ export const addUser = async (args) => {
 
     return { ok: true, piletaExist, user };
   } catch (error) {
-    console.log(error.message);
+    error.message;
     return { ok: false, msg: "Error en el servidor" };
   }
 };
@@ -206,7 +217,7 @@ export const addUserNextTurn = async (args) => {
 
     return { ok: true, piletaExist };
   } catch (error) {
-    console.log(error.message);
+    error.message;
     return { ok: false, msg: "Error en el servidor" };
   }
 };
@@ -219,7 +230,7 @@ export const cambioDeTurno = async (args) => {
       horaActual = `0${horaActual}`;
     }
 
-    console.log(horaActual);
+    horaActual;
     // -------------extraigo informacion de las piletas -----------
     const resp = await Pileta.findOne({
       pileta: "turnoSiguiente",
@@ -339,7 +350,7 @@ export const cambioDeTurno = async (args) => {
       }
     );
 
-    console.log("llegueaqui", updatedPileta);
+    "llegueaqui", updatedPileta;
 
     return { ok: true, msg: "Cambio de turno realizado con exito!" };
   } catch (error) {

@@ -3,14 +3,15 @@ import {
   addUserNextTurn,
   cambioDeTurno,
 } from "../../controllers/pileta/addUserFromPileta.js";
+import { autorizar } from "../../controllers/pileta/autorizar.js";
 import { finalizar } from "../../controllers/pileta/finalizarTurno.js";
 
 export const Socket = (io) => {
   io.on("connection", async (socket) => {
-    console.log("A user connected");
+    ("A user connected");
 
     socket.on("disconnect", () => {
-      console.log("User disconnected");
+      ("User disconnected");
     });
 
     socket.on("agregar-usuario", async (args) => {
@@ -25,6 +26,7 @@ export const Socket = (io) => {
 
     socket.on("agregar-usuario-turno-siguiente", async (args) => {
       const result = await addUserNextTurn(args);
+
       if (!result.ok) {
         socket.emit("lista-usuarios-siguient-turno", result);
       } else {
@@ -32,8 +34,19 @@ export const Socket = (io) => {
       }
     });
 
+    socket.on("autorizar", async (args) => {
+      const result = await autorizar({ id: args.id });
+
+      console.log(result);
+      if (!result.ok) {
+        socket.emit("autorizar", result);
+      } else {
+        io.emit("autorizar", result);
+      }
+    });
+
     socket.on("cambiar-turno", async (args) => {
-      console.log(args);
+      args;
       const result = await cambioDeTurno(args);
 
       io.emit("cambiar-turno", result);
@@ -46,7 +59,7 @@ export const Socket = (io) => {
     });
     // Aquí puedes definir lógica para enviar y recibir mensajes en tiempo real
     socket.on("chatMessage", (message) => {
-      console.log("Received message:", message);
+      "Received message:", message;
       io.emit("chatMessage", message); // Emitir el mensaje a todos los clientes conectados
     });
   });

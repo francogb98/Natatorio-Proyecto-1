@@ -23,6 +23,7 @@ import ListActivity from "../components/privado/actividadesLista/ListActivity";
 import UpdateFiles from "../components/publico/layoutUser/updateFiles/UpdateFiles";
 import HomeUser from "../components/publico/layoutUser/home/HomeUser";
 import User from "../components/privado/UserInfo/User";
+import PiletasInfo from "../components/privado/showPiletasInfo/PiletasInfo";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -80,7 +81,7 @@ function Routing() {
       (auth.logged && auth.role === "SUPER_ADMIN") ? (
         <Route path="/admin" element={<Home />}>
           <Route path="panel/inicio" element={<Inicio />} />
-          {/* <Route path="panel/piletas" element={<Piletas />} /> */}
+          <Route path="panel/piletas" element={<PiletasInfo />} />
           <Route path="panel/create" element={<CreateActivity />} />
           <Route path="panel/actividades" element={<ListActivity />} />
           <Route path="panel/buscar-usuario" element={<SearchUser />} />

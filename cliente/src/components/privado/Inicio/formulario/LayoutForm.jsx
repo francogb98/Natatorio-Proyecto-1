@@ -10,28 +10,20 @@ function LayoutForm({ socket, setCargando, userList }) {
     useDiaYHoraActual();
 
   return (
-    <section className={style.body}>
-      <div>
-        <h1>Turno Actual</h1>
-        <h2>
-          {diaActualEnEspanol} {horaActual}:00
-        </h2>
-      </div>
-      <div className={style.seccionForms}>
-        <FormularioPrueba
-          setLoading={setCargando}
-          socket={socket}
-          horaActual={horaActual}
-          diaActualEnEspanol={diaActualEnEspanol}
-        />
-        <FormularioTurnoSiguiente
-          setLoading={setCargando}
-          socket={socket}
-          horaActual={horaActual}
-          diaActualEnEspanol={diaActualEnEspanol}
-        />
-      </div>
-    </section>
+    <div className={style.seccionForms}>
+      <FormularioPrueba
+        setLoading={setCargando}
+        socket={socket}
+        horaActual={horaActual}
+        diaActualEnEspanol={diaActualEnEspanol}
+      />
+      <FormularioTurnoSiguiente
+        setLoading={setCargando}
+        socket={socket}
+        horaActual={horaActual}
+        diaActualEnEspanol={diaActualEnEspanol}
+      />
+    </div>
   );
 }
 
