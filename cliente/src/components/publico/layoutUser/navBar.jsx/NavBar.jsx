@@ -43,6 +43,18 @@ function NavBar({ user, location }) {
             <i className="bi bi-calendar2-check"></i>
           )}
         </Link>
+
+        <Link to={"notificaciones"} className={style.link}>
+          {location.pathname === "/user/notificaciones" ? (
+            <i className="bi bi-bell-fill"></i>
+          ) : (
+            <i type="button" className="bi bi-bell  position-relative">
+              <span className="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                <span className="visually-hidden">New alerts</span>
+              </span>
+            </i>
+          )}
+        </Link>
         <Link to={"perfil"} className={style.link}>
           {location.pathname === "/user/perfil" ? (
             <i className="bi bi-person-fill"></i>

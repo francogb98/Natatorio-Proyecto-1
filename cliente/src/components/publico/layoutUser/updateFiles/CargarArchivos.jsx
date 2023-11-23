@@ -144,10 +144,7 @@ function CargarArchivos({ usuario }) {
           Cargar archivo
         </button>
         <div className="mt-2 text-danger">
-          <p>
-            Si no tiene una ficha medica descargala haciendo{" "}
-            <span style={{ color: "blue" }}>CLICK AQUI</span>
-          </p>
+          <p>Si no tiene una ficha medica descargala haciendo click aqui</p>
           <a
             href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
             download="fichaMedica.pdf"

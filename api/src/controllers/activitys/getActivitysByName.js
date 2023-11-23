@@ -1,9 +1,18 @@
 import Activity from "../../models/models/Actividades.js";
+import User from "../../models/models/User.js";
 
 export const getActividadesByNames = async (req, res) => {
   const { activity } = req.body;
+  const { id } = req.user;
+
   try {
-    const activitys = await Activity.find({ name: activity }).sort({
+    const user = await User.findById(id);
+
+    const activitys = await Activity.find({
+      name: activity,
+      desde: { $lte: user.edad },
+      hasta: { $gte: user.edad },
+    }).sort({
       hourStart: 1,
     });
 

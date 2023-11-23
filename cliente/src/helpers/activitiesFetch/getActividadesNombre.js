@@ -7,6 +7,7 @@ export const getActividadesNombre = async () => {
       method: "GET",
       headers: {
         "Content-type": "application/json",
+        authorization: `${localStorage.getItem("token")}`,
       },
     });
     const { actividades } = await resp.json();

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import style from "./home.module.css";
 import NavBar from "./navBar.jsx/NavBar";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { getInfoUser } from "../../../helpers/fetch";
 import { useQuery } from "react-query";
 
@@ -88,15 +88,29 @@ function HomeUserPublic() {
   if (getUser.isSuccess) {
     return (
       <div className={style.containerHome}>
-        <header>
-          <img src={user.foto} alt="" width="100" />
+        <header className={style.header}>
           <h4>
-            Bienvienida {user.nombre} {user.apellido}
+            Bienvienida{" "}
+            <span>
+              {user.nombre} {user.apellido}
+            </span>
           </h4>
           <h5>
             Numero de usuario :{" "}
             <span className="text-danger">{user.customId}</span>
           </h5>
+
+          {/* <Link to={"notificaciones"} className={style.link}>
+            {location.pathname === "/user/notificaciones" ? (
+              <i type="button" class="bi bi-bell  position-relative">
+                <span class="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                  <span class="visually-hidden">New alerts</span>
+                </span>
+              </i>
+            ) : (
+              <i class="bi bi-bell"></i>
+            )}
+          </Link> */}
           <hr />
         </header>
 

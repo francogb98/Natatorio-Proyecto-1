@@ -3,8 +3,17 @@ import Day from "../../models/models/Days.js";
 import Horarios from "../../models/models/Horarios.js";
 
 export const createActivity = async (req, res) => {
-  let { name, pileta, hourStart, hourFinish, date, cupos, actividadEspecial } =
-    req.body;
+  let {
+    name,
+    pileta,
+    hourStart,
+    hourFinish,
+    date,
+    cupos,
+    actividadEspecial,
+    desde,
+    hasta,
+  } = req.body;
 
   try {
     if (!name || !pileta || !hourStart || !hourFinish || !date) {
@@ -97,6 +106,8 @@ export const createActivity = async (req, res) => {
       hourFinish,
       date,
       cupos,
+      desde,
+      hasta,
       userRegister: 0,
       actividadEspecial: actividadEspecial ? true : false,
     });

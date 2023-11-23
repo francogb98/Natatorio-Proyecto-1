@@ -1,8 +1,22 @@
 import Activity from "../../models/models/Actividades.js";
 
+import User from "../../models/models/User.js";
+
 export const getNameActivitys = async (req, res) => {
+  //obtengo el id por token
+  const { id } = req.user;
+
   try {
-    const activitys = await Activity.find();
+    const user = await User.findById(id);
+
+    //quiero filtrar las actividades que el campo desde sea mayor a la edad del usuario y hasta sea menor a la edad del usuario
+    const activitys = await Activity.find({
+      desde: { $lte: user.edad },
+      hasta: { $gte: user.edad },
+    });
+
+    console.log(activitys);
+
     const nameActivitys = activitys.map((activity) => {
       return activity.name;
     });

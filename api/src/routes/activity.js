@@ -17,7 +17,7 @@ const routerActivity = Router();
 // routerActivity.post("/activity/create", validarJWT, createActivity);
 
 routerActivity.get("/getAll", getActivities);
-routerActivity.get("/getActividadesNombre", getNameActivitys);
+routerActivity.get("/getActividadesNombre", validarJWT, getNameActivitys);
 
 routerActivity.get("/getActividadesPorHora", getActivitiesByDate);
 routerActivity.post("/getActivityByName", validarJWT, getActividadesByNames);

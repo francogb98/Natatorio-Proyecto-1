@@ -97,10 +97,10 @@ function EditarPerfil({ usuario }) {
       <Actividades usuario={usuario} />
 
       <form action="" className={style.form}>
-        {Object.keys(usuario).map((key) => {
+        {Object.keys(usuario).map((key, i) => {
           if (verificarKey(key)) {
             return (
-              <div className={style.info}>
+              <div className={style.info} key={i}>
                 {usuario[key] == null ? null : (
                   <>
                     <label htmlFor="">

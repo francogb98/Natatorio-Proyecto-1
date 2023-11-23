@@ -75,6 +75,10 @@ function Inscripcion() {
           }`}
         >
           <h4>Elige tu actividad:</h4>
+          <p className="text-danger">
+            Solo estaran disponibles las actividades que cuenten con cupos y
+            sean acorde a tu edad.
+          </p>
           {getActivity.data.map((activity, i) => (
             <button
               key={i}

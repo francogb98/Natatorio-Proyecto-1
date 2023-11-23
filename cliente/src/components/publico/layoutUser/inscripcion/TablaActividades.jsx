@@ -216,6 +216,9 @@ function TablaActividades({ actividad, setActividadSeleccionada }) {
               <br />
               Hora de fin: {actividadRegistrarse?.hourFinish}
               <br />
+              Edad: {actividadRegistrarse?.desde}años -{" "}
+              {actividadRegistrarse?.hasta} años
+              <br />
             </div>
             <div className="modal-footer">
               <button

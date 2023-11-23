@@ -14,6 +14,8 @@ const activitySchema = new mongoose.Schema({
   cupos: Number,
   actividadEspecial: Boolean,
   // Otros campos de la actividad
+  desde: Number,
+  hasta: Number,
 });
 
 const Activity = mongoose.model("Activity", activitySchema);

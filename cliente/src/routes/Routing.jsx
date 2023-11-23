@@ -24,6 +24,7 @@ import UpdateFiles from "../components/publico/layoutUser/updateFiles/UpdateFile
 import HomeUser from "../components/publico/layoutUser/home/HomeUser";
 import User from "../components/privado/UserInfo/User";
 import PiletasInfo from "../components/privado/showPiletasInfo/PiletasInfo";
+import Notificaciones from "../components/publico/layoutUser/notificaciones/Notificaciones";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -57,6 +58,7 @@ function Routing() {
           <Route path="updateFiles" element={<UpdateFiles />} />
           <Route path="inscripcion" element={<Inscripcion />} />
           <Route path="perfil" element={<Perfil />} />
+          <Route path="notificaciones" element={<Notificaciones />} />
         </Route>
       ) : (
         <Route

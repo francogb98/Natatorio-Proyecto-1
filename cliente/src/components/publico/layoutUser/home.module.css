@@ -1,34 +1,24 @@
 .containerHome {
-  height: 100vh;
   display: grid;
 
   grid-template-columns: 1fr;
-  grid-template-rows: 150px 1fr;
+  grid-template-rows: 80px 1fr;
 }
 
-header {
-  /* background-color: red; */
+.header {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding-top: 40px;
+  padding-block: 15px;
+  background-color: white;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.3);
 }
 
-header img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin: 0 auto;
-}
-
-main {
-  /* background-color: blue; */
-  border-top: 1px solid black;
+.header h4 span {
+  color: #ffb800;
 }
 
 footer {
-  /* background-color: green; */
   border-top: 1px solid rgb(0, 0, 0, 0.3);
   position: fixed;
   bottom: 0;
