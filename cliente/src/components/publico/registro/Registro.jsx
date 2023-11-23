@@ -124,6 +124,7 @@ function Registro() {
     if (
       cargaDeDatos === 3 &&
       !esMenor &&
+      usuario.natacionAdaptada === "no" &&
       (usuario.nombre === "" ||
         usuario.apellido === "" ||
         usuario.dni === "" ||
@@ -153,7 +154,12 @@ function Registro() {
       return null;
     }
 
-    if (cargaDeDatos === 3 && !esMenor && !esCorreoElectronico(usuario.email)) {
+    if (
+      cargaDeDatos === 3 &&
+      !esMenor &&
+      usuario.natacionAdaptada === "no" &&
+      !esCorreoElectronico(usuario.email)
+    ) {
       setError({
         status: true,
         message: "Debes ingresar un correo valido",
