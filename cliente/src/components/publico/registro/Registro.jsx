@@ -200,6 +200,14 @@ function Registro() {
     e.preventDefault();
     //verifico que todos los datos de email y contraseña esten completos
 
+    if (usuario.foto === "") {
+      setError({
+        status: true,
+        message: "Debes subir una foto de perfil",
+      });
+      return null;
+    }
+
     if (
       usuario.email === "" ||
       usuario.password === "" ||
