@@ -13,7 +13,7 @@ export const generateVerificationToken = () => {
 const createUser = async (req, res) => {
   const args = req.body;
 
-  const { email, password, dni, nombreTutor, dniTutor, edad } = req.body;
+  const { password, dni, nombreTutor, dniTutor, edad } = req.body;
 
   if (edad < 0 || edad > 100) {
     return res.status(400).json({
@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
     });
   }
 
-  if (!email || !password || !dni || !args.edad) {
+  if (!password || !dni || !args.edad) {
     return res.status(400).json({
       status: "error",
       message: "Por favor añadir todos los campos",
@@ -48,14 +48,6 @@ const createUser = async (req, res) => {
       status: "error",
       message: "El dni del tutor no puede ser igual al del usuario",
     });
-  }
-
-  const isEamilExist = await User.findOne({ email });
-  //verificamos si exite el email
-  if (isEamilExist) {
-    return res
-      .status(400)
-      .json({ status: "error", message: "Email ya existe" });
   }
 
   const isDniExist = await User.findOne({ dni });

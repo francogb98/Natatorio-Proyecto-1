@@ -8,19 +8,6 @@ function EmailYPass({ registro, usuario, setUsuario }) {
   return (
     <div>
       <div className="mb-2">
-        <label htmlFor="Email">Email</label>
-        <input
-          type="email"
-          name="email"
-          className="form-control"
-          placeholder="Enter Email"
-          onChange={(e) => {
-            setUsuario({ ...usuario, email: e.target.value });
-          }}
-          value={usuario.email}
-        />
-      </div>
-      <div className="mb-2">
         <label htmlFor="Password">Password</label>
         <div className="d-flex">
           <input
@@ -81,7 +68,7 @@ function EmailYPass({ registro, usuario, setUsuario }) {
       {registro.isLoading && !registro.isSuccess && (
         <div className="alert alert-info">Cargando datos...</div>
       )}
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
         <button className="btn btn-dark">Registrate</button>
       </div>
     </div>

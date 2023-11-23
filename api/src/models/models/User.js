@@ -18,7 +18,6 @@ const schema = new mongoose.Schema({
   },
   telefono: {
     type: String,
-    required: true,
     minlength: 6,
   },
   telefonoContacto: {
@@ -32,23 +31,9 @@ const schema = new mongoose.Schema({
     required: true,
     maxlength: 2,
   },
-  nombreTutor: {
-    type: String,
-    minlength: 3,
-  },
-  apellidoTutor: {
-    type: String,
-    minlength: 3,
-  },
-  dniTutor: {
-    type: String,
-    minlength: 7,
-  },
 
   email: {
     type: String,
-    required: true,
-    unique: true,
     minlength: 3,
   },
   password: {
@@ -111,7 +96,6 @@ const schema = new mongoose.Schema({
     type: String,
     minlength: 3,
   },
-
   fichaMedica: {
     type: String,
     minlength: 3,
@@ -127,6 +111,28 @@ const schema = new mongoose.Schema({
   mensaje: {
     type: String,
     minlength: 3,
+  },
+
+  // datos tutor
+  nombreTutor: {
+    type: String,
+    minlength: 3,
+  },
+  apellidoTutor: {
+    type: String,
+    minlength: 3,
+  },
+  dniTutor: {
+    type: String,
+    minlength: 7,
+  },
+  emailTutor: {
+    type: String,
+    minlength: 3,
+  },
+  telefonoTutor: {
+    type: String,
+    minlength: 6,
   },
 });
 

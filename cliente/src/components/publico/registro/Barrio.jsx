@@ -44,7 +44,7 @@ function Barrio({ setUsuario, usuario }) {
             }}
             defaultValue={usuario.barrio}
           >
-            <option value="null">--Barrio--</option>
+            <option value="">--Barrio--</option>
             {usuario.ciudad === "Santiago del Estero"
               ? barrios.map((barrio, i) => (
                   <option key={i} value={barrio}>

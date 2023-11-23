@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function InsertarFoto({ setImageUrl, imageUrl, setUsuario, usuario }) {
+function InsertarFoto({
+  setImageUrl,
+  imageUrl,
+  setUsuario,
+  usuario,
+  success,
+  setSuccess,
+}) {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const [isImage, setIsImage] = useState(false);
 
@@ -52,22 +58,17 @@ function InsertarFoto({ setImageUrl, imageUrl, setUsuario, usuario }) {
       });
   };
 
-  useEffect(() => {
-    if (success) {
-      setTimeout(() => {
-        setSuccess(false);
-      }, 1500);
-    }
-  }, [success]);
+  useEffect(() => {}, [success]);
 
   useEffect(() => {
     setPreviewUrl(imageUrl);
   }, []);
 
   useEffect(() => {}, [imageUrl]);
+  useEffect(() => {}, [previewUrl]);
 
   return (
-    <div>
+    <div className="mb-5">
       <h5 htmlFor="imagen">Imagen de perfil</h5>
       <div
         style={{
@@ -117,25 +118,29 @@ function InsertarFoto({ setImageUrl, imageUrl, setUsuario, usuario }) {
               Ocurrio un error, recargue y vuelva a intentarlo
             </p>
           )}
-          {success && <h4 className="text-success">Imagen Update</h4>}
+          {success && (
+            <h4 className="text-success">Imagen cargada con exito</h4>
+          )}
         </div>
 
-        <button
-          type="button"
-          className="btn btn-dark fw-bold mt-3"
-          disabled={!isImage}
-          onClick={uploadImage}
-        >
-          {imageUrl ? "Imagen cargada" : "Cargar imagen"}
-        </button>
+        {!success && (
+          <button
+            type="button"
+            className="btn btn-dark fw-bold mt-3"
+            disabled={!isImage}
+            onClick={uploadImage}
+          >
+            {imageUrl ? "Imagen cargada" : "Cargar imagen"}
+          </button>
+        )}
       </div>
 
-      {!isImage && (
+      {!success && (
         <h5
           className="mx-auto text-danger mt-2"
           style={{ width: "fit-content" }}
         >
-          Cargue una imagen para continuar
+          Haga Click en Cargar Imagen para subir la foto
         </h5>
       )}
     </div>

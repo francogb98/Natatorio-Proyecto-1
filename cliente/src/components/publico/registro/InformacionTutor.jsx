@@ -46,6 +46,45 @@ function InformacionTutor({ setUsuario, usuario }) {
           }}
           value={usuario.dniTutor}
         />
+        <label htmlFor="emailTutor" className={`form-label  mt-2 `}>
+          Email Del Tutor
+        </label>
+        <input
+          type="email"
+          name="emailTutor"
+          className="form-control"
+          id="emailTutor"
+          onChange={(e) => {
+            setUsuario({ ...usuario, emailTutor: e.target.value });
+          }}
+          value={usuario.emailTutor}
+        />
+        <label htmlFor="telefonoTutor" className={`form-label  mt-2 `}>
+          Telefono Del Tutor
+        </label>
+        <input
+          type="text"
+          name="telefonoTutor"
+          className="form-control"
+          id="telefonoTutor"
+          onChange={(e) => {
+            setUsuario({ ...usuario, telefonoTutor: e.target.value });
+          }}
+          value={usuario.telefonoTutor}
+        />
+        <label htmlFor="telefonoContacto" className={`form-label  mt-2 `}>
+          Telefono De Contacto
+        </label>
+        <input
+          type="text"
+          name="telefonoContacto"
+          className="form-control"
+          id="telefonoContacto"
+          onChange={(e) => {
+            setUsuario({ ...usuario, telefonoContacto: e.target.value });
+          }}
+          value={usuario.telefonoContacto}
+        />
       </div>
     </div>
   );

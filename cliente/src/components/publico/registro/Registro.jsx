@@ -5,14 +5,12 @@ import { AuthContext } from "../../../context/AuthContext";
 import Swal from "sweetalert2";
 import style from "./styleFormulario.module.css";
 
-import Barrio from "./Barrio";
 import InsertarFoto from "./Foto";
 import Logo from "../inicioDeSesion/Logo.jpg";
 import InformacionUsuario from "./InformacionUsuario";
 import InformacionTutor from "./InformacionTutor";
-import UbicacionYContacto from "./UbicacionYContacto";
 import EmailYPass from "./EmailYPass";
-import InformacionUsuario2 from "./InformacionUsuario2";
+import Barrio from "./Barrio";
 
 function Registro() {
   const { registro } = useContext(AuthContext);
@@ -29,9 +27,6 @@ function Registro() {
     sexo: "",
     edad: "",
     natacionAdaptada: "",
-    nombreTutor: "",
-    apellidoTutor: "",
-    dniTutor: "",
     barrio: "",
     ciudad: "",
     telefono: "",
@@ -40,56 +35,169 @@ function Registro() {
     password: "",
     repetirPassword: "",
     foto: "",
+
+    // informacion tutor
+    nombreTutor: "",
+    apellidoTutor: "",
+    dniTutor: "",
+    emailTutor: "",
+    telefonoTutor: "",
   });
 
-  useEffect(() => {}, [usuario]);
+  const [error, setError] = useState({
+    status: false,
+    message: "",
+  });
+
+  const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    // console.log(usuario);
+    setError({
+      status: false,
+      message: "",
+    });
+  }, [usuario]);
+
+  useEffect(() => {}, [esMenor]);
+
+  useEffect(() => {}, [cargaDeDatos]);
+
+  const handleNatacionAdaptada = (e) => {
+    setUsuario({
+      ...usuario,
+      natacionAdaptada: e.target.value,
+    });
+    setCargaDeDatos(cargaDeDatos + 1);
+  };
+
+  const handleEdad = (e) => {
+    //que no pueda escribir mas de 2 numeros
+    if (e.target.value.length > 2) {
+      return null;
+    }
+
+    setUsuario({ ...usuario, edad: e.target.value });
+
+    if (e.target.value < 18) {
+      setEsMenor(true);
+    } else {
+      setEsMenor(false);
+    }
+  };
+
+  const handleNext = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    function esCorreoElectronico(email) {
+      return emailRegex.test(email);
+    }
+
+    if (cargaDeDatos === 2 && usuario.edad === "") {
+      setError({
+        status: true,
+        message: "Debes ingresar la edad del usuario",
+      });
+      return null;
+    }
+
+    if (
+      cargaDeDatos === 3 &&
+      (usuario.nombre === "" ||
+        usuario.apellido === "" ||
+        usuario.dni === "" ||
+        usuario.sexo === "")
+    ) {
+      setError({
+        status: true,
+        message: "Debes completar todos los campos",
+      });
+
+      return null;
+    }
+
+    if (
+      cargaDeDatos === 3 &&
+      !esMenor &&
+      (usuario.nombre === "" ||
+        usuario.apellido === "" ||
+        usuario.dni === "" ||
+        usuario.sexo === "" ||
+        usuario.telefono === "" ||
+        usuario.telefonoContacto === "" ||
+        usuario.email === "" ||
+        usuario.ciudad === "")
+    ) {
+      setError({
+        status: true,
+        message: "Debes completar todos los campos",
+      });
+
+      return null;
+    }
+
+    if (
+      (usuario.ciudad === "Santiago del Estero" ||
+        usuario.ciudad === "La Banda") &&
+      usuario.barrio === ""
+    ) {
+      setError({
+        status: true,
+        message: "Debes completar todos los campos",
+      });
+      return null;
+    }
+
+    if (cargaDeDatos === 3 && !esMenor && !esCorreoElectronico(usuario.email)) {
+      setError({
+        status: true,
+        message: "Debes ingresar un correo valido",
+      });
+
+      return null;
+    }
+
+    if (cargaDeDatos === 3 && !esMenor && usuario.natacionAdaptada === "no") {
+      console.log("entre aqui");
+      setCargaDeDatos(cargaDeDatos + 2);
+      return null;
+    }
+
+    if (
+      cargaDeDatos === 4 &&
+      (usuario.nombreTutor === "" ||
+        usuario.apellidoTutor === "" ||
+        usuario.dniTutor === "" ||
+        usuario.emailTutor === "" ||
+        usuario.telefonoTutor === "" ||
+        usuario.telefonoContacto === "")
+    ) {
+      setError({
+        status: true,
+        message: "Debes completar todos los campos",
+      });
+      return null;
+    }
+
+    //verificar que el email sea un correo valido con expresion regular
+
+    if (cargaDeDatos === 4 && !esCorreoElectronico(usuario.emailTutor)) {
+      setError({
+        status: true,
+        message: "Debes ingresar un correo valido",
+      });
+      return null;
+    } else if (cargaDeDatos === 6) {
+      return null;
+    } else if (cargaDeDatos === 5 && usuario.foto === "") {
+      return null;
+    } else {
+      setCargaDeDatos(cargaDeDatos + 1);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    //verifico que todos los datos de usuario esten completos
-
-    if (
-      usuario.nombre === "" ||
-      usuario.apellido === "" ||
-      usuario.dni === "" ||
-      usuario.sexo === "" ||
-      usuario.edad === "" ||
-      usuario.natacionAdaptada === ""
-    ) {
-      return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debes completar todos los campos de informacion de usuario",
-      });
-    }
-
-    //verifico que todos los datos de tutor esten completos
-
-    if (esMenor) {
-      if (
-        usuario.nombreTutor === "" ||
-        usuario.apellidoTutor === "" ||
-        usuario.dniTutor === ""
-      ) {
-        return Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Debes completar todos los campos de informacion de tutor",
-        });
-      }
-    }
-
-    //verifico que todos los datos de ubicacion y contacto esten completos
-
-    if (usuario.ciudad === "" || usuario.telefono === "") {
-      return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debes completar todos los campos de ubicacion y contacto",
-      });
-    }
-
     //verifico que todos los datos de email y contraseña esten completos
 
     if (
@@ -126,6 +234,17 @@ function Registro() {
     data.natacionAdaptada = usuario.natacionAdaptada === "si" ? true : false;
     data.foto = usuario.foto;
 
+    //si el usuario no es menor y no es de natacion adaptada, borro las propiedades de tutor de mi  objeto
+
+    if (!esMenor && !usuario.natacionAdaptada) {
+      console.log("entre aqui");
+      delete data.nombreTutor;
+      delete data.apellidoTutor;
+      delete data.dniTutor;
+      delete data.emailTutor;
+      delete data.telefonoTutor;
+    }
+
     registro.mutate({ endpoint: "create", data, method: "POST" });
   };
 
@@ -159,7 +278,7 @@ function Registro() {
         >
           <div
             className="progress-bar text-bg-warning"
-            style={{ width: `${cargaDeDatos * 20 - 20}%` }}
+            style={{ width: `${cargaDeDatos * 25 - 25}%` }}
           ></div>
         </div>
         <form onSubmit={handleSubmit}>
@@ -167,50 +286,79 @@ function Registro() {
             {/* informacion usuario */}
 
             {cargaDeDatos === 1 && (
-              <InformacionUsuario setUsuario={setUsuario} usuario={usuario} />
+              <div className={style.section1}>
+                <h3>¿Usuario de Natacion Adaptada?</h3>
+                <div className={style.formGroup}>
+                  <button value="si" onClick={handleNatacionAdaptada}>
+                    Si
+                  </button>
+                  <button value="no" onClick={handleNatacionAdaptada}>
+                    No
+                  </button>
+                </div>
+              </div>
             )}
             {cargaDeDatos === 2 && (
-              <InformacionUsuario2
-                setEsMenor={setEsMenor}
-                setUsuario={setUsuario}
-                usuario={usuario}
-              />
+              <div className={style.section1}>
+                <h3>Edad del Usuario</h3>
+                <div className={style.formGroup}>
+                  <input
+                    type="text"
+                    value={usuario.edad}
+                    onChange={handleEdad}
+                  />
+                </div>
+              </div>
             )}
 
             {/* inofrmacion de tutor */}
-            {cargaDeDatos === 3 && esMenor && (
-              <InformacionTutor setUsuario={setUsuario} usuario={usuario} />
+            {cargaDeDatos === 3 && (
+              <>
+                <InformacionUsuario
+                  setUsuario={setUsuario}
+                  usuario={usuario}
+                  esMenor={esMenor}
+                />
+                <Barrio setUsuario={setUsuario} usuario={usuario} />
+              </>
             )}
 
             {/* informacion ubicacion y telefono */}
 
             {cargaDeDatos === 4 && (
-              <UbicacionYContacto setUsuario={setUsuario} usuario={usuario} />
+              <InformacionTutor setUsuario={setUsuario} usuario={usuario} />
             )}
 
             {/* Imagen de perfil */}
 
             {cargaDeDatos === 5 && (
-              <InsertarFoto
-                imageUrl={imageUrl}
-                setImageUrl={setImageUrl}
-                setUsuario={setUsuario}
-                usuario={usuario}
-              />
+              <>
+                <InsertarFoto
+                  imageUrl={imageUrl}
+                  setImageUrl={setImageUrl}
+                  setUsuario={setUsuario}
+                  usuario={usuario}
+                  success={success}
+                  setSuccess={setSuccess}
+                />
+
+                <EmailYPass
+                  registro={registro}
+                  setUsuario={setUsuario}
+                  usuario={usuario}
+                />
+              </>
             )}
 
             {/* creacion de cuenta */}
-
-            {cargaDeDatos === 6 && (
-              <EmailYPass
-                registro={registro}
-                setUsuario={setUsuario}
-                usuario={usuario}
-              />
-            )}
           </div>
 
-          <br />
+          {/* <br /> */}
+          {
+            <div className={style.error}>
+              {error.status ? <p>{error.message}</p> : null}
+            </div>
+          }
           <div
             style={{
               display: "flex",
@@ -227,7 +375,15 @@ function Registro() {
                 className="bi bi-arrow-left-circle"
                 viewBox="0 0 16 16"
                 onClick={() => {
-                  if (cargaDeDatos === 4 && !esMenor) {
+                  setError({
+                    status: false,
+                    message: "",
+                  });
+                  if (
+                    cargaDeDatos === 5 &&
+                    !esMenor &&
+                    usuario.natacionAdaptada === "no"
+                  ) {
                     setCargaDeDatos(cargaDeDatos - 2);
                   } else if (cargaDeDatos === 0) {
                     return null;
@@ -245,7 +401,7 @@ function Registro() {
                 />
               </svg>
             ) : null}
-            {cargaDeDatos < 6 ? (
+            {cargaDeDatos < 5 && cargaDeDatos > 1 ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="40"
@@ -253,17 +409,7 @@ function Registro() {
                 fill="currentColor"
                 className="bi bi-arrow-right-circle"
                 viewBox="0 0 16 16"
-                onClick={() => {
-                  if (cargaDeDatos === 2 && !esMenor) {
-                    setCargaDeDatos(cargaDeDatos + 2);
-                  } else if (cargaDeDatos === 6) {
-                    return null;
-                  } else if (cargaDeDatos === 5 && usuario.foto === "") {
-                    return null;
-                  } else {
-                    setCargaDeDatos(cargaDeDatos + 1);
-                  }
-                }}
+                onClick={handleNext}
                 style={{
                   cursor:
                     cargaDeDatos === 5 && usuario.foto === ""
