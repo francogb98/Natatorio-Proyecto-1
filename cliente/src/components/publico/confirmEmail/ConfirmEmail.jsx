@@ -19,7 +19,7 @@ function Confirm() {
           icon: "success",
         });
         setTimeout(() => {
-          window.location.href = "/login";
+          window.location.href = "/";
         }, 3000);
       } else {
         Swal.fire({
@@ -29,7 +29,7 @@ function Confirm() {
           showConfirmButton: false,
         });
         setTimeout(() => {
-          window.location.href = "/login";
+          window.location.href = "/";
         }, 3000);
       }
     },

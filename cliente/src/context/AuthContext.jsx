@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
       if (data.status === "success") {
         sendEmail(data);
         Swal.fire({
-          title: data.status.toUpperCase(),
+          title: "Cuenta Creada",
           text: "Se ha enviado un correo de confirmacion a tu email",
           icon: data.status,
           confirmButtonText: "Aceptar",
