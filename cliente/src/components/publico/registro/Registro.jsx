@@ -219,16 +219,12 @@ function Registro() {
       return null;
     }
 
-    if (
-      usuario.email === "" ||
-      usuario.password === "" ||
-      usuario.repetirPassword === ""
-    ) {
-      return Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Debes completar todos los campos de email y contraseña",
+    if (usuario.password === "" || usuario.repetirPassword === "") {
+      setError({
+        status: true,
+        message: "Debes completar todos los campos",
       });
+      return null;
     }
 
     //verifico que las contraseñas coincidan
