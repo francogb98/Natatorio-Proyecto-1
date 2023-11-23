@@ -86,6 +86,15 @@ function Registro() {
     }
   };
 
+  const handleDni = (e) => {
+    //que no pueda escribir mas de 8 numeros
+    if (e.target.value.length > 8) {
+      return null;
+    }
+
+    setUsuario({ ...usuario, [e.target.name]: e.target.value });
+  };
+
   const handleNext = () => {
     setError({
       status: false,
@@ -333,6 +342,7 @@ function Registro() {
                   setUsuario={setUsuario}
                   usuario={usuario}
                   esMenor={esMenor}
+                  handleDni={handleDni}
                 />
                 <Barrio setUsuario={setUsuario} usuario={usuario} />
               </>
@@ -341,7 +351,11 @@ function Registro() {
             {/* informacion ubicacion y telefono */}
 
             {cargaDeDatos === 4 && (
-              <InformacionTutor setUsuario={setUsuario} usuario={usuario} />
+              <InformacionTutor
+                setUsuario={setUsuario}
+                usuario={usuario}
+                handleDni={handleDni}
+              />
             )}
 
             {/* Imagen de perfil */}

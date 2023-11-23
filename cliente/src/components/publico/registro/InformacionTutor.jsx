@@ -2,7 +2,7 @@ import React from "react";
 
 import style from "./styleFormulario.module.css";
 
-function InformacionTutor({ setUsuario, usuario }) {
+function InformacionTutor({ setUsuario, usuario, handleDni }) {
   return (
     <div>
       <div className={`${style.formularioTutor}`}>
@@ -41,9 +41,7 @@ function InformacionTutor({ setUsuario, usuario }) {
           name="dniTutor"
           className="form-control"
           id="dniTutor"
-          onChange={(e) => {
-            setUsuario({ ...usuario, dniTutor: e.target.value });
-          }}
+          onChange={handleDni}
           value={usuario.dniTutor}
         />
         <label htmlFor="emailTutor" className={`form-label  mt-2 `}>
@@ -62,6 +60,7 @@ function InformacionTutor({ setUsuario, usuario }) {
         <label htmlFor="telefonoTutor" className={`form-label  mt-2 `}>
           Telefono Del Tutor
         </label>
+
         <input
           type="number"
           name="telefonoTutor"
@@ -72,6 +71,7 @@ function InformacionTutor({ setUsuario, usuario }) {
           }}
           value={usuario.telefonoTutor}
         />
+
         <label htmlFor="telefonoContacto" className={`form-label  mt-2 `}>
           Telefono De Contacto
         </label>

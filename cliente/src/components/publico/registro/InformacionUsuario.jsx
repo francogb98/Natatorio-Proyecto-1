@@ -2,7 +2,7 @@ import React from "react";
 
 import style from "./styleFormulario.module.css";
 
-function InformacionUsuario({ setUsuario, usuario, esMenor }) {
+function InformacionUsuario({ setUsuario, usuario, esMenor, handleDni }) {
   return (
     <div>
       <div className="mb-2">
@@ -37,9 +37,7 @@ function InformacionUsuario({ setUsuario, usuario, esMenor }) {
           name="dni"
           value={usuario.dni}
           className="form-control"
-          onChange={(e) => {
-            setUsuario({ ...usuario, dni: e.target.value });
-          }}
+          onChange={handleDni}
         />
       </div>
 
