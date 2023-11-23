@@ -33,7 +33,7 @@ function InformacionUsuario({ setUsuario, usuario, esMenor }) {
       <div className="mb-2">
         <label htmlFor="Dni">Dni</label>
         <input
-          type="text"
+          type="number"
           name="dni"
           value={usuario.dni}
           className="form-control"
@@ -48,7 +48,7 @@ function InformacionUsuario({ setUsuario, usuario, esMenor }) {
           <div className="mb-2">
             <label htmlFor="telefono">Telefono</label>
             <input
-              type="text"
+              type="number"
               name="telefono"
               value={usuario.telefono}
               className="form-control"
@@ -62,7 +62,7 @@ function InformacionUsuario({ setUsuario, usuario, esMenor }) {
               Telefono De Contacto
             </label>
             <input
-              type="text"
+              type="number"
               name="telefonoContacto"
               className="form-control"
               id="telefonoContacto"

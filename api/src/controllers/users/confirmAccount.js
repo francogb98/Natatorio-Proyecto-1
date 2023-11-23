@@ -39,6 +39,8 @@ export const confirmAccount = async (req, res) => {
         .json({ status: "success", message: "usuario verificado" });
     });
   } catch (error) {
-    return res.status(500).json({ status: "error", message: error.message });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Error en el Servidor" });
   }
 };

@@ -37,7 +37,7 @@ function InformacionTutor({ setUsuario, usuario }) {
           Dni Del Tutor
         </label>
         <input
-          type="text"
+          type="number"
           name="dniTutor"
           className="form-control"
           id="dniTutor"
@@ -63,7 +63,7 @@ function InformacionTutor({ setUsuario, usuario }) {
           Telefono Del Tutor
         </label>
         <input
-          type="text"
+          type="number"
           name="telefonoTutor"
           className="form-control"
           id="telefonoTutor"
@@ -76,7 +76,7 @@ function InformacionTutor({ setUsuario, usuario }) {
           Telefono De Contacto
         </label>
         <input
-          type="text"
+          type="number"
           name="telefonoContacto"
           className="form-control"
           id="telefonoContacto"
