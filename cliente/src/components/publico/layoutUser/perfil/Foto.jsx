@@ -75,65 +75,59 @@ function Foto({ usuario }) {
   useEffect(() => {}, [previewUrl]);
 
   return (
-    <div className="mb-5">
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          textAlign: "center",
-        }}
-      >
-        {usuario.foto && (
-          <img
-            src={usuario.foto}
-            alt="Imagen seleccionada"
-            className="rounded mx-auto d-block mt-1"
-            style={{ maxWidth: "190px", height: "180px" }}
-          />
-        )}
-        <h2 style={{ textAlign: "start" }}>
-          {usuario.foto ? "Cambiar foto" : "Agregar foto"}
-        </h2>
-        <div class="input-group mb-3">
-          <input
-            type="file"
-            class="form-control"
-            id="inputGroupFile02"
-            onChange={handleFileChange}
-          />
-          <button class="input-group-text btn btn-danger" onClick={uploadImage}>
-            Editar
-          </button>
-        </div>
+    <div className={style.editarFoto}>
+      {usuario.foto && (
+        <img
+          src={usuario.foto}
+          alt="Imagen seleccionada"
+          className="rounded mx-auto d-block mt-1"
+          style={{ maxWidth: "190px", height: "180px" }}
+        />
+      )}
+      <h2 style={{ textAlign: "start" }}>
+        {usuario.foto ? "Cambiar foto" : "Agregar foto"}
+      </h2>
+      <div className="input-group mb-3">
+        <input
+          type="file"
+          className="form-control"
+          id="inputGroupFile02"
+          onChange={handleFileChange}
+        />
+        <button
+          className="input-group-text btn btn-danger"
+          onClick={uploadImage}
+        >
+          Editar
+        </button>
+      </div>
 
-        {previewUrl && !usuario.foto && (
-          <img
-            src={previewUrl}
-            alt="Imagen seleccionada"
-            className="rounded mx-auto d-block mt-1"
-            style={{ maxWidth: "190px", height: "90px" }}
-          />
-        )}
-        <div className="mt-1 ">
-          {loading && (
-            <div className="text-center">
-              <p className="text-primary">Puede tardar unos segundos</p>
-              <div
-                className="spinner-border"
-                role="status"
-                style={{ marginTop: "-4px" }}
-              >
-                <span className="visually-hidden">Loading...</span>
-              </div>
+      {previewUrl && !usuario.foto && (
+        <img
+          src={previewUrl}
+          alt="Imagen seleccionada"
+          className="rounded mx-auto d-block mt-1"
+          style={{ maxWidth: "190px", height: "90px" }}
+        />
+      )}
+      <div className="mt-1 ">
+        {loading && (
+          <div className="text-center">
+            <p className="text-primary">Puede tardar unos segundos</p>
+            <div
+              className="spinner-border"
+              role="status"
+              style={{ marginTop: "-4px" }}
+            >
+              <span className="visually-hidden">Loading...</span>
             </div>
-          )}
-          {error && (
-            <p className="text-danger">
-              Ocurrio un error, recargue y vuelva a intentarlo
-            </p>
-          )}
-        </div>
+          </div>
+        )}
+        {error && (
+          <p className="text-danger">
+            Ocurrio un error, recargue y vuelva a intentarlo
+          </p>
+        )}
       </div>
     </div>
   );

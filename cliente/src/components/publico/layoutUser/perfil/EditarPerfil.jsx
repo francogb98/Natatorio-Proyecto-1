@@ -84,7 +84,8 @@ function EditarPerfil({ usuario }) {
       key !== "certificadoHongos" &&
       key !== "fechaCargaCertificadoHongos" &&
       key !== "fichaMedica" &&
-      key !== "notificaciones"
+      key !== "notificaciones" &&
+      key !== "public_id_foto"
     ) {
       return true;
     }
