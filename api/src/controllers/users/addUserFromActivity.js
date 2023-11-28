@@ -74,50 +74,51 @@ export const addUserFromActivity = async (req, res) => {
 
 export const DeshabilitarUser = async (req, res) => {
   //buscamos el usuario para deshabilitar por el id y lo actualizamos su stats a false y borramos la actividad de su campo y borramos el usuario del campo activity
-  const { id, idActivity, mensaje } = req.body;
+  const { id, asunto, cuerpo } = req.body;
   try {
+    //busco el usuario por el id
+
+    if (!asunto || !cuerpo) {
+      return res.status(400).json({
+        status: "error",
+        message: "Debe completar los campos asunto y mensaje",
+      });
+    }
+
     const user = await User.findOneAndUpdate(
       { _id: id },
-      {
-        $set: { status: false },
-        $pull: { activity: idActivity },
-        //añado el campo mensaje
-        $set: { mensaje: mensaje },
-      },
-      { new: true }
-    );
-    const activity = await Activity.findOneAndUpdate(
-      { _id: idActivity },
-      { $pull: { users: id } },
+      { $set: { status: false } },
       { new: true }
     );
 
-    const resend = new Resend(`${process.env.RESEND_APIKEY}`);
-    resend.emails
-      .send({
-        from: "administracionNatatorio@correo.com",
-        to: user.email,
-        subject: "Problemas en su inscripcion",
-        html: `<h2>Saludos desde Natatorio Olimpico <strong>${user.nombre} ${user.apellido}</strong>!</h2>
-        <p>Te informamos que has sido deshabilitado de la actividad <strong>${activity.name}</strong> por el siguiente motivo: <strong>${mensaje}</strong></p>
-        <p>Para mas informacion comunicate con el administrador del natatorio</p>
-        <p>Saludos cordiales</p>
-        <p>No responda este mensaje, es un mensaje automatico</p>
-        `,
-      })
-      .then((response) => {
-        "Email sent successfully:", response;
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-      });
+    if (user.activity.length) {
+      const activity = await Activity.findOneAndUpdate(
+        { _id: user.activity[0]._id },
+        { $pull: { users: id } },
+        { new: true }
+      );
+    }
+
+    //borro el campo activity del usuario
+    user.activity = [];
+
+    //creo una notificacion para el usuario
+
+    if (!user.notificaciones) {
+      user.notificaciones = [];
+    }
+    user.notificaciones.push({
+      asunto: asunto,
+      cuerpo: cuerpo,
+    });
+
+    await user.save();
 
     return res.status(200).json({
       status: "success",
       message: "Usuario deshabilitado",
       data: {
         user,
-        activity,
       },
     });
   } catch (error) {
@@ -130,7 +131,7 @@ export const DeshabilitarUser = async (req, res) => {
 
 export const HabilitarUser = async (req, res) => {
   //buscamos el usuario a habilitar por el id y lo actualizamos su stats a true
-  const { id } = req.params;
+  const { id, asunto, cuerpo } = req.params;
   try {
     //acccedo al dia de la semana y lo guardo en una variable
 
@@ -156,37 +157,19 @@ export const HabilitarUser = async (req, res) => {
       },
     });
 
+    //creo una notificacion para el usuario
+    if (!user.notificaciones) {
+      user.notificaciones = [];
+    }
+
+    user.notificaciones.push({
+      asunto: "Usuario registrado correctamente",
+      cuerpo:
+        "Usted ha sido registrado correctamente en la actividad, podrás ver los horarios en la sección de actividades, Recuerda que debes asistir a la actividad para que no seas deshabilitado, ademas de actualizar tu certificado de mucosis y pediculosis cada 1 mes, para mas información comunicate con el administrador del natatorio",
+    });
+
     user.asistencia = dateNowSave;
     await user.save();
-
-    const resend = new Resend(`${process.env.RESEND_APIKEY}`);
-    resend.emails
-      .send({
-        from: "administracionNatatorio@correo.com",
-        to: user.email,
-        subject: "Problemas en su inscripcion",
-        html: `<h2>Saludos desde Natatorio Olimpico <strong>${user.nombre} ${
-          user.apellido
-        }</strong>!</h2>
-        <p>Te informamos que has sido habilitado para la actividad <strong>${
-          user.activity[0].name
-        }</strong></p>
-        <br/>
-        <p>Los dias:${user.activity[0].date.join(" - ")}</p>
-        <p>En el Horario:${user.activity[0].hourStart} - ${
-          user.activity[0].hourFinish
-        }</p>
-        <p>Para mas informacion comunicate con el administrador del natatorio</p>
-        <p>Saludos cordiales</p>
-        <p>No responda este mensaje, es un mensaje automatico</p>
-        `,
-      })
-      .then((response) => {
-        "Email sent successfully:", response;
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-      });
 
     return res.status(200).json({
       status: "success",

@@ -1,21 +1,43 @@
 .containerHome {
   display: grid;
-
   grid-template-columns: 1fr;
-  grid-template-rows: 80px 1fr;
 }
 
 .header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  padding-block: 15px;
+  padding: 15px;
   background-color: white;
   border-bottom: 1px solid rgb(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000; /* Asegura que el header esté sobre el contenido */
+
+  height: 85px;
 }
 
-.header h4 span {
+.info {
   color: #ffb800;
+  display: flex;
+  align-items: center;
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
+  font-size: 25px;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+.link:hover {
+  cursor: pointer;
+}
+
+.main {
+  margin-top: 90px;
 }
 
 footer {
@@ -24,5 +46,5 @@ footer {
   bottom: 0;
   width: 100%;
   background-color: white;
-  height: 45px;
+  height: 55px;
 }

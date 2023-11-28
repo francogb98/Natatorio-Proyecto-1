@@ -19,7 +19,7 @@ function SignIn() {
   const navigate = useNavigate();
   const login = useMutation({
     mutationFn: fetchSinToken,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data.status === "success") {
         if (data.usuario.role === "suspendido") {
           Swal.fire({
@@ -33,8 +33,8 @@ function SignIn() {
         localStorage.setItem("token", data.token);
         const { usuario } = data;
 
-        dispatch({ type: "LOGIN", payload: { role: usuario.role } });
-        dispatch({ type: "SET_USER", payload: { user: usuario } });
+        await dispatch({ type: "LOGIN", payload: { role: usuario.role } });
+        await dispatch({ type: "SET_USER", payload: { user: usuario } });
 
         Swal.fire({
           icon: "success",
@@ -45,18 +45,12 @@ function SignIn() {
 
         setTimeout(() => {
           Swal.close();
-
-          if (
-            data.usuario.role === "ADMIN" ||
-            data.usuario.role === "SUPER_ADMIN"
-          ) {
-            return navigate("/admin/panel/inicio");
+          if (data.usuario.role === "usuario") {
+            return navigate("/user/home");
           }
-
-          return navigate("/user/home");
-
+          return navigate("/admin/panel/inicio");
           // window.location.href = "/home";
-        }, 1000);
+        }, 1500);
       } else {
         Swal.fire({
           icon: "error",

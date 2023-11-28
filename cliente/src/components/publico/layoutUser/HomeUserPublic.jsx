@@ -11,6 +11,7 @@ import HomeUser from "./home/HomeUser";
 import Inscripcion from "./inscripcion/Inscripcion";
 import Perfil from "./perfil/Perfil";
 import UpdateFiles from "./updateFiles/UpdateFiles";
+import Notificaciones from "./notificaciones/Notificaciones";
 
 function HomeUserPublic() {
   //cargar datos de usuario
@@ -71,7 +72,7 @@ function HomeUserPublic() {
     );
   }
 
-  if (getUser.isSuccess && !getUser.data) {
+  if (getUser.isLoading) {
     return (
       <div className={style.containerHome}>
         {location.pathname === "/user/home" ? (
@@ -89,32 +90,44 @@ function HomeUserPublic() {
     return (
       <div className={style.containerHome}>
         <header className={style.header}>
-          <h4>
-            Bienvienida{" "}
-            <span>
+          <div className={style.info}>
+            <img src={user.foto} alt="perfil" style={{ width: "30px" }} />
+            <h1>
               {user.nombre} {user.apellido}
-            </span>
-          </h4>
-          <h5>
-            Numero de usuario :{" "}
-            <span className="text-danger">{user.customId}</span>
-          </h5>
-
-          {/* <Link to={"notificaciones"} className={style.link}>
+            </h1>
+          </div>
+          <Link to={"notificaciones"} className={style.link}>
             {location.pathname === "/user/notificaciones" ? (
-              <i type="button" class="bi bi-bell  position-relative">
-                <span class="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
-                  <span class="visually-hidden">New alerts</span>
-                </span>
+              <i className="bi bi-bell-fill">
+                {
+                  //si hay notificaciones sin leer
+                  user.notificaciones?.filter(
+                    (notificacion) => notificacion.leido === false
+                  ).length > 0 && (
+                    <span className="position-absolute top-10 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                      <span className="visually-hidden">New alerts</span>
+                    </span>
+                  )
+                }
               </i>
             ) : (
-              <i class="bi bi-bell"></i>
+              <i type="button" className="bi bi-bell  position-relative">
+                {
+                  //si hay notificaciones sin leer
+                  user.notificaciones?.filter(
+                    (notificacion) => notificacion.leido === false
+                  ).length > 0 && (
+                    <span className="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                      <span className="visually-hidden">New alerts</span>
+                    </span>
+                  )
+                }
+              </i>
             )}
-          </Link> */}
-          <hr />
+          </Link>
         </header>
 
-        <main className="mt-3">
+        <main className={style.main}>
           {location.pathname === "/user/home" ? <HomeUser user={user} /> : null}
           {location.pathname === "/user/inscripcion" ? (
             <Inscripcion user={user} />
@@ -124,6 +137,9 @@ function HomeUserPublic() {
           ) : null}
           {location.pathname === "/user/updateFiles" ? (
             <UpdateFiles user={user}></UpdateFiles>
+          ) : null}
+          {location.pathname === "/user/notificaciones" ? (
+            <Notificaciones user={user}></Notificaciones>
           ) : null}
         </main>
 

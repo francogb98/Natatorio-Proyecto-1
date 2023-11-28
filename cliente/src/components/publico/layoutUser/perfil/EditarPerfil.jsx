@@ -7,6 +7,8 @@ import style from "./style.module.css";
 
 import Actividades from "./Actividades";
 import { editarPerfilFetch } from "../../../../helpers/usersFetch/editarPerfli";
+import Foto from "./Foto";
+import ProfileImageUpload from "./Prueba";
 
 function EditarPerfil({ usuario }) {
   // Crear un estado local para rastrear los cambios
@@ -81,7 +83,8 @@ function EditarPerfil({ usuario }) {
       key !== "cud" &&
       key !== "certificadoHongos" &&
       key !== "fechaCargaCertificadoHongos" &&
-      key !== "fichaMedica"
+      key !== "fichaMedica" &&
+      key !== "notificaciones"
     ) {
       return true;
     }
@@ -95,6 +98,8 @@ function EditarPerfil({ usuario }) {
       </div>
 
       <Actividades usuario={usuario} />
+
+      <Foto usuario={usuario} />
 
       <form action="" className={style.form}>
         {Object.keys(usuario).map((key, i) => {

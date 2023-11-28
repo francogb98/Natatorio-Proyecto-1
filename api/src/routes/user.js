@@ -23,6 +23,11 @@ import { getAllUsersForHour } from "../controllers/users/getAllUserForHour.js";
 import editarUsuario from "../controllers/users/editarUsuario.js";
 import { darDeBajaActividad } from "../controllers/users/darDeBajaActividad.js";
 
+import createNotificacion from "../controllers/users/notificaciones/createNotificacion.js";
+import updateNotificaciones from "../controllers/users/notificaciones/updateNotificaciones.js";
+import { deleteNotificacion } from "../controllers/users/notificaciones/deleteNotificacion.js";
+import cambiarFoto from "../controllers/users/imagen/cambiarFoto.js";
+
 const router = Router();
 
 router.get("/infoUser/:token", getUser);
@@ -54,5 +59,15 @@ router.post("/resgisterActivity", validarJWT, addUserFromActivity);
 router.post("/editarUsuario", editarUsuario);
 
 router.post("/darDeBajaActividad", validarJWT, darDeBajaActividad);
+
+//notificaciones
+
+router.post("/notificaciones/create", createNotificacion);
+
+router.post("/notificaciones/update", validarJWT, updateNotificaciones);
+
+router.post("/notificaciones/delete", validarJWT, deleteNotificacion);
+
+router.post("/cambiarFoto", validarJWT, cambiarFoto);
 
 export default router;

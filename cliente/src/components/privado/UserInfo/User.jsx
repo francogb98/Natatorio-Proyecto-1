@@ -12,11 +12,13 @@ import style from "./style.module.css";
 import { inhabilitarUsuario } from "../../../helpers/usersFetch/inhabilitarUsuario";
 import { HabilitarUsuario } from "../../../helpers/usersFetch/HabilitarUsuario";
 import { changeRol } from "../../../helpers/usersFetch/cambiarRole";
+import FormularioHabilitarUsuario from "./FormularioHabilitarUsuario";
+import Notificaciones from "./Notificaciones";
 
 function User() {
   //accedo al id que viene por parametro
 
-  const [mensaje, setMensaje] = useState("");
+  const [notificacion, setNotificacion] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [user, setUser] = useState({});
@@ -36,57 +38,6 @@ function User() {
   });
 
   const queryClient = useQueryClient();
-
-  const inhabilitar = useMutation({
-    mutationFn: inhabilitarUsuario,
-    onSuccess: (data) => {
-      setLoading(false);
-
-      if (data.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Usuario inhabilitado",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-
-        queryClient.invalidateQueries("getUserData");
-        queryClient.invalidateQueries("usuarios");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Algo salio mal",
-        });
-      }
-    },
-    onError: (error) => {},
-  });
-
-  const habilitar = useMutation({
-    mutationFn: HabilitarUsuario,
-    onSuccess: (data) => {
-      setLoading(false);
-      if (data.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Usuario habilitado",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-
-        queryClient.invalidateQueries("getUserData");
-        queryClient.invalidateQueries("usuarios");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Algo salio mal",
-        });
-      }
-    },
-    onError: (error) => {},
-  });
 
   const cambiar = useMutation({
     mutationFn: changeRol,
@@ -112,17 +63,16 @@ function User() {
   });
   // queryClient.invalidateQueries("getUserData");
 
-  useEffect(() => {}, [mensaje]);
   useEffect(() => {}, [estado]);
   useEffect(() => {}, [image]);
 
-  useEffect(() => {
-    // Desplaza la ventana hacia la parte superior cuando el componente se monta
-    return () => {
-      queryClient.removeQueries("getUserData");
-    };
-  }, []);
-  //quiero que cuando se cierreel componente se borre la informacion de la data
+  // useEffect(() => {
+  //   // Desplaza la ventana hacia la parte superior cuando el componente se monta
+  //   return () => {
+  //     queryClient.removeQueries("getUserData");
+  //   };
+  // }, []);
+  // //quiero que cuando se cierreel componente se borre la informacion de la data
 
   useEffect(() => {
     if (isSuccess) {
@@ -145,56 +95,6 @@ function User() {
     return (
       <>
         <div className={style.body}>
-          {estado.status && (
-            <div className={style.alert}>
-              <h4>
-                ¿Seguro que deseas {estado.type} al usuario: {user.nombre}{" "}
-                {user.apellido}?
-              </h4>
-              <div className={style.buttonGroup}>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    if (estado.type === "inhabilitar") {
-                      setLoading(true);
-
-                      inhabilitar.mutate({
-                        id: user._id,
-                        mensaje: mensaje,
-                        idActivity: user.activity[0]._id,
-                      });
-                      setEstado({
-                        status: false,
-                        type: "",
-                      });
-                    } else {
-                      setLoading(true);
-                      habilitar.mutate({
-                        id: user._id,
-                      });
-                      setEstado({
-                        status: false,
-                        type: "",
-                      });
-                    }
-                  }}
-                >
-                  Si
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() =>
-                    setEstado({
-                      status: false,
-                      type: "",
-                    })
-                  }
-                >
-                  No
-                </button>
-              </div>
-            </div>
-          )}
           <header className={style.header}>
             <img src={user.foto} alt="" />
             <h1>
@@ -253,11 +153,6 @@ function User() {
                     </span>
                   </p>
                 )}
-                {user.mensaje && (
-                  <p className="card-text" style={{ maxWidth: "200px" }}>
-                    Mensaje: <span className="text-danger">{user.mensaje}</span>
-                  </p>
-                )}
 
                 <div style={{ maxWidth: "200px" }}>
                   <p className="card-text">
@@ -269,7 +164,7 @@ function User() {
                   <select
                     name=""
                     id=""
-                    style={{ maxWidth: "150px" }}
+                    style={{ maxWidth: "100%" }}
                     onChange={(e) => {
                       cambiar.mutate({
                         id: user._id,
@@ -294,26 +189,30 @@ function User() {
                 </div>
               </div>
             </section>
+
             {user.activity && (
               <section className={`card ${style.activity}`}>
                 <div className="card-body">
                   <h5 className="card-title">Actividad</h5>
-                  <h6 className="card-subtitle mb-2 text-body-secondary">
-                    {user.activity[0]?.name}
-                  </h6>
-                  <p className="card-text">
-                    Horario:{" "}
-                    <span>
-                      {user.activity[0]?.hourStart} -{" "}
-                      {user.activity[0]?.hourFinish}
-                    </span>
-                  </p>
-                  <p className="card-text">
-                    Dias: <span>{user.activity[0]?.date.join(" - ")}</span>
-                  </p>
+                  <>
+                    <h6 className="card-subtitle mb-2 text-body-secondary">
+                      {user.activity[0]?.name}
+                    </h6>
+                    <p className="card-text">
+                      Horario:{" "}
+                      <span>
+                        {user.activity[0]?.hourStart} -{" "}
+                        {user.activity[0]?.hourFinish}
+                      </span>
+                    </p>
+                    <p className="card-text">
+                      Dias: <span>{user.activity[0]?.date.join(" - ")}</span>
+                    </p>
+                  </>
                 </div>
               </section>
             )}
+
             <section className={`card ${style.archivos}`}>
               <div className="card-body">
                 <h5 className="card-title">Archivos</h5>
@@ -371,94 +270,19 @@ function User() {
               </div>
             </section>
 
-            <section className={`card ${style.formulario}`}>
-              <div className="card-body">
-                <h5 className="card-title">Formulario</h5>
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                  }}
-                >
-                  <div className="mb-3">
-                    <label htmlFor="exampleInputEmail1" className="form-label">
-                      Mensaje para el usuario
-                    </label>
-                    <textarea
-                      type="email"
-                      className="form-control"
-                      id="exampleInputEmail1"
-                      aria-describedby="emailHelp"
-                      onChange={(e) => setMensaje(e.target.value)}
-                    />
-                    <div id="emailHelp" className="form-text">
-                      Solo en caso de que no se pueda habilitar
-                    </div>
-                  </div>
-                  <div className={style.buttonGroup}>
-                    <button
-                      className="btn btn-success"
-                      onClick={() =>
-                        setEstado({
-                          status: true,
-                          type: "habilitar",
-                        })
-                      }
-                    >
-                      Habilitar
-                    </button>
-                    <button
-                      className="btn btn-warning"
-                      onClick={() =>
-                        setEstado({
-                          status: true,
-                          type: "inhabilitar",
-                        })
-                      }
-                      disabled={!mensaje}
-                    >
-                      Inhabilitar
-                    </button>
-                  </div>
-                </form>
-              </div>
+            <section className={`card ${style.notificacion}`}>
+              <Notificaciones user={user} />
             </section>
-          </main>
-        </div>
 
-        <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <img src={image} alt="" />
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  onClick={() => {
-                    setImage(null);
-                  }}
-                >
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          </div>
+            {user.activity && user.activity.length ? (
+              <section className={`card ${style.formulario}`}>
+                <div className="card-body">
+                  <h5 className="card-title">Enviar Notificacion al usuario</h5>
+                  <FormularioHabilitarUsuario id={user._id} />
+                </div>
+              </section>
+            ) : null}
+          </main>
         </div>
       </>
     );

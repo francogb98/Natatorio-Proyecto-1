@@ -67,7 +67,20 @@ const schema = new mongoose.Schema({
 
     minlength: 3,
   },
+
   activity: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activity" }],
+
+  notificaciones: [
+    {
+      asunto: String,
+      cuerpo: String,
+      leido: {
+        type: Boolean,
+        default: false, // Por defecto, la notificación no está leída
+      },
+    },
+  ],
+
   emailVerificationToken: {
     type: String,
   },
@@ -96,6 +109,11 @@ const schema = new mongoose.Schema({
     type: String,
     minlength: 3,
   },
+  public_id_foto: {
+    type: String,
+    minlength: 3,
+  },
+
   fichaMedica: {
     type: String,
     minlength: 3,
