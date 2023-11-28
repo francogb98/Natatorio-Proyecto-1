@@ -91,7 +91,16 @@ function HomeUserPublic() {
       <div className={style.containerHome}>
         <header className={style.header}>
           <div className={style.info}>
-            <img src={user.foto} alt="perfil" style={{ width: "30px" }} />
+            <img
+              src={user.foto}
+              alt="perfil"
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+                marginRight: "10px",
+              }}
+            />
             <h1>
               {user.nombre} {user.apellido}
             </h1>
