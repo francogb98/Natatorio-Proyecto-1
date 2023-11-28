@@ -81,7 +81,7 @@ function Foto({ usuario }) {
           src={usuario.foto}
           alt="Imagen seleccionada"
           className="rounded mx-auto d-block mt-1"
-          style={{ maxWidth: "190px", height: "180px" }}
+          style={{ width: "130px", height: "130px", borderRadius: "50%" }}
         />
       )}
       <h2 style={{ textAlign: "start" }}>
@@ -107,7 +107,7 @@ function Foto({ usuario }) {
           src={previewUrl}
           alt="Imagen seleccionada"
           className="rounded mx-auto d-block mt-1"
-          style={{ maxWidth: "190px", height: "90px" }}
+          style={{ maxWidth: "190px", height: "50px" }}
         />
       )}
       <div className="mt-1 ">

@@ -8,13 +8,33 @@ import style from "./style.module.css";
 import Actividades from "./Actividades";
 import { editarPerfilFetch } from "../../../../helpers/usersFetch/editarPerfli";
 import Foto from "./Foto";
-import ProfileImageUpload from "./Prueba";
+import InformacionPersonal from "./InformacionPersonal";
+import InformacionContacto from "./InformacionContacto";
 
 function EditarPerfil({ usuario }) {
   // Crear un estado local para rastrear los cambios
-  const [formValues, setFormValues] = useState(usuario);
+  const [formValues, setFormValues] = useState({
+    nombre: "",
+    apellido: "",
+    email: "",
+    telefono: "",
+    ciudad: "",
+    barrio: "",
+    edad: "",
+    dni: "",
+
+    // Informacion Contacto
+    nombreTutor: "",
+    apellidoTutor: "",
+    emailTutor: "",
+    telefonoTutor: "",
+    dniTutor: "",
+  });
 
   const [edicionActiva, setEdicionActiva] = useState(false);
+  const [edicionActivaTutor, setEdicionActivaTutor] = useState(false);
+
+  const [menorEdadAlert, setMenorEdadAlert] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -54,119 +74,73 @@ function EditarPerfil({ usuario }) {
   useEffect(() => {
     setFormValues(usuario);
   }, [usuario]);
+  useEffect(() => {
+    console.log(menorEdadAlert);
+  }, [menorEdadAlert]);
 
   // Enviar la solicitud al backend
-  const handleSubmit = (e) => {
+  const handleSubmitAdulto = (e) => {
     e.preventDefault();
 
+    if (formValues.edad < 18) {
+      setMenorEdadAlert(true);
+      return;
+    }
+
+    console.log(formValues);
     // Aquí puedes enviar 'formValues' al backend usando una función o biblioteca para hacer peticiones HTTP.
     editarPerfil.mutate(formValues);
   };
 
-  const verificarKey = (key) => {
-    if (
-      key !== "activity" &&
-      key !== "customId" &&
-      key !== "status" &&
-      key !== "role" &&
-      key !== "password" &&
-      key !== "email" &&
-      key !== "id" &&
-      key !== "createdAt" &&
-      key !== "updatedAt" &&
-      key !== "_id" &&
-      key !== "asistencia" &&
-      key !== "__v" &&
-      key !== "foto" &&
-      key !== "emailVerified" &&
-      key !== "emailVerificationToken" &&
-      key !== "cud" &&
-      key !== "certificadoHongos" &&
-      key !== "fechaCargaCertificadoHongos" &&
-      key !== "fichaMedica" &&
-      key !== "notificaciones" &&
-      key !== "public_id_foto"
-    ) {
-      return true;
-    }
+  const handleSubmitMenor = (e) => {
+    e.preventDefault();
+
+    console.log(formValues);
+
+    editarPerfil.mutate(formValues);
+
+    setMenorEdadAlert(false);
   };
 
   return (
     <div>
       <div className={style.info}>
         <label htmlFor="">Numero De Usuario</label>
-        <p>{usuario.customId}</p>
+        <h3>{usuario.customId}</h3>
       </div>
-
-      <Actividades usuario={usuario} />
 
       <Foto usuario={usuario} />
 
-      <form action="" className={style.form}>
-        {Object.keys(usuario).map((key, i) => {
-          if (verificarKey(key)) {
-            return (
-              <div className={style.info} key={i}>
-                {usuario[key] == null ? null : (
-                  <>
-                    <label htmlFor="">
-                      {key.charAt(0).toUpperCase() + key.slice(1)}:
-                    </label>
-                    {edicionActiva ? (
-                      <input
-                        type="text"
-                        name={key}
-                        value={formValues[key]}
-                        onChange={handleInputChange}
-                      />
-                    ) : (
-                      <div className={style.text}>
-                        <p>{usuario[key] ? usuario[key] : "No"}</p>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            );
-          }
-        })}
+      <Actividades usuario={usuario} />
 
-        {
-          editarPerfil.isLoading ? (
-            //spinner
-            <div style={{ width: "100%", textAlign: "center" }}>
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          ) : null // Si la solicitud está en progreso, deshabilita el botón de enviar
-        }
+      <h2>Informacion Personal</h2>
 
-        {!edicionActiva ? (
-          <button
-            className={style.button__editar}
-            onClick={() => setEdicionActiva(!edicionActiva)}
-          >
-            Editar Informacion
-            <i className="bi bi-pencil"></i>
-          </button>
-        ) : (
-          <div className={style.buttons}>
-            <button
-              className={style.button__cancel}
-              onClick={() => setEdicionActiva(!edicionActiva)}
-            >
-              <i className="bi bi-x-lg"></i>
-            </button>
-            <button
-              className={style.button__confirm}
-              onClick={(e) => handleSubmit(e)}
-            >
-              <i className="bi bi-check-lg"></i>
-            </button>
-          </div>
-        )}
-      </form>
+      {menorEdadAlert ? (
+        <div class="alert alert-danger mt-2" role="alert">
+          Deberas completar la Informacion de Tutor, desliza hacia abajo.
+        </div>
+      ) : null}
+      <InformacionPersonal
+        formValues={formValues}
+        handleInputChange={handleInputChange}
+        edicionActiva={edicionActiva}
+        handleSubmitAdulto={handleSubmitAdulto}
+        setMenorEdadAlert={setMenorEdadAlert}
+        setEdicionActiva={setEdicionActiva}
+      />
+
+      {usuario.edad <= 18 || usuario.natacionAdaptada || menorEdadAlert ? (
+        <>
+          <h2 className="mt-4">Informacion Contacto</h2>
+          <InformacionContacto
+            formValues={formValues}
+            handleInputChange={handleInputChange}
+            edicionActiva={edicionActivaTutor}
+            handleSubmitMenor={handleSubmitMenor}
+            setEdicionActiva={setEdicionActivaTutor}
+          />
+        </>
+      ) : null}
     </div>
   );
 }
