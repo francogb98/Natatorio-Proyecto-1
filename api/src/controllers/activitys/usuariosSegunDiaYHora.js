@@ -10,13 +10,17 @@ export const getUsersFromActivity = async (req, res) => {
 
   const horaActual = `${hour.length === 1 ? "0" + hour : hour}:00`;
 
+  const normalizedDayToSearch = dayCapitalized
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
   try {
     //necesito traer todas las actividades que su hora de inicio sea igual o menor a la hora actual, y su hora de finalizado sea mayor a la hora actual
 
     //el campo dia de actividad es un array y tengo que buscar si el dia actual esta incluido en ese array
 
     const activities = await Activity.find({
-      date: { $in: [dayCapitalized] },
+      date: { $in: [normalizedDayToSearch] },
       hourStart: { $lte: horaActual },
       hourFinish: { $gt: horaActual },
     }).populate({
@@ -33,6 +37,7 @@ export const getUsersFromActivity = async (req, res) => {
       });
     });
 
+    console.log(usersList);
     //necesito que me devuelva un array con todos los usuarios que estan en actividades que cumplen con la condicion de hora y dia
 
     return res.status(200).json({ status: "success", usersList });
