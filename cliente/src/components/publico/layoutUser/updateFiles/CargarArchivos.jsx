@@ -101,6 +101,34 @@ function CargarArchivos({ usuario }) {
 
   return (
     <div>
+      {!usuario.natacionAdaptada &&
+        usuario.certificadoHongos &&
+        usuario.fichaMedica && (
+          <div className="alert alert-success" role="alert">
+            Ya cargaste todos los archivos
+          </div>
+        )}
+
+      {usuario.natacionAdaptada &&
+        usuario.cud &&
+        usuario.certificadoHongos &&
+        usuario.fichaMedica && (
+          <div className="alert alert-success" role="alert">
+            Ya cargaste todos los archivos
+          </div>
+        )}
+
+      {loading && (
+        <div className="alert alert-warning" role="alert">
+          Cargando
+        </div>
+      )}
+      {!loading && success && (
+        <div className="alert alert-success" role="alert">
+          Archivo cargado con éxito
+        </div>
+      )}
+
       {usuario.natacionAdaptada && (
         <div className="mb-3">
           <h5 className="form-label">Cargar CUD</h5>
@@ -110,14 +138,6 @@ function CargarArchivos({ usuario }) {
             id="formFile"
             onChange={(e) => handleFileChange(e, "cud")}
           />
-          <button
-            className="btn btn-dark mt-1"
-            name="cud"
-            onClick={uploadImage}
-            disabled={!cud}
-          >
-            Cargar archivo
-          </button>
         </div>
       )}
 
@@ -129,14 +149,6 @@ function CargarArchivos({ usuario }) {
           id="formFile"
           onChange={(e) => handleFileChange(e, "hongos")}
         />
-        <button
-          className="btn btn-dark mt-1"
-          name="hongos"
-          onClick={uploadImage}
-          disabled={!hongos}
-        >
-          Cargar archivo
-        </button>
       </div>
 
       <div className="mb-3">
@@ -147,14 +159,7 @@ function CargarArchivos({ usuario }) {
           id="formFile"
           onChange={(e) => handleFileChange(e, "ficha")}
         />
-        <button
-          className="btn btn-dark mt-1"
-          name="ficha"
-          onClick={uploadImage}
-          disabled={!ficha}
-        >
-          Cargar archivo
-        </button>
+
         <div className="mt-2 text-danger">
           <a
             href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
@@ -164,35 +169,6 @@ function CargarArchivos({ usuario }) {
           </a>
         </div>
       </div>
-
-      {loading && (
-        <div
-          className="alert alert-warning"
-          role="alert"
-          style={{
-            position: "absolute",
-            bottom: "0",
-            right: "0",
-            margin: "25px",
-          }}
-        >
-          Cargando
-        </div>
-      )}
-      {!loading && success && (
-        <div
-          className="alert alert-success"
-          role="alert"
-          style={{
-            position: "absolute",
-            bottom: "0",
-            right: "0",
-            margin: "25px",
-          }}
-        >
-          Archivo cargado con éxito
-        </div>
-      )}
     </div>
   );
 }
