@@ -50,7 +50,11 @@ function InsertarFoto({
         setError(false);
         setSuccess(true);
 
-        setUsuario({ ...usuario, foto: res.data.secure_url });
+        setUsuario({
+          ...usuario,
+          foto: res.data.secure_url,
+          public_id_foto: res.data.public_id,
+        });
       })
       .catch((err) => {
         setError(true);

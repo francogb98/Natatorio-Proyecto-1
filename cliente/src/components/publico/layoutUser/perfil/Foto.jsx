@@ -80,8 +80,7 @@ function Foto({ usuario }) {
         <img
           src={usuario.foto}
           alt="Imagen seleccionada"
-          className="rounded mx-auto d-block mt-1"
-          style={{ width: "130px", height: "130px", borderRadius: "50%" }}
+          className={style.imagenPerfil}
         />
       )}
       <h2 style={{ textAlign: "start" }}>
@@ -107,7 +106,10 @@ function Foto({ usuario }) {
           src={previewUrl}
           alt="Imagen seleccionada"
           className="rounded mx-auto d-block mt-1"
-          style={{ maxWidth: "190px", height: "50px" }}
+          style={{
+            maxWidth: "190px",
+            height: "50px",
+          }}
         />
       )}
       <div className="mt-1 ">

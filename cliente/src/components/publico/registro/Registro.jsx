@@ -35,7 +35,7 @@ function Registro() {
     password: "",
     repetirPassword: "",
     foto: "",
-
+    public_id_foto: "",
     // informacion tutor
     nombreTutor: "",
     apellidoTutor: "",

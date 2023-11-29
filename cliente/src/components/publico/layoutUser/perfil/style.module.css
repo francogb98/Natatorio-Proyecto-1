@@ -17,6 +17,16 @@
   margin-block: 20px;
 }
 
+.imagenPerfil {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: #f5f5f5 solid 1px;
+  margin: 0 auto;
+
+  object-fit: cover;
+}
+
 .form {
   display: flex;
   flex-direction: column;
