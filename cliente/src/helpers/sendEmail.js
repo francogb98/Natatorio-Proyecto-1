@@ -7,7 +7,7 @@ export const sendEmail = (data) => {
     to_name: data.user.nombre,
     from_email:
       data.user.email !== null ? data.user.email : data.user.emailTutor,
-    enlace: `${frontUrl}verificar-cuenta?token=${data.user.token}`,
+    enlace: `${frontUrl}verificar-cuenta?token=${data.user.emailVerificationToken}`,
     reply_to: "natatorio@correo.com",
   };
   const serviceID = import.meta.env.VITE_REACT_APP_SERVICE_ID;
