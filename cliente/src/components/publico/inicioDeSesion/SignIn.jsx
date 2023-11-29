@@ -96,32 +96,36 @@ function SignIn() {
         <img src={Logo} alt="" style={{ width: "160px" }} />
         <h1>Inicio De Sesion</h1>
         <form action="" className={`form-group `} onSubmit={handleSubmit}>
-          <div className={`mb-2 ${style.input_body}`}>
+          <div className={`mb-2 `}>
             <label htmlFor="Dni">Dni</label>
             <input type="text" name="dni" className="form-control" />
           </div>
 
-          <div className={`mb-2 ${style.input_body}`}>
+          <div className={`mb-2 `} style={{}}>
             <label htmlFor="password">Contraseña</label>
-            <div className="d-flex">
+
+            <div class="input-group mb-3">
               <input
                 type={viewPass ? "text" : "password"}
                 name="password"
                 className="form-control"
+                aria-describedby="basic-addon1"
               />
-              {!viewPass ? (
-                <i
-                  className="bi bi-eye ms-1"
-                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  onClick={() => setViewPass(!viewPass)}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-eye-slash ms-1"
-                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  onClick={() => setViewPass(!viewPass)}
-                ></i>
-              )}
+              <span class="input-group-text" id="basic-addon1">
+                {!viewPass ? (
+                  <i
+                    className="bi bi-eye ms-1"
+                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                    onClick={() => setViewPass(!viewPass)}
+                  ></i>
+                ) : (
+                  <i
+                    className="bi bi-eye-slash ms-1"
+                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                    onClick={() => setViewPass(!viewPass)}
+                  ></i>
+                )}
+              </span>
             </div>
           </div>
 

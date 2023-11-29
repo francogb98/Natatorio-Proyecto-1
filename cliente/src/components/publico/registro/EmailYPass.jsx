@@ -9,59 +9,62 @@ function EmailYPass({ registro, usuario, setUsuario }) {
     <div>
       <div className="mb-2">
         <label htmlFor="Password">Password</label>
-        <div className="d-flex">
+        <div class="input-group mb-3">
           <input
             type={viewPass ? "text" : "password"}
             name="password"
             className="form-control"
-            placeholder="Enter Password"
             onChange={(e) => {
               setUsuario({ ...usuario, password: e.target.value });
             }}
             value={usuario.password}
+            aria-describedby="basic-addon1"
           />
-          {!viewPass ? (
-            <i
-              className="bi bi-eye"
-              style={{ fontSize: "1.5rem", cursor: "pointer" }}
-              onClick={() => setViewPass(!viewPass)}
-            ></i>
-          ) : (
-            <i
-              className="bi bi-eye-slash"
-              style={{ fontSize: "1.5rem", cursor: "pointer" }}
-              onClick={() => setViewPass(!viewPass)}
-            ></i>
-          )}
+          <span class="input-group-text" id="basic-addon1">
+            {!viewPass ? (
+              <i
+                className="bi bi-eye"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => setViewPass(!viewPass)}
+              ></i>
+            ) : (
+              <i
+                className="bi bi-eye-slash"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => setViewPass(!viewPass)}
+              ></i>
+            )}
+          </span>
         </div>
       </div>
       <div className="mb-2">
         <label htmlFor="Repetir Password">Repetir Password</label>
-        <div className="d-flex">
+        <div class="input-group mb-3">
           <input
             type={viewPass2 ? "text" : "password"}
             name="repetir password"
             className="form-control"
-            placeholder="Enter Password"
             onChange={(e) => {
               setUsuario({ ...usuario, repetirPassword: e.target.value });
             }}
             value={usuario.repetirPassword}
+            aria-describedby="basic-addon1"
           />
-
-          {!viewPass2 ? (
-            <i
-              className="bi bi-eye"
-              style={{ fontSize: "1.5rem", cursor: "pointer" }}
-              onClick={() => setViewPass2(!viewPass2)}
-            ></i>
-          ) : (
-            <i
-              className="bi bi-eye-slash"
-              style={{ fontSize: "1.5rem", cursor: "pointer" }}
-              onClick={() => setViewPass2(!viewPass2)}
-            ></i>
-          )}
+          <span class="input-group-text" id="basic-addon1">
+            {!viewPass2 ? (
+              <i
+                className="bi bi-eye"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => setViewPass2(!viewPass2)}
+              ></i>
+            ) : (
+              <i
+                className="bi bi-eye-slash"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                onClick={() => setViewPass2(!viewPass2)}
+              ></i>
+            )}
+          </span>
         </div>
       </div>
 

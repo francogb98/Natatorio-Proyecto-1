@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 function InsertarFoto({
@@ -24,11 +24,9 @@ function InsertarFoto({
     setFile(selectedFile);
     setIsImage(true);
 
-    // Crear un objeto FileReader para leer la imagen y obtener su URL
     const fileReader = new FileReader();
     fileReader.onloadend = () => {
       setPreviewUrl(fileReader.result);
-      previewUrl;
     };
     fileReader.readAsDataURL(selectedFile);
   };
@@ -62,18 +60,34 @@ function InsertarFoto({
       });
   };
 
-  useEffect(() => {}, [success]);
+  useEffect(() => {
+    if (previewUrl) {
+      uploadImage();
+    }
+  }, [previewUrl]);
 
   useEffect(() => {
     setPreviewUrl(imageUrl);
-  }, []);
-
-  useEffect(() => {}, [imageUrl]);
-  useEffect(() => {}, [previewUrl]);
+  }, [imageUrl]);
 
   return (
     <div className="mb-5">
-      <h5 htmlFor="imagen">Imagen de perfil</h5>
+      <h5 htmlFor="imagen" style={{ textAlign: "center" }}>
+        Imagen de perfil
+      </h5>
+
+      {!success && (
+        <p
+          className="mx-auto text-danger mt-2"
+          style={{
+            width: "fit-content",
+            fontSize: "0.8rem",
+            textAlign: "center",
+          }}
+        >
+          Cargue una imagen, para establecerla como foto de perfil
+        </p>
+      )}
       <div
         style={{
           display: "flex",
@@ -84,7 +98,7 @@ function InsertarFoto({
       >
         <input
           type="file"
-          className="form-control p-2 "
+          className="form-control p-2"
           id="imagen"
           onChange={handleFileChange}
         />
@@ -104,7 +118,7 @@ function InsertarFoto({
             style={{ maxWidth: "190px", height: "90px" }}
           />
         )}
-        <div className="mt-1 ">
+        <div className="mt-1">
           {loading && (
             <div className="text-center">
               <p className="text-primary">Puede tardar unos segundos</p>
@@ -126,27 +140,7 @@ function InsertarFoto({
             <h4 className="text-success">Imagen cargada con exito</h4>
           )}
         </div>
-
-        {!success && (
-          <button
-            type="button"
-            className="btn btn-dark fw-bold mt-3"
-            disabled={!isImage}
-            onClick={uploadImage}
-          >
-            {imageUrl ? "Imagen cargada" : "Cargar imagen"}
-          </button>
-        )}
       </div>
-
-      {!success && (
-        <h5
-          className="mx-auto text-danger mt-2"
-          style={{ width: "fit-content" }}
-        >
-          Haga Click en Cargar Imagen para subir la foto
-        </h5>
-      )}
     </div>
   );
 }

@@ -63,7 +63,7 @@ function InformacionUsuario({
           </div>
           <div className="mb-2">
             <label htmlFor="telefonoContacto" className={`form-label  mt-2 `}>
-              Telefono De Contacto
+              Telefono De Emergencia
             </label>
             <input
               type="number"

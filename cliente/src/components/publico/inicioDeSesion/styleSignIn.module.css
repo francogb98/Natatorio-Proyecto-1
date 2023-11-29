@@ -37,17 +37,6 @@
   width: 80%;
   margin: 0 auto;
 }
-.formBody input {
-  height: 40px;
-  background-color: #f9f9f9;
-  border: none;
-  outline: none;
-  padding: 0 10px;
-
-  margin-bottom: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-}
 
 .formBody button {
   width: 100%;

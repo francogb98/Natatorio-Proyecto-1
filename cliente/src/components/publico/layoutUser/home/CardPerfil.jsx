@@ -88,20 +88,6 @@ function CardPerfil({ user, handleViewFicha }) {
             </>
           )}
         </div>
-
-        {user.asistencia && (
-          <p className="card-text">
-            Asistencia:{" "}
-            <span
-              className={user.asistencia[0] ? "text-success" : "text-danger"}
-            >
-              {" "}
-              {user.asistencia[0]
-                ? user.asistencia[user.asistencia.length]
-                : "No se registran asistencias"}
-            </span>
-          </p>
-        )}
       </div>
     </div>
   );

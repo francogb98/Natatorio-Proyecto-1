@@ -74,7 +74,7 @@ function InformacionTutor({ setUsuario, usuario, handleDni, handleTelefono }) {
         />
 
         <label htmlFor="telefonoContacto" className={`form-label  mt-2 `}>
-          Telefono De Contacto
+          Telefono de emergencia
         </label>
         <input
           type="number"
