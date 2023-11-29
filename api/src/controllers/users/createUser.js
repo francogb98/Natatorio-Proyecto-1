@@ -15,6 +15,8 @@ const createUser = async (req, res) => {
 
   const { password, dni, nombreTutor, dniTutor, edad } = req.body;
 
+  console.log(args.email, args.telefono);
+
   if (edad < 0 || edad > 100) {
     return res.status(400).json({
       status: "error",
@@ -94,17 +96,18 @@ const createUser = async (req, res) => {
       certificadoHongos: null,
       fechaCargaCertificadoHongos: null,
       barrio: args.barrio ? args.barrio : null,
+      email: args.email ? args.email : null,
+      telefono: args.telefono ? args.telefono : null,
     });
     await user.save();
 
     res.status(201).json({
       status: "success",
       message: "Usuario creado",
-      token: user.emailVerificationToken,
-      nombre: user.nombre,
-      email: user.email,
+      user,
     });
   } catch (error) {
+    console.log(error.message);
     return res
       .status(500)
       .json({ status: "error", message: "Error en el Servidor" });

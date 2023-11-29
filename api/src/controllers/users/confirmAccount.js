@@ -1,7 +1,5 @@
 import User from "../../models/models/User.js";
 
-import QRCode from "qrcode";
-
 export const confirmAccount = async (req, res) => {
   const { token } = req.params;
 
@@ -19,25 +17,20 @@ export const confirmAccount = async (req, res) => {
         .json({ status: "error", message: "usuario ya verificado" });
     }
 
-    QRCode.toDataURL(user.customId.toString(), user, async function (err, url) {
-      if (err) throw err;
-
-      const userUpdate = await User.findOneAndUpdate(
-        { email: user.email },
-        {
-          $set: {
-            emailVerified: true,
-            emailVerificationToken: null,
-            role: "usuario",
-            qr: url,
-          },
+    const userUpdate = await User.findOneAndUpdate(
+      { dni: user.dni },
+      {
+        $set: {
+          emailVerified: true,
+          emailVerificationToken: null,
+          role: "usuario",
         },
-        { new: true }
-      );
-      return res
-        .status(200)
-        .json({ status: "success", message: "usuario verificado" });
-    });
+      },
+      { new: true }
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "usuario verificado", userUpdate });
   } catch (error) {
     return res
       .status(500)

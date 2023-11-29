@@ -4,9 +4,10 @@ import { frontUrl } from "./url";
 export const sendEmail = (data) => {
   const form = {
     from_name: "Administracion Natatorio Olimpico",
-    to_name: data.nombre,
-    from_email: data.email,
-    enlace: `${frontUrl}verificar-cuenta?token=${data.token}`,
+    to_name: data.user.nombre,
+    from_email:
+      data.user.email !== null ? data.user.email : data.user.emailTutor,
+    enlace: `${frontUrl}verificar-cuenta?token=${data.user.token}`,
     reply_to: "natatorio@correo.com",
   };
   const serviceID = import.meta.env.VITE_REACT_APP_SERVICE_ID;
@@ -26,7 +27,7 @@ export const sendEmailConfirmActivity = (data) => {
   const form = {
     from_name: "Administracion Natatorio Olimpico",
     to_name: data.nombre,
-    from_email: data.email,
+    from_email: data.email !== "" ? data.email : data.emailTutor,
     message: `Se ha registrado en la actividad con exito, Actividad: ${
       data.activity[0].name
     }, Horario: ${data.activity[0].hourStart} - ${
