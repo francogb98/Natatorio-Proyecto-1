@@ -38,21 +38,14 @@ function CargarArchivos({ usuario }) {
     }
   };
 
-  const uploadImage = (e) => {
+  const uploadImage = (file, tipo) => {
     setLoading(true);
     const formData = new FormData();
 
-    formData.append(
-      "file",
-      e.target.name === "cud"
-        ? cud
-        : e.target.name === "hongos"
-        ? hongos
-        : ficha
-    );
-
+    formData.append("file", file);
     formData.append("upload_preset", preset_key);
     formData.append("folder", preset_key);
+
     axios
       .post(
         `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
@@ -62,16 +55,35 @@ function CargarArchivos({ usuario }) {
         setError(false);
         postFicha.mutate({
           archivo: res.data.secure_url,
-          tipo: e.target.name,
+          tipo: tipo,
           id: usuario._id,
         });
-        setSuccess(true); // Cambio agregado para activar la alerta de éxito automáticamente
+        setSuccess(true);
+        setLoading(false);
       })
       .catch((err) => {
         setError(true);
         setLoading(false);
       });
   };
+
+  useEffect(() => {
+    if (cud) {
+      uploadImage(cud, "cud");
+    }
+  }, [cud]);
+
+  useEffect(() => {
+    if (hongos) {
+      uploadImage(hongos, "hongos");
+    }
+  }, [hongos]);
+
+  useEffect(() => {
+    if (ficha) {
+      uploadImage(ficha, "ficha");
+    }
+  }, [ficha]);
 
   useEffect(() => {
     if (success) {
@@ -89,7 +101,70 @@ function CargarArchivos({ usuario }) {
 
   return (
     <div>
-      {/* Resto del código del componente */}
+      {usuario.natacionAdaptada && (
+        <div className="mb-3">
+          <h5 className="form-label">Cargar CUD</h5>
+          <input
+            className="form-control"
+            type="file"
+            id="formFile"
+            onChange={(e) => handleFileChange(e, "cud")}
+          />
+          <button
+            className="btn btn-dark mt-1"
+            name="cud"
+            onClick={uploadImage}
+            disabled={!cud}
+          >
+            Cargar archivo
+          </button>
+        </div>
+      )}
+
+      <div className="mb-3">
+        <h5 className="form-label">Cargar Certificado de hongos</h5>
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          onChange={(e) => handleFileChange(e, "hongos")}
+        />
+        <button
+          className="btn btn-dark mt-1"
+          name="hongos"
+          onClick={uploadImage}
+          disabled={!hongos}
+        >
+          Cargar archivo
+        </button>
+      </div>
+
+      <div className="mb-3">
+        <h5 className="form-label">Cargar Ficha Medica</h5>
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          onChange={(e) => handleFileChange(e, "ficha")}
+        />
+        <button
+          className="btn btn-dark mt-1"
+          name="ficha"
+          onClick={uploadImage}
+          disabled={!ficha}
+        >
+          Cargar archivo
+        </button>
+        <div className="mt-2 text-danger">
+          <a
+            href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
+            download="fichaMedica.pdf"
+          >
+            Descargar ficha médica
+          </a>
+        </div>
+      </div>
+
       {loading && (
         <div
           className="alert alert-warning"
@@ -104,7 +179,6 @@ function CargarArchivos({ usuario }) {
           Cargando
         </div>
       )}
-      {/* Modificación: Mostrar la alerta de éxito automáticamente */}
       {!loading && success && (
         <div
           className="alert alert-success"
