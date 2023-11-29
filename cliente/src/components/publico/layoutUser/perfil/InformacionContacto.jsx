@@ -8,6 +8,8 @@ function InformacionContacto({
   edicionActiva,
   setEdicionActiva,
   handleSubmitMenor,
+  setMenorEdadAlert,
+  menorEdadAlert,
 }) {
   return (
     <>
@@ -76,7 +78,11 @@ function InformacionContacto({
       <div className={style.info}>
         <button
           className="btn btn-danger"
-          onClick={() => setEdicionActiva(!edicionActiva)}
+          onClick={() => {
+            setMenorEdadAlert(false);
+
+            setEdicionActiva(!edicionActiva);
+          }}
         >
           {edicionActiva ? "Cancelar" : "Editar"}
         </button>

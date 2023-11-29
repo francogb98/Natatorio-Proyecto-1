@@ -127,6 +127,7 @@ function EditarPerfil({ usuario }) {
         handleSubmitAdulto={handleSubmitAdulto}
         setMenorEdadAlert={setMenorEdadAlert}
         setEdicionActiva={setEdicionActiva}
+        menorEdadAlert={menorEdadAlert}
       />
 
       {usuario.edad <= 18 || usuario.natacionAdaptada || menorEdadAlert ? (
@@ -135,9 +136,11 @@ function EditarPerfil({ usuario }) {
           <InformacionContacto
             formValues={formValues}
             handleInputChange={handleInputChange}
-            edicionActiva={edicionActivaTutor}
+            edicionActiva={edicionActiva}
+            setMenorEdadAlert={setMenorEdadAlert}
             handleSubmitMenor={handleSubmitMenor}
-            setEdicionActiva={setEdicionActivaTutor}
+            setEdicionActiva={setEdicionActiva}
+            menorEdadAlert={menorEdadAlert}
           />
         </>
       ) : null}
