@@ -4,6 +4,7 @@
   display: grid;
   grid-template-areas:
     "main  aside"
+    "main  aside"
     "main  footer"
     "main  footer";
   /* background-color: red; */
@@ -46,38 +47,18 @@
   display: none;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .body {
-    width: 100vw;
-    grid-template-areas:
-      "header"
-      "button"
-      "footer";
-    grid-template-columns: 1fr;
-    grid-template-rows: 100px 40px 1fr;
-  }
-
-  .button {
-    display: block;
     width: fit-content;
-    height: fit-content;
-    margin: 10px auto;
-    border: none;
-    border-radius: 5px;
-    padding: 5px;
-    cursor: pointer;
-    background-color: brown;
-    color: white;
-  }
-  .main {
-    display: none;
+    margin: 0 auto;
+    grid-template-areas:
+      "main"
+      "aside";
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 220px;
   }
 
-  .button:target .main {
-    display: block;
-  }
-
-  .aside {
+  .footer {
     display: none;
   }
 }
