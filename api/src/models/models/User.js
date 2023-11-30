@@ -16,35 +16,10 @@ const schema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-  telefono: {
-    type: String,
-    minlength: 6,
-  },
-  telefonoContacto: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
-
   edad: {
     type: Number,
     required: true,
     maxlength: 2,
-  },
-
-  email: {
-    type: String,
-    minlength: 3,
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 3,
-  },
-  role: {
-    type: String,
-    required: true,
-    minlength: 3,
   },
   dni: {
     type: String,
@@ -57,6 +32,27 @@ const schema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
+
+  natacionAdaptada: {
+    type: Boolean,
+    required: false,
+  },
+
+  diagnosticos: {
+    type: String,
+    required: false,
+  },
+
+  telefono: {
+    type: String,
+    minlength: 6,
+  },
+  telefonoContacto: {
+    type: String,
+    required: true,
+    minlength: 6,
+  },
+
   ciudad: {
     type: String,
     required: true,
@@ -65,6 +61,17 @@ const schema = new mongoose.Schema({
   barrio: {
     type: String,
 
+    minlength: 3,
+  },
+
+  password: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+  role: {
+    type: String,
+    required: true,
     minlength: 3,
   },
 
@@ -81,34 +88,27 @@ const schema = new mongoose.Schema({
     },
   ],
 
-  emailVerificationToken: {
-    type: String,
-  },
-  emailVerified: {
-    type: Boolean,
-    default: false,
-  },
   //quiero que asistencia sea un array de strings
   asistencia: {
     type: Array,
     required: false,
   },
-  natacionAdaptada: {
-    type: Boolean,
-    required: false,
-  },
+
   cud: {
     type: String,
     required: false,
   },
+
   status: {
     type: Boolean,
     required: false,
   },
+
   foto: {
     type: String,
     minlength: 3,
   },
+
   public_id_foto: {
     type: String,
     minlength: 3,
@@ -118,39 +118,25 @@ const schema = new mongoose.Schema({
     type: String,
     minlength: 3,
   },
+
   certificadoHongos: {
     type: String,
     minlength: 3,
   },
-  fechaCargaCertificadoHongos: {
-    type: String,
-    minlength: 3,
-  },
-  mensaje: {
+
+  fotoDNIDelantera: {
     type: String,
     minlength: 3,
   },
 
-  // datos tutor
-  nombreTutor: {
+  fotoDNITrasera: {
     type: String,
     minlength: 3,
   },
-  apellidoTutor: {
+
+  fechaCargaCertificadoHongos: {
     type: String,
     minlength: 3,
-  },
-  dniTutor: {
-    type: String,
-    minlength: 7,
-  },
-  emailTutor: {
-    type: String,
-    minlength: 3,
-  },
-  telefonoTutor: {
-    type: String,
-    minlength: 6,
   },
 });
 

@@ -91,53 +91,40 @@ function HomeUserPublic() {
       <div className={style.containerHome}>
         <header className={style.header}>
           <Link to={"home"} className={style.info}>
-            <img src={user.foto} alt="perfil" className={style.imgPerfil} />
             <h1>
               {user.nombre} {user.apellido}
             </h1>
           </Link>
 
-          <div className={style.linksMenu}>
-            <Link to={"notificaciones"} className={style.link}>
-              {location.pathname === "/user/notificaciones" ? (
-                <i className="bi bi-bell-fill">
-                  {
-                    //si hay notificaciones sin leer
-                    user.notificaciones?.filter(
-                      (notificacion) => notificacion.leido === false
-                    ).length > 0 && (
-                      <span className="position-absolute top-10 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
-                        <span className="visually-hidden">New alerts</span>
-                      </span>
-                    )
-                  }
-                </i>
-              ) : (
-                <i type="button" className="bi bi-bell  position-relative">
-                  {
-                    //si hay notificaciones sin leer
-                    user.notificaciones?.filter(
-                      (notificacion) => notificacion.leido === false
-                    ).length > 0 && (
-                      <span className="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
-                        <span className="visually-hidden">New alerts</span>
-                      </span>
-                    )
-                  }
-                </i>
-              )}
-            </Link>
-
-            <button
-              class="btn btn-warning"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasWithBothOptions"
-              aria-controls="offcanvasWithBothOptions"
-            >
-              <i class="bi bi-list"></i>
-            </button>
-          </div>
+          <Link to={"notificaciones"} className={style.link}>
+            {location.pathname === "/user/notificaciones" ? (
+              <i className="bi bi-bell-fill">
+                {
+                  //si hay notificaciones sin leer
+                  user.notificaciones?.filter(
+                    (notificacion) => notificacion.leido === false
+                  ).length > 0 && (
+                    <span className="position-absolute top-10 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                      <span className="visually-hidden">New alerts</span>
+                    </span>
+                  )
+                }
+              </i>
+            ) : (
+              <i type="button" className="bi bi-bell  position-relative">
+                {
+                  //si hay notificaciones sin leer
+                  user.notificaciones?.filter(
+                    (notificacion) => notificacion.leido === false
+                  ).length > 0 && (
+                    <span className="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                      <span className="visually-hidden">New alerts</span>
+                    </span>
+                  )
+                }
+              </i>
+            )}
+          </Link>
         </header>
 
         <main className={style.main}>
@@ -157,40 +144,7 @@ function HomeUserPublic() {
         </main>
 
         <footer>
-          <div
-            class="offcanvas offcanvas-start"
-            data-bs-scroll="true"
-            tabindex="-1"
-            style={{
-              width: "75%",
-            }}
-            id="offcanvasWithBothOptions"
-            aria-labelledby="offcanvasWithBothOptionsLabel"
-          >
-            <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
-                <div className={style.info}>
-                  <img
-                    src={user.foto}
-                    alt="perfil"
-                    className={style.imgPerfil}
-                  />
-                  <h1>
-                    {user.nombre} {user.apellido}
-                  </h1>
-                </div>
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="offcanvas-body">
-              <NavBar user={user} location={location} />
-            </div>
-          </div>
+          <NavBar user={user} location={location}></NavBar>
         </footer>
         {/* <Outlet /> */}
       </div>

@@ -28,13 +28,6 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    if (!user.emailVerified) {
-      return res.status(400).json({
-        status: "error",
-        message: "Email No verificado, por favor verifique su correo",
-      });
-    }
-
     //creamos el token de autenticacion
     const userForToken = {
       nombre: user.nombre,

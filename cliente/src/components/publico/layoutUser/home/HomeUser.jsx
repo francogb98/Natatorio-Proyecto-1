@@ -17,61 +17,36 @@ function HomeUser({ user }) {
 
   return (
     <div className={style.body}>
-      <p className={style.title}>
-        A continuacion veras el estado de tus archivos, una vez que todos esten
-        cargados en la seccion de{" "}
-        <Link to={"updateFiles"}>Cargar Archivos</Link> podras acceder a la
-        parte de <Link to={"inscripcion"}>Actividades</Link> y registrarte{" "}
-      </p>
-      <CardPerfil user={user} handleViewFicha={handleViewFicha} />
+      <h1>Pasos a seguir para la inscripcion en actividades</h1>
+      <section className={style.section}>
+        <div className={`${style.sectionItem}`}>
+          <span className="bg-warning">1</span>
 
-      {showFicha ? (
-        <div
-          className="modal fade show"
-          id="exampleModal"
-          tabIndex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-          style={{ display: "block", paddingRight: "17px" }}
-        >
-          <div className="modal-dialog modal-lg">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5
-                  className="modal-title"
-                  id="exampleModalLabel"
-                  style={{ color: "black" }}
-                >
-                  Ficha Medica
-                </h5>
-                <button
-                  className="btn-close"
-                  onClick={() => {
-                    setShowFicha(false);
-                  }}
-                ></button>
-              </div>
-              <div className="modal-body">
-                <img
-                  src={fichaMedica}
-                  alt="ficha medica"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              </div>
-              <div className="modal-footer">
-                <button
-                  className="btn btn-secondary"
-                  onClick={() => {
-                    setShowFicha(false);
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
+          <div className={style.infoSection}>
+            <p>Carga de Archivos</p>
+            <small>(Dirigete a la seccion perfil)</small>
           </div>
         </div>
-      ) : null}
+        <div className={style.sectionItem}>
+          <span className="bg-warning">2</span>{" "}
+          <div className={style.infoSection}>
+            <p>Inscripcion en Actividades</p>
+            <small>(Dirigete a la seccion Actividades)</small>
+          </div>
+        </div>
+        <div className={style.sectionItem}>
+          <span className="bg-warning">3</span>
+          <div className={style.infoSection}>
+            <p>Aprobacion de Inscripcion</p>
+            <small>
+              (Tendras una notificacion en cuanto veamos tu registro)
+            </small>
+          </div>
+        </div>
+        <div className={style.sectionItem}>
+          <span className="bg-warning">4</span> <p>¡A Disfrutar!</p>
+        </div>
+      </section>
     </div>
   );
 }

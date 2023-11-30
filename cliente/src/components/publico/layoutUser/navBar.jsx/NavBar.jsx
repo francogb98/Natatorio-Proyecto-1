@@ -10,110 +10,89 @@ function NavBar({ user, location }) {
   const [cerrarConfirmacion, setCerrarConfirmacion] = useState(false);
 
   return (
-    <>
-      <div className={style.body}>
-        <Link to={"home"} className={style.link}>
-          {location.pathname === "/user/home" ? (
-            <i
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-              className="bi bi-house-door-fill"
-            ></i>
-          ) : (
-            <i
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-              className="bi bi-house-door"
-            ></i>
-          )}
-          <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
-            Inicio
-          </p>
-        </Link>
-        <Link to={"updateFiles"} className={style.link}>
-          {location.pathname === "/user/updateFiles" ? (
-            <i
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-              className="bi bi-file-earmark-arrow-up-fill"
-            ></i>
-          ) : (
-            <i
-              className="bi bi-file-earmark-arrow-up"
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></i>
-          )}
-          <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
-            Cargar Archivos
-          </p>
-        </Link>
-        <Link
-          to={`${
-            user.certificadoHongos == undefined || user.fichaMedica == undefined
-              ? "home"
-              : "inscripcion"
-          }`}
-          className={style.link}
-        >
-          {user.certificadoHongos == undefined ||
-          user.fichaMedica == undefined ? (
-            <i className="bi bi-calendar-x-fill"></i>
-          ) : location.pathname === "/user/inscripcion" ? (
-            <i
-              className="bi bi-calendar2-check-fill"
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></i>
-          ) : (
-            <i
-              className="bi bi-calendar2-check"
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></i>
-          )}
-          <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
-            Actividades
-          </p>
-        </Link>
+    <div className={style.body}>
+      <Link to={"home"} className={style.link}>
+        {location.pathname === "/user/home" ? (
+          <i
+            type="button"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+            className="bi bi-house-door-fill"
+          ></i>
+        ) : (
+          <i
+            type="button"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+            className="bi bi-house-door"
+          ></i>
+        )}
+        <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+          Inicio
+        </p>
+      </Link>
 
-        <Link to={"perfil"} className={style.link}>
-          {location.pathname === "/user/perfil" ? (
-            <i
-              className="bi bi-person-fill"
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></i>
-          ) : (
-            <i
-              className="bi bi-person"
-              type="button"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></i>
-          )}
-          <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
-            Perfil
-          </p>
-        </Link>
+      <Link
+        to={`${
+          user.certificadoHongos == undefined || user.fichaMedica == undefined
+            ? "home"
+            : "inscripcion"
+        }`}
+        className={style.link}
+      >
+        {user.certificadoHongos == undefined ||
+        user.fichaMedica == undefined ? (
+          <i className="bi bi-calendar-x"></i>
+        ) : location.pathname === "/user/inscripcion" ? (
+          <i
+            className="bi bi-calendar2-check-fill"
+            type="button"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></i>
+        ) : (
+          <i
+            className="bi bi-calendar2-check"
+            type="button"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></i>
+        )}
+        <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+          Actividades
+        </p>
+      </Link>
 
-        <div
-          className={style.linkCerrarSesion}
-          onClick={() => {
-            setCerrarConfirmacion(true);
-          }}
-        >
-          <i className="bi bi-box-arrow-left"></i>
+      <Link to={"perfil"} className={style.link}>
+        {location.pathname === "/user/perfil" ? (
+          <i
+            className="bi bi-person-fill"
+            type="button"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></i>
+        ) : (
+          <i
+            className="bi bi-person"
+            type="button"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></i>
+        )}
+        <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+          Perfil
+        </p>
+      </Link>
 
-          <p>Cerrar Sesion</p>
-        </div>
+      <div
+        className={style.link}
+        onClick={() => {
+          setCerrarConfirmacion(true);
+        }}
+      >
+        <i className="bi bi-box-arrow-left"></i>
+
+        <p>Cerrar Sesion</p>
       </div>
 
       {cerrarConfirmacion && (
@@ -141,7 +120,7 @@ function NavBar({ user, location }) {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
 

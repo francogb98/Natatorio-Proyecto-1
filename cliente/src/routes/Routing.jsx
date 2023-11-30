@@ -5,7 +5,7 @@ import { useQuery } from "react-query";
 import { getInfoUser } from "../helpers/fetch";
 
 import HomeUserPublic from "../components/publico/layoutUser/HomeUserPublic";
-import Registro from "../components/publico/registro/Registro";
+import Registro from "../components/publico/registro/RegistroPrueba";
 import Confirm from "../components/publico/confirmEmail/ConfirmEmail";
 import SignIn from "../components/publico/inicioDeSesion/SignIn";
 import Inscripcion from "../components/publico/layoutUser/inscripcion/Inscripcion";

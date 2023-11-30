@@ -13,9 +13,7 @@ export const generateVerificationToken = () => {
 const createUser = async (req, res) => {
   const args = req.body;
 
-  const { password, dni, nombreTutor, dniTutor, edad } = req.body;
-
-  console.log(args.email, args.telefono);
+  const { password, dni, edad } = req.body;
 
   if (edad < 0 || edad > 100) {
     return res.status(400).json({
@@ -24,17 +22,46 @@ const createUser = async (req, res) => {
     });
   }
 
-  if (args.edad < 18 && !nombreTutor && !dniTutor) {
-    return res.status(400).json({
-      status: "error",
-      message: "Por favor añadir informacion del tutor",
-    });
-  }
-
-  if (!password || !dni || !args.edad) {
+  console.log(
+    args.nombre,
+    args.apellido,
+    args.edad,
+    args.dni,
+    args.sexo,
+    args.natacionAdaptada,
+    args.telefono,
+    args.telefonoContacto,
+    args.ciudad,
+    args.password
+  );
+  if (
+    !args.nombre ||
+    !args.apellido ||
+    !args.edad ||
+    !args.dni ||
+    !args.sexo ||
+    !args.telefono ||
+    !args.telefonoContacto ||
+    !args.ciudad ||
+    !args.password
+  ) {
     return res.status(400).json({
       status: "error",
       message: "Por favor añadir todos los campos",
+    });
+  }
+
+  if (args.natacionAdaptada === undefined) {
+    return res.status(400).json({
+      status: "error",
+      message: "Por favor completar el campo natacionAdaptada",
+    });
+  }
+
+  if (args.natacionAdaptada && !args.diagnosticos) {
+    return res.status(400).json({
+      status: "error",
+      message: "Por favor completar el campo diagnosticos",
     });
   }
 
@@ -42,13 +69,6 @@ const createUser = async (req, res) => {
     return res.status(400).json({
       status: "error",
       message: "Edad y Dni deben ser numeros",
-    });
-  }
-
-  if (dni === dniTutor) {
-    return res.status(400).json({
-      status: "error",
-      message: "El dni del tutor no puede ser igual al del usuario",
     });
   }
 
@@ -60,20 +80,9 @@ const createUser = async (req, res) => {
       .json({ status: "error", message: "Dni ya registado" });
   }
 
-  if (args.edad < 18 && !nombreTutor && !dniTutor) {
-    return res.status(400).json({
-      status: "error",
-      message: "Por favor añadir informacion del tutor",
-    });
-  }
-
   try {
     //encriptamos la contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    //generamos un token de verificacion
-
-    const verificationToken = generateVerificationToken();
 
     //verificamos si existe algun usuario, si no existe le agregamos el customID 100, si no buscsamos el ujltimo y le agregaqmos 1
     const lastUser = await User.findOne().sort({ customId: -1 });
@@ -86,18 +95,14 @@ const createUser = async (req, res) => {
     const user = new User({
       ...args,
       password: hashedPassword,
-      emailVerified: false,
       asistencia: false,
-      role: "registrado",
-      emailVerificationToken: verificationToken,
+      role: "usuario",
       natacionAdaptada: args.natacionAdaptada,
       cud: null,
       activity: null,
       certificadoHongos: null,
       fechaCargaCertificadoHongos: null,
       barrio: args.barrio ? args.barrio : null,
-      email: args.email ? args.email : null,
-      telefono: args.telefono ? args.telefono : null,
     });
     await user.save();
 
@@ -108,9 +113,7 @@ const createUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error.message);
-    return res
-      .status(500)
-      .json({ status: "error", message: "Error en el Servidor" });
+    return res.status(500).json({ status: "error", message: error.message });
   }
 };
 

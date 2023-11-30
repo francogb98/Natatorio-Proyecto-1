@@ -38,10 +38,10 @@
   margin: 0 auto;
 }
 
-.formBody button {
+.buttonInicioSesion {
   width: 100%;
   height: 40px;
-  background-color: #000;
+  background-color: green;
   border: none;
   outline: none;
   color: #fff;

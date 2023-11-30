@@ -129,7 +129,11 @@ function SignIn() {
             </div>
           </div>
 
-          <button type="submit" value="Iniciar Sesion" className="mt-2">
+          <button
+            type="submit"
+            value="Iniciar Sesion"
+            className={style.buttonInicioSesion}
+          >
             {" "}
             Iniciar Sesion
           </button>
@@ -140,8 +144,11 @@ function SignIn() {
           </div>
         ) : null}
         <div className="mt-3">
-          <p>
-            ¿No tienes cuenta? <Link to="/login">Registrate</Link>
+          <p className="fw-bold">
+            ¿No tienes cuenta?{" "}
+            <Link to="/login">
+              <button className="btn btn-lg btn-warning">Registrate</button>
+            </Link>
           </p>
         </div>
       </div>
