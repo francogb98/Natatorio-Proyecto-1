@@ -9,7 +9,16 @@ import EditarPerfil from "./EditarPerfil";
 function Perfil({ user }) {
   return (
     <div className={style.body}>
-      <EditarPerfil usuario={user} />
+      <div className={style.buttonsGroup}>
+        <button className="btn btn-lg btn-primary fw-bold">
+          Ver Mi Perfil
+        </button>
+        <button className="btn btn-lg btn-info fw-bold">Editar Perfil</button>
+        <button className="btn btn-lg btn-warning fw-bold">
+          Cargar Archivos
+        </button>
+      </div>
+      {/* <EditarPerfil usuario={user} /> */}
     </div>
   );
 }
