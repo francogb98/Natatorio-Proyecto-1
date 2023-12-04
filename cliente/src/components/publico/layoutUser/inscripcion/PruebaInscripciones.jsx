@@ -117,6 +117,18 @@ function PruebaInscripciones({ actividad }) {
 
     return (
       <div>
+        {registerInActivity.isLoading && (
+          <div
+            className="alert alert-danger"
+            style={{
+              position: "fixed",
+              top: "0",
+              width: "100%",
+            }}
+          >
+            Registrando...
+          </div>
+        )}
         <h1>Actividad: {actividad}</h1>
         <div class="accordion accordion-flush" id="accordionFlushExample">
           <div class="accordion-item ">

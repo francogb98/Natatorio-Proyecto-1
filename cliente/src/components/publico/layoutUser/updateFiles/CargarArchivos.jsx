@@ -180,7 +180,7 @@ function CargarArchivos({ usuario }) {
       </div>
 
       {loading && (
-        <div className="alert alert-warning" role="alert">
+        <div className="alert alert-info" role="alert">
           Cargando
         </div>
       )}

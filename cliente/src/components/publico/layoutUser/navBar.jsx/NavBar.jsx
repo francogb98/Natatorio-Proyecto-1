@@ -32,13 +32,28 @@ function NavBar({ user, location }) {
         </p>
       </Link>
 
-      <Link to={`inscripcion`} className={style.link}>
+      <Link
+        to={
+          user.certificadoHongos == undefined || user.fichaMedica == undefined
+            ? null
+            : `inscripcion`
+        }
+        className={style.link}
+      >
         {user.certificadoHongos == undefined ||
         user.fichaMedica == undefined ? (
-          <i className="bi bi-calendar-x"></i>
+          <i
+            className="bi bi-calendar-x"
+            style={{
+              color: "red",
+            }}
+          ></i>
         ) : location.pathname === "/user/inscripcion" ? (
           <i
             className="bi bi-calendar2-check-fill"
+            style={{
+              color: "green",
+            }}
             type="button"
             data-bs-dismiss="offcanvas"
             aria-label="Close"
@@ -47,6 +62,9 @@ function NavBar({ user, location }) {
           <i
             className="bi bi-calendar2-check"
             type="button"
+            style={{
+              color: "green",
+            }}
             data-bs-dismiss="offcanvas"
             aria-label="Close"
           ></i>
