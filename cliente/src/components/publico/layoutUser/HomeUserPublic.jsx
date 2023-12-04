@@ -92,9 +92,26 @@ function HomeUserPublic() {
       <div className={style.containerHome}>
         <header className={style.header}>
           <Link to={"home"} className={style.info}>
-            <h1>
-              {user.nombre} {user.apellido}
-            </h1>
+            <div>
+              <h2
+                style={{
+                  marginBottom: "-4px",
+                }}
+              >
+                {user.nombre} {user.apellido}
+              </h2>
+              <p>
+                Numero de usuario:{" "}
+                <span
+                  className="text-danger fw-bold"
+                  style={{
+                    fontSize: "20px",
+                  }}
+                >
+                  {user.customId}
+                </span>
+              </p>
+            </div>
           </Link>
 
           <Link to={"notificaciones"} className={style.link}>

@@ -55,11 +55,19 @@ function Inscripcion() {
   });
 
   if (getActivity.isError) {
-    return <h1>ERROR</h1>;
+    return (
+      <div className={style.container}>
+        <h1>ERROR</h1>
+      </div>
+    );
   }
 
   if (getActivity.isLoading || !getActivity.data) {
-    return <h1>Cargando...</h1>;
+    return (
+      <div className={style.container}>
+        <h1>Cargando...</h1>
+      </div>
+    );
   }
 
   if (getActivity.isSuccess && getActivity.data) {

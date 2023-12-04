@@ -94,10 +94,10 @@ function Foto({ usuario }) {
           onChange={handleFileChange}
         />
         <button
-          className="input-group-text btn btn-danger"
+          className="input-group-text btn btn-success"
           onClick={uploadImage}
         >
-          Editar
+          Cargar <i class="bi bi-file-earmark-arrow-up"></i>
         </button>
       </div>
 

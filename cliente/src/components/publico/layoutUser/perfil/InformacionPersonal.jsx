@@ -14,6 +14,30 @@ function InformacionPersonal({
   return (
     <>
       <form action="">
+        {!menorEdadAlert ? (
+          <div className={style.info}>
+            <button
+              className="btn btn-danger"
+              onClick={(e) => {
+                e.preventDefault();
+                setEdicionActiva(!edicionActiva);
+              }}
+            >
+              {edicionActiva ? (
+                "Cancelar"
+              ) : (
+                <div className="text-light">
+                  Editar <i class="bi bi-pencil ms-2"></i>
+                </div>
+              )}
+            </button>
+            {edicionActiva && (
+              <button className="btn btn-success" onClick={handleSubmitAdulto}>
+                Guardar
+              </button>
+            )}
+          </div>
+        ) : null}
         <div className={style.info}>
           <label htmlFor="">Nombre</label>
           <input
@@ -109,24 +133,6 @@ function InformacionPersonal({
           />
         </div>
       </form>
-
-      {!menorEdadAlert ? (
-        <div className={style.info}>
-          <button
-            className="btn btn-danger"
-            onClick={() => {
-              setEdicionActiva(!edicionActiva);
-            }}
-          >
-            {edicionActiva ? "Cancelar" : "Editar"}
-          </button>
-          {edicionActiva && (
-            <button className="btn btn-success" onClick={handleSubmitAdulto}>
-              Guardar
-            </button>
-          )}
-        </div>
-      ) : null}
     </>
   );
 }

@@ -43,7 +43,18 @@ function HomeUser({ user }) {
           </div>
         </div>
         <div className={style.sectionItem}>
-          <span className="bg-warning">4</span> <p>¡A Disfrutar!</p>
+          <span className="bg-warning">4</span>
+
+          <div className={style.infoSection}>
+            <p>¡A Disfrutar!</p>
+
+            <small>
+              (Una vez se te haya autorizado la inscripcion, podras asistir a
+              las instalaciones del Natatorio Olimpico Madre de Ciudades,
+              recuerda que deberas ir con tu numero de usuario para que te
+              registren la asistencia)
+            </small>
+          </div>
         </div>
       </section>
     </div>
