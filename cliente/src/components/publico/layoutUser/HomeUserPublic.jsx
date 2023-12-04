@@ -116,7 +116,7 @@ function HomeUserPublic() {
 
           <Link to={"notificaciones"} className={style.link}>
             {location.pathname === "/user/notificaciones" ? (
-              <i className="bi bi-bell-fill">
+              <i className="bi bi-bell-fill position-relative">
                 {
                   //si hay notificaciones sin leer
                   user.notificaciones?.filter(

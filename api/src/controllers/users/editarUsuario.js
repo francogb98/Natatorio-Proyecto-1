@@ -7,10 +7,8 @@ export default async (req, res) => {
     apellido,
     dni,
     barrio,
+    ciudad,
     natacionAdaptada,
-    dniTutor,
-    nombreTutor,
-    apellidoTutor,
     telefono,
     telefonoContacto,
   } = req.body;
@@ -34,11 +32,9 @@ export default async (req, res) => {
     user.dni = dni;
     user.nombre = nombre;
     user.apellido = apellido;
+    user.ciudad = ciudad;
     user.barrio = barrio;
     user.natacionAdaptada = natacionAdaptada;
-    user.dniTutor = dniTutor;
-    user.nombreTutor = nombreTutor;
-    user.apellidoTutor = apellidoTutor;
     user.telefono = telefono;
     user.telefonoContacto = telefonoContacto;
     await user.save();

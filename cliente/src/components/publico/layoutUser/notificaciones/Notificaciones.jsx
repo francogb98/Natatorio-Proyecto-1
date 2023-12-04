@@ -18,7 +18,7 @@ function Notificaciones({ user }) {
   console.log(user);
 
   return (
-    <div>
+    <div className={style.body}>
       {user.notificaciones
         ?.slice() // Copia el array para evitar modificar el original
         .reverse() // Invierte el orden del array

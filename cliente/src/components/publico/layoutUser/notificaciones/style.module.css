@@ -1,3 +1,11 @@
+.body {
+  background-color: aqua;
+  min-height: 70vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+}
+
 .notificacionBody {
   display: grid;
   grid-template-columns: 1fr 30px;
