@@ -160,24 +160,6 @@ function RegistroPrueba() {
                 <input
                   type="radio"
                   name="natacionAdaptada"
-                  id="si"
-                  value="si"
-                  onChange={(e) => {
-                    setIsNatacionAdaptada(true);
-
-                    setUsuario({
-                      ...usuario,
-                      natacionAdaptada: true,
-                    });
-                  }}
-                />
-                <label htmlFor="si">Si</label>
-              </div>
-
-              <div>
-                <input
-                  type="radio"
-                  name="natacionAdaptada"
                   id="no"
                   value="no"
                   onChange={(e) => {
@@ -190,6 +172,23 @@ function RegistroPrueba() {
                   }}
                 />
                 <label htmlFor="no">No</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="natacionAdaptada"
+                  id="si"
+                  value="si"
+                  onChange={(e) => {
+                    setIsNatacionAdaptada(true);
+
+                    setUsuario({
+                      ...usuario,
+                      natacionAdaptada: true,
+                    });
+                  }}
+                />
+                <label htmlFor="si">Si</label>
               </div>
             </div>
 

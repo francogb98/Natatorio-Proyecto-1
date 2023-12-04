@@ -87,7 +87,7 @@ function HomeUserPublic() {
     );
   }
 
-  if (getUser.isSuccess) {
+  if (getUser.isSuccess && user) {
     return (
       <div className={style.containerHome}>
         <header className={style.header}>
