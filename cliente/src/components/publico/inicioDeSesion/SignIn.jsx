@@ -101,7 +101,7 @@ function SignIn() {
         <form action="" className={`form-group `} onSubmit={handleSubmit}>
           <div className={`mb-2 `}>
             <label htmlFor="Dni">Dni</label>
-            <input type="text" name="dni" className="form-control" />
+            <input type="number" name="dni" className="form-control" />
           </div>
 
           <div className={`mb-2 `} style={{}}>
