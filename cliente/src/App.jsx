@@ -9,7 +9,6 @@ function App() {
       style={{
         height: "100vh",
         overflow: "auto",
-        backgroundColor: "aqua",
       }}
     >
       <Routing></Routing>

@@ -12,6 +12,7 @@ import Inscripcion from "./inscripcion/Inscripcion";
 import Perfil from "./perfil/Perfil";
 import UpdateFiles from "./updateFiles/UpdateFiles";
 import Notificaciones from "./notificaciones/Notificaciones";
+import EditarPerfil from "./perfil/EditarPerfil";
 
 function HomeUserPublic() {
   //cargar datos de usuario
@@ -140,6 +141,9 @@ function HomeUserPublic() {
           ) : null}
           {location.pathname === "/user/notificaciones" ? (
             <Notificaciones user={user}></Notificaciones>
+          ) : null}
+          {location.pathname === "/user/editarPerfil" ? (
+            <EditarPerfil usuario={user}></EditarPerfil>
           ) : null}
         </main>
 

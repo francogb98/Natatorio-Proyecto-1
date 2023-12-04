@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
+import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
 
@@ -103,7 +104,22 @@ function EditarPerfil({ usuario }) {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        paddingInline: "40px",
+      }}
+    >
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <Link to={"perfil"}>Perfil</Link>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <strong>Informacion-Perfil</strong>
+          </li>
+        </ol>
+      </nav>
+
       <div className={style.info}>
         <label htmlFor="">Numero De Usuario</label>
         <h3>{usuario.customId}</h3>
@@ -129,21 +145,6 @@ function EditarPerfil({ usuario }) {
         setEdicionActiva={setEdicionActiva}
         menorEdadAlert={menorEdadAlert}
       />
-
-      {usuario.edad <= 18 || usuario.natacionAdaptada || menorEdadAlert ? (
-        <>
-          <h2 className="mt-4">Informacion Contacto</h2>
-          <InformacionContacto
-            formValues={formValues}
-            handleInputChange={handleInputChange}
-            edicionActiva={edicionActiva}
-            setMenorEdadAlert={setMenorEdadAlert}
-            handleSubmitMenor={handleSubmitMenor}
-            setEdicionActiva={setEdicionActiva}
-            menorEdadAlert={menorEdadAlert}
-          />
-        </>
-      ) : null}
     </div>
   );
 }

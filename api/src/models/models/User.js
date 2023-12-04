@@ -124,12 +124,7 @@ const schema = new mongoose.Schema({
     minlength: 3,
   },
 
-  fotoDNIDelantera: {
-    type: String,
-    minlength: 3,
-  },
-
-  fotoDNITrasera: {
+  fotoDocumento: {
     type: String,
     minlength: 3,
   },

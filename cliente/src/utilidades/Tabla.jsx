@@ -10,7 +10,7 @@ import {
 import style from "./tabla.module.css";
 import { useState } from "react";
 
-function Tabla({ data, columns }) {
+function Tabla({ data, columns, type }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
 
@@ -33,7 +33,7 @@ function Tabla({ data, columns }) {
     <div className={style.body}>
       {/* estructura basica de una tabal */}
       <div className={style.searchBox}>
-        <label htmlFor="">Buscar Usuario</label>
+        <label htmlFor="">Buscar {type}</label>
         <input
           type="text"
           onChange={(e) => {

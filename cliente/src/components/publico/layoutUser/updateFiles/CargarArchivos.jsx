@@ -4,10 +4,15 @@ import { useMutation, useQueryClient } from "react-query";
 
 import { cargarFicha } from "../../../../helpers/usersFetch/cargarFicha";
 
+import { Link } from "react-router-dom";
+
 function CargarArchivos({ usuario }) {
   const [cud, setCud] = useState();
   const [hongos, setHongos] = useState();
   const [ficha, setFicha] = useState();
+
+  const [fotoPerfil, setFotoPerfil] = useState();
+  const [documento, setDocumento] = useState();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -35,6 +40,12 @@ function CargarArchivos({ usuario }) {
     }
     if (inputIdentifier === "ficha") {
       setFicha(selectedFile);
+    }
+    if (inputIdentifier === "fotoPerfil") {
+      setFotoPerfil(selectedFile);
+    }
+    if (inputIdentifier === "documento") {
+      setDocumento(selectedFile);
     }
   };
 
@@ -86,6 +97,18 @@ function CargarArchivos({ usuario }) {
   }, [ficha]);
 
   useEffect(() => {
+    if (fotoPerfil) {
+      uploadImage(fotoPerfil, "fotoPerfil");
+    }
+  }, [fotoPerfil]);
+
+  useEffect(() => {
+    if (documento) {
+      uploadImage(documento, "documento");
+    }
+  }, [documento]);
+
+  useEffect(() => {
     if (success) {
       setTimeout(() => {
         setSuccess(false);
@@ -101,22 +124,60 @@ function CargarArchivos({ usuario }) {
 
   return (
     <div>
-      {!usuario.natacionAdaptada &&
-        usuario.certificadoHongos &&
-        usuario.fichaMedica && (
-          <div className="alert alert-success" role="alert">
-            Ya cargaste todos los archivos
-          </div>
-        )}
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <Link to={"perfil"}>Perfil</Link>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <strong>Cargar Archivos</strong>
+          </li>
+        </ol>
+      </nav>
 
-      {usuario.natacionAdaptada &&
-        usuario.cud &&
-        usuario.certificadoHongos &&
-        usuario.fichaMedica && (
-          <div className="alert alert-success" role="alert">
-            Ya cargaste todos los archivos
-          </div>
-        )}
+      <div className="alert alert-warning">
+        <h5 className="alert-heading">
+          <i className="bi bi-exclamation-triangle-fill me-2"></i>
+          Importante
+        </h5>
+        <p>
+          <strong>
+            Para poder inscribirte a las actividades, debes cargar los
+            siguientes archivos
+          </strong>
+          (por unica vez):
+        </p>
+        <ul>
+          <li>
+            <strong>Foto de perfil</strong>
+          </li>
+
+          <li>
+            <strong>Documento</strong> (parte frontal)
+          </li>
+
+          <li>
+            <strong>CUD</strong> (Certificado Único de Discapacidad) en caso de
+            tenerlo
+          </li>
+          <li>
+            <strong>Certificado de hongos</strong> (con la firma del médico)
+          </li>
+          <li>
+            <strong>Ficha médica completa</strong> (descargarla desde el botón
+            de abajo)
+          </li>
+        </ul>
+
+        <hr />
+        <p className="mb-0">
+          <strong>
+            <i className="bi bi-exclamation-circle-fill me-2"></i>A la par de
+            cada archivo, se encuentra un ícono que indica si el archivo fue
+            cargado correctamente
+          </strong>
+        </p>
+      </div>
 
       {loading && (
         <div className="alert alert-warning" role="alert">
@@ -141,8 +202,65 @@ function CargarArchivos({ usuario }) {
         </div>
       )}
 
-      <div className="mb-3">
-        <h5 className="form-label">Cargar Certificado de hongos</h5>
+      <div className="mb-5">
+        <h5 className="form-label fw-bold">
+          Subir foto de perfil usuario{" "}
+          {usuario.foto ? (
+            <i
+              className="bi bi-check-circle-fill text-success"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          ) : (
+            <i
+              className="bi bi-x-circle-fill text-danger"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          )}
+        </h5>
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          onChange={(e) => handleFileChange(e, "fotoPerfil")}
+        />
+      </div>
+      <div className="mb-5">
+        <h5 className="form-label fw-bold">
+          Subir foto del documento (parte frontal){" "}
+          {usuario.fotoDocumento ? (
+            <i
+              className="bi bi-check-circle-fill text-success"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          ) : (
+            <i
+              className="bi bi-x-circle-fill text-danger"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          )}
+        </h5>
+        <input
+          className="form-control"
+          type="file"
+          id="formFile"
+          onChange={(e) => handleFileChange(e, "documento")}
+        />
+      </div>
+      <div className="mb-5">
+        <h5 className="form-label fw-bold">
+          Subir Certificado de hongos{" "}
+          {usuario.certificadoHongos ? (
+            <i
+              className="bi bi-check-circle-fill text-success"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          ) : (
+            <i
+              className="bi bi-x-circle-fill text-danger"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          )}
+        </h5>
         <input
           className="form-control"
           type="file"
@@ -151,8 +269,21 @@ function CargarArchivos({ usuario }) {
         />
       </div>
 
-      <div className="mb-3">
-        <h5 className="form-label">Cargar Ficha Medica</h5>
+      <div className="mb-5">
+        <h5 className="form-label fw-bold">
+          Subir Ficha Medica (completada){" "}
+          {usuario.fichaMedica ? (
+            <i
+              className="bi bi-check-circle-fill text-success"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          ) : (
+            <i
+              className="bi bi-x-circle-fill text-danger"
+              style={{ fontSize: "1.5rem" }}
+            ></i>
+          )}
+        </h5>
         <input
           className="form-control"
           type="file"
@@ -162,6 +293,7 @@ function CargarArchivos({ usuario }) {
 
         <div className="mt-2 text-danger">
           <a
+            className="btn btn-danger"
             href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
             download="fichaMedica.pdf"
           >

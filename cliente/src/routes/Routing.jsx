@@ -25,6 +25,7 @@ import HomeUser from "../components/publico/layoutUser/home/HomeUser";
 import User from "../components/privado/UserInfo/User";
 import PiletasInfo from "../components/privado/showPiletasInfo/PiletasInfo";
 import Notificaciones from "../components/publico/layoutUser/notificaciones/Notificaciones";
+import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -52,12 +53,14 @@ function Routing() {
       <Route path="/login" element={<Registro />} />
 
       <Route path="/verificar-cuenta" element={<Confirm />} />
-      {auth.logged && auth.role === "usuario" ? (
+      {auth.logged &&
+      (auth.role === "usuario" || auth.role === "registrado") ? (
         <Route path="/user" element={<HomeUserPublic />}>
           <Route path="home" element={<HomeUser />} />
           <Route path="updateFiles" element={<UpdateFiles />} />
           <Route path="inscripcion" element={<Inscripcion />} />
           <Route path="perfil" element={<Perfil />} />
+          <Route path="editarPerfil" element={<EditarPerfil />} />
           <Route path="notificaciones" element={<Notificaciones />} />
         </Route>
       ) : (

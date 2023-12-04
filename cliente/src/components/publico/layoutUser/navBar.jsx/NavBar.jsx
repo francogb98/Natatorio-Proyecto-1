@@ -32,14 +32,7 @@ function NavBar({ user, location }) {
         </p>
       </Link>
 
-      <Link
-        to={`${
-          user.certificadoHongos == undefined || user.fichaMedica == undefined
-            ? "home"
-            : "inscripcion"
-        }`}
-        className={style.link}
-      >
+      <Link to={`inscripcion`} className={style.link}>
         {user.certificadoHongos == undefined ||
         user.fichaMedica == undefined ? (
           <i className="bi bi-calendar-x"></i>

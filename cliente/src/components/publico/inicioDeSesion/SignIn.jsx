@@ -45,7 +45,10 @@ function SignIn() {
 
         setTimeout(() => {
           Swal.close();
-          if (data.usuario.role === "usuario") {
+          if (
+            data.usuario.role === "usuario" ||
+            data.usuario.role === "registrado"
+          ) {
             return navigate("/user/home");
           }
           return navigate("/admin/panel/inicio");

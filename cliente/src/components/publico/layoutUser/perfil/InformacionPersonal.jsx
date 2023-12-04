@@ -39,18 +39,6 @@ function InformacionPersonal({
         </div>
 
         <div className={style.info}>
-          <label htmlFor="">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formValues.email}
-            onChange={handleInputChange}
-            disabled={!edicionActiva}
-            className="form-control"
-          />
-        </div>
-
-        <div className={style.info}>
           <label htmlFor="">Telefono</label>
           <input
             type="text"
@@ -59,6 +47,17 @@ function InformacionPersonal({
             onChange={handleInputChange}
             disabled={!edicionActiva}
             className="form-control"
+          />
+        </div>
+        <div className={style.info}>
+          <label htmlFor="">Telefono de emergencia</label>
+          <input
+            type="text"
+            name="telefonoContacto"
+            value={formValues.telefono}
+            onChange={handleInputChange}
+            disabled={!edicionActiva}
+            className="form-control "
           />
         </div>
 

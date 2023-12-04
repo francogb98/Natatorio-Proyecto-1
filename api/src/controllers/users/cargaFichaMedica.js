@@ -4,6 +4,8 @@ export const cargaFicha = async (req, res) => {
   try {
     const { archivo, id, tipo } = req.body;
 
+    console.log(req.body);
+
     req.body;
 
     const user = await User.findOne({ _id: id });
@@ -31,6 +33,14 @@ export const cargaFicha = async (req, res) => {
     }
     if (tipo === "cud") {
       user.cud = archivo;
+    }
+
+    if (tipo === "documento") {
+      user.fotoDocumento = archivo;
+    }
+
+    if (tipo === "fotoPerfil") {
+      user.foto = archivo;
     }
 
     await user.save();

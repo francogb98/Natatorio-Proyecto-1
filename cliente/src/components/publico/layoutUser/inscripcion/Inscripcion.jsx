@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 
 import TablaActividades from "./TablaActividades";
 import { getActividadesNombre } from "../../../../helpers/activitiesFetch/getActividadesNombre";
+import PruebaInscripciones from "./PruebaInscripciones";
 
 function Inscripcion() {
   const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
@@ -95,10 +96,11 @@ function Inscripcion() {
               actividadSeleccionada ? style.tablaActividades : style.noLook
             }`}
           >
-            <TablaActividades
+            {/* <TablaActividades
               actividad={actividadSeleccionada}
               setActividadSeleccionada={setActividadSeleccionada}
-            />
+            /> */}
+            <PruebaInscripciones actividad={actividadSeleccionada} />
           </div>
         )}
       </div>
