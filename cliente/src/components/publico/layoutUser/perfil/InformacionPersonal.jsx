@@ -78,7 +78,7 @@ function InformacionPersonal({
           <input
             type="text"
             name="telefonoContacto"
-            value={formValues.telefono}
+            value={formValues.telefonoContacto}
             onChange={handleInputChange}
             disabled={!edicionActiva}
             className="form-control "

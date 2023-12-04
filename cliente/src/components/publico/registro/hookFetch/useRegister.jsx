@@ -50,7 +50,7 @@ function useRegister() {
           text: "Serás redirigido al inicio en 2 segundos.",
           icon: "success",
           //sacar el boton de confirmacion
-          confirmButtonText: false,
+          showConfirmButton: false,
         });
         setTimeout(() => {
           window.location.href = "/";
