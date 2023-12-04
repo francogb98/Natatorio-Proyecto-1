@@ -36,9 +36,70 @@ function Actividades({ usuario }) {
   return (
     <div>
       {!usuario.status && usuario.activity?.length > 0 ? (
-        <div className={style.info}>
-          <label htmlFor="">Actividad:</label>
-          <p>Esperando confirmacion</p>
+        <div className={style.body__activity}>
+          <div className={style.info}>
+            <label htmlFor="">Actividad:</label>
+
+            <p>{usuario.activity[0].name}</p>
+            {/* icono de X para dar de baja */}
+          </div>
+          <div className={style.info}>
+            <label htmlFor="">Dias:</label>
+            <p>{usuario.activity[0].date.join(" - ")}</p>
+          </div>
+          <div className={style.info}>
+            <label htmlFor="">Horario:</label>
+            <p>
+              {usuario.activity[0].hourStart} - {usuario.activity[0].hourFinish}
+            </p>
+          </div>
+          <div className={style.info}>
+            <label htmlFor="">Estado:</label>
+            <p className="fw-bold">Espernado confirmacion</p>
+          </div>
+          {!darDeBajaStatus ? (
+            <button
+              className={style.button__editar}
+              style={{ width: "100%" }}
+              onClick={() => setDarDeBajaStatus(!darDeBajaStatus)}
+            >
+              Dar de baja
+            </button>
+          ) : (
+            <>
+              {darDeBaja.isLoading && (
+                <h6 style={{ textAlign: "center" }}>Dando de baja...</h6>
+              )}
+
+              {!darDeBaja.isLoading &&
+                !darDeBaja.isSuccess &&
+                !darDeBaja.isError && (
+                  <h6 style={{ textAlign: "center" }}>
+                    ¿Seguro que desea dar de baja esta actividad?
+                  </h6>
+                )}
+
+              <div className={style.buttons}>
+                <button
+                  className={style.button__cancel}
+                  onClick={() => {
+                    setDarDeBajaStatus(!darDeBajaStatus);
+                  }}
+                >
+                  <i className="bi bi-x-lg"></i>
+                </button>
+                <button
+                  className={style.button__confirm}
+                  onClick={() => {
+                    darDeBaja.mutate(usuario.activity[0]._id);
+                    setDarDeBajaStatus(!darDeBajaStatus);
+                  }}
+                >
+                  <i className="bi bi-check-lg"></i>
+                </button>
+              </div>
+            </>
+          )}
         </div>
       ) : null}
       {usuario.status && usuario.activity?.length > 0 ? (

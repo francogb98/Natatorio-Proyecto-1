@@ -5,6 +5,8 @@ import style from "./styles.module.css";
 import { getInfoUser } from "../../../../helpers/fetch";
 import { useQuery } from "react-query";
 
+import { Link, useLocation } from "react-router-dom";
+
 import TablaActividades from "./TablaActividades";
 import { getActividadesNombre } from "../../../../helpers/activitiesFetch/getActividadesNombre";
 import PruebaInscripciones from "./PruebaInscripciones";
@@ -23,6 +25,7 @@ function Inscripcion() {
     "dark",
   ]);
 
+  const location = useLocation();
   const getUser = useQuery({
     queryKey: ["getUser"],
     queryFn: getInfoUser,
@@ -76,7 +79,24 @@ function Inscripcion() {
     //necesito traer todos los nombre de actividades y guardarlos en un estadom, sin que se reptina
     return (
       <div className={style.container}>
-        <h1 className={style.title}>Inscripciones</h1>
+        {!actividadSeleccionada ? (
+          <>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                  Inscripciones /
+                </li>
+              </ol>
+            </nav>
+            <h1 className={style.title}>Inscripciones</h1>
+
+            <div className="alert alert-info">
+              Si ya estas inscripto en una actividad y deseas cambiarla, ve a la
+              seccion de <Link to={"editarPerfil"}>Perfil</Link> y da de baja la
+              actividad en la que estas inscripto.
+            </div>
+          </>
+        ) : null}
 
         <div
           className={`${
@@ -84,10 +104,7 @@ function Inscripcion() {
           }`}
         >
           <h4>Elige tu actividad:</h4>
-          <p className="text-danger">
-            Solo estaran disponibles las actividades que cuenten con cupos y
-            sean acorde a tu edad.
-          </p>
+
           {getActivity.data.map((activity, i) => (
             <button
               key={i}
@@ -108,7 +125,10 @@ function Inscripcion() {
               actividad={actividadSeleccionada}
               setActividadSeleccionada={setActividadSeleccionada}
             /> */}
-            <PruebaInscripciones actividad={actividadSeleccionada} />
+            <PruebaInscripciones
+              actividad={actividadSeleccionada}
+              setActividadSeleccionada={setActividadSeleccionada}
+            />
           </div>
         )}
       </div>

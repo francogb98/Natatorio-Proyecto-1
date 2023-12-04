@@ -6,7 +6,7 @@ import Tabla from "../../../../utilidades/Tabla";
 import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
 import Swal from "sweetalert2";
 
-function PruebaInscripciones({ actividad }) {
+function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
   const queryClient = useQueryClient();
@@ -117,6 +117,24 @@ function PruebaInscripciones({ actividad }) {
 
     return (
       <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a
+                href="#"
+                onClick={() => {
+                  setActividadSeleccionada(null);
+                }}
+              >
+                Inscripciones
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              tabla
+            </li>
+          </ol>
+        </nav>
+
         {registerInActivity.isLoading && (
           <div
             className="alert alert-danger"
