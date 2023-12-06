@@ -13,7 +13,7 @@ function TablaActividades({ actividad, setActividadSeleccionada }) {
   const [days, setDays] = useState([
     "Lunes",
     "Martes",
-    "Miercoles",
+    "Miércoles",
     "Jueves",
     "Viernes",
   ]);
@@ -134,7 +134,7 @@ function TablaActividades({ actividad, setActividadSeleccionada }) {
             <th scope="col">Hora</th>
             <th scope="col">Lunes</th>
             <th scope="col">Martes</th>
-            <th scope="col">Miercoles</th>
+            <th scope="col">Miércoles</th>
             <th scope="col">Jueves</th>
             <th scope="col">Viernes</th>
           </tr>

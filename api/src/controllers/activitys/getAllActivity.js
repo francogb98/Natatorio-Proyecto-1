@@ -35,7 +35,6 @@ export const getActivitiesByDate = async (req, res) => {
     weekday: "long",
   });
 
-  date = date.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   date = date.charAt(0).toUpperCase() + date.slice(1);
 
   console.log(date);

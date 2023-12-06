@@ -16,7 +16,7 @@ import Inicio from "../components/privado/Inicio/turnoActual/Inicio";
 import FormularioTurnoSiguiente from "../components/privado/Inicio/turnoSiguiente/FormularioTurnoSiguiente";
 import FormularioPrueba from "../components/privado/Inicio/autorizar/FormularioPrueba";
 import ListaUsuarios from "../components/privado/usuario/listaUsuarios/ListaUsuarios";
-import PiletasInfo from "../components/privado/inicio/showPiletasInfo/PiletasInfo";
+import PiletasInfo from "../components/privado/inicio//showPiletasInfo/PiletasInfo";
 
 import User from "../components/privado/usuario/UserInfo/User";
 import SearchUser from "../components/privado/usuario/searchUser/SearchUser";

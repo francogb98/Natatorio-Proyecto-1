@@ -104,7 +104,7 @@ function NavBar() {
               </li>
               <li className={style.link}>
                 <Link to="panel/habilitar-usuario" className={style.link__item}>
-                  Autorizar
+                  Habilitar
                 </Link>
               </li>
             </ul>

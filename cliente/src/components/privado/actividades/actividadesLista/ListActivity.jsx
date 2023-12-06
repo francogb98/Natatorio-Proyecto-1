@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "react-query";
 import Modal from "./ModalActivity";
 
 import { deleteActivity } from "../../../../helpers/activitiesFetch/deleteActivity";
+import CreateActivity from "../createActivity/CreateActivity";
 
 function ListActivity() {
   const [actividades, setActivitys] = useState([]); // <---quiero que se ordene por horario
@@ -18,10 +19,14 @@ function ListActivity() {
   const [days, setDays] = useState([
     { id: "a", name: "Lunes" },
     { id: "b", name: "Martes" },
-    { id: "c", name: "Miercoles" },
+    { id: "c", name: "Miércoles" },
     { id: "d", name: "Jueves" },
     { id: "e", name: "Viernes" },
   ]);
+
+  const [isEdit, setIsEdit] = useState(false);
+  const [actividadEdit, setActividadEdit] = useState({});
+
   const getActivity = useQuery({
     queryKey: ["activitys"],
     queryFn: fetchConToken,
@@ -95,107 +100,132 @@ function ListActivity() {
 
     return (
       <div>
-        <h1 className="my-4" style={{ textAlign: "center" }}>
-          Lista Actividades
-        </h1>
-        <div>
-          <h2>Filtrar actividades</h2>
-          <div className="d-flex justify-content-evenly mb-2">
-            <select
-              type="text"
-              placeholder="Horario"
-              className="form-select"
-              style={{ width: "fit-content" }}
-              name="name"
-              onChange={handleFilter}
-            >
-              <option value="default">--Nombre--</option>
-              {nombreActividades.map((actividad, i) => (
-                <option key={i} value={actividad}>
-                  {actividad}
-                </option>
-              ))}
-            </select>
+        {!isEdit && (
+          <>
+            <h1 className="my-4" style={{ textAlign: "center" }}>
+              Lista Actividades
+            </h1>
+            <div>
+              <h2>Filtrar actividades</h2>
+              <div className="d-flex justify-content-evenly mb-2">
+                <select
+                  type="text"
+                  placeholder="Horario"
+                  className="form-select"
+                  style={{ width: "fit-content" }}
+                  name="name"
+                  onChange={handleFilter}
+                >
+                  <option value="default">--Nombre--</option>
+                  {nombreActividades.map((actividad, i) => (
+                    <option key={i} value={actividad}>
+                      {actividad}
+                    </option>
+                  ))}
+                </select>
 
-            {/* quiero que el input de horario sea un select con todas las opciones disponibles en hours*/}
+                {/* quiero que el input de horario sea un select con todas las opciones disponibles en hours*/}
 
-            <select
-              type="text"
-              placeholder="Horario"
-              className="form-select"
-              name="hour"
-              onChange={handleFilter}
-              style={{ width: "fit-content" }}
-            >
-              <option value="default">--Horario--</option>
-              {hours.map((hour) => (
-                <option key={hour._id} value={hour.hourStart}>
-                  {hour.hourStart} - {hour.hourFinish}
-                </option>
-              ))}
-            </select>
-            <select
-              type="text"
-              placeholder="Horario"
-              className="form-select"
-              name="day"
-              onChange={handleFilter}
-              style={{ width: "fit-content" }}
-            >
-              <option value="default">--Dias--</option>
-              {days.map((day) => (
-                <option key={day.id} value={day.name}>
-                  {day.name}
-                </option>
-              ))}
-            </select>
+                <select
+                  type="text"
+                  placeholder="Horario"
+                  className="form-select"
+                  name="hour"
+                  onChange={handleFilter}
+                  style={{ width: "fit-content" }}
+                >
+                  <option value="default">--Horario--</option>
+                  {hours.map((hour) => (
+                    <option key={hour._id} value={hour.hourStart}>
+                      {hour.hourStart} - {hour.hourFinish}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  type="text"
+                  placeholder="Horario"
+                  className="form-select"
+                  name="day"
+                  onChange={handleFilter}
+                  style={{ width: "fit-content" }}
+                >
+                  <option value="default">--Dias--</option>
+                  {days.map((day) => (
+                    <option key={day.id} value={day.name}>
+                      {day.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <table className="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th className="bg-primary text-white fw-bold">Horario</th>
+                  <th>Nombre</th>
+                  <th>Dias</th>
+                  <th>Cupos</th>
+                  <th>Usuarios Registrados</th>
+                  <th>Disponibles</th>
+                  <th>Editar</th>
+                  <th>Borrar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredActivities.length === 0 && (
+                  <tr>
+                    <td colSpan="7" style={{ textAlign: "center" }}>
+                      No hay actividades
+                    </td>
+                  </tr>
+                )}
+                {filteredActivities.map((actividad) => (
+                  <tr key={actividad._id}>
+                    <td className="bg-primary text-white fw-bold">
+                      {actividad.hourStart} - {actividad.hourFinish}
+                    </td>
+                    <td>{actividad.name}</td>
+                    <td>{actividad.date.join(" - ")}</td>
+                    <td>{actividad.cupos}</td>
+                    <td>{actividad.users.length}</td>
+                    <td>{actividad.cupos - actividad.users.length}</td>
+                    <td>
+                      <button
+                        className="btn btn-primary"
+                        onClick={() => {
+                          setIsEdit(true);
+                          setActividadEdit(actividad);
+                        }}
+                      >
+                        {/* icono de lapiz */}
+                        <i class="bi bi-pencil"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        className="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalDelete"
+                        onClick={() => setIdDelete(actividad._id)}
+                      >
+                        X
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Modal deleteActivity={deleteActivity} />
+          </>
+        )}
+        {isEdit && (
+          <div>
+            <button onClick={() => setIsEdit(false)}>X</button>
+
+            <CreateActivity actividad={actividadEdit} />
           </div>
-        </div>
-        <table className="table table-striped table-hover">
-          <thead>
-            <tr>
-              <th className="bg-primary text-white fw-bold">Horario</th>
-              <th>Nombre</th>
-              <th>Dias</th>
-              <th>Cupos</th>
-              <th>Usuarios Registrados</th>
-              <th>Disponibles</th>
-              <th>Borrar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredActivities.length === 0 && (
-              <tr>
-                <td colSpan="7" style={{ textAlign: "center" }}>
-                  No hay actividades
-                </td>
-              </tr>
-            )}
-            {filteredActivities.map((actividad) => (
-              <tr key={actividad._id}>
-                <td className="bg-primary text-white fw-bold">
-                  {actividad.hourStart} - {actividad.hourFinish}
-                </td>
-                <td>{actividad.name}</td>
-                <td>{actividad.date.join(" - ")}</td>
-                <td>{actividad.cupos}</td>
-                <td>{actividad.users.length}</td>
-                <td>{actividad.cupos - actividad.users.length}</td>
-                <td>
-                  <button
-                    className="btn btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalDelete"
-                    onClick={() => setIdDelete(actividad._id)}
-                  >
-                    X
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Modal deleteActivity={deleteActivity} />
+        )}
       </div>
     );
   }
