@@ -1,0 +1,37 @@
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  font-weight: 900;
+}
+
+.main {
+  grid-area: main;
+  text-align: center;
+  min-height: 90vh;
+}
+
+.alert {
+  grid-area: alert;
+  width: 60%;
+  height: fit-content;
+  margin: 0 auto;
+}
+
+.button {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .body {
+    width: fit-content;
+    margin: 0 auto;
+    grid-template-areas:
+      "alert"
+      "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 220px;
+  }
+}

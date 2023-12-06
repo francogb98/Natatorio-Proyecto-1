@@ -107,14 +107,14 @@ function SignIn() {
           <div className={`mb-2 `} style={{}}>
             <label htmlFor="password">Contraseña</label>
 
-            <div class="input-group mb-3">
+            <div className="input-group mb-3">
               <input
                 type={viewPass ? "text" : "password"}
                 name="password"
                 className="form-control"
                 aria-describedby="basic-addon1"
               />
-              <span class="input-group-text" id="basic-addon1">
+              <span className="input-group-text" id="basic-addon1">
                 {!viewPass ? (
                   <i
                     className="bi bi-eye ms-1"

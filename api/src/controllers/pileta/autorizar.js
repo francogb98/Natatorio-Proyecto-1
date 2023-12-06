@@ -11,7 +11,14 @@ export const autorizar = async ({ id }) => {
     if (!user) {
       return {
         ok: false,
-        message: "Usuario no encontrado",
+        msg: "Usuario no encontrado",
+      };
+    }
+
+    if (!user.activity) {
+      return {
+        ok: false,
+        msg: "El usuario no esta registrado en ninguna actividad, autorizacion cancelada",
       };
     }
 
@@ -69,13 +76,13 @@ export const autorizar = async ({ id }) => {
 
     return {
       ok: true,
-      message: "Usuario autorizado",
+      msg: "Usuario autorizado",
       user: user,
     };
   } catch (error) {
     return {
       ok: false,
-      message: error.message,
+      msg: error.message,
     };
   }
 };

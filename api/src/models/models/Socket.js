@@ -27,10 +27,12 @@ export const Socket = (io) => {
     socket.on("agregar-usuario-turno-siguiente", async (args) => {
       const result = await addUserNextTurn(args);
 
+      console.log("agregar-usuario-turno-siguiente", result);
+
       if (!result.ok) {
-        socket.emit("lista-usuarios-siguient-turno", result);
+        socket.emit("lista-usuarios-siguiente-turno", result);
       } else {
-        io.emit("lista-usuarios-siguient-turno", result);
+        io.emit("lista-usuarios-siguiente-turno", result);
       }
     });
 

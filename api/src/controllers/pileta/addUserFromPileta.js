@@ -153,6 +153,10 @@ export const addUserNextTurn = async (args) => {
       return { ok: false, msg: "El usuario no existe" };
     }
 
+    if (!user.activity) {
+      return { ok: false, msg: "El usuario no tiene actividad", user };
+    }
+
     if (
       user.activity[0].hourStart !== horaSiguienteTurno ||
       !user.activity[0].date.includes(dia)
@@ -183,7 +187,7 @@ export const addUserNextTurn = async (args) => {
     });
 
     if (!piletaExist) {
-      return { ok: false, msg: "El usuario ya esta en la lista" };
+      return { ok: false, msg: "El usuario ya esta en la lista", user };
     }
 
     const dateNow = new Date();
@@ -217,7 +221,7 @@ export const addUserNextTurn = async (args) => {
 
     return { ok: true, piletaExist };
   } catch (error) {
-    error.message;
+    console.log(error.message);
     return { ok: false, msg: "Error en el servidor" };
   }
 };

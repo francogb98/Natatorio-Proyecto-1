@@ -125,11 +125,11 @@ function CargarArchivos({ usuario }) {
   return (
     <div>
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
             <Link to={"perfil"}>Perfil</Link>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">
+          <li className="breadcrumb-item active" aria-current="page">
             <strong>Cargar Archivos</strong>
           </li>
         </ol>

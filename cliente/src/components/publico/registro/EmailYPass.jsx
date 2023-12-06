@@ -9,7 +9,7 @@ function EmailYPass({ registro, usuario, setUsuario }) {
     <div>
       <div className="mb-2">
         <label htmlFor="Password">Password</label>
-        <div class="input-group mb-3">
+        <div className="input-group mb-3">
           <input
             type={viewPass ? "text" : "password"}
             name="password"
@@ -20,7 +20,7 @@ function EmailYPass({ registro, usuario, setUsuario }) {
             value={usuario.password}
             aria-describedby="basic-addon1"
           />
-          <span class="input-group-text" id="basic-addon1">
+          <span className="input-group-text" id="basic-addon1">
             {!viewPass ? (
               <i
                 className="bi bi-eye"
@@ -39,7 +39,7 @@ function EmailYPass({ registro, usuario, setUsuario }) {
       </div>
       <div className="mb-2">
         <label htmlFor="Repetir Password">Repetir Password</label>
-        <div class="input-group mb-3">
+        <div className="input-group mb-3">
           <input
             type={viewPass2 ? "text" : "password"}
             name="repetir password"
@@ -50,7 +50,7 @@ function EmailYPass({ registro, usuario, setUsuario }) {
             value={usuario.repetirPassword}
             aria-describedby="basic-addon1"
           />
-          <span class="input-group-text" id="basic-addon1">
+          <span className="input-group-text" id="basic-addon1">
             {!viewPass2 ? (
               <i
                 className="bi bi-eye"

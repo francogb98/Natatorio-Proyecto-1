@@ -12,8 +12,8 @@ function Perfil() {
   return (
     <div className={style.body}>
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item active" aria-current="page">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item active" aria-current="page">
             Perfil /
           </li>
         </ol>
@@ -28,7 +28,7 @@ function Perfil() {
           >
             Cargar Archivos{" "}
             <i
-              class="bi bi-file-earmark-arrow-up-fill"
+              className="bi bi-file-earmark-arrow-up-fill"
               style={{
                 fontSize: "1.5rem",
                 marginLeft: "10px",
@@ -46,7 +46,7 @@ function Perfil() {
           >
             Ver Mi Perfil{" "}
             <i
-              class="bi bi-person-fill"
+              className="bi bi-person-fill"
               style={{
                 fontSize: "1.5rem",
                 marginLeft: "10px",

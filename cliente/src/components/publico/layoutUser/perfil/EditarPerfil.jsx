@@ -110,11 +110,11 @@ function EditarPerfil({ usuario }) {
       }}
     >
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item">
             <Link to={"perfil"}>Perfil</Link>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">
+          <li className="breadcrumb-item active" aria-current="page">
             <strong>Informacion-Perfil</strong>
           </li>
         </ol>
@@ -132,7 +132,7 @@ function EditarPerfil({ usuario }) {
       <h2>Informacion Personal</h2>
 
       {menorEdadAlert ? (
-        <div class="alert alert-danger mt-2" role="alert">
+        <div className="alert alert-danger mt-2" role="alert">
           Deberas completar la Informacion de Tutor, desliza hacia abajo.
         </div>
       ) : null}

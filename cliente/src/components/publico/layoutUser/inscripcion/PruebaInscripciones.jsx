@@ -118,8 +118,8 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
     return (
       <div>
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
+          <ol className="breadcrumb">
+            <li className="breadcrumb-item">
               <a
                 href="#"
                 onClick={() => {
@@ -129,7 +129,7 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
                 Inscripciones
               </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">
+            <li className="breadcrumb-item active" aria-current="page">
               tabla
             </li>
           </ol>
@@ -148,11 +148,11 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
           </div>
         )}
         <h1>Actividad: {actividad}</h1>
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-          <div class="accordion-item ">
-            <h2 class="accordion-header bg-warning">
+        <div className="accordion accordion-flush" id="accordionFlushExample">
+          <div className="accordion-item ">
+            <h2 className="accordion-header bg-warning">
               <button
-                class="accordion-button collapsed bg-warning "
+                className="accordion-button collapsed bg-warning "
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#flush-collapseOne"
@@ -160,7 +160,7 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
                 aria-controls="flush-collapseOne"
               >
                 <i
-                  class="bi bi-exclamation-triangle-fill"
+                  className="bi bi-exclamation-triangle-fill"
                   style={{
                     fontSize: "1.5rem",
                     marginRight: "1rem",
@@ -171,10 +171,10 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
             </h2>
             <div
               id="flush-collapseOne"
-              class="accordion-collapse collapse"
+              className="accordion-collapse collapse"
               data-bs-parent="#accordionFlushExample"
             >
-              <div class="accordion-body text-start">
+              <div className="accordion-body text-start">
                 <ul>
                   <li className="mb-2">
                     <strong>
@@ -224,7 +224,7 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
         <div
           className="modal fade"
           id="exampleModal"
-          tabindex="-1"
+          tabIndex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >

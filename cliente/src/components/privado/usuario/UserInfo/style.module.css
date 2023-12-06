@@ -1,0 +1,134 @@
+.body {
+  /* width: 100vw; */
+}
+
+.alert {
+  background-color: rgb(255, 0, 0);
+  width: 60%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  text-align: center;
+}
+.alert h4 {
+  margin-bottom: 20px;
+  color: aliceblue;
+}
+
+.header {
+  background-color: aqua;
+  padding: 10px;
+  width: 100%;
+  color: black;
+  text-align: center;
+}
+
+.header img {
+  width: 150px;
+  height: 150px;
+}
+
+.header span {
+  color: blue;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+
+.main {
+  display: grid;
+  grid-template-areas:
+    "info activity"
+    "info archivos"
+    "info notificacion"
+    "info formulario";
+  grid-template-columns: 1fr 3fr;
+  gap: 10px;
+  padding-block: 10px;
+}
+.datos {
+  grid-area: info;
+  text-wrap: wrap;
+}
+
+.activity {
+  grid-area: activity;
+}
+
+.archivos {
+  grid-area: archivos;
+}
+
+.notificacion {
+  grid-area: notificacion;
+}
+
+.notificacion h4 {
+  color: red;
+}
+
+.list {
+  max-width: 500px;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 10px;
+}
+
+.listItem button {
+  height: fit-content;
+}
+
+.span {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.formulario {
+  grid-area: formulario;
+}
+
+.formulario form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.buttonEnviar {
+  background-color: rgb(255, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 7px;
+
+  cursor: pointer;
+}
+
+.buttonGroup {
+  display: flex;
+  justify-content: space-around;
+}
+
+@media screen and (max-width: 500px) {
+  .main {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "info activity"
+      "info archivos"
+      "notificacion notificacion"
+      "formulario formulario";
+  }
+}

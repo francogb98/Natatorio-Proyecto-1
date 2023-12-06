@@ -105,7 +105,7 @@ function RegistroPrueba() {
                 }}
                 onChange={handleChange}
               />
-              <div id="dni" class="form-text">
+              <div id="dni" className="form-text">
                 El DNI sera tu usuario para iniciar sesion.
               </div>
             </div>
@@ -206,7 +206,7 @@ function RegistroPrueba() {
                   onChange={handleChange}
                 />
 
-                <div id="dni" class="form-text">
+                <div id="dni" className="form-text">
                   Si posee mas de un diagnostico, separarlos con una coma.
                 </div>
               </div>
@@ -262,7 +262,7 @@ function RegistroPrueba() {
               >
                 Contraseña
               </label>
-              <div class="input-group ">
+              <div className="input-group ">
                 <input
                   type={viewPass ? "text" : "password"}
                   name="password"
@@ -271,7 +271,7 @@ function RegistroPrueba() {
                   onChange={handleChange}
                   aria-describedby="basic-addon1"
                 />
-                <span class="input-group-text" id="basic-addon1">
+                <span className="input-group-text" id="basic-addon1">
                   {!viewPass ? (
                     <i
                       className="bi bi-eye"
@@ -288,7 +288,7 @@ function RegistroPrueba() {
                 </span>
               </div>
 
-              <div id="password" class="form-text">
+              <div id="password" className="form-text">
                 Te recomendamos variar entre numeros y letras para mayor
                 seguridad.
               </div>
@@ -302,7 +302,7 @@ function RegistroPrueba() {
               >
                 Repetir Contraseña
               </label>
-              <div class="input-group">
+              <div className="input-group">
                 <input
                   type={viewPass2 ? "text" : "password"}
                   name="repetirPassword"
@@ -311,7 +311,7 @@ function RegistroPrueba() {
                   onChange={handleChange}
                   aria-describedby="basic-addon1"
                 />
-                <span class="input-group-text" id="basic-addon1">
+                <span className="input-group-text" id="basic-addon1">
                   {!viewPass2 ? (
                     <i
                       className="bi bi-eye"

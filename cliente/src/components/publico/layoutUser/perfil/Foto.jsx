@@ -97,7 +97,7 @@ function Foto({ usuario }) {
           className="input-group-text btn btn-success"
           onClick={uploadImage}
         >
-          Cargar <i class="bi bi-file-earmark-arrow-up"></i>
+          Cargar <i className="bi bi-file-earmark-arrow-up"></i>
         </button>
       </div>
 

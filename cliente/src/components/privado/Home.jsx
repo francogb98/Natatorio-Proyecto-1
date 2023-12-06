@@ -9,7 +9,7 @@ function Home() {
     <div className={style.bodyHome}>
       <NavBar />
 
-      <div>
+      <div className={style.main}>
         <Outlet />
       </div>
     </div>

@@ -11,19 +11,24 @@ import SignIn from "../components/publico/inicioDeSesion/SignIn";
 import Inscripcion from "../components/publico/layoutUser/inscripcion/Inscripcion";
 import Perfil from "../components/publico/layoutUser/perfil/Perfil";
 import Home from "../components/privado/Home";
-import Inicio from "../components/privado/Inicio/Inicio";
 
-import CreateActivity from "../components/privado/createActivity/CreateActivity";
-import SearchUser from "../components/privado/searchUser/SearchUser";
-import Habilitar from "../components/privado/habilitarUsuario/Habilitar";
+import Inicio from "../components/privado/Inicio/turnoActual/Inicio";
+import FormularioTurnoSiguiente from "../components/privado/Inicio/turnoSiguiente/FormularioTurnoSiguiente";
+import FormularioPrueba from "../components/privado/Inicio/autorizar/FormularioPrueba";
+import ListaUsuarios from "../components/privado/usuario/listaUsuarios/ListaUsuarios";
+import PiletasInfo from "../components/privado/inicio/showPiletasInfo/PiletasInfo";
+
+import User from "../components/privado/usuario/UserInfo/User";
+import SearchUser from "../components/privado/usuario/searchUser/SearchUser";
+import Habilitar from "../components/privado/usuario/habilitarUsuario/Habilitar";
+
+import CreateActivity from "../components/privado/actividades/createActivity/CreateActivity";
+import ListActivity from "../components/privado/actividades/actividadesLista/ListActivity";
+
 // import Piletas from "../components/privado/Piletas/Piletas";
-import ListaUsuarios from "../components/privado/listaUsuarios/ListaUsuarios";
 import Estadisticas from "../components/privado/estadisticas/Estadisticas";
-import ListActivity from "../components/privado/actividadesLista/ListActivity";
 import UpdateFiles from "../components/publico/layoutUser/updateFiles/UpdateFiles";
 import HomeUser from "../components/publico/layoutUser/home/HomeUser";
-import User from "../components/privado/UserInfo/User";
-import PiletasInfo from "../components/privado/showPiletasInfo/PiletasInfo";
 import Notificaciones from "../components/publico/layoutUser/notificaciones/Notificaciones";
 import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
 
@@ -86,6 +91,11 @@ function Routing() {
       (auth.logged && auth.role === "SUPER_ADMIN") ? (
         <Route path="/admin" element={<Home />}>
           <Route path="panel/inicio" element={<Inicio />} />
+          <Route
+            path="panel/inicio/turno-siguiente"
+            element={<FormularioTurnoSiguiente />}
+          />
+          <Route path="panel/inicio/autorizar" element={<FormularioPrueba />} />
           <Route path="panel/piletas" element={<PiletasInfo />} />
           <Route path="panel/create" element={<CreateActivity />} />
           <Route path="panel/actividades" element={<ListActivity />} />

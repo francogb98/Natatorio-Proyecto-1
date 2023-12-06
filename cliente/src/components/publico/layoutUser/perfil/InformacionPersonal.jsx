@@ -27,7 +27,7 @@ function InformacionPersonal({
                 "Cancelar"
               ) : (
                 <div className="text-light">
-                  Editar <i class="bi bi-pencil ms-2"></i>
+                  Editar <i className="bi bi-pencil ms-2"></i>
                 </div>
               )}
             </button>
