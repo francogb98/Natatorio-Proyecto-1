@@ -12,6 +12,18 @@ function ListaUsuarios() {
 
   useEffect(() => {}, [data]);
 
+  if (isLoading) {
+    return (
+      <h1
+        style={{
+          textAlign: "center",
+        }}
+      >
+        Cargando...
+      </h1>
+    );
+  }
+
   const columns = [
     {
       header: "ID",

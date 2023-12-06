@@ -12,6 +12,8 @@ import { changeRol } from "../../../../helpers/usersFetch/cambiarRole";
 import FormularioHabilitarUsuario from "./FormularioHabilitarUsuario";
 import Notificaciones from "./Notificaciones";
 
+import avatar from "../../../../assets/avatar.webp";
+
 function User() {
   //accedo al id que viene por parametro
 
@@ -58,18 +60,9 @@ function User() {
       }
     },
   });
-  // queryClient.invalidateQueries("getUserData");
 
   useEffect(() => {}, [estado]);
   useEffect(() => {}, [image]);
-
-  // useEffect(() => {
-  //   // Desplaza la ventana hacia la parte superior cuando el componente se monta
-  //   return () => {
-  //     queryClient.removeQueries("getUserData");
-  //   };
-  // }, []);
-  // //quiero que cuando se cierreel componente se borre la informacion de la data
 
   useEffect(() => {
     if (isSuccess) {
@@ -93,7 +86,7 @@ function User() {
       <>
         <div className={style.body}>
           <header className={style.header}>
-            <img src={user.foto} alt="" />
+            <img src={user.foto ? user.foto : avatar} alt="foto-perfil" />
             <h1>
               {user.nombre} {user.apellido}
             </h1>
