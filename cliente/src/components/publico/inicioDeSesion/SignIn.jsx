@@ -132,6 +132,12 @@ function SignIn() {
             </div>
           </div>
 
+          {login.isLoading ? (
+            <div className="spinner-border text-primary mt-2" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          ) : null}
+
           <button
             type="submit"
             value="Iniciar Sesion"
@@ -141,11 +147,11 @@ function SignIn() {
             Iniciar Sesion
           </button>
         </form>
-        {login.isLoading ? (
-          <div className="spinner-border text-primary mt-2" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        ) : null}
+
+        <div>
+          <Link to="/recuperar-contraseña">¿Has olvidado la contraseña?</Link>
+        </div>
+
         <div className="mt-3">
           <p className="fw-bold">
             ¿No tienes cuenta?{" "}

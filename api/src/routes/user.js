@@ -27,6 +27,8 @@ import createNotificacion from "../controllers/users/notificaciones/createNotifi
 import updateNotificaciones from "../controllers/users/notificaciones/updateNotificaciones.js";
 import { deleteNotificacion } from "../controllers/users/notificaciones/deleteNotificacion.js";
 import cambiarFoto from "../controllers/users/imagen/cambiarFoto.js";
+import recuperar from "../controllers/users/recuperarContraseña/recuperar.js";
+import modificarContraseña from "../controllers/users/recuperarContraseña/modificarContraseña.js";
 
 const router = Router();
 
@@ -69,5 +71,8 @@ router.post("/notificaciones/update", validarJWT, updateNotificaciones);
 router.post("/notificaciones/delete", validarJWT, deleteNotificacion);
 
 router.post("/cambiarFoto", validarJWT, cambiarFoto);
+
+router.post("/comprobar-datos", recuperar);
+router.post("/modificar-password", modificarContraseña);
 
 export default router;

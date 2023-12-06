@@ -31,6 +31,7 @@ import HomeUser from "../components/publico/layoutUser/home/HomeUser";
 import Notificaciones from "../components/publico/layoutUser/notificaciones/Notificaciones";
 import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
 import PiletasInfo from "../components/privado/Inicio/showPiletasInfo/PiletasInfo";
+import RecuperarContraseña from "../components/publico/recuperarContraseña/RecuperarContraseña";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -56,6 +57,7 @@ function Routing() {
     <Routes>
       <Route path="/" element={<SignIn />} />
       <Route path="/login" element={<Registro />} />
+      <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
 
       <Route path="/verificar-cuenta" element={<Confirm />} />
       {auth.logged &&
