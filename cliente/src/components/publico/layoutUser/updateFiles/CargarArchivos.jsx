@@ -80,7 +80,6 @@ function CargarArchivos({ usuario }) {
           id: usuario._id,
         });
         setSuccess(true);
-        setLoading(false);
 
         Swal.fire({
           icon: "success",
@@ -88,8 +87,19 @@ function CargarArchivos({ usuario }) {
         });
       })
       .catch((err) => {
-        setError(true);
+        Swal.fire({
+          icon: "error",
+          title: "Formato de archivo incorrecto",
+        });
+
+        //reiniciar valores
+      })
+      .finally(() => {
         setLoading(false);
+        //reiniciar los campos de input file
+        // document.getElementById('miInputFile').value = '';
+
+        document.getElementById("formFile").value = "";
       });
   };
 
@@ -201,8 +211,17 @@ function CargarArchivos({ usuario }) {
         </div>
 
         {loading && (
-          <div className="alert alert-info" role="alert">
-            Cargando
+          <div
+            className="alert alert-primary"
+            role="alert"
+            style={{
+              //que aparezca fijo arriba
+              position: "sticky",
+              top: "0",
+              zIndex: "1",
+            }}
+          >
+            Cargando archivo...
           </div>
         )}
 

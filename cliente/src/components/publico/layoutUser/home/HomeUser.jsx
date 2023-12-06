@@ -1,6 +1,7 @@
 import React from "react";
 
 import style from "./homeUser.module.css";
+import { Link } from "react-router-dom";
 
 function HomeUser({ user }) {
   return (
@@ -21,7 +22,13 @@ function HomeUser({ user }) {
 
           <div className={style.infoSection}>
             <p>Carga de Archivos </p>
-            <small>(Dirigete a la seccion perfil)</small>
+            <small>
+              (Dirigete a la seccion{" "}
+              <Link to={"perfil"} className="fw-bold">
+                PERFIL
+              </Link>
+              )
+            </small>
           </div>
         </div>
         <div className={style.sectionItem}>
@@ -43,6 +50,7 @@ function HomeUser({ user }) {
                 type="button"
                 data-bs-dismiss="offcanvas"
                 aria-label="Close"
+                style={{ color: "green" }}
               ></i>
               , eso querra decir que ya esta disponible la seccion para poder
               inscribirse en un actividad )
