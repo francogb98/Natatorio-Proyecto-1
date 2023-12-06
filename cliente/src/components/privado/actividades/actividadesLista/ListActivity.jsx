@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "react-query";
 import Modal from "./ModalActivity";
 
 import { deleteActivity } from "../../../../helpers/activitiesFetch/deleteActivity";
-import CreateActivity from "../createActivity/CreateActivity";
+import EditarActividad from "./EditActividad";
 
 function ListActivity() {
   const [actividades, setActivitys] = useState([]); // <---quiero que se ordene por horario
@@ -223,7 +223,7 @@ function ListActivity() {
           <div>
             <button onClick={() => setIsEdit(false)}>X</button>
 
-            <CreateActivity actividad={actividadEdit} />
+            <EditarActividad actividad={actividadEdit} />
           </div>
         )}
       </div>

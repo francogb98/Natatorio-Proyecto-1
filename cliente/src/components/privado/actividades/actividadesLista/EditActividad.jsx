@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useQuery, useMutation } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";
 
-import { fetchHours, postActivity } from "../../../../helpers/createActivity";
-import Modal from "./Modal";
+import { fetchHours } from "../../../../helpers/createActivity";
 
-import style from "./style.module.css";
+import style from "../createActivity/style.module.css";
 
-function CreateActivity() {
+import { editarActividad } from "../../../../helpers/activitiesFetch/editarActividad";
+
+function EditarActividad({ actividad }) {
   const [nombresActividades, setNombresActividades] = useState([
     "pileta libre",
     "escuela de natacion adultos",
@@ -15,72 +16,25 @@ function CreateActivity() {
   ]);
 
   const [args, setArgs] = useState({
-    name: "",
-    date: [],
-    hourStart: "",
-    hourFinish: "",
-    desde: "",
-    hasta: "",
-    pileta: "",
-    cupos: "",
-    actividadEspecial: false,
+    name: actividad ? actividad.name : "",
+    date: actividad ? actividad.date : [],
+    hourStart: actividad ? actividad.hourStart : "",
+    hourFinish: actividad ? actividad.hourFinish : "",
+    pileta: actividad ? actividad.pileta : "",
+    cupos: actividad ? actividad.cupos : "",
+    actividadEspecial: actividad ? actividad.actividadEspecial : false,
+    desde: actividad ? actividad.desde : "",
+    hasta: actividad ? actividad.hasta : "",
   });
 
-  const [isSpecialActivity, setIsSpecialActivity] = useState(false);
+  const [isSpecialActivity, setIsSpecialActivity] = useState(
+    actividad ? actividad.actividadEspecial : false
+  );
 
   // traemos los horarios disponibles
   const { data, isSuccess, isLoading } = useQuery({
     queryKey: "hours",
     queryFn: fetchHours,
-  });
-
-  const createActivity = useMutation({
-    mutationKey: "createActivity",
-    mutationFn: postActivity,
-    onSuccess: (data) => {
-      if (data.status === "error") {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: data.message,
-        });
-      } else if (data.status === "success") {
-        setArgs({
-          name: "",
-          date: [],
-          hourStart: "",
-          hourFinish: "",
-          pileta: "",
-          cupos: "",
-        });
-
-        //volver los valores de los select a default
-        if (!isSpecialActivity) {
-          document.getElementById("hours").selectedIndex = 0;
-        }
-        document.getElementById("date").selectedIndex = 0;
-        document.getElementById("pileta").selectedIndex = 0;
-
-        //volver los valores de los inputs a default
-        document.getElementById("name").value = "";
-        if (isSpecialActivity) {
-          document.getElementById("hourStart").value = "";
-          document.getElementById("hourFinish").value = "";
-        }
-        document.getElementById("cupos").value = "";
-        document.getElementById("desde").value = "";
-        document.getElementById("hasta").value = "";
-
-        //volver el checkbox a false
-        document.getElementById("isSpecial").checked = false;
-
-        Swal.fire({
-          icon: "success",
-          title: "Actividad creada",
-          text: data.message,
-        });
-      }
-    },
   });
 
   const handleChange = (e) => {
@@ -94,28 +48,6 @@ function CreateActivity() {
   const handleDay = (e) => {
     setArgs({ ...args, date: [...args.date, e.target.value] });
   };
-
-  const handleHorario = (e) => {
-    //verifico que despues de los : haya solamente 2 caracteres
-    const coincidencia = /:(.*)/.exec(e.target.value);
-
-    if (coincidencia) {
-      if (coincidencia[1].length > 2) {
-        e.target.value = e.target.value.slice(0, 4);
-      }
-    }
-
-    if (e.target.value.length > 5) {
-      e.target.value = e.target.value.slice(0, 5);
-    }
-    if (e.target.value.length < 5) {
-      setArgs({ ...args, [e.target.name]: "0" + e.target.value });
-      return;
-    }
-    setArgs({ ...args, [e.target.name]: e.target.value });
-  };
-
-  //funcion para que cuando el usuario escriba en el input desde hasta, no pueda escribir mas de 2 caracteres
 
   useEffect(() => {}, [args, isSpecialActivity]);
 
@@ -133,6 +65,30 @@ function CreateActivity() {
       return 1;
     }
     return 0;
+  });
+
+  const queryClient = useQueryClient();
+
+  const handleEditar = useMutation({
+    mutationKey: "editarActividad",
+    mutationFn: editarActividad,
+    onSuccess: (data) => {
+      if (data.status === "error") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: data.message,
+        });
+      } else if (data.status === "success") {
+        queryClient.invalidateQueries("activitys");
+
+        Swal.fire({
+          icon: "success",
+          title: "Actividad editada con exito",
+          text: data.message,
+        });
+      }
+    },
   });
 
   return (
@@ -269,8 +225,9 @@ function CreateActivity() {
               type="text"
               id="hourStart"
               name="hourStart"
+              value={args.hourStart}
               className="form-control"
-              onChange={handleHorario}
+              onChange={(e) => setArgs({ ...args, hourStart: e.target.value })}
               placeholder="08:00"
             />
             <label htmlFor="hourFinish">Horario Salida</label>
@@ -278,8 +235,9 @@ function CreateActivity() {
               type="text"
               id="hourFinish"
               name="hourFinish"
+              value={args.hourFinish}
               className="form-control"
-              onChange={handleHorario}
+              onChange={(e) => setArgs({ ...args, hourFinish: e.target.value })}
               placeholder="10:00"
             />
           </div>
@@ -292,6 +250,7 @@ function CreateActivity() {
           <select
             className="form-select"
             name="pileta"
+            defaultValue={args.pileta}
             id="pileta"
             onChange={(e) => setArgs({ ...args, pileta: e.target.value })}
           >
@@ -313,7 +272,7 @@ function CreateActivity() {
             <option value="null">--Dias--</option>
             <option value="Lunes">Lunes</option>
             <option value="Martes">Martes</option>
-            <option value="Miercoles">Miercoles</option>
+            <option value="Miércoles">Miércoles</option>
             <option value="Jueves">Jueves</option>
             <option value="Viernes">Viernes</option>
           </select>
@@ -349,22 +308,19 @@ function CreateActivity() {
             ))}
         </div>
 
-        {createActivity.isLoading && <h4>Creando actividad...</h4>}
-
         <button
           type="submit"
-          value="Iniciar Sesion"
           className="mt-2 btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#modalCreateActivity"
+          onClick={() => {
+            handleEditar.mutate({ args, id: actividad._id });
+          }}
         >
           {" "}
-          Crear Actividad
+          Editar Actividad
         </button>
       </form>
-      <Modal args={args} createActivity={createActivity} />
     </div>
   );
 }
 
-export default CreateActivity;
+export default EditarActividad;
