@@ -16,7 +16,6 @@ import Inicio from "../components/privado/Inicio/turnoActual/Inicio";
 import FormularioTurnoSiguiente from "../components/privado/Inicio/turnoSiguiente/FormularioTurnoSiguiente";
 import FormularioPrueba from "../components/privado/Inicio/autorizar/FormularioPrueba";
 import ListaUsuarios from "../components/privado/usuario/listaUsuarios/ListaUsuarios";
-import PiletasInfo from "../components/privado/inicio/showPiletasInfo/PiletasInfo";
 
 import User from "../components/privado/usuario/UserInfo/User";
 import SearchUser from "../components/privado/usuario/searchUser/SearchUser";
@@ -31,6 +30,7 @@ import UpdateFiles from "../components/publico/layoutUser/updateFiles/UpdateFile
 import HomeUser from "../components/publico/layoutUser/home/HomeUser";
 import Notificaciones from "../components/publico/layoutUser/notificaciones/Notificaciones";
 import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
+import PiletasInfo from "../components/privado/Inicio/showPiletasInfo/PiletasInfo";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
