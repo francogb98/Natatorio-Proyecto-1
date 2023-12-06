@@ -1,18 +1,22 @@
 import { baseUrl } from "../url";
 
 export const cargarFicha = async (data) => {
-  const url = `${baseUrl}user/cargaFicha`;
+  try {
+    const url = `${baseUrl}user/cargaFicha`;
 
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify(data),
-  });
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    });
 
-  const result = await response.json();
+    const result = await response.json();
 
-  return result;
+    return result;
+  } catch (error) {
+    return error;
+  }
 };

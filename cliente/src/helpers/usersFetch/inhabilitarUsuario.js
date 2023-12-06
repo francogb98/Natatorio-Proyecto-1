@@ -1,21 +1,24 @@
 import { baseUrl } from "../url";
 
 export const inhabilitarUsuario = async (data) => {
-  data;
-  const url = `${baseUrl}user/deshabilitar`;
+  try {
+    const url = `${baseUrl}user/deshabilitar`;
 
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-type": "application/json",
-      authorization: localStorage.getItem("token"),
-    },
-    body: JSON.stringify(data),
-  });
+    const resp = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+        authorization: localStorage.getItem("token"),
+      },
+      body: JSON.stringify(data),
+    });
 
-  const body = await resp.json();
+    const body = await resp.json();
 
-  return body;
+    return body;
+  } catch (error) {
+    return error;
+  }
 };
 
 //comentario

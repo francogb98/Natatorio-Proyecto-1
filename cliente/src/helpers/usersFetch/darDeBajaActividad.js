@@ -16,6 +16,6 @@ export const darDeBajaActividad = async (idActividad) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    error;
+    return error;
   }
 };

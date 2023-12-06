@@ -76,6 +76,8 @@ function Inscripcion() {
   if (getActivity.isSuccess && getActivity.data) {
     // quiero que getHours.data.data.hours se ordene de menor a mayor
 
+    console.log(getUser.data.user);
+
     //necesito traer todos los nombre de actividades y guardarlos en un estadom, sin que se reptina
     return (
       <div className={style.container}>
@@ -103,17 +105,37 @@ function Inscripcion() {
             actividadSeleccionada ? style.noLook : style.buttonGroup
           }`}
         >
-          <h4>Elige tu actividad:</h4>
-
-          {getActivity.data.map((activity, i) => (
-            <button
-              key={i}
-              className={`btn btn-${colors[i]}`}
-              onClick={() => setActividadSeleccionada(activity)}
-            >
-              {activity}
-            </button>
-          ))}
+          {getUser.data.user.activity ? (
+            <div className="alert alert-info d-block mx-auto">
+              <div>
+                Ya estas inscripto en la actividad:{" "}
+                <span className="text-success">
+                  {getUser.data.user.activity[0].name}
+                </span>
+              </div>
+              <div>
+                Estado de su Solicitud:{" "}
+                {getUser.data.user.status ? (
+                  <span className="text-success">Aprobado</span>
+                ) : (
+                  <span className="text-danger">Esperando Aprobacion</span>
+                )}
+              </div>
+            </div>
+          ) : (
+            <>
+              <h4>Elige tu actividad:</h4>
+              {getActivity.data.map((activity, i) => (
+                <button
+                  key={i}
+                  className={`btn btn-${colors[i]}`}
+                  onClick={() => setActividadSeleccionada(activity)}
+                >
+                  {activity}
+                </button>
+              ))}
+            </>
+          )}
         </div>
         {actividadSeleccionada && (
           <div

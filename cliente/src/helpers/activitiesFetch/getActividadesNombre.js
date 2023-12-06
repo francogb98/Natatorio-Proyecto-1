@@ -13,6 +13,6 @@ export const getActividadesNombre = async () => {
     const { actividades } = await resp.json();
     return actividades;
   } catch (error) {
-    error;
+    return error;
   }
 };

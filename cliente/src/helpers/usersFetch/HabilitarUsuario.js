@@ -14,6 +14,6 @@ export const HabilitarUsuario = async ({ id }) => {
 
     return data;
   } catch (error) {
-    error;
+    return error;
   }
 };

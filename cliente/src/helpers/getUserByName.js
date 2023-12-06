@@ -13,6 +13,6 @@ export const getUserByName = async (name) => {
 
     return data;
   } catch (error) {
-    error;
+    return error;
   }
 };

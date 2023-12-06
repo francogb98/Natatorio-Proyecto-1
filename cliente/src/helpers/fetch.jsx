@@ -5,37 +5,45 @@ import { baseUrl } from "./url";
 
 //comentario
 export const fetchUser = async ({ url, options }) => {
-  const urlApi = `${baseUrl}user/` + url;
+  try {
+    const urlApi = `${baseUrl}user/` + url;
 
-  const response = await fetch(urlApi, {
-    method: "POST",
-    body: JSON.stringify(options),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await response.json();
-  if (url !== "login") {
-    sendEmail(data);
+    const response = await fetch(urlApi, {
+      method: "POST",
+      body: JSON.stringify(options),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (url !== "login") {
+      sendEmail(data);
+    }
+    return data;
+  } catch (error) {
+    return error;
   }
-  return data;
 };
 
 export const fetchSinToken = async ({ endpoint, data, method = "GET" }) => {
-  const url = `${baseUrl}user/${endpoint}`;
+  try {
+    const url = `${baseUrl}user/${endpoint}`;
 
-  if (method === "GET") {
-    const resp = await fetch(url);
-    return await resp.json();
-  } else {
-    const resp = await fetch(url, {
-      method,
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    return await resp.json();
+    if (method === "GET") {
+      const resp = await fetch(url);
+      return await resp.json();
+    } else {
+      const resp = await fetch(url, {
+        method,
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      return await resp.json();
+    }
+  } catch (error) {
+    return error;
   }
 };
 
@@ -44,24 +52,28 @@ export const fetchConTokenHours = async ({
   data,
   method = "GET",
 }) => {
-  const url = `${baseUrl}hour/${endpoint}`;
-  const token = localStorage.getItem("token");
+  try {
+    const url = `${baseUrl}hour/${endpoint}`;
+    const token = localStorage.getItem("token");
 
-  if (method === "GET") {
-    const resp = await fetch(url);
+    if (method === "GET") {
+      const resp = await fetch(url);
 
-    return await resp.json();
-  } else {
-    const resp = await fetch(url, {
-      method,
-      headers: {
-        "Content-type": "application/json",
-        authorization: token,
-      },
-      body: JSON.stringify(data),
-    });
+      return await resp.json();
+    } else {
+      const resp = await fetch(url, {
+        method,
+        headers: {
+          "Content-type": "application/json",
+          authorization: token,
+        },
+        body: JSON.stringify(data),
+      });
 
-    return await resp.json();
+      return await resp.json();
+    }
+  } catch (error) {
+    return error;
   }
 };
 export const fetchConToken = async ({
@@ -69,29 +81,33 @@ export const fetchConToken = async ({
   data,
   method = "GET",
 }) => {
-  const url = `${baseUrl}${endpoint}`;
-  const token = localStorage.getItem("token");
+  try {
+    const url = `${baseUrl}${endpoint}`;
+    const token = localStorage.getItem("token");
 
-  if (method === "GET") {
-    const resp = await fetch(url, {
-      method: "GET",
+    if (method === "GET") {
+      const resp = await fetch(url, {
+        method: "GET",
 
-      headers: {
-        "Content-type": "application/json",
-        authorization: token,
-      },
-    });
-    return await resp.json();
-  } else {
-    const resp = await fetch(url, {
-      method,
-      headers: {
-        "Content-type": "application/json",
-        authorization: token,
-      },
-      body: JSON.stringify({ id: data }),
-    });
-    return await resp.json();
+        headers: {
+          "Content-type": "application/json",
+          authorization: token,
+        },
+      });
+      return await resp.json();
+    } else {
+      const resp = await fetch(url, {
+        method,
+        headers: {
+          "Content-type": "application/json",
+          authorization: token,
+        },
+        body: JSON.stringify({ id: data }),
+      });
+      return await resp.json();
+    }
+  } catch (error) {
+    return error;
   }
 };
 
@@ -103,7 +119,9 @@ export const getInfoUser = async () => {
     );
     const data = await resp.json();
     return data;
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };
 
 export const getAllUsers = async () => {
@@ -111,5 +129,7 @@ export const getAllUsers = async () => {
     const resp = await fetch(`${baseUrl}user/getAllUsers`);
     const data = await resp.json();
     return data;
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };

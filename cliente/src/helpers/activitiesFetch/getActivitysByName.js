@@ -15,6 +15,6 @@ export const getActivitysByName = async ({ activity }) => {
     const { actividades } = await resp.json();
     return actividades;
   } catch (error) {
-    error;
+    return error;
   }
 };

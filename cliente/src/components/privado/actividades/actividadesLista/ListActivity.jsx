@@ -221,7 +221,9 @@ function ListActivity() {
         )}
         {isEdit && (
           <div>
-            <button onClick={() => setIsEdit(false)}>X</button>
+            <button className="btn btn-danger" onClick={() => setIsEdit(false)}>
+              X
+            </button>
 
             <EditarActividad actividad={actividadEdit} />
           </div>
