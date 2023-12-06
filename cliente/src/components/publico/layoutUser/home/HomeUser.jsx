@@ -8,7 +8,16 @@ function HomeUser({ user }) {
       <h1>Pasos a seguir para la inscripcion en actividades</h1>
       <section className={style.section}>
         <div className={`${style.sectionItem}`}>
-          <span className="bg-warning">1</span>
+          {user.foto &&
+          user.fichaMedica &&
+          user.certificadoHongos &&
+          user.fotoDocumento ? (
+            <span className="bg-success">
+              <i class="bi bi-check-lg"></i>
+            </span>
+          ) : (
+            <span className="bg-warning">1</span>
+          )}
 
           <div className={style.infoSection}>
             <p>Carga de Archivos </p>
@@ -16,7 +25,14 @@ function HomeUser({ user }) {
           </div>
         </div>
         <div className={style.sectionItem}>
-          <span className="bg-warning">2</span>{" "}
+          {user.activity?.length ? (
+            <span className="bg-success">
+              <i class="bi bi-check-lg"></i>
+            </span>
+          ) : (
+            <span className="bg-warning">2</span>
+          )}
+
           <div className={style.infoSection}>
             <p>Inscripcion en Actividades </p>
             <small>
@@ -34,7 +50,14 @@ function HomeUser({ user }) {
           </div>
         </div>
         <div className={style.sectionItem}>
-          <span className="bg-warning">3</span>
+          {user.activity?.length && user.status ? (
+            <span className="bg-success">
+              <i class="bi bi-check-lg"></i>
+            </span>
+          ) : (
+            <span className="bg-warning">3</span>
+          )}
+
           <div className={style.infoSection}>
             <p>Aprobacion de Inscripcion</p>
             <small>
@@ -43,7 +66,13 @@ function HomeUser({ user }) {
           </div>
         </div>
         <div className={style.sectionItem}>
-          <span className="bg-warning">4</span>
+          {user.activity?.length && user.status ? (
+            <span className="bg-success">
+              <i class="bi bi-check-lg"></i>
+            </span>
+          ) : (
+            <span className="bg-warning">4</span>
+          )}
 
           <div className={style.infoSection}>
             <p>¡A Disfrutar!</p>

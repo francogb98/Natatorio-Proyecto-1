@@ -26,9 +26,14 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
       if (data.status === "success") {
         Swal.fire({
           title: data.status.toUpperCase(),
-          text: "Se ha inscripto correctamente en la actividad, dirijase a la pagina principal para ver el estado de su solicitud ",
+          text: "Se ha inscripto correctamente en la actividad, redireccionando a pagina principal ",
           icon: data.status,
+          //despues de 2 segundos lo redirecciones
+          timer: 2000,
           confirmButtonText: "Aceptar",
+        }).then(() => {
+          //redirecciona al inicio
+          window.location.href = "/user/home";
         });
       } else {
         Swal.fire({

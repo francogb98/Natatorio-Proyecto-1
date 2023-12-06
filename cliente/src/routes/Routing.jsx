@@ -59,34 +59,16 @@ function Routing() {
 
       <Route path="/verificar-cuenta" element={<Confirm />} />
       {auth.logged &&
-      (auth.role === "usuario" || auth.role === "registrado") ? (
-        <Route path="/user" element={<HomeUserPublic />}>
-          <Route path="home" element={<HomeUser />} />
-          <Route path="updateFiles" element={<UpdateFiles />} />
-          <Route path="inscripcion" element={<Inscripcion />} />
-          <Route path="perfil" element={<Perfil />} />
-          <Route path="editarPerfil" element={<EditarPerfil />} />
-          <Route path="notificaciones" element={<Notificaciones />} />
-        </Route>
-      ) : (
-        <Route
-          path="*"
-          element={
-            <div>
-              <h1>Acceso Denegado</h1>
-              <h2>No tienes permisos para acceder a esta pagina</h2>
-              <button
-                className="btn btn-lg btn-warning"
-                onClick={() => {
-                  window.location.href = "/";
-                }}
-              >
-                Volver al inicio
-              </button>
-            </div>
-          }
-        />
-      )}
+        (auth.role === "usuario" || auth.role === "registrado") && (
+          <Route path="/user" element={<HomeUserPublic />}>
+            <Route path="home" element={<HomeUser />} />
+            <Route path="updateFiles" element={<UpdateFiles />} />
+            <Route path="inscripcion" element={<Inscripcion />} />
+            <Route path="perfil" element={<Perfil />} />
+            <Route path="editarPerfil" element={<EditarPerfil />} />
+            <Route path="notificaciones" element={<Notificaciones />} />
+          </Route>
+        )}
       {(auth.logged && auth.role === "ADMIN") ||
       (auth.logged && auth.role === "SUPER_ADMIN") ? (
         <Route path="/admin" element={<Home />}>

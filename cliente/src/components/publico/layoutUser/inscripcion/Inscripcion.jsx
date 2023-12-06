@@ -105,7 +105,7 @@ function Inscripcion() {
             actividadSeleccionada ? style.noLook : style.buttonGroup
           }`}
         >
-          {getUser.data.user.activity ? (
+          {getUser.data.user.activity.length ? (
             <div className="alert alert-info d-block mx-auto">
               <div>
                 Ya estas inscripto en la actividad:{" "}
