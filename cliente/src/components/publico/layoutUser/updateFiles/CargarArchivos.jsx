@@ -192,7 +192,8 @@ function CargarArchivos({ usuario }) {
               de tenerlo
             </li>
             <li>
-              <strong>Certificado de hongos</strong> (con la firma del médico)
+              <strong>Certificado de pediculosis y micosis</strong> (con la
+              firma del médico, se debe actualizar cada 1 mes)
             </li>
             <li>
               <strong>Ficha médica completa</strong> (descargarla desde el botón
@@ -360,7 +361,7 @@ function CargarArchivos({ usuario }) {
         {usuario.certificadoHongos && !editarHongos && (
           <div className="mb-3">
             <h5 className="form-label fw-bold">
-              Certificado de hongos cargado{" "}
+              Certificado de pediculosis y micosis{" "}
               {usuario.certificadoHongos ? (
                 <i
                   className="bi bi-check-circle-fill text-success"
@@ -395,7 +396,7 @@ function CargarArchivos({ usuario }) {
         {(!usuario.certificadoHongos || editarHongos) && (
           <div className="mb-5">
             <h5 className="form-label fw-bold">
-              Subir Certificado de hongos{" "}
+              Subir Certificado de pediculosis y micosis{" "}
               {usuario.certificadoHongos ? (
                 <i
                   className="bi bi-check-circle-fill text-success"
