@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import style from "../inicioDeSesion/styleSignIn.module.css";
@@ -15,12 +15,12 @@ import { useMutation } from "react-query";
 import Swal from "sweetalert2";
 
 function RecuperarContraseña() {
-  const [viewPass, setViewPass] = React.useState(false);
+  const [viewPass, setViewPass] = useState(false);
+  const [viewPass2, setViewPass2] = useState(false);
 
-  const [datos, setDatos] = React.useState(false);
+  const [datos, setDatos] = useState(false);
 
-  const [dni, setDni] = React.useState(0);
-  const [password, setPassword] = React.useState("");
+  const [dni, setDni] = useState(0);
 
   const mutation = useMutation(comprobarDatos, {
     onSuccess: (data) => {
@@ -29,7 +29,6 @@ function RecuperarContraseña() {
       document.querySelector('input[name="dni"]').value = "";
       document.querySelector('input[name="telefono"]').value = "";
 
-      console.log(data);
       if (data.status === "success") {
         setDni(data.user.dni);
         setDatos(true);
@@ -101,8 +100,6 @@ function RecuperarContraseña() {
       });
       return;
     }
-
-    setPassword(data.password);
 
     const data2 = {
       dni,
@@ -182,7 +179,29 @@ function RecuperarContraseña() {
               >
                 Contraseña
               </label>
-              <input type="number" name="password" className="form-control" />
+              <div className="input-group mb-3">
+                <input
+                  type={viewPass ? "text" : "password"}
+                  name="password"
+                  className="form-control"
+                  aria-describedby="basic-addon1"
+                />
+                <span className="input-group-text" id="basic-addon1">
+                  {!viewPass ? (
+                    <i
+                      className="bi bi-eye ms-1"
+                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      onClick={() => setViewPass(!viewPass)}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-eye-slash ms-1"
+                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      onClick={() => setViewPass(!viewPass)}
+                    ></i>
+                  )}
+                </span>
+              </div>
             </div>
 
             <div className={`mt-4 `} style={{}}>
@@ -194,11 +213,33 @@ function RecuperarContraseña() {
               >
                 Repetir Contraseña
               </label>
-              <input type="number" name="repetir" className="form-control" />
+              <div className="input-group mb-3">
+                <input
+                  type={viewPass2 ? "text" : "password"}
+                  name="repetir"
+                  className="form-control"
+                  aria-describedby="basic-addon1"
+                />
+                <span className="input-group-text" id="basic-addon1">
+                  {!viewPass2 ? (
+                    <i
+                      className="bi bi-eye ms-1"
+                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      onClick={() => setViewPass2(!viewPass2)}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-eye-slash ms-1"
+                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      onClick={() => setViewPass2(!viewPass2)}
+                    ></i>
+                  )}
+                </span>
+              </div>
             </div>
 
             <div className="d-flex flex-column">
-              {mutation.isLoading ? (
+              {mutation2.isLoading ? (
                 <div
                   className="spinner-border text-primary mt-2 d-block mx-auto"
                   role="status"

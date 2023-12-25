@@ -39,7 +39,7 @@ function NavBar() {
         id="offcanvasScrolling"
         aria-labelledby="offcanvasScrollingLabel"
         style={{
-          width: "350px",
+          width: "320px",
         }}
       >
         <div className="offcanvas-header">
@@ -98,13 +98,13 @@ function NavBar() {
             <ul>
               <li className={style.inicio}>Usuario</li>
               <li className={style.link}>
-                <Link to="panel/usuarios" className={style.link__item}>
-                  Lista Usuarios
+                <Link to="panel/habilitar-usuario" className={style.link__item}>
+                  Habilitar
                 </Link>
               </li>
               <li className={style.link}>
-                <Link to="panel/habilitar-usuario" className={style.link__item}>
-                  Habilitar
+                <Link to="panel/usuarios" className={style.link__item}>
+                  Lista Usuarios
                 </Link>
               </li>
             </ul>

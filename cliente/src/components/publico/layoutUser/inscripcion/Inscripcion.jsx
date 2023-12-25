@@ -1,20 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import style from "./styles.module.css";
 
 import { getInfoUser } from "../../../../helpers/fetch";
 import { useQuery } from "react-query";
 
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import TablaActividades from "./TablaActividades";
 import { getActividadesNombre } from "../../../../helpers/activitiesFetch/getActividadesNombre";
 import PruebaInscripciones from "./PruebaInscripciones";
 
 function Inscripcion() {
   const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
 
-  const [colors, setColors] = useState([
+  const colors = [
     "primary",
     "secondary",
     "success",
@@ -23,9 +22,8 @@ function Inscripcion() {
     "info",
     "light",
     "dark",
-  ]);
+  ];
 
-  const location = useLocation();
   const getUser = useQuery({
     queryKey: ["getUser"],
     queryFn: getInfoUser,
@@ -34,6 +32,10 @@ function Inscripcion() {
         return data;
       }
     },
+  });
+  const getActivity = useQuery({
+    queryKey: ["activitys"],
+    queryFn: getActividadesNombre,
   });
 
   if (!getUser.data) {
@@ -51,11 +53,6 @@ function Inscripcion() {
       </>
     );
   }
-
-  const getActivity = useQuery({
-    queryKey: ["activitys"],
-    queryFn: getActividadesNombre,
-  });
 
   if (getActivity.isError) {
     return (
@@ -75,9 +72,6 @@ function Inscripcion() {
 
   if (getActivity.isSuccess && getActivity.data) {
     // quiero que getHours.data.data.hours se ordene de menor a mayor
-
-    console.log(getUser.data.user);
-
     //necesito traer todos los nombre de actividades y guardarlos en un estadom, sin que se reptina
     return (
       <div className={style.container}>
@@ -143,10 +137,6 @@ function Inscripcion() {
               actividadSeleccionada ? style.tablaActividades : style.noLook
             }`}
           >
-            {/* <TablaActividades
-              actividad={actividadSeleccionada}
-              setActividadSeleccionada={setActividadSeleccionada}
-            /> */}
             <PruebaInscripciones
               actividad={actividadSeleccionada}
               setActividadSeleccionada={setActividadSeleccionada}

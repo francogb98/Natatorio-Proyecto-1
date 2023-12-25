@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useEffect, useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import { getActivitysByName } from "../../../../helpers/activitiesFetch/getActivitysByName";
 
 import Tabla from "../../../../utilidades/Tabla";
 import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
 import Swal from "sweetalert2";
+
+import PropTypes from "prop-types";
 
 function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
@@ -14,9 +16,6 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
   const getActividades = useMutation({
     mutationKey: "getActividades",
     mutationFn: getActivitysByName,
-    onSuccess: (data) => {
-      console.log(data);
-    },
   });
 
   const registerInActivity = useMutation({
@@ -25,7 +24,7 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
     onSuccess: (data) => {
       if (data.status === "success") {
         Swal.fire({
-          title: data.status.toUpperCase(),
+          title: "Inscripto con Exito",
           text: "Se ha inscripto correctamente en la actividad, redireccionando a pagina principal ",
           icon: data.status,
           //despues de 2 segundos lo redirecciones
@@ -288,5 +287,10 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
     );
   }
 }
+
+PruebaInscripciones.propTypes = {
+  actividad: PropTypes.object.isRequired,
+  setActividadSeleccionada: PropTypes.func.isRequired,
+};
 
 export default PruebaInscripciones;

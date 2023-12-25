@@ -1,5 +1,3 @@
-import React from "react";
-
 import style from "./homeUser.module.css";
 import { Link } from "react-router-dom";
 
@@ -43,17 +41,9 @@ function HomeUser({ user }) {
           <div className={style.infoSection}>
             <p>Inscripcion en Actividades </p>
             <small>
-              (Una vez cargado todos los archivos, El icono de la seccion de
-              actividades se vera asi:{" "}
-              <i
-                className="bi bi-calendar2-check"
-                type="button"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-                style={{ color: "green" }}
-              ></i>
-              , eso querra decir que ya esta disponible la seccion para poder
-              inscribirse en un actividad )
+              (Una vez cargado todos los archivos, podas acceder a la seccion de{" "}
+              <Link to={"inscripcion"}>Actividades</Link>, y registrarte en la
+              que desees )
             </small>
           </div>
         </div>

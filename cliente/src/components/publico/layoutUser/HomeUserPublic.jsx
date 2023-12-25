@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import style from "./home.module.css";
 import NavBar from "./navBar.jsx/NavBar";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getInfoUser } from "../../../helpers/fetch";
 import { useQuery } from "react-query";
 

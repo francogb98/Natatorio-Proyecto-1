@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchConToken, fetchConTokenHours } from "../../../../helpers/fetch";
 import { useQuery, useMutation } from "react-query";
 import Modal from "./ModalActivity";
 
 import { deleteActivity } from "../../../../helpers/activitiesFetch/deleteActivity";
 import EditarActividad from "./EditActividad";
+import { Link } from "react-router-dom";
 
 function ListActivity() {
   const [actividades, setActivitys] = useState([]); // <---quiero que se ordene por horario
@@ -16,13 +17,13 @@ function ListActivity() {
     hour: "default",
     day: "default",
   });
-  const [days, setDays] = useState([
+  const days = [
     { id: "a", name: "Lunes" },
     { id: "b", name: "Martes" },
     { id: "c", name: "Miércoles" },
     { id: "d", name: "Jueves" },
     { id: "e", name: "Viernes" },
-  ]);
+  ];
 
   const [isEdit, setIsEdit] = useState(false);
   const [actividadEdit, setActividadEdit] = useState({});
@@ -185,7 +186,11 @@ function ListActivity() {
                     <td className="bg-primary text-white fw-bold">
                       {actividad.hourStart} - {actividad.hourFinish}
                     </td>
-                    <td>{actividad.name}</td>
+                    <td>
+                      <Link to={`infoActividad/${actividad._id}`}>
+                        {actividad.name}
+                      </Link>
+                    </td>
                     <td>{actividad.date.join(" - ")}</td>
                     <td>{actividad.cupos}</td>
                     <td>{actividad.users.length}</td>
@@ -199,7 +204,7 @@ function ListActivity() {
                         }}
                       >
                         {/* icono de lapiz */}
-                        <i class="bi bi-pencil"></i>
+                        <i className="bi bi-pencil"></i>
                       </button>
                     </td>
                     <td>

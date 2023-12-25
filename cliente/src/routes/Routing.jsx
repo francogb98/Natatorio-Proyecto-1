@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "react-query";
@@ -32,6 +32,7 @@ import Notificaciones from "../components/publico/layoutUser/notificaciones/Noti
 import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
 import PiletasInfo from "../components/privado/Inicio/showPiletasInfo/PiletasInfo";
 import RecuperarContraseña from "../components/publico/recuperarContraseña/RecuperarContraseña";
+import InfoActividad from "../components/privado/actividades/actividadesLista/InfoActividad";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -83,6 +84,10 @@ function Routing() {
           <Route path="panel/piletas" element={<PiletasInfo />} />
           <Route path="panel/create" element={<CreateActivity />} />
           <Route path="panel/actividades" element={<ListActivity />} />
+          <Route
+            path="panel/actividades/infoActividad/:id"
+            element={<InfoActividad />}
+          />
           <Route path="panel/buscar-usuario" element={<SearchUser />} />
           <Route path="panel/habilitar-usuario" element={<Habilitar />} />
           <Route path="panel/usuario/:id" element={<User />} />
