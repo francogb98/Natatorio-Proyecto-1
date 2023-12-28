@@ -14,30 +14,29 @@ function InformacionPersonal({
   return (
     <>
       <form action="">
-        {!menorEdadAlert ? (
-          <div className={style.info}>
-            <button
-              className="btn btn-danger"
-              onClick={(e) => {
-                e.preventDefault();
-                setEdicionActiva(!edicionActiva);
-              }}
-            >
-              {edicionActiva ? (
-                "Cancelar"
-              ) : (
-                <div className="text-light">
-                  Editar <i className="bi bi-pencil ms-2"></i>
-                </div>
-              )}
-            </button>
-            {edicionActiva && (
-              <button className="btn btn-success" onClick={handleSubmitAdulto}>
-                Guardar
-              </button>
+        <div className={style.info}>
+          <button
+            className="btn btn-danger"
+            onClick={(e) => {
+              e.preventDefault();
+              setEdicionActiva(!edicionActiva);
+            }}
+          >
+            {edicionActiva ? (
+              "Cancelar"
+            ) : (
+              <div className="text-light">
+                Editar <i className="bi bi-pencil ms-2"></i>
+              </div>
             )}
-          </div>
-        ) : null}
+          </button>
+          {edicionActiva && (
+            <button className="btn btn-success" onClick={handleSubmitAdulto}>
+              Guardar
+            </button>
+          )}
+        </div>
+
         <div className={style.info}>
           <label htmlFor="">Nombre</label>
           <input

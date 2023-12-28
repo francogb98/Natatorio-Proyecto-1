@@ -33,7 +33,6 @@ function EditarPerfil({ usuario }) {
   });
 
   const [edicionActiva, setEdicionActiva] = useState(false);
-  const [edicionActivaTutor, setEdicionActivaTutor] = useState(false);
 
   const [menorEdadAlert, setMenorEdadAlert] = useState(false);
 
@@ -82,25 +81,8 @@ function EditarPerfil({ usuario }) {
   // Enviar la solicitud al backend
   const handleSubmitAdulto = (e) => {
     e.preventDefault();
-
-    if (formValues.edad < 18) {
-      setMenorEdadAlert(true);
-      return;
-    }
-
-    console.log(formValues);
     // Aquí puedes enviar 'formValues' al backend usando una función o biblioteca para hacer peticiones HTTP.
     editarPerfil.mutate(formValues);
-  };
-
-  const handleSubmitMenor = (e) => {
-    e.preventDefault();
-
-    console.log(formValues);
-
-    editarPerfil.mutate(formValues);
-
-    setMenorEdadAlert(false);
   };
 
   return (
@@ -131,11 +113,6 @@ function EditarPerfil({ usuario }) {
 
       <h2>Informacion Personal</h2>
 
-      {menorEdadAlert ? (
-        <div className="alert alert-danger mt-2" role="alert">
-          Deberas completar la Informacion de Tutor, desliza hacia abajo.
-        </div>
-      ) : null}
       <InformacionPersonal
         formValues={formValues}
         handleInputChange={handleInputChange}
