@@ -42,8 +42,19 @@ function HomeUser({ user }) {
             <p>Inscripcion en Actividades </p>
             <small>
               (Una vez cargado todos los archivos, podas acceder a la seccion de{" "}
-              <Link to={"inscripcion"}>Actividades</Link>, y registrarte en la
-              que desees )
+              <Link
+                to={
+                  user.foto &&
+                  user.fichaMedica &&
+                  user.certificadoHongos &&
+                  user.fotoDocumento
+                    ? "inscripcion"
+                    : "home"
+                }
+              >
+                Actividades
+              </Link>
+              , y registrarte en la que desees )
             </small>
           </div>
         </div>
