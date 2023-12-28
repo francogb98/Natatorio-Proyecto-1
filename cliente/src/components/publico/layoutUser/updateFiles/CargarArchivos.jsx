@@ -42,25 +42,44 @@ function CargarArchivos({ usuario }) {
   const handleFileChange = (e, inputIdentifier) => {
     const selectedFile = e.target.files[0];
 
-    if (inputIdentifier === "cud") {
-      setCud(selectedFile);
-    }
-    if (inputIdentifier === "hongos") {
-      setHongos(selectedFile);
-    }
-    if (inputIdentifier === "ficha") {
-      setFicha(selectedFile);
-    }
-    if (inputIdentifier === "fotoPerfil") {
-      setFotoPerfil(selectedFile);
-    }
-    if (inputIdentifier === "documento") {
-      setDocumento(selectedFile);
+    // Verificar si se ha seleccionado un archivo
+    if (selectedFile) {
+      // Verificar si el tipo de archivo es una imagen permitida
+
+      // Actualizar el estado según el identificador del campo
+      if (inputIdentifier === "cud") {
+        setCud(selectedFile);
+      }
+      if (inputIdentifier === "hongos") {
+        setHongos(selectedFile);
+      }
+      if (inputIdentifier === "ficha") {
+        setFicha(selectedFile);
+      }
+      if (inputIdentifier === "fotoPerfil") {
+        setFotoPerfil(selectedFile);
+      }
+      if (inputIdentifier === "documento") {
+        setDocumento(selectedFile);
+      }
     }
   };
 
   const uploadImage = (file, tipo) => {
+    if (
+      file.type !== "image/jpeg" &&
+      file.type !== "image/png" &&
+      file.type !== "image/webp"
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Formato de archivo incorrecto",
+        text: "verifique que el archivo sea una imagen",
+      });
+      return;
+    }
     setLoading(true);
+
     const formData = new FormData();
 
     formData.append("file", file);
