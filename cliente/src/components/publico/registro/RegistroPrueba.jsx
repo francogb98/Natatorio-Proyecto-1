@@ -55,6 +55,7 @@ function RegistroPrueba() {
               name="nombre"
               value={usuario.nombre}
               className="form-control"
+              autoComplete="off"
               placeholder="ej: Juan"
               style={{
                 marginTop: "-10px",
@@ -70,6 +71,7 @@ function RegistroPrueba() {
               value={usuario.apellido}
               className="form-control"
               placeholder="ej: Perez"
+              autoComplete="off"
               style={{
                 marginTop: "-10px",
               }}
@@ -83,6 +85,7 @@ function RegistroPrueba() {
               name="edad"
               value={usuario.edad}
               className="form-control"
+              autoComplete="off"
               style={{
                 marginTop: "-10px",
               }}
@@ -100,6 +103,7 @@ function RegistroPrueba() {
                 value={usuario.dni}
                 className="form-control"
                 placeholder="ej: 40898658"
+                autoComplete="off"
                 style={{
                   marginTop: "-10px",
                 }}
@@ -116,6 +120,7 @@ function RegistroPrueba() {
                 name="dniRepetir"
                 value={usuario.dniRepetir}
                 className="form-control"
+                autoComplete="off"
                 placeholder="ej: 40898658"
                 style={{
                   marginTop: "-10px",
@@ -162,7 +167,7 @@ function RegistroPrueba() {
                   name="natacionAdaptada"
                   id="no"
                   value="no"
-                  onChange={(e) => {
+                  onChange={() => {
                     setIsNatacionAdaptada(false);
 
                     setUsuario({
@@ -179,7 +184,7 @@ function RegistroPrueba() {
                   name="natacionAdaptada"
                   id="si"
                   value="si"
-                  onChange={(e) => {
+                  onChange={() => {
                     setIsNatacionAdaptada(true);
 
                     setUsuario({
@@ -220,6 +225,7 @@ function RegistroPrueba() {
                 type="number"
                 name="telefono"
                 value={usuario.telefono}
+                autoComplete="off"
                 className="form-control"
                 placeholder="ej: 3855966886"
                 style={{
@@ -235,6 +241,7 @@ function RegistroPrueba() {
                 name="telefonoContacto"
                 value={usuario.telefonoContacto}
                 className="form-control"
+                autoComplete="off"
                 placeholder="ej: 3855963698"
                 style={{
                   marginTop: "-10px",
