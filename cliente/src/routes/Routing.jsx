@@ -10,6 +10,8 @@ import Confirm from "../components/publico/confirmEmail/ConfirmEmail";
 import SignIn from "../components/publico/inicioDeSesion/SignIn";
 import Inscripcion from "../components/publico/layoutUser/inscripcion/Inscripcion";
 import Perfil from "../components/publico/layoutUser/perfil/Perfil";
+import Feed from "../components/publico/layoutUser/perfil/Feed";
+
 import Home from "../components/privado/Home";
 
 import Inicio from "../components/privado/Inicio/turnoActual/Inicio";
@@ -63,14 +65,17 @@ function Routing() {
       <Route path="/verificar-cuenta" element={<Confirm />} />
       {auth.logged &&
         (auth.role === "usuario" || auth.role === "registrado") && (
-          <Route path="/user" element={<HomeUserPublic />}>
-            <Route path="home" element={<HomeUser />} />
-            <Route path="updateFiles" element={<UpdateFiles />} />
-            <Route path="inscripcion" element={<Inscripcion />} />
-            <Route path="perfil" element={<Perfil />} />
-            <Route path="editarPerfil" element={<EditarPerfil />} />
-            <Route path="notificaciones" element={<Notificaciones />} />
-          </Route>
+          <>
+            <Route path="/user" element={<HomeUserPublic />}>
+              <Route path="home" element={<HomeUser />} />
+              <Route path="updateFiles" element={<UpdateFiles />} />
+              <Route path="inscripcion" element={<Inscripcion />} />
+              <Route path="perfil" element={<Perfil />} />
+              <Route path="editarPerfil" element={<EditarPerfil />} />
+              <Route path="notificaciones" element={<Notificaciones />} />
+              <Route path="feedback" element={<Feed />} />
+            </Route>
+          </>
         )}
       {(auth.logged && auth.role === "ADMIN") ||
       (auth.logged && auth.role === "SUPER_ADMIN") ? (

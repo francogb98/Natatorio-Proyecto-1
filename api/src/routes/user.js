@@ -29,6 +29,7 @@ import { deleteNotificacion } from "../controllers/users/notificaciones/deleteNo
 import cambiarFoto from "../controllers/users/imagen/cambiarFoto.js";
 import recuperar from "../controllers/users/recuperarContraseña/recuperar.js";
 import modificarContraseña from "../controllers/users/recuperarContraseña/modificarContraseña.js";
+import NuevoFeedback from "../controllers/users/feedback/NuevoFeedback.js";
 
 const router = Router();
 
@@ -74,5 +75,8 @@ router.post("/cambiarFoto", validarJWT, cambiarFoto);
 
 router.post("/comprobar-datos", recuperar);
 router.post("/modificar-password", modificarContraseña);
+
+//feedback
+router.post("/feedback", validarJWT, NuevoFeedback);
 
 export default router;

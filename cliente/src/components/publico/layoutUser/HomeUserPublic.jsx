@@ -13,6 +13,7 @@ import Perfil from "./perfil/Perfil";
 import UpdateFiles from "./updateFiles/UpdateFiles";
 import Notificaciones from "./notificaciones/Notificaciones";
 import EditarPerfil from "./perfil/EditarPerfil";
+import Feed from "./perfil/Feed";
 
 function HomeUserPublic() {
   //cargar datos de usuario
@@ -161,6 +162,9 @@ function HomeUserPublic() {
           ) : null}
           {location.pathname === "/user/editarPerfil" ? (
             <EditarPerfil usuario={user}></EditarPerfil>
+          ) : null}
+          {location.pathname === "/user/feedback" ? (
+            <Feed usuario={user}></Feed>
           ) : null}
         </main>
 

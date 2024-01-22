@@ -246,15 +246,54 @@ function CargarArchivos({ usuario }) {
         )}
 
         {usuario.natacionAdaptada && (
-          <div className="mb-3">
-            <h5 className="form-label">Cargar CUD</h5>
-            <input
-              className="form-control"
-              type="file"
-              id="formFile"
-              onChange={(e) => handleFileChange(e, "cud")}
-            />
-          </div>
+          <>
+            {usuario.cud && !editarCud && (
+              <div className="mb-3">
+                <h5 className="form-label fw-bold">
+                  CUD Cargado{" "}
+                  {usuario.cud ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    onClick={() => setImagen(usuario.cud)}
+                  >
+                    Ver Imagen
+                  </button>
+                  <button
+                    className="btn btn-warning ms-3"
+                    onClick={() => setEditarCud(true)}
+                  >
+                    Editar Imagen
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {(!usuario.cud || editarCud) && (
+              <div className="mb-3">
+                <h5 className="form-label">Cargar CUD</h5>
+                <input
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  onChange={(e) => handleFileChange(e, "cud")}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {usuario.foto && !editarFotoPerfil && (

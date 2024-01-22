@@ -7,6 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import style from "./style.module.css";
 
 import EditarPerfil from "./EditarPerfil";
+import Feed from "./Feed";
 
 function Perfil() {
   return (
@@ -47,6 +48,23 @@ function Perfil() {
             Ver Mi Perfil{" "}
             <i
               className="bi bi-person-fill"
+              style={{
+                fontSize: "1.5rem",
+                marginLeft: "10px",
+              }}
+            ></i>
+          </button>
+        </Link>
+        <Link to={"/user/feedback"}>
+          <button
+            className="btn btn-lg btn-secondary fw-bold"
+            style={{
+              width: "250px",
+            }}
+          >
+            Enviar Comentario{" "}
+            <i
+              className="bi-chat-left-dots"
               style={{
                 fontSize: "1.5rem",
                 marginLeft: "10px",

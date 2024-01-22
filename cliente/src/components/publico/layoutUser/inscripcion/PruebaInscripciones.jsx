@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 
 import PropTypes from "prop-types";
 
+import style from "./styles.module.css";
+
 function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
@@ -152,7 +154,10 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
           </div>
         )}
         <h1>Actividad: {actividad}</h1>
-        <div className="accordion accordion-flush" id="accordionFlushExample">
+        <div
+          className={`accordion accordion-flush ${style.acordion}`}
+          id="accordionFlushExample"
+        >
           <div className="accordion-item ">
             <h2 className="accordion-header bg-warning">
               <button
@@ -181,37 +186,33 @@ function PruebaInscripciones({ actividad, setActividadSeleccionada }) {
               <div className="accordion-body text-start">
                 <ul>
                   <li className="mb-2">
-                    <strong>
-                      Solo se mostraran las actividades que tengan cupos.
-                    </strong>
+                    Solo se mostraran las actividades disponibles para su
+                    <strong> edad.</strong>
                   </li>
                   <li className="mb-2">
-                    <strong>
-                      Solo se mostraran las actividades disponibles para su
-                      edad.
-                    </strong>
+                    Solo se mostraran las actividades que tengan
+                    <strong> cupos.</strong>
+                  </li>
+                  <p className="text-primary">
+                    ( Las siguientes indicaciones sera para cuando usted haya
+                    seleccionado una actividad )
+                  </p>
+                  <li className="mb-2">
+                    En la columna{" "}
+                    <span className="text-danger fw-bold">Horario</span> se
+                    muestra el horario de la actividad. (ingreso - salida)
                   </li>
                   <li className="mb-2">
-                    <strong>
-                      En la columna <span className="text-danger">Horario</span>{" "}
-                      se muestra el horario de la actividad.
-                    </strong>
-                    (ingreso - salida)
-                  </li>
-                  <li className="mb-2">
-                    <strong>
-                      En la columna <span className="text-danger">Dias</span> se
-                      muestra los dias que se dicta la actividad.
-                    </strong>
+                    En la columna{" "}
+                    <span className="text-danger fw-bold">Dias</span> se muestra
+                    los dias que se dicta la actividad.
                   </li>
 
                   <li className="mb-2">
-                    <strong>
-                      En la barra de busqueda puede buscar por horario o dias.
-                    </strong>
-                    (ej:10 ----{">"} aparecera todas las actividades que
-                    comiencen a las 10 o finalicen en dicho horario; Misma
-                    logica para los dias)
+                    En la<strong> barra de busqueda </strong>puede buscar por
+                    horario o dias. (ej:10 ----{">"} aparecera todas las
+                    actividades que comiencen a las 10 o finalicen en dicho
+                    horario; Misma logica para los dias)
                   </li>
                 </ul>
               </div>

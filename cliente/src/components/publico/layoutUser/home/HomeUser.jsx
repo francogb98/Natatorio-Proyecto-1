@@ -12,7 +12,7 @@ function HomeUser({ user }) {
           user.certificadoHongos &&
           user.fotoDocumento ? (
             <span className="bg-success">
-              <i class="bi bi-check-lg"></i>
+              <i className="bi bi-check-lg"></i>
             </span>
           ) : (
             <span className="bg-warning">1</span>
@@ -32,7 +32,7 @@ function HomeUser({ user }) {
         <div className={style.sectionItem}>
           {user.activity?.length ? (
             <span className="bg-success">
-              <i class="bi bi-check-lg"></i>
+              <i className="bi bi-check-lg"></i>
             </span>
           ) : (
             <span className="bg-warning">2</span>
@@ -61,7 +61,7 @@ function HomeUser({ user }) {
         <div className={style.sectionItem}>
           {user.activity?.length && user.status ? (
             <span className="bg-success">
-              <i class="bi bi-check-lg"></i>
+              <i className="bi bi-check-lg"></i>
             </span>
           ) : (
             <span className="bg-warning">3</span>
@@ -77,7 +77,7 @@ function HomeUser({ user }) {
         <div className={style.sectionItem}>
           {user.activity?.length && user.status ? (
             <span className="bg-success">
-              <i class="bi bi-check-lg"></i>
+              <i className="bi bi-check-lg"></i>
             </span>
           ) : (
             <span className="bg-warning">4</span>

@@ -93,7 +93,9 @@ function User() {
             <h4>
               Id usuario: <span>{user.customId}</span>
             </h4>
-            {user.natacionAdaptada && <h4>Usuario de natacion adaptada</h4>}
+            {user.natacionAdaptada && (
+              <h4 className="text-danger">Usuario de natacion adaptada</h4>
+            )}
           </header>
           {loading && (
             <div className={style.loading}>
@@ -207,61 +209,79 @@ function User() {
 
                 <p className="card-text">
                   Foto Documento:{" "}
-                  <span
-                    className={style.span}
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    onClick={() => {
-                      setImage(user.fotoDocumento);
-                    }}
-                  >
-                    Ver documento
-                  </span>
+                  {user.fotoDocumento ? (
+                    <span
+                      className={style.span}
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={() => {
+                        setImage(user.fotoDocumento);
+                      }}
+                    >
+                      Ver documento
+                    </span>
+                  ) : (
+                    <span style={{ color: "red" }}>No cargado</span>
+                  )}
                 </p>
                 <p className="card-text">
                   Ficha Medica:{" "}
-                  <span
-                    className={style.span}
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    onClick={() => {
-                      setImage(user.fichaMedica);
-                    }}
-                  >
-                    Ver ficha
-                  </span>
+                  {user.fichaMedica ? (
+                    <span
+                      className={style.span}
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={() => {
+                        setImage(user.fichaMedica);
+                      }}
+                    >
+                      Ver ficha
+                    </span>
+                  ) : (
+                    <span style={{ color: "red" }}>No cargada</span>
+                  )}
                 </p>
                 <p className="card-text">
                   Certificado de Hongos:{" "}
-                  <span
-                    className={style.span}
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                    onClick={() => {
-                      setImage(user.certificadoHongos);
-                    }}
-                  >
-                    Ver certificado
-                  </span>
+                  {!user.certificadoHongos ? (
+                    <span style={{ color: "red" }}>No cargado</span>
+                  ) : (
+                    <span
+                      className={style.span}
+                      data-bs-toggle="modal"
+                      data-bs-target="#exampleModal"
+                      onClick={() => {
+                        setImage(user.certificadoHongos);
+                      }}
+                    >
+                      Ver certificado
+                    </span>
+                  )}
                 </p>
-                <p className="card-text">
-                  Fecha de carga certificado:{" "}
-                  <span>{user.fechaCargaCertificadoHongos}</span>
-                </p>
+                {user.fechaCargaCertificadoHongos && (
+                  <p className="card-text">
+                    Fecha de carga certificado:{" "}
+                    <span>{user.fechaCargaCertificadoHongos}</span>
+                  </p>
+                )}
                 {user.natacionAdaptada && (
                   <>
                     <p className="card-text">
                       CUD:{" "}
-                      <span
-                        className={style.span}
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                        onClick={() => {
-                          setImage(user.cud);
-                        }}
-                      >
-                        Ver cud
-                      </span>
+                      {user.cud === "" ? (
+                        <span className={style.span}>No cargado</span>
+                      ) : (
+                        <span
+                          className={style.span}
+                          data-bs-toggle="modal"
+                          data-bs-target="#exampleModal"
+                          onClick={() => {
+                            setImage(user.cud);
+                          }}
+                        >
+                          Ver cud
+                        </span>
+                      )}
                     </p>
                     <p className="card-text">
                       Diagnostico: <span className={style.span}>Ver cud</span>
@@ -292,9 +312,6 @@ function User() {
           tabIndex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
-          onClick={() => {
-            setImage(null);
-          }}
         >
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
@@ -309,7 +326,7 @@ function User() {
               <div className="modal-body">
                 <img
                   src={image}
-                  alt=""
+                  alt="foto"
                   style={{
                     width: "400px",
                     height: "400px",

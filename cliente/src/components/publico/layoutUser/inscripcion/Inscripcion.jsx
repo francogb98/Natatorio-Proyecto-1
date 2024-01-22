@@ -118,6 +118,72 @@ function Inscripcion() {
             </div>
           ) : (
             <>
+              <div
+                className={`accordion accordion-flush ${style.acordion}`}
+                id="accordionFlushExample"
+              >
+                <div className="accordion-item ">
+                  <h2 className="accordion-header bg-warning">
+                    <button
+                      className="accordion-button collapsed bg-warning "
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseOne"
+                    >
+                      <i
+                        className="bi bi-exclamation-triangle-fill"
+                        style={{
+                          fontSize: "1.5rem",
+                          marginRight: "1rem",
+                        }}
+                      ></i>
+                      Cosas a tener en cuenta
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseOne"
+                    className="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div className="accordion-body text-start">
+                      <ul>
+                        <li className="mb-2">
+                          Solo se mostraran las actividades disponibles para su
+                          <strong> edad.</strong>
+                        </li>
+                        <li className="mb-2">
+                          Solo se mostraran las actividades que tengan
+                          <strong> cupos.</strong>
+                        </li>
+                        <p className="text-primary">
+                          ( Las siguientes indicaciones sera para cuando usted
+                          haya seleccionado una actividad )
+                        </p>
+                        <li className="mb-2">
+                          En la columna{" "}
+                          <span className="text-danger fw-bold">Horario</span>{" "}
+                          se muestra el horario de la actividad. (ingreso -
+                          salida)
+                        </li>
+                        <li className="mb-2">
+                          En la columna{" "}
+                          <span className="text-danger fw-bold">Dias</span> se
+                          muestra los dias que se dicta la actividad.
+                        </li>
+
+                        <li className="mb-2">
+                          En la<strong> barra de busqueda </strong>puede buscar
+                          por horario o dias. (ej:10 ----{">"} aparecera todas
+                          las actividades que comiencen a las 10 o finalicen en
+                          dicho horario; Misma logica para los dias)
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
               <h4>Elige tu actividad:</h4>
               {getActivity.data.map((activity, i) => (
                 <button
