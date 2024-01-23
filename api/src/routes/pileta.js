@@ -5,16 +5,17 @@ import {
 } from "../controllers/pileta/getPiletas.js";
 import { reiniciarPiletaManual } from "../controllers/pileta/borradaPiletaManual.js";
 import { validarJWT } from "../middlewares/validar-jwt.js";
+import { agregarUsuarioAPileta } from "../controllers/pileta/agregarUsuarioAPileta.js";
+import { addUserNextTurn } from "../controllers/pileta/agregarUsuarioATurnoSiguiente.js";
 
 const routerPileta = Router();
 
 routerPileta.get("/getAll", getInfoPiletas);
 routerPileta.get("/getPiletas", getPiletasOrCreate);
 
-routerPileta.post("/add", (req, res) => {
-  req.body;
-  res.json({ status: "success", message: "Pileta Agregada" });
-});
+routerPileta.post("/add", validarJWT, agregarUsuarioAPileta);
+routerPileta.post("/addNextTurn", validarJWT, addUserNextTurn);
+
 routerPileta.post("/restart", validarJWT, reiniciarPiletaManual);
 
 export default routerPileta;

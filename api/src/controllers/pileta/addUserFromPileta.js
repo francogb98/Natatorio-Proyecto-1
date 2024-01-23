@@ -14,48 +14,14 @@ const updateStadistics = async ({ user, dateNowSave }) => {
       path: "stadistics",
     });
     activity;
-
-    //si no existe lo creo
-
-    // if (stadistics == null) {
-    //   try {
-    //     const newStadistics = new Stadistics({
-    //       activityId: user.activity[0]._id,
-    //       usersQuantity: 1,
-    //       date: dateNowSave,
-    //     });
-    //     await newStadistics.save();
-    //     return { ok: true };
-    //   } catch (error) {
-    //     return { ok: false, msg: "Error en el servidor" };
-    //   }
-    // }
-
-    // //si existe busco si existe un campo con la fecha actual
-
-    // if (stadistics) {
-    //   const dateStadistics = stadistics.date.includes(dateNowSave);
-    //   //si no existe lo creo
-    //   if (!dateStadistics) {
-    //     stadistics.date.push(dateNowSave);
-    //     await stadistics.save();
-    //   }
-    //   //si existe actualizo la cantidad de usuarios
-    //   if (dateStadistics) {
-    //     stadistics.usersQuantity = stadistics.usersQuantity + 1;
-    //     await stadistics.save();
-    //   }
-    // }
     return { ok: true };
   } catch (error) {
     error.message;
     return { ok: false, msg: "Error en el servidor" };
   }
 };
-
 export const addUser = async (args) => {
   let { id } = args;
-
   try {
     //acceder a la hora actual
     const fechaActual = new Date();
@@ -69,18 +35,13 @@ export const addUser = async (args) => {
     if (HoraFinalTurno.length < 5) {
       HoraFinalTurno = `0${HoraFinalTurno}`;
     }
-
     //accedo al dia actual en español
-
     let dia = fechaActual.toLocaleDateString("es-AR", { weekday: "long" });
-
     dia = dia.charAt(0).toUpperCase() + dia.slice(1);
-
     //busco al usuario
     const user = await User.findOne({ customId: id }).populate({
       path: "activity",
     });
-
     //si el usuario no existe devolvemos un error
     if (!user) {
       return { ok: false, msg: "El usuario no existe" };
@@ -143,27 +104,22 @@ export const addUserNextTurn = async (args) => {
       horaSiguienteTurno = `0${horaSiguienteTurno}`;
     }
     //busco al usuario
-
     let user = await User.findOne({ customId: id }).populate({
       path: "activity",
     });
-
     //si el usuario no existe devolvemos un error
     if (!user) {
       return { ok: false, msg: "El usuario no existe" };
     }
-
     if (!user.activity) {
       return { ok: false, msg: "El usuario no tiene actividad", user };
     }
-
     if (
       user.activity[0].hourStart !== horaSiguienteTurno ||
       !user.activity[0].date.includes(dia)
     ) {
       return { ok: false, msg: "El horario o Dia no coincide", user };
     }
-
     //busco la pileta corresponidente al usuario y le agrego el usuario
     const piletaExist = await Pileta.findOneAndUpdate(
       {

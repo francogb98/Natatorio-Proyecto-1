@@ -1,68 +1,84 @@
-import React from "react";
+import { useMutation, useQueryClient, useQuery } from "react-query";
+import { agregarUsuarioApiletaTurnoSiguiente } from "../../../../helpers/piletas/agregarUsuarioASiguienteTurno";
+import { getActivitiesByDateNextTurn } from "../../../../helpers/activitiesFetch/getActivitiesByDate";
 
-import useSocketPiletas from "../../../../hooks/useSocketPiletas.jsx.jsx";
-
-import useDiaYHoraActual from "../../../../hooks/UseDay.jsx";
+import Tabla from "../../../../utilidades/Tabla";
+import { Link } from "react-router-dom";
 
 import style from "./style.module.css";
 
-function FormularioTurnoSiguiente() {
-  const { horaActual, diaActualEnEspanol } = useDiaYHoraActual();
-  const { socket, setCargando, cargando, error, success } = useSocketPiletas();
-
-  const registrarUsuarioTurnoSiguiente = (e) => {
-    e.preventDefault();
-    setCargando(true);
-
-    socket?.emit("agregar-usuario-turno-siguiente", {
-      id: e.target[0].value,
-      horaSiguienteTurno: parseInt(horaActual) + 1 + ":00",
-      dia: diaActualEnEspanol,
-    });
-  };
-
-  return (
-    <div className={style.formularioBody}>
-      <h2>Registrar Turno Siguiente</h2>
-      <form onSubmit={(e) => registrarUsuarioTurnoSiguiente(e)}>
-        <label
-          htmlFor=""
-          style={{
-            textAlign: "start",
-          }}
-        >
-          Escribe el numero de identificacion del usuario
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-        />
-        <button type="submit" className="btn btn-lg btn-success mt-4">
-          Registrar
-        </button>
-      </form>
-
-      {cargando ? (
-        <div className="alert alert-info mt-4" role="alert">
-          <strong>Registrando...</strong>
-        </div>
-      ) : null}
-
-      {error.error ? (
-        <div className="alert alert-danger mt-4" role="alert">
-          <strong>{error.msg}</strong>
-        </div>
-      ) : null}
-
-      {success.success ? (
-        <div className="alert alert-success mt-4" role="alert">
-          <strong>{success.msg}</strong>
-        </div>
-      ) : null}
-    </div>
+function Layout() {
+  const usuarios = useQuery(
+    "usuariosTurnoSiguiente",
+    getActivitiesByDateNextTurn
   );
+
+  const queryClient = useQueryClient();
+
+  const agregarUsuario = useMutation({
+    mutationFn: agregarUsuarioApiletaTurnoSiguiente,
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries("usuariosTurnoSiguiente");
+    },
+  });
+
+  if (usuarios.isSuccess) {
+    const columns = [
+      {
+        header: "ID",
+        accessorKey: "customId",
+      },
+      {
+        header: "Nombre y Apellido",
+        accessorKey: "apellido",
+        cell: ({ row }) => (
+          <Link
+            to={`/admin/panel/usuario/${row.original._id}`}
+          >{`${row.original.apellido} ${row.original.nombre}`}</Link>
+        ),
+      },
+      {
+        header: "Habilitar",
+        accessorKey: "habilitar",
+        cell: ({ row }) => (
+          <button
+            onClick={() => {
+              agregarUsuario.mutate(row.original.customId);
+            }}
+            className="btn btn-success"
+          >
+            Agergar
+          </button>
+        ),
+      },
+    ];
+
+    return (
+      <div className={style.body}>
+        {agregarUsuario.isLoading && (
+          <div className="alert alert-warning">
+            <h4 className="alert-heading">Cargando...</h4>
+          </div>
+        )}
+        {agregarUsuario.isSuccess && (
+          <div className="alert alert-success">
+            <h4 className="alert-heading">
+              Usuario agregado con éxito al turno siguiente!
+            </h4>
+          </div>
+        )}
+        {agregarUsuario.isError && (
+          <div className="alert alert-danger">
+            <h4 className="alert-heading">Error!</h4>
+            <p>{agregarUsuario.error.message}</p>
+          </div>
+        )}
+        <h1>Usuarios Turno Siguiente</h1>
+        <Tabla data={usuarios.data.users} columns={columns} />
+      </div>
+    );
+  }
 }
 
-export default FormularioTurnoSiguiente;
+export default Layout;

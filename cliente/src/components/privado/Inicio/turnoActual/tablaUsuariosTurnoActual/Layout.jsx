@@ -1,26 +1,21 @@
-import React, { useEffect } from "react";
-
-import { useMutation } from "react-query";
-import { getActivitiesByDate } from "../../../../../helpers/activitiesFetch/getActivitiesByDate";
+import { useMutation, useQueryClient } from "react-query";
+import { agregarUsuarioApileta } from "../../../../../helpers/piletas/agregarUsuarioApileta";
 
 import Tabla from "../../../../../utilidades/Tabla";
 import { Link } from "react-router-dom";
 
 import style from "./style.module.css";
-import useDiaYHoraActual from "../../../../../hooks/UseDay";
 
-function Layout({ socket, setCargando, usuarios }) {
-  const { horaActual, diaActualEnEspanol } = useDiaYHoraActual();
+function Layout({ usuarios }) {
+  const queryClient = useQueryClient();
 
-  const registrarUsuario = (id) => {
-    setCargando(true);
-    socket?.emit("agregar-usuario", {
-      id,
-    });
-  };
-
-  if (usuarios.isLoading)
-    return <div className={style.loading}>Cargando...</div>;
+  const agregarUsuario = useMutation({
+    mutationFn: agregarUsuarioApileta,
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries("getUsrsByDate");
+    },
+  });
 
   if (usuarios.isSuccess) {
     const columns = [
@@ -43,7 +38,7 @@ function Layout({ socket, setCargando, usuarios }) {
         cell: ({ row }) => (
           <button
             onClick={() => {
-              registrarUsuario(row.original.customId);
+              agregarUsuario.mutate(row.original.customId);
             }}
             className="btn btn-success"
           >
@@ -55,6 +50,23 @@ function Layout({ socket, setCargando, usuarios }) {
 
     return (
       <div className={style.body}>
+        {agregarUsuario.isLoading && (
+          <div className="alert alert-warning">
+            <h4 className="alert-heading">Cargando...</h4>
+          </div>
+        )}
+        {agregarUsuario.isSuccess && (
+          <div className="alert alert-success">
+            <h4 className="alert-heading">Usuario agregado con éxito!</h4>
+          </div>
+        )}
+        {agregarUsuario.isError && (
+          <div className="alert alert-danger">
+            <h4 className="alert-heading">Error!</h4>
+            <p>{agregarUsuario.error.message}</p>
+          </div>
+        )}
+
         <Tabla data={usuarios.data.users} columns={columns} />
       </div>
     );

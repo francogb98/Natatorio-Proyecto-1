@@ -4,6 +4,7 @@ import { validarJWT } from "../middlewares/validar-jwt.js";
 import {
   getActivities,
   getActivitiesByDate,
+  getActivitiesByDateNextTurn,
 } from "../controllers/activitys/getAllActivity.js";
 import { createActivity } from "../controllers/activitys/createActivity.js";
 
@@ -23,6 +24,12 @@ routerActivity.get("/getActividadesNombre", validarJWT, getNameActivitys);
 routerActivity.get("/getActividad/:id", validarJWT, getInfoActividades);
 
 routerActivity.get("/getActividadesPorHora", getActivitiesByDate);
+
+routerActivity.get(
+  "/getActividadesPorHoraNextTurn",
+  getActivitiesByDateNextTurn
+);
+
 routerActivity.post("/getActivityByName", validarJWT, getActividadesByNames);
 routerActivity.post("/createActivity", validarJWT, createActivity);
 routerActivity.post("/getActivitiesByDate", validarJWT, getActivitiesByDate);
