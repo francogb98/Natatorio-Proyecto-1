@@ -44,7 +44,7 @@ export const getActivitiesByDateNextTurn = async (req, res) => {
   if (hourStart.length === 4) {
     hourStart = `0${hourStart + 1}:00`;
   } else {
-    hourStart = `${hourStart + 1}:00`;
+    hourStart = `0${hourStart + 1}:00`;
   }
 
   try {
@@ -118,9 +118,10 @@ export const getActivitiesByDate = async (req, res) => {
   if (hourStart.length === 4) {
     hourStart = `0${hourStart}:00`;
   } else {
-    hourStart = `${hourStart}:00`;
+    hourStart = `0${hourStart}:00`;
   }
 
+  console.log(hourStart);
   try {
     const activity = await Activity.find({
       date: { $in: [date] },
