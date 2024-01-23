@@ -12,7 +12,7 @@ dotenv.config();
 
 import "./src/db.js";
 import routerHours from "./src/routes/hours.js";
-// import { Socket } from "./src/models/models/Socket.js";
+import { Socket } from "./src/models/models/Socket.js";
 import routerStadistics from "./src/routes/stadistics.js";
 
 import morgan from "morgan";
@@ -38,7 +38,7 @@ app.use("/stadistics", routerStadistics);
 
 app.use(morgan("dev"));
 
-// Socket(io);
+Socket(io);
 
 server.listen(process.env.PORT, "0.0.0.0", () => {
   "Socket.IO server listening on port", process.env.PORT;

@@ -32,7 +32,7 @@ function PiletasInfo() {
   }
 
   if (error) {
-    return <h1>"Ha ocurrido un error: " {error.message}</h1>;
+    return <h1>Ha ocurrido un error: {error.message}</h1>;
   }
 
   const columns = [
@@ -47,7 +47,7 @@ function PiletasInfo() {
         <Link
           to={`/admin/panel/usuario/${row.original._id}`}
           style={
-            horaActual > row.original.activity[0].hourStart
+            horaActual !== row.original.activity[0].hourStart
               ? { color: "blue" }
               : { color: "red" }
           }
@@ -70,7 +70,7 @@ function PiletasInfo() {
       {isRefetching ? (
         <h1>Cargando...</h1>
       ) : error ? (
-        <h1>"Ha ocurrido un error: " {error.message}</h1>
+        <h1>Ha ocurrido un error: {error.message}</h1>
       ) : null}
 
       <div className={style.body}>
