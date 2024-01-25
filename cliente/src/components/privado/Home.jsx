@@ -9,6 +9,7 @@ function Home() {
   const getUser = useQuery({
     queryKey: ["getUser"],
     queryFn: getInfoUser,
+    staleTime: 0,
     onSuccess: (data) => {
       if (data.status === "success") {
         return data;

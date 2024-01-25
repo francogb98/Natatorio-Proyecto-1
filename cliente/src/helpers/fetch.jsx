@@ -113,6 +113,7 @@ export const getInfoUser = async () => {
       `${baseUrl}user/infoUser/${localStorage.getItem("token")}`
     );
     const data = await resp.json();
+
     return data;
   } catch (error) {
     return error;
