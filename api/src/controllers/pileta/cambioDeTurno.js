@@ -93,41 +93,54 @@ export const cambioDeTurno = async (req, res) => {
 
     //elimino los usuarios de la píleta de turno siguiente y los deribo a sus respectivas piletas
     for (const user of resp.users) {
-      // a cada usuario lo voy a derivar a su píleta correspondiente
-      const updatedPileta = await Pileta.findOneAndUpdate(
-        {
-          pileta: user.activity[0].pileta,
-          users: { $ne: user._id }, // Asegura que el usuario no esté en la lista ya
-        },
-        {
-          $push: {
-            users: user._id,
+      // Verifica si la hora de inicio de la actividad del usuario es igual a la hora actual
+      if (user.activity[0].hourStart == horaActual) {
+        // Deriva al usuario a su pileta correspondiente
+        const updatedPileta = await Pileta.findOneAndUpdate(
+          {
+            pileta: user.activity[0].pileta,
+            users: { $ne: user._id }, // Asegura que el usuario no esté en la lista ya
           },
-        },
-        {
-          new: true,
-        }
-      );
+          {
+            $push: {
+              users: user._id,
+            },
+          },
+          {
+            new: true,
+          }
+        );
+
+        // Elimina al usuario de la tabla de turno siguiente
+        await Pileta.findOneAndUpdate(
+          {
+            pileta: "turnoSiguiente",
+          },
+          {
+            $pull: {
+              users: user._id,
+            },
+          }
+        );
+      }
     }
 
     //vacio la tabla de siguiente turno
-    const updatedPileta = await Pileta.findOneAndUpdate(
-      {
-        pileta: "turnoSiguiente",
-      },
-      {
-        $set: {
-          users: [],
-          dia: dayCapitalized,
-          hora: hour,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-
-    "llegueaqui", updatedPileta;
+    // const updatedPileta = await Pileta.findOneAndUpdate(
+    //   {
+    //     pileta: "turnoSiguiente",
+    //   },
+    //   {
+    //     $set: {
+    //       users: [],
+    //       dia: dayCapitalized,
+    //       hora: hour,
+    //     },
+    //   },
+    //   {
+    //     new: true,
+    //   }
+    // );
 
     return res.status(200).json({
       ok: true,

@@ -12,7 +12,6 @@ function Layout({ usuarios }) {
   const agregarUsuario = useMutation({
     mutationFn: agregarUsuarioApileta,
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries("getUsrsByDate");
     },
   });
