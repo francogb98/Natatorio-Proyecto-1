@@ -1,5 +1,3 @@
-/// un fetch a /pileta/getAll
-
 import { baseUrl } from "./url";
 
 const getAllPiletas = async () => {
