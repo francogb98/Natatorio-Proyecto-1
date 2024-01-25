@@ -3,12 +3,12 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
-import { useLocation } from "react-router-dom";
-
 import style from "./home.module.css";
 
-function NavBar() {
+function NavBar({ usuario }) {
   const [show, setShow] = React.useState(true);
+
+  console.log(usuario);
 
   const { cerrarSesion } = useContext(AuthContext);
   return (
@@ -58,37 +58,49 @@ function NavBar() {
           <nav className={style.menu}>
             <ul>
               <li className={style.inicio}>Inicio</li>
-              <li className={style.link}>
-                <Link to="panel/inicio" className={style.link__item}>
-                  Registrar Turno
-                </Link>
-              </li>
-              <li className={style.link__item__especial}>
-                <Link
-                  to="panel/inicio/turno-siguiente"
-                  className={style.link__item}
-                >
-                  Registrar Turno Siguiente
-                </Link>
-              </li>
-              <li className={style.link}>
-                <Link to="panel/inicio/autorizar" className={style.link__item}>
-                  Autorizar
-                </Link>
-              </li>
+              {usuario.role === "PROFESOR" ||
+              usuario.role === "GUARDAVIDA" ? null : (
+                <>
+                  <li className={style.link}>
+                    <Link to="panel/inicio" className={style.link__item}>
+                      Registrar Turno
+                    </Link>
+                  </li>
+                  <li className={style.link__item__especial}>
+                    <Link
+                      to="panel/inicio/turno-siguiente"
+                      className={style.link__item}
+                    >
+                      Registrar Turno Siguiente
+                    </Link>
+                  </li>
+                </>
+              )}
               <li className={style.link}>
                 <Link to="panel/piletas" className={style.link__item}>
                   Piletas
                 </Link>
               </li>
+              {usuario.role === "SUPER_ADMIN" && (
+                <li className={style.link}>
+                  <Link
+                    to="panel/inicio/autorizar"
+                    className={style.link__item}
+                  >
+                    Autorizar
+                  </Link>
+                </li>
+              )}
             </ul>
             <ul>
               <li className={style.inicio}>Actividades</li>
-              <li className={style.link}>
-                <Link to="panel/create" className={style.link__item}>
-                  Crear Actividad
-                </Link>
-              </li>
+              {usuario.role === "SUPER_ADMIN" && (
+                <li className={style.link}>
+                  <Link to="panel/create" className={style.link__item}>
+                    Crear Actividad
+                  </Link>
+                </li>
+              )}
               <li className={style.link}>
                 <Link to="panel/actividades" className={style.link__item}>
                   Lista Actividades
@@ -97,11 +109,16 @@ function NavBar() {
             </ul>
             <ul>
               <li className={style.inicio}>Usuario</li>
-              <li className={style.link}>
-                <Link to="panel/habilitar-usuario" className={style.link__item}>
-                  Habilitar
-                </Link>
-              </li>
+              {usuario.role === "SUPER_ADMIN" && (
+                <li className={style.link}>
+                  <Link
+                    to="panel/habilitar-usuario"
+                    className={style.link__item}
+                  >
+                    Habilitar
+                  </Link>
+                </li>
+              )}
               <li className={style.link}>
                 <Link to="panel/usuarios" className={style.link__item}>
                   Lista Usuarios

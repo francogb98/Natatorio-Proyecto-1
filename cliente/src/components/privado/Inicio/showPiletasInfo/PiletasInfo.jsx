@@ -23,7 +23,7 @@ function PiletasInfo() {
   React.useEffect(() => {
     const interval = setInterval(() => {
       refetch();
-    }, 60000);
+    }, 120000);
     return () => clearInterval(interval);
   }, [refetch]);
 
@@ -48,8 +48,8 @@ function PiletasInfo() {
           to={`/admin/panel/usuario/${row.original._id}`}
           style={
             horaActual !== row.original.activity[0].hourStart
-              ? { color: "blue" }
-              : { color: "red" }
+              ? { color: "red" }
+              : null
           }
         >{`${row.original.apellido} ${row.original.nombre}`}</Link>
       ),

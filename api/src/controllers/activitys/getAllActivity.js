@@ -40,11 +40,10 @@ export const getActivitiesByDateNextTurn = async (req, res) => {
 
   date = date.charAt(0).toUpperCase() + date.slice(1);
 
-  console.log(date);
-  if (hourStart.length === 4) {
+  if (hourStart.toString().length === 1) {
     hourStart = `0${hourStart + 1}:00`;
   } else {
-    hourStart = `0${hourStart + 1}:00`;
+    hourStart = `${hourStart + 1}:00`;
   }
 
   try {
@@ -114,11 +113,10 @@ export const getActivitiesByDate = async (req, res) => {
 
   date = date.charAt(0).toUpperCase() + date.slice(1);
 
-  console.log(date);
-  if (hourStart.length === 4) {
+  if (hourStart.toString().length === 1) {
     hourStart = `0${hourStart}:00`;
   } else {
-    hourStart = `0${hourStart}:00`;
+    hourStart = `${hourStart}:00`;
   }
 
   console.log(hourStart);

@@ -122,6 +122,34 @@ function User() {
                   Telefono Emergencia: <span>{user.telefonoContacto}</span>
                 </p>
 
+                <div style={{ maxWidth: "200px", marginBottom: "20px" }}>
+                  <p className="card-text">
+                    Rol: <span className="text-danger">{user.role}</span>
+                  </p>
+                  <label htmlFor="" style={{ maxWidth: "150px" }}>
+                    Cambiar Rol:
+                  </label>
+                  <select
+                    name=""
+                    id=""
+                    style={{ maxWidth: "100%" }}
+                    onChange={(e) => {
+                      cambiar.mutate({
+                        id: user._id,
+                        role: e.target.value,
+                      });
+                    }}
+                    defaultValue={user.role}
+                  >
+                    <option value="SUPER_ADMIN">--Seleccionar Rol--</option>
+                    <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+                    <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                    <option value="GUARDAVIDA">GUARDAVIDA</option>
+                    <option value="PROFESOR">PROFESOR</option>
+                    <option value="usuario">usuario</option>
+                  </select>
+                </div>
+
                 <p className="card-text">
                   Ciudad: <span>{user.ciudad}</span>
                 </p>
@@ -143,40 +171,6 @@ function User() {
                     </span>
                   </p>
                 )}
-
-                <div style={{ maxWidth: "200px" }}>
-                  <p className="card-text">
-                    Rol: <span className="text-danger">{user.role}</span>
-                  </p>
-                  <label htmlFor="" style={{ maxWidth: "150px" }}>
-                    Cambiar Rol:
-                  </label>
-                  <select
-                    name=""
-                    id=""
-                    style={{ maxWidth: "100%" }}
-                    onChange={(e) => {
-                      cambiar.mutate({
-                        id: user._id,
-                        role: e.target.value,
-                      });
-                    }}
-                    defaultValue={user.role}
-                  >
-                    <option value="SUPER_ADMIN">--Seleccionar Rol--</option>
-                    <option value="SUPER_ADMIN">SUPER_ADMIN</option>
-                    <option value="COORDINADOR_ADAPTADA">
-                      COORDINADOR_ADAPTADA
-                    </option>
-                    <option value="COORDINADOR_PROFESOR">
-                      COORDINADOR_PROFESOR
-                    </option>
-                    <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
-                    <option value="GUARDAVIDA">GUARDAVIDA</option>
-                    <option value="PROFESOR">PROFESOR</option>
-                    <option value="usuario">usuario</option>
-                  </select>
-                </div>
               </div>
             </section>
 

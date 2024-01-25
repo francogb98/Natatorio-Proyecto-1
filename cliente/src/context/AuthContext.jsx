@@ -1,6 +1,6 @@
-import React, { createContext, useState, useReducer } from "react";
-import { fetchSinToken, getInfoUser } from "../helpers/fetch";
-import { useMutation, useQuery } from "react-query";
+import { createContext, useState, useReducer } from "react";
+import { fetchSinToken } from "../helpers/fetch";
+import { useMutation } from "react-query";
 
 import Swal from "sweetalert2";
 import { sendEmail } from "../helpers/sendEmail";

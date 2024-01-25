@@ -77,7 +77,9 @@ function Routing() {
             </Route>
           </>
         )}
-      {(auth.logged && auth.role === "ADMIN") ||
+      {(auth.logged && auth.role === "ADMINISTRATIVO") ||
+      (auth.logged && auth.role === "PROFESOR") ||
+      (auth.logged && auth.role === "GUARDAVIDA") ||
       (auth.logged && auth.role === "SUPER_ADMIN") ? (
         <Route path="/admin" element={<Home />}>
           <Route path="panel/inicio" element={<Inicio />} />

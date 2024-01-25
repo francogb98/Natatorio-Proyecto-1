@@ -9,25 +9,19 @@ export const getNameActivitys = async (req, res) => {
   try {
     const user = await User.findById(id);
 
-    //quiero filtrar las actividades que el campo desde sea mayor a la edad del usuario y hasta sea menor a la edad del usuario
     const activitys = await Activity.find({
+      // name: activity,
       desde: { $lte: user.edad },
       hasta: { $gte: user.edad },
+      //que el campo cupos sea mayor a 1
+      cupos: { $gte: 1 },
+    }).sort({
+      hourStart: 1,
     });
 
-    console.log(activitys);
+    //quiero ordenar las actividades de mayor a menor segun su horario de ingreso
 
-    const nameActivitys = activitys.map((activity) => {
-      return activity.name;
-    });
-
-    const nameActivitysNoRepeat = nameActivitys.filter(
-      (value, index) => nameActivitys.indexOf(value) === index
-    );
-
-    res
-      .status(200)
-      .json({ status: "success", actividades: nameActivitysNoRepeat });
+    res.status(200).json({ status: "success", actividades: activitys });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }

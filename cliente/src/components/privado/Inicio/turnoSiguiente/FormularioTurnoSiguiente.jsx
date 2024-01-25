@@ -23,6 +23,13 @@ function Layout() {
     },
   });
 
+  if (usuarios.isLoading)
+    return (
+      <h3 className="alert alert-secondary">
+        Cargando Usuarios turno siguiente por favor espere...
+      </h3>
+    );
+
   if (usuarios.isSuccess) {
     const columns = [
       {

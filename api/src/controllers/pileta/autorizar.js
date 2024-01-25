@@ -2,29 +2,23 @@ import Pileta from "../../models/models/Pileta.js";
 
 import User from "../../models/models/User.js";
 
-export const autorizar = async ({ id }) => {
+export const autorizar = async (req, res) => {
+  const { id } = req.body;
+
+  console.log(id);
   try {
     const user = await User.findOne({ customId: id }).populate({
       path: "activity",
     });
 
     if (!user) {
-      return {
-        ok: false,
-        msg: "Usuario no encontrado",
-      };
+      return res.status(400).json({
+        status: "error",
+        msg: "No existe el usuario",
+      });
     }
-
-    if (!user.activity) {
-      return {
-        ok: false,
-        msg: "El usuario no esta registrado en ninguna actividad, autorizacion cancelada",
-      };
-    }
-
     //busco si en pileta turno siguiente se encuentra el usuario, si se encuentra lo borro
-
-    const piletaExist2 = await Pileta.findOneAndUpdate(
+    await Pileta.findOneAndUpdate(
       {
         pileta: "turnoSiguiente",
         users: { $eq: user._id }, // Asegura que el usuario no esté en la lista ya
@@ -74,15 +68,16 @@ export const autorizar = async ({ id }) => {
     user.asistencia.push(dateNowSave);
     await user.save();
 
-    return {
-      ok: true,
+    return res.status(200).json({
+      status: "success",
       msg: "Usuario autorizado",
-      user: user,
-    };
+      data: piletaExist,
+    });
   } catch (error) {
-    return {
-      ok: false,
-      msg: error.message,
-    };
+    return res.status(500).json({
+      status: "error",
+      msg: "Error en el servidor",
+      error: error.message,
+    });
   }
 };

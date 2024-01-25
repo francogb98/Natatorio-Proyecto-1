@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 
 import style from "./styleFormulario.module.css";
 import { Link } from "react-router-dom";
@@ -158,7 +158,7 @@ function RegistroPrueba() {
 
           <>
             <div className="mt-3">
-              <label htmlFor="dni">Natacion Adaptada</label>
+              {/* <label htmlFor="dni">Natacion Adaptada</label> */}
 
               {/* Grupo de radio buttons */}
               <div>
@@ -176,7 +176,9 @@ function RegistroPrueba() {
                     });
                   }}
                 />
-                <label htmlFor="no">No</label>
+                <label htmlFor="no" className="ms-1">
+                  Natacion Convencional
+                </label>
               </div>
               <div>
                 <input
@@ -193,7 +195,9 @@ function RegistroPrueba() {
                     });
                   }}
                 />
-                <label htmlFor="si">Si</label>
+                <label htmlFor="si" className="ms-1">
+                  Natacion Adaptada
+                </label>
               </div>
             </div>
 
