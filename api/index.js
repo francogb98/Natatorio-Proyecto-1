@@ -23,7 +23,7 @@ const corsOptions = {
   origin: [
     "https://natatorio-proyecto-1.vercel.app",
     "http://localhost:5173",
-    "https://natatorio-proyecto-1-francogb98.vercel.app/",
+    "https://natatorio-proyecto-1-zvny.vercel.app",
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
