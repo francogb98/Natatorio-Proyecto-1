@@ -1,8 +1,6 @@
 import Activity from "../../models/models/Actividades.js";
 import User from "../../models/models/User.js";
 
-import { Resend } from "resend";
-
 export const addUserFromActivity = async (req, res) => {
   const { idActividad } = req.body;
 
