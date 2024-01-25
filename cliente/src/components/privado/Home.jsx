@@ -24,6 +24,9 @@ function Home() {
   if (getUser.isError) {
     return <h1>Hubo un error</h1>;
   }
+  if (getUser.isSuccess && !getUser.data.status) {
+    return <h1>Hubo un error</h1>;
+  }
 
   if (getUser.isSuccess && getUser.data.status === "error") {
     return <h1>Hubo un error</h1>;
