@@ -3,7 +3,6 @@ import { fetchSinToken } from "../helpers/fetch";
 import { useMutation } from "react-query";
 
 import Swal from "sweetalert2";
-import { sendEmail } from "../helpers/sendEmail";
 
 import { authReducer } from "../reducer/reducer";
 
@@ -28,7 +27,6 @@ export function AuthProvider({ children }) {
     mutationFn: fetchSinToken,
     onSuccess: (data) => {
       if (data.status === "success") {
-        sendEmail(data);
         Swal.fire({
           title: "Cuenta Creada",
           text: "Se ha enviado un correo de confirmacion a tu email",

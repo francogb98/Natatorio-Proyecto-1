@@ -1,6 +1,3 @@
-import { useMemo } from "react";
-import { sendEmail } from "./sendEmail";
-
 import { baseUrl } from "./url";
 
 //comentario
@@ -16,9 +13,7 @@ export const fetchUser = async ({ url, options }) => {
       },
     });
     const data = await response.json();
-    if (url !== "login") {
-      sendEmail(data);
-    }
+
     return data;
   } catch (error) {
     return error;
