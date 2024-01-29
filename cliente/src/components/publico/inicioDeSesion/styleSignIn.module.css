@@ -28,9 +28,9 @@
 
 .formBody label {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 400;
   color: #000;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .input_body {
   width: 80%;

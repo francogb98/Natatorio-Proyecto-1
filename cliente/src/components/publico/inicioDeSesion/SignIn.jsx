@@ -96,8 +96,16 @@ function SignIn() {
   return (
     <div className={style.container}>
       <div className={`form-group ${style.formBody}`}>
-        <img src={Logo} alt="" style={{ width: "160px" }} />
-        <h1>Inicio De Sesion</h1>
+        <img
+          src={Logo}
+          alt=""
+          style={{
+            maxWidth: "280px",
+            marginBlock: "10px",
+            paddingInline: "10px",
+          }}
+        />
+        <h2>Inicio De Sesion</h2>
         <form action="" className={`form-group `} onSubmit={handleSubmit}>
           <div className={`mb-2 `}>
             <label htmlFor="Dni">Dni</label>

@@ -44,11 +44,15 @@ function RegistroPrueba() {
       </header>
 
       <main className={style.formContainer}>
-        <img src={Logo} alt="" style={{ width: "160px" }} />
-        <h1>Formulario de registro</h1>
+        <img
+          src={Logo}
+          alt=""
+          style={{ maxWidth: "260px", marginBlock: "10px" }}
+        />
+        <h2>Formulario de registro</h2>
 
         <form action="">
-          <div className="mt-3">
+          <div className="mt-2">
             <label htmlFor="nombre">Nombre</label>
             <input
               type="text"
