@@ -13,6 +13,10 @@ export const getUser = async (req, res) => {
       },
     });
 
+    if (!user.activity) {
+      user.activity = [];
+    }
+
     res.status(200).json({ status: "success", user });
   } catch (error) {
     res.status(404).json({ status: "error", message: error.message });
