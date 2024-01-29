@@ -2,8 +2,9 @@ import Feedback from "../../../models/models/FeedBack.js";
 
 export default async function NuevoFeedback(req, res) {
   try {
-    const { mensage } = req.body;
-    const feedback = new Feedback({ user: req.user.id, mensage });
+    const { content } = req.body;
+
+    const feedback = new Feedback({ user: req.user.id, mensage: content });
     await feedback.save();
 
     return res
