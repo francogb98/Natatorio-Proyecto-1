@@ -65,7 +65,9 @@ function PruebaInscripciones({ actividad }) {
       header: "Actividad",
       accessorKey: "name",
       accessorFn: (row) => {
-        return `${row.name} `;
+        return `${
+          row.natacionAdaptada ? row.name + " (natacion adaptada)" : row.name
+        } `;
       },
     },
     {
@@ -89,19 +91,23 @@ function PruebaInscripciones({ actividad }) {
       header: "Inscribirse",
       accessorKey: "inscribirse",
       cell: ({ row }) => {
-        return (
-          <button
-            className="btn btn-primary"
-            type="button"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-            onClick={() => {
-              setActividadRegistrarse(row.original);
-            }}
-          >
-            Inscribirse
-          </button>
-        );
+        if (row.original.cupos === 0) {
+          return <div className="text-danger fw-bold text-center">Agotado</div>;
+        } else {
+          return (
+            <button
+              className="btn btn-primary"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              onClick={() => {
+                setActividadRegistrarse(row.original);
+              }}
+            >
+              Inscribirse
+            </button>
+          );
+        }
       },
     },
   ];

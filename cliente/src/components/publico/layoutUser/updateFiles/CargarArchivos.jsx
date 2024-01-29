@@ -230,9 +230,9 @@ function CargarArchivos({ usuario }) {
           </p>
         </div>
 
-        {loading && (
+        {loading ? (
           <div
-            className="alert alert-primary"
+            className="alert alert-primary text-center"
             role="alert"
             style={{
               //que aparezca fijo arriba
@@ -241,17 +241,69 @@ function CargarArchivos({ usuario }) {
               zIndex: "1",
             }}
           >
-            Cargando archivo...
+            <h4 className="fw-bold">Cargando archivo...</h4>
+            <div className="spinner-border text-primary mt-2" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
           </div>
-        )}
-
-        {usuario.natacionAdaptada && (
+        ) : (
           <>
-            {usuario.cud && !editarCud && (
+            {usuario.natacionAdaptada && (
+              <>
+                {usuario.cud && !editarCud && (
+                  <div className="mb-3">
+                    <h5 className="form-label fw-bold">
+                      CUD Cargado{" "}
+                      {usuario.cud ? (
+                        <i
+                          className="bi bi-check-circle-fill text-success"
+                          style={{ fontSize: "1.5rem" }}
+                        ></i>
+                      ) : (
+                        <i
+                          className="bi bi-x-circle-fill text-danger"
+                          style={{ fontSize: "1.5rem" }}
+                        ></i>
+                      )}
+                    </h5>
+                    <div>
+                      <button
+                        className="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                        onClick={() => setImagen(usuario.cud)}
+                      >
+                        Ver Imagen
+                      </button>
+                      <button
+                        className="btn btn-warning ms-3"
+                        onClick={() => setEditarCud(true)}
+                      >
+                        Editar Imagen
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {(!usuario.cud || editarCud) && (
+                  <div className="mb-3">
+                    <h5 className="form-label">Cargar CUD</h5>
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="formFile"
+                      onChange={(e) => handleFileChange(e, "cud")}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+
+            {usuario.foto && !editarFotoPerfil && (
               <div className="mb-3">
                 <h5 className="form-label fw-bold">
-                  CUD Cargado{" "}
-                  {usuario.cud ? (
+                  Foto de perfil Cargada{" "}
+                  {usuario.foto ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -268,13 +320,13 @@ function CargarArchivos({ usuario }) {
                     className="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    onClick={() => setImagen(usuario.cud)}
+                    onClick={() => setImagen(usuario.foto)}
                   >
                     Ver Imagen
                   </button>
                   <button
                     className="btn btn-warning ms-3"
-                    onClick={() => setEditarCud(true)}
+                    onClick={() => setEditarFotoPerfil(true)}
                   >
                     Editar Imagen
                   </button>
@@ -282,268 +334,221 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {(!usuario.cud || editarCud) && (
-              <div className="mb-3">
-                <h5 className="form-label">Cargar CUD</h5>
+            {(!usuario.foto || editarFotoPerfil) && (
+              <div className="mb-5">
+                <h5 className="form-label fw-bold">
+                  Subir foto de perfil usuario{" "}
+                  {usuario.foto ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
                 <input
                   className="form-control"
                   type="file"
                   id="formFile"
-                  onChange={(e) => handleFileChange(e, "cud")}
+                  onChange={(e) => handleFileChange(e, "fotoPerfil")}
                 />
               </div>
             )}
+
+            {usuario.fotoDocumento && !editarDocumento && (
+              <div className="mb-3">
+                <h5 className="form-label fw-bold">
+                  Foto de documento cargada{" "}
+                  {usuario.fotoDocumento ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    onClick={() => setImagen(usuario.fotoDocumento)}
+                  >
+                    Ver Imagen
+                  </button>
+                  <button
+                    className="btn btn-warning ms-3"
+                    onClick={() => setEditarDocumento(true)}
+                  >
+                    Editar Imagen
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {(!usuario.fotoDocumento || editarDocumento) && (
+              <div className="mb-5">
+                <h5 className="form-label fw-bold">
+                  Subir foto del documento (parte frontal){" "}
+                  {usuario.fotoDocumento ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
+                <input
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  onChange={(e) => handleFileChange(e, "documento")}
+                />
+              </div>
+            )}
+
+            {usuario.certificadoHongos && !editarHongos && (
+              <div className="mb-3">
+                <h5 className="form-label fw-bold">
+                  Certificado de pediculosis y micosis{" "}
+                  {usuario.certificadoHongos ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    onClick={() => setImagen(usuario.certificadoHongos)}
+                  >
+                    Ver Imagen
+                  </button>
+                  <button
+                    className="btn btn-warning ms-3"
+                    onClick={() => setEditarHongos(true)}
+                  >
+                    Editar Archivo
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {(!usuario.certificadoHongos || editarHongos) && (
+              <div className="mb-5">
+                <h5 className="form-label fw-bold">
+                  Subir Certificado de pediculosis y micosis{" "}
+                  {usuario.certificadoHongos ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
+                <input
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  onChange={(e) => handleFileChange(e, "hongos")}
+                />
+              </div>
+            )}
+
+            {usuario.fichaMedica && !editarFicha && (
+              <div className="mb-3">
+                <h5 className="form-label fw-bold">
+                  Ficha medica cargada{" "}
+                  {usuario.fichaMedica ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
+                <div>
+                  <button
+                    className="btn btn-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    onClick={() => setImagen(usuario.fichaMedica)}
+                  >
+                    Ver Archivo
+                  </button>
+                  <button
+                    className="btn btn-warning ms-3"
+                    onClick={() => setEditarFicha(true)}
+                  >
+                    Editar Archivo
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {(!usuario.fichaMedica || editarFicha) && (
+              <div className="mb-5">
+                <h5 className="form-label fw-bold">
+                  Subir Ficha Medica (completada){" "}
+                  {usuario.fichaMedica ? (
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  ) : (
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "1.5rem" }}
+                    ></i>
+                  )}
+                </h5>
+                <input
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  onChange={(e) => handleFileChange(e, "ficha")}
+                />
+
+                <div className="mt-2 text-danger">
+                  <a
+                    className="btn btn-danger"
+                    href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
+                    download="fichaMedica.pdf"
+                  >
+                    Descargar ficha médica
+                  </a>
+                </div>
+              </div>
+            )}
           </>
-        )}
-
-        {usuario.foto && !editarFotoPerfil && (
-          <div className="mb-3">
-            <h5 className="form-label fw-bold">
-              Foto de perfil Cargada{" "}
-              {usuario.foto ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <div>
-              <button
-                className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                onClick={() => setImagen(usuario.foto)}
-              >
-                Ver Imagen
-              </button>
-              <button
-                className="btn btn-warning ms-3"
-                onClick={() => setEditarFotoPerfil(true)}
-              >
-                Editar Imagen
-              </button>
-            </div>
-          </div>
-        )}
-
-        {(!usuario.foto || editarFotoPerfil) && (
-          <div className="mb-5">
-            <h5 className="form-label fw-bold">
-              Subir foto de perfil usuario{" "}
-              {usuario.foto ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <input
-              className="form-control"
-              type="file"
-              id="formFile"
-              onChange={(e) => handleFileChange(e, "fotoPerfil")}
-            />
-          </div>
-        )}
-
-        {usuario.fotoDocumento && !editarDocumento && (
-          <div className="mb-3">
-            <h5 className="form-label fw-bold">
-              Foto de documento cargada{" "}
-              {usuario.fotoDocumento ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <div>
-              <button
-                className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                onClick={() => setImagen(usuario.fotoDocumento)}
-              >
-                Ver Imagen
-              </button>
-              <button
-                className="btn btn-warning ms-3"
-                onClick={() => setEditarDocumento(true)}
-              >
-                Editar Imagen
-              </button>
-            </div>
-          </div>
-        )}
-
-        {(!usuario.fotoDocumento || editarDocumento) && (
-          <div className="mb-5">
-            <h5 className="form-label fw-bold">
-              Subir foto del documento (parte frontal){" "}
-              {usuario.fotoDocumento ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <input
-              className="form-control"
-              type="file"
-              id="formFile"
-              onChange={(e) => handleFileChange(e, "documento")}
-            />
-          </div>
-        )}
-
-        {usuario.certificadoHongos && !editarHongos && (
-          <div className="mb-3">
-            <h5 className="form-label fw-bold">
-              Certificado de pediculosis y micosis{" "}
-              {usuario.certificadoHongos ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <div>
-              <button
-                className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                onClick={() => setImagen(usuario.certificadoHongos)}
-              >
-                Ver Imagen
-              </button>
-              <button
-                className="btn btn-warning ms-3"
-                onClick={() => setEditarHongos(true)}
-              >
-                Editar Archivo
-              </button>
-            </div>
-          </div>
-        )}
-
-        {(!usuario.certificadoHongos || editarHongos) && (
-          <div className="mb-5">
-            <h5 className="form-label fw-bold">
-              Subir Certificado de pediculosis y micosis{" "}
-              {usuario.certificadoHongos ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <input
-              className="form-control"
-              type="file"
-              id="formFile"
-              onChange={(e) => handleFileChange(e, "hongos")}
-            />
-          </div>
-        )}
-
-        {usuario.fichaMedica && !editarFicha && (
-          <div className="mb-3">
-            <h5 className="form-label fw-bold">
-              Ficha medica cargada{" "}
-              {usuario.fichaMedica ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <div>
-              <button
-                className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                onClick={() => setImagen(usuario.fichaMedica)}
-              >
-                Ver Archivo
-              </button>
-              <button
-                className="btn btn-warning ms-3"
-                onClick={() => setEditarFicha(true)}
-              >
-                Editar Archivo
-              </button>
-            </div>
-          </div>
-        )}
-
-        {(!usuario.fichaMedica || editarFicha) && (
-          <div className="mb-5">
-            <h5 className="form-label fw-bold">
-              Subir Ficha Medica (completada){" "}
-              {usuario.fichaMedica ? (
-                <i
-                  className="bi bi-check-circle-fill text-success"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              ) : (
-                <i
-                  className="bi bi-x-circle-fill text-danger"
-                  style={{ fontSize: "1.5rem" }}
-                ></i>
-              )}
-            </h5>
-            <input
-              className="form-control"
-              type="file"
-              id="formFile"
-              onChange={(e) => handleFileChange(e, "ficha")}
-            />
-
-            <div className="mt-2 text-danger">
-              <a
-                className="btn btn-danger"
-                href="https://drive.google.com/uc?export=download&id=1ZsdIYcF75YOX7tFgCV_Qxh0tLrOCFIq0"
-                download="fichaMedica.pdf"
-              >
-                Descargar ficha médica
-              </a>
-            </div>
-          </div>
         )}
       </div>
 

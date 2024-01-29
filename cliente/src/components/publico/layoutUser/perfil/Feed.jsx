@@ -67,6 +67,7 @@ function Feed() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        background: "aliceblue",
       }}
     >
       <form
@@ -76,7 +77,7 @@ function Feed() {
         onSubmit={handleSubmit}
       >
         <div className="form-group">
-          <h3>Escribe tu mensaje</h3>
+          <h3>Dejanos un mensaje</h3>
           <textarea
             className="form-control"
             id="exampleFormControlTextarea1"

@@ -9,6 +9,16 @@ export const getUsuarios = async () => {
     return error;
   }
 };
+export const getUsuariosAdaptada = async () => {
+  try {
+    const res = await fetch(baseUrl + "user/getAllUsers/paraHabilitarAdaptada");
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const getAllUsuarios = async () => {
   try {
     const res = await fetch(baseUrl + "user/getAllUsers");

@@ -18,6 +18,7 @@ export const getUser = async (req, res) => {
     res.status(404).json({ status: "error", message: error.message });
   }
 };
+
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -45,6 +46,28 @@ export const getAllUserForHability = async (req, res) => {
   try {
     //quiero devolver solo los usuarios que tengn sus status en false
     let users = await User.find({ status: false }).populate({
+      path: "activity",
+      populate: {
+        path: "name",
+      },
+    });
+
+    //los usuarios que tengan un array vacio o no tengan actividad, los borro del array de usuarios asi no los retorne al cleinte
+    users = users.filter((user) => user.activity.length > 0);
+
+    res.status(200).json({ status: "success", users });
+  } catch (error) {
+    res.status(404).json({ status: "error", message: error.message });
+  }
+};
+export const getAllUserForHabilityAdaptada = async (req, res) => {
+  ("llegue aca");
+  try {
+    //quiero devolver solo los usuarios que tengn sus status en false
+    let users = await User.find({
+      status: false,
+      natacionAdaptada: true,
+    }).populate({
       path: "activity",
       populate: {
         path: "name",

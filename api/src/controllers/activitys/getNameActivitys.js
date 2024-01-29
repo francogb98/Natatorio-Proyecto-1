@@ -9,16 +9,29 @@ export const getNameActivitys = async (req, res) => {
   try {
     const user = await User.findById(id);
 
+    //si el usuario es de matacion adaptada devuelvo todas las actividades de natacion adaptada
+    if (user.natacionAdaptada) {
+      const activitys = await Activity.find({
+        natacionAdaptada: true,
+      }).sort({
+        hourStart: 1,
+      });
+      return res
+        .status(200)
+        .json({ status: "success", actividades: activitys });
+    }
+
     const activitys = await Activity.find({
       // name: activity,
       desde: { $lte: user.edad },
       hasta: { $gte: user.edad },
-      //que el campo cupos sea mayor a 1
-      cupos: { $gte: 1 },
+      //quito las actividades de natacion adaptada
+      natacionAdaptada: false,
     }).sort({
       hourStart: 1,
     });
 
+    console.log(activitys);
     //quiero ordenar las actividades de mayor a menor segun su horario de ingreso
 
     res.status(200).json({ status: "success", actividades: activitys });

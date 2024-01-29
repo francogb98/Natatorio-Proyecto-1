@@ -59,6 +59,9 @@ function Notificaciones({ user }) {
             ) : null}
           </div>
         ))}
+      {!user.notificaciones.length && (
+        <div className={style.sinNotificaciones}>No hay notificaciones</div>
+      )}
     </div>
   );
 }

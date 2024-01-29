@@ -12,6 +12,7 @@ import {
   getUser,
   getUserById,
   getAllUserForHability,
+  getAllUserForHabilityAdaptada,
 } from "../controllers/users/getUser.js";
 import { cargaFicha } from "../controllers/users/cargaFichaMedica.js";
 import getAllUsers from "../controllers/users/getAllUsers.js";
@@ -35,6 +36,7 @@ const router = Router();
 
 router.get("/infoUser/:token", getUser);
 router.get("/getAllUsers/paraHabilitar", getAllUserForHability);
+router.get("/getAllUsers/paraHabilitarAdaptada", getAllUserForHabilityAdaptada);
 
 router.get("/getAllUsers", getAllUsers);
 router.get("/getAllUsers/:hour", getAllUsersForHour);

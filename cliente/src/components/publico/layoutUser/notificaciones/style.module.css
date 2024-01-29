@@ -1,9 +1,19 @@
 .body {
-  background-color: aqua;
+  background-color: aliceblue;
   min-height: 70vh;
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
+}
+
+.sinNotificaciones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: larger;
+  text-align: center;
+  padding-top: 50px;
 }
 
 .notificacionBody {

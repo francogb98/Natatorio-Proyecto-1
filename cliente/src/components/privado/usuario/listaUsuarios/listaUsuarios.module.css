@@ -7,6 +7,19 @@
   width: 100%;
 }
 
+.searchBox {
+  text-align: center;
+  background-color: red;
+  padding: 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: larger;
+  width: 50vw;
+  margin: 0 auto;
+
+  margin-top: 20%;
+}
+
 .formBody {
   width: 50%;
   display: flex;

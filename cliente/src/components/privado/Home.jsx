@@ -10,12 +10,9 @@ function Home() {
     queryKey: ["getUser"],
     queryFn: getInfoUser,
     staleTime: 0,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        return data;
-      }
-    },
   });
+
+  console.log(getUser);
 
   if (getUser.isLoading) {
     return <h1>Cargando...</h1>;
@@ -24,15 +21,8 @@ function Home() {
   if (getUser.isError) {
     return <h1>Hubo un error</h1>;
   }
-  if (getUser.isSuccess && !getUser.data.status) {
-    return <h1>Hubo un error</h1>;
-  }
 
-  if (getUser.isSuccess && getUser.data.status === "error") {
-    return <h1>Hubo un error</h1>;
-  }
-
-  if (getUser.isSuccess && getUser.data.status === "success") {
+  if (getUser.isSuccess) {
     return (
       <div className={style.bodyHome}>
         <NavBar usuario={getUser.data.user} />

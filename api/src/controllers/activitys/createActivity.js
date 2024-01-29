@@ -11,6 +11,7 @@ export const createActivity = async (req, res) => {
     date,
     cupos,
     actividadEspecial,
+    natacionAdaptada,
     desde,
     hasta,
   } = req.body;
@@ -109,6 +110,7 @@ export const createActivity = async (req, res) => {
       desde,
       hasta,
       userRegister: 0,
+      natacionAdaptada: natacionAdaptada ? true : false,
       actividadEspecial: actividadEspecial ? true : false,
     });
 

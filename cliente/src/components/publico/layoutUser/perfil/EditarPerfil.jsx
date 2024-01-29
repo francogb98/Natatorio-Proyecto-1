@@ -89,6 +89,8 @@ function EditarPerfil({ usuario }) {
     <div
       style={{
         paddingInline: "40px",
+        background: "aliceblue",
+        paddingBlock: "20px",
       }}
     >
       <nav aria-label="breadcrumb">

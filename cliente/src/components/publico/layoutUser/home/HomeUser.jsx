@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 function HomeUser({ user }) {
   return (
     <div className={style.body}>
-      <h1>Pasos a seguir para la inscripcion en actividades</h1>
+      <h1 className="text-danger">
+        Pasos a seguir para la inscripcion en actividades
+      </h1>
       <section className={style.section}>
         <div className={`${style.sectionItem}`}>
           {user.foto &&

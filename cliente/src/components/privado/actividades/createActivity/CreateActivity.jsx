@@ -24,6 +24,7 @@ function CreateActivity() {
     pileta: "",
     cupos: "",
     actividadEspecial: false,
+    natacionAdaptada: false,
   });
 
   const [isSpecialActivity, setIsSpecialActivity] = useState(false);
@@ -149,6 +150,18 @@ function CreateActivity() {
             onChange={(e) => {
               setIsSpecialActivity(e.target.checked);
               setArgs({ ...args, actividadEspecial: e.target.checked });
+            }}
+          />
+        </div>
+        <div className={style.isSpecial}>
+          <label htmlFor="isSpecial">Natacion Adaptada</label>
+          <input
+            type="checkbox"
+            id="isSpecial"
+            name="isSpecial"
+            value={args.natacionAdaptada}
+            onChange={(e) => {
+              setArgs({ ...args, natacionAdaptada: e.target.checked });
             }}
           />
         </div>

@@ -110,14 +110,24 @@ function NavBar({ usuario }) {
             <ul>
               <li className={style.inicio}>Usuario</li>
               {usuario.role === "SUPER_ADMIN" && (
-                <li className={style.link}>
-                  <Link
-                    to="panel/habilitar-usuario"
-                    className={style.link__item}
-                  >
-                    Habilitar
-                  </Link>
-                </li>
+                <>
+                  <li className={style.link}>
+                    <Link
+                      to="panel/habilitar-usuario"
+                      className={style.link__item}
+                    >
+                      Habilitar
+                    </Link>
+                  </li>
+                  <li className={style.link}>
+                    <Link
+                      to="panel/habilitar-usuario-adaptada"
+                      className={style.link__item}
+                    >
+                      Habilitar Usuarios Adaptada
+                    </Link>
+                  </li>
+                </>
               )}
               <li className={style.link}>
                 <Link to="panel/usuarios" className={style.link__item}>

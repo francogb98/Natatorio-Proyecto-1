@@ -25,6 +25,7 @@ function EditarActividad({ actividad }) {
     actividadEspecial: actividad ? actividad.actividadEspecial : false,
     desde: actividad ? actividad.desde : "",
     hasta: actividad ? actividad.hasta : "",
+    natacionAdaptada: actividad ? actividad.natacionAdaptada : "",
   });
 
   const [isSpecialActivity, setIsSpecialActivity] = useState(
@@ -95,6 +96,19 @@ function EditarActividad({ actividad }) {
     <div className={style.body}>
       {" "}
       <form action="" className={`form-group `} onSubmit={handleSubmit}>
+        <div className={style.isSpecial}>
+          <label htmlFor="isSpecial">Natacion Adaptada</label>
+          <input
+            type="checkbox"
+            id="isSpecial"
+            name="isSpecial"
+            value={args.natacionAdaptada}
+            checked={args.natacionAdaptada}
+            onChange={(e) => {
+              setArgs({ ...args, natacionAdaptada: e.target.checked });
+            }}
+          />
+        </div>
         <div className={style.isSpecial}>
           <label htmlFor="isSpecial">Actividad Especial</label>
           <input

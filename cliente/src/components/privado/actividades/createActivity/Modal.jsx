@@ -30,6 +30,7 @@ function Modal({ args, createActivity }) {
             <p>Pileta: {args.pileta}</p>
             <p>Cupos: {args.cupos}</p>
             <p>Actividad Especial: {args.actividadEspecial ? "Si" : "No"}</p>
+            <p>Natacion Adaptada: {args.natacionAdaptada ? "Si" : "No"}</p>
           </div>
           <div className="modal-footer">
             <button

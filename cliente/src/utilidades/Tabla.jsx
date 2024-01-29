@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 
 import style from "./tabla.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Tabla({ data, columns, type }) {
   const [sorting, setSorting] = useState([]);
@@ -28,6 +28,13 @@ function Tabla({ data, columns, type }) {
     onSortingChange: setSorting,
     onGlobalFilterChange: setFiltering,
   });
+
+  useEffect(() => {
+    return () => {
+      // Aquí puedes eliminar la data cuando el componente se desmonta
+      data = [];
+    };
+  }, []);
 
   return (
     <div className={style.body}>

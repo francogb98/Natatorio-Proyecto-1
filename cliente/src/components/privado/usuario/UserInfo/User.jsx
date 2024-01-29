@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -13,11 +13,22 @@ import FormularioHabilitarUsuario from "./FormularioHabilitarUsuario";
 import Notificaciones from "./Notificaciones";
 
 import avatar from "../../../../assets/avatar.webp";
+import { getInfoUser } from "../../../../helpers/fetch";
 
 function User() {
   //accedo al id que viene por parametro
 
-  const [notificacion, setNotificacion] = useState("");
+  const getUserData2 = useQuery({
+    queryKey: ["getUser"],
+    queryFn: getInfoUser,
+    staleTime: 0,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        return data;
+      }
+    },
+  });
+
   const [loading, setLoading] = useState(false);
 
   const [user, setUser] = useState({});
@@ -126,28 +137,32 @@ function User() {
                   <p className="card-text">
                     Rol: <span className="text-danger">{user.role}</span>
                   </p>
-                  <label htmlFor="" style={{ maxWidth: "150px" }}>
-                    Cambiar Rol:
-                  </label>
-                  <select
-                    name=""
-                    id=""
-                    style={{ maxWidth: "100%" }}
-                    onChange={(e) => {
-                      cambiar.mutate({
-                        id: user._id,
-                        role: e.target.value,
-                      });
-                    }}
-                    defaultValue={user.role}
-                  >
-                    <option value="SUPER_ADMIN">--Seleccionar Rol--</option>
-                    <option value="SUPER_ADMIN">SUPER_ADMIN</option>
-                    <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
-                    <option value="GUARDAVIDA">GUARDAVIDA</option>
-                    <option value="PROFESOR">PROFESOR</option>
-                    <option value="usuario">usuario</option>
-                  </select>
+                  {getUserData2.data.user.role === "SUPER_ADMIN" && (
+                    <>
+                      <label htmlFor="" style={{ maxWidth: "150px" }}>
+                        Cambiar Rol:
+                      </label>
+                      <select
+                        name=""
+                        id=""
+                        style={{ maxWidth: "100%" }}
+                        onChange={(e) => {
+                          cambiar.mutate({
+                            id: user._id,
+                            role: e.target.value,
+                          });
+                        }}
+                        defaultValue={user.role}
+                      >
+                        <option value="SUPER_ADMIN">--Seleccionar Rol--</option>
+                        <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+                        <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                        <option value="GUARDAVIDA">GUARDAVIDA</option>
+                        <option value="PROFESOR">PROFESOR</option>
+                        <option value="usuario">usuario</option>
+                      </select>
+                    </>
+                  )}
                 </div>
 
                 <p className="card-text">
@@ -255,7 +270,9 @@ function User() {
                 {user.fechaCargaCertificadoHongos && (
                   <p className="card-text">
                     Fecha de carga certificado:{" "}
-                    <span>{user.fechaCargaCertificadoHongos}</span>
+                    <span className="text-danger">
+                      {user.fechaCargaCertificadoHongos}
+                    </span>
                   </p>
                 )}
                 {user.natacionAdaptada && (
@@ -278,7 +295,8 @@ function User() {
                       )}
                     </p>
                     <p className="card-text">
-                      Diagnostico: <span className={style.span}>Ver cud</span>
+                      Diagnostico:{" "}
+                      <span className="text-danger">{user.diagnosticos}</span>
                     </p>
                   </>
                 )}
@@ -289,14 +307,20 @@ function User() {
               <Notificaciones user={user} />
             </section>
 
-            {user.activity && user.activity.length ? (
-              <section className={`card ${style.formulario}`}>
-                <div className="card-body">
-                  <h5 className="card-title">Enviar Notificacion al usuario</h5>
-                  <FormularioHabilitarUsuario id={user._id} />
-                </div>
-              </section>
-            ) : null}
+            {getUserData2.data.user.role === "SUPER_ADMIN" && (
+              <>
+                {user.activity && user.activity.length ? (
+                  <section className={`card ${style.formulario}`}>
+                    <div className="card-body">
+                      <h5 className="card-title">
+                        Enviar Notificacion al usuario
+                      </h5>
+                      <FormularioHabilitarUsuario id={user._id} />
+                    </div>
+                  </section>
+                ) : null}
+              </>
+            )}
           </main>
         </div>
 

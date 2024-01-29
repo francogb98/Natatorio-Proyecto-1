@@ -2,20 +2,22 @@ import { useQuery } from "react-query";
 
 //traigo todos los usuarios para habilitar
 
-import { getUsuarios } from "../../../../helpers/getUsers";
+import { getUsuariosAdaptada } from "../../../../helpers/getUsers";
 
 import Tabla from "../../../../utilidades/Tabla";
 import style from "./style.module.css";
 
 import { Link } from "react-router-dom";
 
-function Habilitar() {
-  const { data, isSuccess, status, isLoading, refetch, isRefetching } =
-    useQuery({
-      queryKey: ["usuarios"],
-      queryFn: getUsuarios,
-    });
+function HabilitarAdaptada() {
+  const { data, status, isLoading, refetch, isRefetching } = useQuery({
+    queryKey: ["usuarios"],
+    queryFn: getUsuariosAdaptada,
+  });
 
+  if (isLoading) {
+    return <div>Cargando...</div>;
+  }
   const columns = [
     {
       header: "ID",
@@ -70,10 +72,6 @@ function Habilitar() {
     },
   ];
 
-  if (isLoading) {
-    return <div>Cargando...</div>;
-  }
-
   if (status === "error") {
     return <div>Error al obtener los usuarios</div>;
   }
@@ -111,4 +109,4 @@ function Habilitar() {
   );
 }
 
-export default Habilitar;
+export default HabilitarAdaptada;

@@ -4,8 +4,10 @@ import Tabla from "../../../../utilidades/Tabla";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import style from "./listaUsuarios.module.css";
+
 function ListaUsuarios() {
-  const { data, isLoading, isError, error } = useQuery(
+  const { data, isLoading, isError, error, isRefetching } = useQuery(
     "usuarios",
     getAllUsuarios
   );
@@ -99,7 +101,11 @@ function ListaUsuarios() {
   if (data?.users) {
     return (
       <div>
-        <Tabla data={data.users} columns={columns} />
+        {isRefetching ? (
+          <div className={style.searchBox}>Recargando...</div>
+        ) : (
+          <Tabla data={data.users} columns={columns} />
+        )}
       </div>
     );
   }
