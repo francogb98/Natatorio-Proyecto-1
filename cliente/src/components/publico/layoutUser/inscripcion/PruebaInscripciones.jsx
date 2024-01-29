@@ -5,8 +5,6 @@ import Tabla from "../../../../utilidades/Tabla";
 import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
 import Swal from "sweetalert2";
 
-import PropTypes from "prop-types";
-
 import style from "./styles.module.css";
 
 function PruebaInscripciones({ actividad }) {

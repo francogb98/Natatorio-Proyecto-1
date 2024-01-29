@@ -77,7 +77,7 @@ function Inscripcion() {
         </>
 
         <div>
-          {getUser.data.user.activity[0] ? (
+          {getUser.data.user.activity ? (
             <div className="alert alert-info d-block mx-auto">
               <div>
                 Ya estas inscripto en la actividad:{" "}
