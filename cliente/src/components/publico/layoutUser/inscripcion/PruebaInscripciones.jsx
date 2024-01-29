@@ -199,7 +199,9 @@ function PruebaInscripciones({ actividad }) {
         </div>
       </div>
 
-      <Tabla columns={columns} data={actividad} type={"Actividad"} />
+      <div className={style.tabla}>
+        <Tabla columns={columns} data={actividad} type={"Actividad"} />
+      </div>
 
       <div
         className="modal fade"
