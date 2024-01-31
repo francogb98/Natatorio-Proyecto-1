@@ -45,6 +45,7 @@ function Publico() {
       <div className={style.body}>
         <header className={style.header}>
           <Header user={getUser.data.user} />
+          <NavBar user={getUser.data.user} />
         </header>
         <main className={style.main}>
           <section className={style.sectionMain}>
@@ -53,9 +54,9 @@ function Publico() {
             ) : null}
           </section>
         </main>
-        <footer className={style.footer}>
+        {/* <footer className={style.footer}>
           <NavBar user={getUser.data.user} />
-        </footer>
+        </footer> */}
       </div>
     );
   }

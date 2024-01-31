@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import style from "./publico.module.css";
+import { AuthContext } from "../../../context/AuthContext";
 
 function Header({ user }) {
-  const location = useLocation();
+  const { cerrarSesion } = useContext(AuthContext);
+
+  const [cerrarConfirmacion, setCerrarConfirmacion] = useState(false);
+
   return (
     <section className={style.sectionHeader}>
       <Link to={"home"} className={style.info}>
@@ -30,35 +34,48 @@ function Header({ user }) {
         </div>
       </Link>
 
-      <Link to={"notificaciones"} className={style.link}>
-        {location.pathname === "/user/notificaciones" ? (
-          <i className="bi bi-bell-fill position-relative">
-            {
-              //si hay notificaciones sin leer
-              user.notificaciones?.filter(
-                (notificacion) => notificacion.leido === false
-              ).length > 0 && (
-                <span className="position-absolute top-10 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
-                  <span className="visually-hidden">New alerts</span>
-                </span>
-              )
-            }
-          </i>
-        ) : (
-          <i type="button" className="bi bi-bell  position-relative">
-            {
-              //si hay notificaciones sin leer
-              user.notificaciones?.filter(
-                (notificacion) => notificacion.leido === false
-              ).length > 0 && (
-                <span className="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
-                  <span className="visually-hidden">New alerts</span>
-                </span>
-              )
-            }
-          </i>
-        )}
-      </Link>
+      <div
+        className={style.link}
+        onClick={() => {
+          setCerrarConfirmacion(true);
+        }}
+      >
+        <i className="bi bi-box-arrow-left"></i>
+
+        <p
+          style={{
+            fontSize: "10px",
+          }}
+        >
+          Cerrar Sesion
+        </p>
+      </div>
+
+      {cerrarConfirmacion && (
+        <div className={style.cerrarConfirmacion}>
+          <div className={style.cerrarConfirmacion__body}>
+            <h3>¿Desea cerrar sesión?</h3>
+            <div className={style.cerrarConfirmacion__buttons}>
+              <button
+                className={style.button__cancel}
+                onClick={() => {
+                  setCerrarConfirmacion(false);
+                }}
+              >
+                <i className="bi bi-x-lg"></i>
+              </button>
+              <button
+                className={style.button__confirm}
+                onClick={() => {
+                  cerrarSesion();
+                }}
+              >
+                <i className="bi bi-check-lg"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

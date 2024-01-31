@@ -5,11 +5,7 @@ import style from "./navBar.module.css";
 import { AuthContext } from "../../../../context/AuthContext";
 
 function NavBar({ user }) {
-  const { cerrarSesion } = useContext(AuthContext);
-
   const location = useLocation();
-
-  const [cerrarConfirmacion, setCerrarConfirmacion] = useState(false);
 
   return (
     <div className={style.body}>
@@ -97,42 +93,38 @@ function NavBar({ user }) {
         </p>
       </Link>
 
-      <div
-        className={style.link}
-        onClick={() => {
-          setCerrarConfirmacion(true);
-        }}
-      >
-        <i className="bi bi-box-arrow-left"></i>
-
-        <p>Cerrar Sesion</p>
-      </div>
-
-      {cerrarConfirmacion && (
-        <div className={style.cerrarConfirmacion}>
-          <div className={style.cerrarConfirmacion__body}>
-            <h3>¿Desea cerrar sesión?</h3>
-            <div className={style.cerrarConfirmacion__buttons}>
-              <button
-                className={style.button__cancel}
-                onClick={() => {
-                  setCerrarConfirmacion(false);
-                }}
-              >
-                <i className="bi bi-x-lg"></i>
-              </button>
-              <button
-                className={style.button__confirm}
-                onClick={() => {
-                  cerrarSesion();
-                }}
-              >
-                <i className="bi bi-check-lg"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Link to={"notificaciones"} className={style.link}>
+        {location.pathname === "/user/notificaciones" ? (
+          <i className="bi bi-bell-fill position-relative">
+            {
+              //si hay notificaciones sin leer
+              user.notificaciones?.filter(
+                (notificacion) => notificacion.leido === false
+              ).length > 0 && (
+                <span className="position-absolute top-10 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                  <span className="visually-hidden">New alerts</span>
+                </span>
+              )
+            }
+          </i>
+        ) : (
+          <i type="button" className="bi bi-bell  position-relative">
+            {
+              //si hay notificaciones sin leer
+              user.notificaciones?.filter(
+                (notificacion) => notificacion.leido === false
+              ).length > 0 && (
+                <span className="position-absolute top-0 start-80 translate-middle p-2 bg-danger border border-light rounded-circle">
+                  <span className="visually-hidden">New alerts</span>
+                </span>
+              )
+            }
+          </i>
+        )}
+        <p type="button" data-bs-dismiss="offcanvas" aria-label="Close">
+          Notificaciones
+        </p>
+      </Link>
     </div>
   );
 }
