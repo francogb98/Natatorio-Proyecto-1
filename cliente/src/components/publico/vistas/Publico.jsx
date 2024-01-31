@@ -1,20 +1,20 @@
 import { useQuery } from "react-query";
-import { getInfoUser } from "../helpers/fetch";
+import { getInfoUser } from "../../../helpers/fetch";
 
 import Header from "./Header";
-import NavBar from "../components/publico/layoutUser/navBar.jsx/NavBar";
+import NavBar from "../layoutUser/navBar.jsx/NavBar";
 
 import style from "./publico.module.css";
 // import HomeUser from "../components/publico/layoutUser/home/HomeUser";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import HomeUser from "../components/publico/layoutUser/home/HomeUser";
-import Inscripcion from "../components/publico/layoutUser/inscripcion/Inscripcion";
-import Perfil from "../components/publico/layoutUser/perfil/Perfil";
-import UpdateFiles from "../components/publico/layoutUser/updateFiles/UpdateFiles";
-import Notificaciones from "../components/publico/layoutUser/notificaciones/Notificaciones";
-import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
-import Feed from "../components/publico/layoutUser/perfil/Feed";
+import HomeUser from "../layoutUser/home/HomeUser";
+import Inscripcion from "../layoutUser/inscripcion/Inscripcion";
+import Perfil from "../layoutUser/perfil/Perfil";
+import UpdateFiles from "../layoutUser/updateFiles/UpdateFiles";
+import Notificaciones from "../layoutUser/notificaciones/Notificaciones";
+import EditarPerfil from "../layoutUser/perfil/EditarPerfil";
+import Feed from "../layoutUser/perfil/Feed";
 
 const routeComponents = {
   "/user/home": HomeUser,

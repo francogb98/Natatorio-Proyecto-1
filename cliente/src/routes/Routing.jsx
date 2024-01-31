@@ -34,7 +34,7 @@ import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
 import PiletasInfo from "../components/privado/Inicio/showPiletasInfo/PiletasInfo";
 import RecuperarContraseña from "../components/publico/recuperarContraseña/RecuperarContraseña";
 import InfoActividad from "../components/privado/actividades/actividadesLista/InfoActividad";
-import Publico from "../vistas/publico";
+import Publico from "../components/publico/vistas/Publico";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
