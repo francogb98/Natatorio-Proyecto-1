@@ -99,6 +99,7 @@
 .cerrarConfirmacion__body {
   width: 300px;
   height: 200px;
+  margin-top: auto;
   background-color: #fff;
   border-radius: 10px;
   display: flex;

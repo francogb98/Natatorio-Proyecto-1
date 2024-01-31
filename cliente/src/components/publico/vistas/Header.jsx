@@ -37,7 +37,7 @@ function Header({ user }) {
       <div
         className={style.link}
         onClick={() => {
-          setCerrarConfirmacion(true);
+          cerrarSesion();
         }}
       >
         <i className="bi bi-box-arrow-left"></i>
@@ -50,32 +50,6 @@ function Header({ user }) {
           Cerrar Sesion
         </p>
       </div>
-
-      {cerrarConfirmacion && (
-        <div className={style.cerrarConfirmacion}>
-          <div className={style.cerrarConfirmacion__body}>
-            <h3>¿Desea cerrar sesión?</h3>
-            <div className={style.cerrarConfirmacion__buttons}>
-              <button
-                className={style.button__cancel}
-                onClick={() => {
-                  setCerrarConfirmacion(false);
-                }}
-              >
-                <i className="bi bi-x-lg"></i>
-              </button>
-              <button
-                className={style.button__confirm}
-                onClick={() => {
-                  cerrarSesion();
-                }}
-              >
-                <i className="bi bi-check-lg"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
