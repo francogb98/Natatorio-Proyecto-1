@@ -1,4 +1,10 @@
-export const authReducer = (state, action) => {
+export const initialState = {
+  logged: false,
+  role: "",
+  user: {},
+};
+
+export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case "LOGIN":
       return {

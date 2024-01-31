@@ -7,95 +7,158 @@ function HomeUser({ user }) {
       <h1 className="text-danger">
         Pasos a seguir para la inscripcion en actividades
       </h1>
-      <section className={style.section}>
-        <div className={`${style.sectionItem}`}>
-          {user.foto &&
+
+      <hr />
+
+      <section
+        className={style.seccion1}
+        style={
+          user.foto &&
           user.fichaMedica &&
           user.certificadoHongos &&
-          user.fotoDocumento ? (
-            <span className="bg-success">
-              <i className="bi bi-check-lg"></i>
-            </span>
-          ) : (
-            <span className="bg-warning">1</span>
-          )}
-
-          <div className={style.infoSection}>
-            <p>Carga de Archivos </p>
-            <small>
-              (Dirigete a la seccion{" "}
-              <Link to={"perfil"} className="fw-bold">
-                PERFIL
-              </Link>
-              )
-            </small>
-          </div>
-        </div>
-        <div className={style.sectionItem}>
-          {user.activity?.length ? (
-            <span className="bg-success">
-              <i className="bi bi-check-lg"></i>
-            </span>
-          ) : (
-            <span className="bg-warning">2</span>
-          )}
-
-          <div className={style.infoSection}>
-            <p>Inscripcion en Actividades </p>
-            <small>
-              (Una vez cargado todos los archivos, podas acceder a la seccion de{" "}
-              <Link
-                to={
-                  user.foto &&
-                  user.fichaMedica &&
-                  user.certificadoHongos &&
-                  user.fotoDocumento
-                    ? "inscripcion"
-                    : "home"
+          user.fotoDocumento
+            ? {
+                border: "2px solid green",
+              }
+            : {
+                border: "2px solid red",
+              }
+        }
+      >
+        <h2 className="fw-bold">Carga Tus Archivos</h2>
+        <article className={style.seccion1_article}>
+          <div>
+            <h4>Estado de tus archivos</h4>
+            <p>
+              Foto de perfil:{" "}
+              <span
+                className={
+                  user.foto ? "text-success fw-bold" : "text-danger fw-bold"
                 }
               >
-                Actividades
+                {user.foto ? "Cargado" : "Pendiente"}
+              </span>
+            </p>
+            <p>
+              Foto de DNI:{" "}
+              <span
+                className={
+                  user.fotoDocumento
+                    ? "text-success fw-bold"
+                    : "text-danger fw-bold"
+                }
+              >
+                {user.fotoDocumento ? "Cargado" : "Pendiente"}
+              </span>
+            </p>
+            <p>
+              Certificado Pediculosis y Micosis:{" "}
+              <span
+                className={
+                  user.certificadoHongos
+                    ? "text-success fw-bold"
+                    : "text-danger fw-bold"
+                }
+              >
+                {user.certificadoHongos ? "Cargado" : "Pendiente"}
+              </span>
+            </p>
+            <p>
+              Ficha Medica:{" "}
+              <span
+                className={
+                  user.fichaMedica
+                    ? "text-success fw-bold"
+                    : "text-danger fw-bold"
+                }
+              >
+                {user.fichaMedica ? "Cargado" : "Pendiente"}
+              </span>
+            </p>
+          </div>
+          <div className="text-center">
+            <h3 className="fw-bold">
+              Carga tus archivos haciendo{" "}
+              <Link to={"perfil"} className="fw-bold">
+                Click Aqui
               </Link>
-              , y registrarte en la que desees )
-            </small>
+            </h3>
+            <small>(O dirigete a la seccion de perfil)</small>
           </div>
-        </div>
-        <div className={style.sectionItem}>
-          {user.activity?.length && user.status ? (
-            <span className="bg-success">
-              <i className="bi bi-check-lg"></i>
-            </span>
-          ) : (
-            <span className="bg-warning">3</span>
-          )}
+        </article>
+      </section>
 
-          <div className={style.infoSection}>
-            <p>Aprobacion de Inscripcion</p>
-            <small>
-              (Tendras una notificacion en cuanto veamos tu registro)
-            </small>
-          </div>
-        </div>
-        <div className={style.sectionItem}>
-          {user.activity?.length && user.status ? (
-            <span className="bg-success">
-              <i className="bi bi-check-lg"></i>
-            </span>
-          ) : (
-            <span className="bg-warning">4</span>
-          )}
+      <section
+        className={style.seccion2}
+        style={
+          user.foto &&
+          user.fichaMedica &&
+          user.certificadoHongos &&
+          user.fotoDocumento
+            ? user.activity?.length
+              ? {
+                  border: "2px solid green",
+                }
+              : {
+                  border: "2px solid orange",
+                }
+            : {
+                border: "2px solid red",
+              }
+        }
+      >
+        {user.foto &&
+        user.fichaMedica &&
+        user.certificadoHongos &&
+        user.fotoDocumento ? (
+          <>
+            <h2 className="fw-bold"> Inscripcion en Actividades</h2>
 
-          <div className={style.infoSection}>
-            <p>¡A Disfrutar!</p>
+            <article className={style.seccion2_article}>
+              {user.activity?.length ? (
+                <div>
+                  {!user.status ? (
+                    <div>
+                      <h5>
+                        <b>Te has registrado con exito</b> en tu actividad en
+                        las siguientes 24/48 horas estaremos evaluando tu perfil
+                        y actualizando tu estado.
+                      </h5>
+                      <h4>
+                        Estado de tu inscripcion:{" "}
+                        <span className="text-danger">Pendiente</span>
+                      </h4>
+                    </div>
+                  ) : (
+                    <div>
+                      <h5>
+                        ¡Felicidades! Tu inscripcion fue aprobada. <br />{" "}
+                        <b>Recuerda</b>
+                        que deberas ir con tu <b>numero de usuario</b> para que
+                        te registren la asistencia y no perder tu cupo.
+                      </h5>
 
-            <small>
-              (Una vez se te haya autorizado la inscripcion, podras asistir a
-              las instalaciones del Natatorio Olimpico Madre de Ciudades,
-              recuerda que deberas ir con tu numero de usuario para que te
-              registren la asistencia)
-            </small>
-          </div>
-        </div>
+                      <h4>
+                        Estado de tu inscripcion:{" "}
+                        <span className="text-success">Aprobada</span>
+                      </h4>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <h3>
+                  Dirigete a la seccion{" "}
+                  <Link to={"inscripcion"} className="fw-bold">
+                    Actividades
+                  </Link>{" "}
+                  para inscribirte en alguna
+                </h3>
+              )}
+            </article>
+          </>
+        ) : (
+          <h3>Por favor cargue sus archivos para pasar a esta seccion</h3>
+        )}
       </section>
     </div>
   );

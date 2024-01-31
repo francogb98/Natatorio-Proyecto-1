@@ -4,7 +4,6 @@ import { AuthContext } from "../context/AuthContext";
 import { useQuery } from "react-query";
 import { getInfoUser } from "../helpers/fetch";
 
-import HomeUserPublic from "../components/publico/layoutUser/HomeUserPublic";
 import Registro from "../components/publico/registro/RegistroPrueba";
 import Confirm from "../components/publico/confirmEmail/ConfirmEmail";
 import SignIn from "../components/publico/inicioDeSesion/SignIn";
@@ -35,7 +34,7 @@ import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
 import PiletasInfo from "../components/privado/Inicio/showPiletasInfo/PiletasInfo";
 import RecuperarContraseña from "../components/publico/recuperarContraseña/RecuperarContraseña";
 import InfoActividad from "../components/privado/actividades/actividadesLista/InfoActividad";
-import HabilitarAdaptada from "../components/privado/usuario/habilitarUsuario/HabilitarAdaptada";
+import Publico from "../vistas/publico";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -67,7 +66,8 @@ function Routing() {
       {auth.logged &&
         (auth.role === "usuario" || auth.role === "registrado") && (
           <>
-            <Route path="/user" element={<HomeUserPublic />}>
+            <Route path="/vistaPrueba" element={<Publico />} />
+            <Route path="/user" element={<Publico />}>
               <Route path="home" element={<HomeUser />} />
               <Route path="updateFiles" element={<UpdateFiles />} />
               <Route path="inscripcion" element={<Inscripcion />} />
@@ -98,10 +98,6 @@ function Routing() {
           />
           <Route path="panel/buscar-usuario" element={<SearchUser />} />
           <Route path="panel/habilitar-usuario" element={<Habilitar />} />
-          <Route
-            path="panel/habilitar-usuario-adaptada"
-            element={<HabilitarAdaptada />}
-          />
           <Route path="panel/usuario/:id" element={<User />} />
           <Route path="panel/usuarios" element={<ListaUsuarios />} />
           <Route path="panel/estadisticas" element={<Estadisticas />} />

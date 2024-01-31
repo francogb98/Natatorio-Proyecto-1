@@ -12,8 +12,6 @@ function Home() {
     staleTime: 0,
   });
 
-  console.log(getUser);
-
   if (getUser.isLoading) {
     return <h1>Cargando...</h1>;
   }

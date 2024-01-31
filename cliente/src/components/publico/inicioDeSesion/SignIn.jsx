@@ -3,7 +3,7 @@ import { fetchSinToken } from "../../../helpers/fetch";
 import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 
-import { useNavigate, redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 import style from "./styleSignIn.module.css";
@@ -12,64 +12,9 @@ import { AuthContext } from "../../../context/AuthContext";
 import Logo from "./Logo.jpg";
 
 function SignIn() {
-  const { dispatch } = useContext(AuthContext);
+  const { dispatch, login } = useContext(AuthContext);
 
   const [viewPass, setViewPass] = React.useState(false);
-
-  const navigate = useNavigate();
-  const login = useMutation({
-    mutationFn: fetchSinToken,
-    onSuccess: async (data) => {
-      if (data.status === "success") {
-        if (data.usuario.role === "suspendido") {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Tu cuenta esta suspendida, contacta con el administrador",
-          });
-          return;
-        }
-
-        localStorage.setItem("token", data.token);
-        const { usuario } = data;
-
-        await dispatch({ type: "LOGIN", payload: { role: usuario.role } });
-        await dispatch({ type: "SET_USER", payload: { user: usuario } });
-
-        Swal.fire({
-          icon: "success",
-          title: "Bienvenido",
-          text: "Iniciaste sesion correctamente, seras redirigido al home",
-          showConfirmButton: false,
-        });
-
-        setTimeout(() => {
-          Swal.close();
-          if (
-            data.usuario.role === "usuario" ||
-            data.usuario.role === "registrado"
-          ) {
-            return navigate("/user/home");
-          }
-          return navigate("/admin/panel/inicio");
-          // window.location.href = "/home";
-        }, 1500);
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: data.message,
-        });
-      }
-    },
-    onError: (error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: error.message,
-      });
-    },
-  });
 
   const handleSubmit = (e) => {
     e.preventDefault();

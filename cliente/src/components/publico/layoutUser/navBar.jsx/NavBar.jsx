@@ -1,11 +1,13 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import style from "./navBar.module.css";
 import { AuthContext } from "../../../../context/AuthContext";
 
-function NavBar({ user, location }) {
+function NavBar({ user }) {
   const { cerrarSesion } = useContext(AuthContext);
+
+  const location = useLocation();
 
   const [cerrarConfirmacion, setCerrarConfirmacion] = useState(false);
 

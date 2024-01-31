@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { cambiarFoto } from "../../../../helpers/usersFetch/imagen/cambiarFoto";
 import axios from "axios";
 
-function Foto({ usuario }) {
+function Foto({ user }) {
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [loading, setLoading] = useState(false);
@@ -60,7 +60,7 @@ function Foto({ usuario }) {
         cambiarFotoMutation.mutate({
           public_id_foto: res.data.public_id,
           foto: res.data.secure_url,
-          id: usuario._id,
+          id: user._id,
         });
       })
       .catch((err) => {
@@ -76,15 +76,15 @@ function Foto({ usuario }) {
 
   return (
     <div className={style.editarFoto}>
-      {usuario.foto && (
+      {user.foto && (
         <img
-          src={usuario.foto}
+          src={user.foto}
           alt="Imagen seleccionada"
           className={style.imagenPerfil}
         />
       )}
       <h2 style={{ textAlign: "start" }}>
-        {usuario.foto ? "Cambiar foto" : "Agregar foto"}
+        {user.foto ? "Cambiar foto" : "Agregar foto"}
       </h2>
       <div className="input-group mb-3">
         <input
@@ -101,7 +101,7 @@ function Foto({ usuario }) {
         </button>
       </div>
 
-      {previewUrl && !usuario.foto && (
+      {previewUrl && !user.foto && (
         <img
           src={previewUrl}
           alt="Imagen seleccionada"

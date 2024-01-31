@@ -1,0 +1,83 @@
+.body {
+  background-color: #808080;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 15% 75% 10%;
+}
+
+.header {
+  background-color: #ffffff;
+  overflow: hidden;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+.main {
+  padding-block: 0.4rem;
+}
+
+.sectionMain {
+  background-color: aliceblue;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.sectionMain::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+.sectionMain::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.sectionMain::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+.sectionMain::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.prueba {
+  background-color: red;
+  height: 1500px;
+  width: 100px;
+}
+
+.footer {
+  background-color: #ffffff;
+  border-top: 1px solid rgb(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* estilos header */
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: white;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  padding-top: 15px;
+  text-decoration: none;
+  color: #000;
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
+  font-size: 25px;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+.link:hover {
+  cursor: pointer;
+}

@@ -8,8 +8,6 @@ import style from "./home.module.css";
 function NavBar({ usuario }) {
   const [show, setShow] = React.useState(true);
 
-  console.log(usuario);
-
   const { cerrarSesion } = useContext(AuthContext);
   return (
     <>

@@ -12,7 +12,7 @@ import Foto from "./Foto";
 import InformacionPersonal from "./InformacionPersonal";
 import InformacionContacto from "./InformacionContacto";
 
-function EditarPerfil({ usuario }) {
+function EditarPerfil({ user }) {
   // Crear un estado local para rastrear los cambios
   const [formValues, setFormValues] = useState({
     nombre: "",
@@ -72,8 +72,8 @@ function EditarPerfil({ usuario }) {
   };
 
   useEffect(() => {
-    setFormValues(usuario);
-  }, [usuario]);
+    setFormValues(user);
+  }, [user]);
   useEffect(() => {
     console.log(menorEdadAlert);
   }, [menorEdadAlert]);
@@ -105,13 +105,13 @@ function EditarPerfil({ usuario }) {
       </nav>
 
       <div className={style.info}>
-        <label htmlFor="">Numero De Usuario</label>
-        <h3>{usuario.customId}</h3>
+        <label htmlFor="">Numero De user</label>
+        <h3>{user.customId}</h3>
       </div>
 
-      <Foto usuario={usuario} />
+      <Foto user={user} />
 
-      <Actividades usuario={usuario} />
+      <Actividades user={user} />
 
       <h2>Informacion Personal</h2>
 
