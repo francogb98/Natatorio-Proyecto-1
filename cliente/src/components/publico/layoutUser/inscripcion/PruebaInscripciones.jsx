@@ -162,10 +162,10 @@ function PruebaInscripciones({ actividad }) {
                   Solo se mostraran las actividades disponibles para su
                   <strong> edad.</strong>
                 </li>
-                <li className="mb-2">
+                {/* <li className="mb-2">
                   Solo se mostraran las actividades que tengan
                   <strong> cupos disponibles.</strong>
-                </li>
+                </li> */}
                 <li className="mb-2">
                   Las actividades estan ordenadas por{" "}
                   <strong>HORARIO no por NOMBRE.</strong>{" "}
