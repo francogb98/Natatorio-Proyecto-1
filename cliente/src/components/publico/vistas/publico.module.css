@@ -4,13 +4,14 @@
   overflow: hidden;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 15% 70% 15%;
+  grid-template-rows: fit-content(15%) 78% fit-content(15%);
 }
 
 .header {
   background-color: #ffffff;
   overflow: hidden;
   border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+  padding-bottom: 0.5rem;
 }
 
 .main {
