@@ -1,21 +1,21 @@
 .body {
-  background-color: #808080;
+  background-color: aliceblue;
   height: 100vh;
   overflow: hidden;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: fit-content(15%) 78% fit-content(15%);
+  grid-template-rows: 15% 75% 10%;
 }
 
 .header {
   background-color: #ffffff;
   overflow: hidden;
+  height: fit-content;
   border-bottom: 1px solid rgb(0, 0, 0, 0.1);
-  padding-bottom: 0.5rem;
 }
 
 .main {
-  padding-block: 0.4rem;
+  /* padding-block: 0.4rem; */
 }
 
 .sectionMain {
@@ -52,6 +52,7 @@
   background-color: #ffffff;
   border-top: 1px solid rgb(0, 0, 0, 0.1);
   overflow: hidden;
+  height: fit-content;
 }
 
 /* estilos header */
