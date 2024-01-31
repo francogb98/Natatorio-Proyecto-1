@@ -37,20 +37,25 @@ function Publico() {
       }
     },
   });
+  if (getUser.isLoading) return <h1>Cargando...</h1>;
 
-  if (getUser.isSuccess) {
+  if (getUser.isError) return <h1>Error</h1>;
+
+  if (getUser.isSuccess && !getUser.data) return <h1>Cargando...</h1>;
+
+  if (getUser.isSuccess && getUser.data) {
     const currentPath = location.pathname;
     const ComponentToRender = routeComponents[currentPath];
     return (
       <div className={style.body}>
         <header className={style.header}>
-          <Header user={getUser.data.user} />
-          <NavBar user={getUser.data.user} />
+          <Header user={getUser.data?.user} />
+          <NavBar user={getUser.data?.user} />
         </header>
         <main className={style.main}>
           <section className={style.sectionMain}>
             {ComponentToRender ? (
-              <ComponentToRender user={getUser.data.user} />
+              <ComponentToRender user={getUser.data?.user} />
             ) : null}
           </section>
         </main>
