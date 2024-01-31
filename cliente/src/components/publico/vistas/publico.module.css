@@ -1,5 +1,5 @@
 .body {
-  background-color: aliceblue;
+  background-color: #808080;
   height: 100vh;
   overflow: hidden;
   display: grid;
@@ -10,12 +10,11 @@
 .header {
   background-color: #ffffff;
   overflow: hidden;
-  height: fit-content;
   border-bottom: 1px solid rgb(0, 0, 0, 0.1);
 }
 
 .main {
-  /* padding-block: 0.4rem; */
+  padding-block: 0.4rem;
 }
 
 .sectionMain {
@@ -52,7 +51,6 @@
   background-color: #ffffff;
   border-top: 1px solid rgb(0, 0, 0, 0.1);
   overflow: hidden;
-  height: fit-content;
 }
 
 /* estilos header */
