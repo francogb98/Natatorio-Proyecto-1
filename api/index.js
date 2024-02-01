@@ -21,7 +21,7 @@ const server = http.createServer(app);
 
 const corsOptions = {
   origin: [
-    "https://natatorio-proyecto-1.vercel.app",
+    "https://www.natatorioolimpicomdc.com",
     "http://localhost:5173",
     "https://natatorio-proyecto-1-zvny.vercel.app",
   ],
