@@ -184,52 +184,6 @@ function CargarArchivos({ usuario }) {
             </li>
           </ol>
         </nav>
-
-        <div className="alert alert-warning">
-          <h5 className="alert-heading">
-            <i className="bi bi-exclamation-triangle-fill me-2"></i>
-            Importante
-          </h5>
-          <p>
-            <strong>
-              Para poder inscribirte a las actividades, debes cargar los
-              siguientes archivos
-            </strong>
-            (por unica vez):
-          </p>
-          <ul>
-            <li>
-              <strong>Foto de perfil</strong>
-            </li>
-
-            <li>
-              <strong>Documento</strong> (parte frontal)
-            </li>
-
-            <li>
-              <strong>CUD</strong> (Certificado Único de Discapacidad) en caso
-              de tenerlo
-            </li>
-            <li>
-              <strong>Certificado de pediculosis y micosis</strong> (con la
-              firma del médico, se debe actualizar cada 1 mes)
-            </li>
-            <li>
-              <strong>Ficha médica completa</strong> (descargarla desde el botón
-              de abajo)
-            </li>
-          </ul>
-
-          <hr />
-          <p className="mb-0">
-            <strong>
-              <i className="bi bi-exclamation-circle-fill me-2"></i>A la par de
-              cada archivo, se encuentra un ícono que indica si el archivo fue
-              cargado correctamente
-            </strong>
-          </p>
-        </div>
-
         {loading ? (
           <div
             className="alert alert-primary text-center"
@@ -241,13 +195,63 @@ function CargarArchivos({ usuario }) {
               zIndex: "1",
             }}
           >
-            <h4 className="fw-bold">Cargando archivo...</h4>
-            <div className="spinner-border text-primary mt-2" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
+            <h4 className="fw-bold">Cargando archivo por favor espere...</h4>
+            <img
+              src="https://media3.giphy.com/media/huOej08UYQYtAjH22E/giphy.gif?cid=ecf05e4722zlimap43nxwgs1uw1zfah471tybh9f7d5c2iap&amp;ep=v1_gifs_related&amp;rid=giphy.gif&amp;ct=s"
+              // alt="Water Swimming Sticker by MySwimPro"
+              // style="width: 500px; height: 281.25px; left: 0px; top: 0px;"
+              style={{
+                width: "60%",
+              }}
+            />
           </div>
         ) : (
           <>
+            <div className="alert alert-warning">
+              <h5 className="alert-heading">
+                <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                Importante
+              </h5>
+              <p>
+                <strong>
+                  Para poder inscribirte a las actividades, debes cargar los
+                  siguientes archivos
+                </strong>
+                (por unica vez):
+              </p>
+              <ul>
+                <li>
+                  <strong>Foto de perfil</strong>
+                </li>
+
+                <li>
+                  <strong>Documento</strong> (parte frontal)
+                </li>
+
+                <li>
+                  <strong>CUD</strong> (Certificado Único de Discapacidad) en
+                  caso de tenerlo
+                </li>
+                <li>
+                  <strong>Certificado de pediculosis y micosis</strong> (con la
+                  firma del médico, se debe actualizar cada 1 mes)
+                </li>
+                <li>
+                  <strong>Ficha médica completa</strong> (descargarla desde el
+                  botón de abajo)
+                </li>
+              </ul>
+
+              <hr />
+              <p className="mb-0">
+                <strong>
+                  <i className="bi bi-exclamation-circle-fill me-2"></i>A la par
+                  de cada archivo, se encuentra un ícono que indica si el
+                  archivo fue cargado correctamente
+                </strong>
+              </p>
+            </div>
+
             {usuario.natacionAdaptada && (
               <>
                 {usuario.cud && !editarCud && (
