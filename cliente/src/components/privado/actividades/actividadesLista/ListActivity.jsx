@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchConToken, fetchConTokenHours } from "../../../../helpers/fetch";
+import {
+  fetchConToken,
+  fetchConTokenHours,
+  getInfoUser,
+} from "../../../../helpers/fetch";
 import { useQuery, useMutation } from "react-query";
 import Modal from "./ModalActivity";
 
@@ -35,6 +39,12 @@ function ListActivity() {
   const getHours = useQuery({
     queryKey: ["hours"],
     queryFn: fetchConTokenHours,
+  });
+
+  const getUser = useQuery({
+    queryKey: ["getUser"],
+    queryFn: getInfoUser,
+    staleTime: 0,
   });
 
   const deleteAct = useMutation(deleteActivity, {
@@ -169,8 +179,12 @@ function ListActivity() {
                   <th>Cupos</th>
                   <th>Usuarios Registrados</th>
                   <th>Disponibles</th>
-                  <th>Editar</th>
-                  <th>Borrar</th>
+                  {getUser.data.user.role === "SUPER_ADMIN" && (
+                    <>
+                      <th>Editar</th>
+                      <th>Borrar</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody>
@@ -195,28 +209,33 @@ function ListActivity() {
                     <td>{actividad.cupos}</td>
                     <td>{actividad.users.length}</td>
                     <td>{actividad.cupos - actividad.users.length}</td>
-                    <td>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => {
-                          setIsEdit(true);
-                          setActividadEdit(actividad);
-                        }}
-                      >
-                        {/* icono de lapiz */}
-                        <i className="bi bi-pencil"></i>
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-danger"
-                        data-bs-toggle="modal"
-                        data-bs-target="#modalDelete"
-                        onClick={() => setIdDelete(actividad._id)}
-                      >
-                        X
-                      </button>
-                    </td>
+
+                    {getUser.data.user.role === "SUPER_ADMIN" && (
+                      <>
+                        <td>
+                          <button
+                            className="btn btn-primary"
+                            onClick={() => {
+                              setIsEdit(true);
+                              setActividadEdit(actividad);
+                            }}
+                          >
+                            {/* icono de lapiz */}
+                            <i className="bi bi-pencil"></i>
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            className="btn btn-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalDelete"
+                            onClick={() => setIdDelete(actividad._id)}
+                          >
+                            X
+                          </button>
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>

@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: data.message,
+          text: "Error en el sevidor, por favor intente mas tarde",
         });
       }
     },

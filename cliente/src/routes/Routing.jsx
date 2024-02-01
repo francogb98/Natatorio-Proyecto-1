@@ -35,6 +35,7 @@ import PiletasInfo from "../components/privado/Inicio/showPiletasInfo/PiletasInf
 import RecuperarContraseña from "../components/publico/recuperarContraseña/RecuperarContraseña";
 import InfoActividad from "../components/privado/actividades/actividadesLista/InfoActividad";
 import Publico from "../components/publico/vistas/Publico";
+import HabilitarAdaptada from "../components/privado/usuario/habilitarUsuario/HabilitarAdaptada";
 
 function Routing() {
   const { auth, dispatch } = useContext(AuthContext);
@@ -98,6 +99,10 @@ function Routing() {
           />
           <Route path="panel/buscar-usuario" element={<SearchUser />} />
           <Route path="panel/habilitar-usuario" element={<Habilitar />} />
+          <Route
+            path="panel/habilitar-usuario-adaptada"
+            element={<HabilitarAdaptada />}
+          />
           <Route path="panel/usuario/:id" element={<User />} />
           <Route path="panel/usuarios" element={<ListaUsuarios />} />
           <Route path="panel/estadisticas" element={<Estadisticas />} />

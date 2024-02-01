@@ -21,6 +21,8 @@ function InfoActividad() {
 
   if (getActivity.isError) return <h1>Hubo un error al cargar la actividad</h1>;
 
+  if (getActivity.isSuccess && !getActivity.data) return <h1>Cargando...</h1>;
+
   if (getActivity.isSuccess) {
     const columns = [
       {

@@ -125,14 +125,16 @@ function User() {
                 <p className="card-text">
                   Edad: <span>{user.edad}</span>
                 </p>
-
-                <p className="card-text">
-                  Telefono: <span>{user.telefono}</span>
-                </p>
-                <p className="card-text">
-                  Telefono Emergencia: <span>{user.telefonoContacto}</span>
-                </p>
-
+                {getUserData2.data.user.role !== "PROFESOR" && (
+                  <>
+                    <p className="card-text">
+                      Telefono: <span>{user.telefono}</span>
+                    </p>
+                    <p className="card-text">
+                      Telefono Emergencia: <span>{user.telefonoContacto}</span>
+                    </p>
+                  </>
+                )}
                 <div style={{ maxWidth: "200px", marginBottom: "20px" }}>
                   <p className="card-text">
                     Rol: <span className="text-danger">{user.role}</span>

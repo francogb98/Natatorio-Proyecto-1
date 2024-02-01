@@ -127,11 +127,14 @@ function NavBar({ usuario }) {
                   </li>
                 </>
               )}
-              <li className={style.link}>
-                <Link to="panel/usuarios" className={style.link__item}>
-                  Lista Usuarios
-                </Link>
-              </li>
+              {(usuario.role === "SUPER_ADMIN" ||
+                usuario.role === "administrador") && (
+                <li className={style.link}>
+                  <Link to="panel/usuarios" className={style.link__item}>
+                    Lista Usuarios
+                  </Link>
+                </li>
+              )}
             </ul>
 
             <div className="py-2 px-1">
