@@ -119,7 +119,7 @@ export const getActivitiesByDate = async (req, res) => {
     hourStart = `${hourStart}:00`;
   }
 
-  console.log(hourStart);
+  console.log({ entre: hourStart });
   try {
     const activity = await Activity.find({
       date: { $in: [date] },
@@ -145,7 +145,11 @@ export const getActivitiesByDate = async (req, res) => {
     });
 
     //de la propiedad users de piletas, filtro los usuarios que coincidan con los de usersArray
-    piletas.map((item) => item.users.map((user) => userPileta.push(user)));
+    piletas.map((item) =>
+      item.users.map((user) => {
+        userPileta.push(user);
+      })
+    );
 
     const sonIguales = (usuario1, usuario2) =>
       usuario1._id.toString() === usuario2._id.toString();
@@ -155,12 +159,14 @@ export const getActivitiesByDate = async (req, res) => {
       (user1) => !userPileta.some((user2) => sonIguales(user1, user2))
     );
 
+    //tengo que verificar que el status de los usuarios sea true
+
     // console.log(uniqueArr1);
 
     return res.status(200).json({
       status: "success",
       message: "Actividades encontradas",
-      users: uniqueArr1,
+      users: uniqueArr1.filter((user) => user.status === true),
       totalUsuarios: uniqueArr1.length,
     });
   } catch (error) {
