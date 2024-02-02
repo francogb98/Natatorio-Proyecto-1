@@ -12,7 +12,7 @@ import { AuthContext } from "../../../../context/AuthContext";
 function PruebaInscripciones() {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
-  const { auth } = useContext(AuthContext);
+  const { auth, dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -21,6 +21,7 @@ function PruebaInscripciones() {
     mutationFn: registrarUsuarioEnActividad,
     onSuccess: (data) => {
       if (data.status === "success") {
+        dispatch({ type: "SET_USER", payload: { user: data.data.userUpdate } });
         Swal.fire({
           title: "Inscripto con Exito",
           text: "Se ha inscripto correctamente en la actividad, redireccionando a pagina principal ",
