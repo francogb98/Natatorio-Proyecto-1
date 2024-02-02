@@ -36,14 +36,21 @@ import Publico from "../components/publico/vistas/Publico";
 import HabilitarAdaptada from "../components/privado/usuario/habilitarUsuario/HabilitarAdaptada";
 
 function Routing() {
-  const { auth, restart } = useContext(AuthContext);
+  const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
 
   useEffect(() => {}, [auth]);
   useEffect(() => {
     if (localStorage.getItem("token")) {
+      setRecargando(true);
       restart();
     }
   }, []);
+
+  useEffect(() => {}, [recargando]);
+
+  if (recargando) {
+    return <h1>Cargando informacion del usuario...</h1>;
+  }
 
   if (!auth)
     return (
@@ -59,78 +66,82 @@ function Routing() {
       </div>
     );
 
-  return (
-    <Routes>
-      <Route path="/" element={<SignIn />} />
-      <Route path="/login" element={<Registro />} />
-      <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
+  if (auth && !recargando)
+    return (
+      <Routes>
+        <Route path="/" element={<SignIn />} />
+        <Route path="/login" element={<Registro />} />
+        <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
 
-      <Route path="/verificar-cuenta" element={<Confirm />} />
-      {auth.logged &&
-        (auth.role === "usuario" || auth.role === "registrado") && (
-          <>
-            <Route path="/vistaPrueba" element={<Publico />} />
-            <Route path="/user" element={<Publico />}>
-              <Route path="home" element={<HomeUser />} />
-              <Route path="perfil/updateFiles" element={<UpdateFiles />} />
-              <Route path="inscripcion" element={<Inscripcion />} />
-              <Route path="perfil" element={<Perfil />} />
-              <Route path="perfil/editarPerfil" element={<EditarPerfil />} />
-              <Route path="notificaciones" element={<Notificaciones />} />
-              <Route path="feedback" element={<Feed />} />
-            </Route>
-          </>
+        <Route path="/verificar-cuenta" element={<Confirm />} />
+        {auth.logged &&
+          (auth.role === "usuario" || auth.role === "registrado") && (
+            <>
+              <Route path="/vistaPrueba" element={<Publico />} />
+              <Route path="/user" element={<Publico />}>
+                <Route path="home" element={<HomeUser />} />
+                <Route path="perfil/updateFiles" element={<UpdateFiles />} />
+                <Route path="inscripcion" element={<Inscripcion />} />
+                <Route path="perfil" element={<Perfil />} />
+                <Route path="perfil/editarPerfil" element={<EditarPerfil />} />
+                <Route path="notificaciones" element={<Notificaciones />} />
+                <Route path="feedback" element={<Feed />} />
+              </Route>
+            </>
+          )}
+        {(auth.logged && auth.role === "ADMINISTRATIVO") ||
+        (auth.logged && auth.role === "PROFESOR") ||
+        (auth.logged && auth.role === "GUARDAVIDA") ||
+        (auth.logged && auth.role === "SUPER_ADMIN") ? (
+          <Route path="/admin" element={<Home />}>
+            <Route path="panel/inicio" element={<Inicio />} />
+            <Route
+              path="panel/inicio/turno-siguiente"
+              element={<FormularioTurnoSiguiente />}
+            />
+            <Route
+              path="panel/inicio/autorizar"
+              element={<FormularioPrueba />}
+            />
+            <Route path="panel/piletas" element={<PiletasInfo />} />
+            <Route path="panel/create" element={<CreateActivity />} />
+            <Route path="panel/actividades" element={<ListActivity />} />
+            <Route
+              path="panel/actividades/infoActividad/:id"
+              element={<InfoActividad />}
+            />
+            <Route path="panel/buscar-usuario" element={<SearchUser />} />
+            <Route path="panel/habilitar-usuario" element={<Habilitar />} />
+            <Route
+              path="panel/habilitar-usuario-adaptada"
+              element={<HabilitarAdaptada />}
+            />
+            <Route path="panel/usuario/:id" element={<User />} />
+            <Route path="panel/usuarios" element={<ListaUsuarios />} />
+            <Route path="panel/estadisticas" element={<Estadisticas />} />
+          </Route>
+        ) : (
+          <Route
+            path="*"
+            element={
+              <div>
+                <h1>Acceso Denegado</h1>
+                <h2>No tienes permisos para acceder a esta pagina</h2>
+                <button
+                  className="btn btn-lg btn-warning"
+                  onClick={() => {
+                    window.location.href = "/";
+                  }}
+                >
+                  Volver al inicio
+                </button>
+              </div>
+            }
+          />
         )}
-      {(auth.logged && auth.role === "ADMINISTRATIVO") ||
-      (auth.logged && auth.role === "PROFESOR") ||
-      (auth.logged && auth.role === "GUARDAVIDA") ||
-      (auth.logged && auth.role === "SUPER_ADMIN") ? (
-        <Route path="/admin" element={<Home />}>
-          <Route path="panel/inicio" element={<Inicio />} />
-          <Route
-            path="panel/inicio/turno-siguiente"
-            element={<FormularioTurnoSiguiente />}
-          />
-          <Route path="panel/inicio/autorizar" element={<FormularioPrueba />} />
-          <Route path="panel/piletas" element={<PiletasInfo />} />
-          <Route path="panel/create" element={<CreateActivity />} />
-          <Route path="panel/actividades" element={<ListActivity />} />
-          <Route
-            path="panel/actividades/infoActividad/:id"
-            element={<InfoActividad />}
-          />
-          <Route path="panel/buscar-usuario" element={<SearchUser />} />
-          <Route path="panel/habilitar-usuario" element={<Habilitar />} />
-          <Route
-            path="panel/habilitar-usuario-adaptada"
-            element={<HabilitarAdaptada />}
-          />
-          <Route path="panel/usuario/:id" element={<User />} />
-          <Route path="panel/usuarios" element={<ListaUsuarios />} />
-          <Route path="panel/estadisticas" element={<Estadisticas />} />
-        </Route>
-      ) : (
-        <Route
-          path="*"
-          element={
-            <div>
-              <h1>Acceso Denegado</h1>
-              <h2>No tienes permisos para acceder a esta pagina</h2>
-              <button
-                className="btn btn-lg btn-warning"
-                onClick={() => {
-                  window.location.href = "/";
-                }}
-              >
-                Volver al inicio
-              </button>
-            </div>
-          }
-        />
-      )}
-      <Route path="*" element={<h1>Not Found</h1>} />
-    </Routes>
-  );
+        <Route path="*" element={<h1>Not Found</h1>} />
+      </Routes>
+    );
 }
 
 export default Routing;

@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import { fetchSinToken } from "../helpers/fetch";
 import { useMutation } from "react-query";
 
@@ -13,6 +13,8 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [authState, dispatch] = useReducer(authReducer, initialState);
+
+  const [recargando, setRecargando] = useState(false);
 
   const navigate = useNavigate();
   const login = useMutation({
@@ -135,6 +137,7 @@ export function AuthProvider({ children }) {
           type: "LOGIN",
           payload: { logged: true, role: data.user.role },
         });
+        setRecargando(false);
       }
       return data;
     } catch (error) {
@@ -152,6 +155,8 @@ export function AuthProvider({ children }) {
         userRefetch: getInfoUser,
         // getUser,
         restart: restartPagina,
+        recargando,
+        setRecargando,
 
         cerrarSesion,
       }}
