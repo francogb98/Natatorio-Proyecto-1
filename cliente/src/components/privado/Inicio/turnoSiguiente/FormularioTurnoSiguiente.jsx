@@ -18,7 +18,6 @@ function Layout() {
   const agregarUsuario = useMutation({
     mutationFn: agregarUsuarioApiletaTurnoSiguiente,
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries("usuariosTurnoSiguiente");
     },
   });

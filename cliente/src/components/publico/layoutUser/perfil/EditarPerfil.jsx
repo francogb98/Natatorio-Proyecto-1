@@ -76,9 +76,7 @@ function EditarPerfil() {
   useEffect(() => {
     setFormValues(auth.user);
   }, [auth.user]);
-  useEffect(() => {
-    console.log(menorEdadAlert);
-  }, [menorEdadAlert]);
+  useEffect(() => {}, [menorEdadAlert]);
 
   // Enviar la solicitud al backend
   const handleSubmitAdulto = (e) => {

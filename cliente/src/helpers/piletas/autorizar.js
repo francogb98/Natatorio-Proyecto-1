@@ -1,7 +1,6 @@
 import { baseUrl } from "../url";
 
 export const autorizar = async (id) => {
-  console.log(id);
   try {
     const resp = await fetch(`${baseUrl}pileta/autorizar`, {
       method: "POST",
@@ -16,6 +15,6 @@ export const autorizar = async (id) => {
 
     return data;
   } catch (error) {
-    console.log(error);
+    return false;
   }
 };

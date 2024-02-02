@@ -38,7 +38,6 @@ export function AuthProvider({ children }) {
         await dispatch({ type: "SET_USER", payload: { user: usuario } });
 
         if (usuario.role === "usuario") {
-          console.log({ usuario: "me ejecute" });
           await getActividadesUsuario();
         }
 
@@ -121,8 +120,6 @@ export function AuthProvider({ children }) {
       return error;
     }
   };
-
-  console.log({ contexto: authState });
 
   return (
     <AuthContext.Provider

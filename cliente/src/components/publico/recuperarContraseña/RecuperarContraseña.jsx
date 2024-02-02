@@ -62,9 +62,7 @@ function RecuperarContraseña() {
           .then(() => {
             window.location.href = "/";
           })
-          .catch((error) => {
-            console.log(error);
-          });
+          .catch((error) => {});
       }
 
       if (data.status === "error") {
@@ -89,8 +87,6 @@ function RecuperarContraseña() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData);
-
-    console.log(data);
 
     if (data.password !== data.repetir) {
       Swal.fire({

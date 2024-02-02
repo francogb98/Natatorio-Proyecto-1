@@ -32,7 +32,6 @@ function Feed() {
     mutationKey: "feed",
     mutationFn: mandarFeed,
     onSuccess: (data) => {
-      console.log(data);
       if (data.status === "success") {
         Swal.fire({
           title: "Mensaje enviado con Exito",

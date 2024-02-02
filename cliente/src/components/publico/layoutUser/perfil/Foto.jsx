@@ -23,9 +23,7 @@ function Foto() {
       userRefetch();
       setLoading(false);
     },
-    onError: (error) => {
-      console.log(error);
-    },
+    onError: (error) => {},
   });
 
   const preset_key = import.meta.env.VITE_REACT_APP_PRESET_KEY;
@@ -65,7 +63,6 @@ function Foto() {
         });
       })
       .catch((err) => {
-        console.log(err);
         setError(true);
         setLoading(false);
       });
