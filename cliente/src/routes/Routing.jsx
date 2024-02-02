@@ -48,10 +48,6 @@ function Routing() {
 
   useEffect(() => {}, [recargando]);
 
-  if (recargando) {
-    return <h1>Cargando informacion del usuario...</h1>;
-  }
-
   if (!auth)
     return (
       <div>
