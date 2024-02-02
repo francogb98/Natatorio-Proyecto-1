@@ -102,7 +102,7 @@ function Habilitar() {
                 Recargar
               </button>
             </header>
-
+            <div>Total usuario para habilitar: {data.users.length}</div>
             <Tabla data={data.users} columns={columns} />
           </>
         )}

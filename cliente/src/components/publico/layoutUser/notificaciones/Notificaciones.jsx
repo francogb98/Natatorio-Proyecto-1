@@ -16,6 +16,8 @@ function Notificaciones() {
     },
   });
 
+  console.log(auth.user);
+
   return (
     <div className={style.body}>
       {auth.user.notificaciones

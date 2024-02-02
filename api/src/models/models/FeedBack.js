@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const feedbackSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   mensage: String,
+  contestado: { type: Boolean, default: false },
 });
 
 const Feedback = mongoose.model("Feedback", feedbackSchema);
