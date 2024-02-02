@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../../../context/AuthContext";
 
 function CargarArchivos() {
-  const { auth, userRefetch } = useContext(AuthContext);
+  const { auth, dispatch } = useContext(AuthContext);
 
   const [imagen, setImagen] = useState();
 
@@ -32,8 +32,9 @@ function CargarArchivos() {
   const [editarFicha, setEditarFicha] = useState(false);
 
   const postFicha = useMutation(cargarFicha, {
-    onSuccess: () => {
-      userRefetch();
+    onSuccess: (data) => {
+      dispatch({ type: "SET_USER", payload: { user: data.user } });
+      return true;
     },
   });
 
