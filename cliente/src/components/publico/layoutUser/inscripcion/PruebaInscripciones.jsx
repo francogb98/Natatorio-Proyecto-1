@@ -199,12 +199,7 @@ function PruebaInscripciones() {
                   las actividades que comiencen a las 10 o finalicen en dicho
                   horario; Misma logica para los dias y nombre de actividades)
                 </li>
-                <li className="mb-2">
-                  En la<strong> barra de busqueda </strong>puede buscar por
-                  horario , actividad o dias. (ej:10 ----{">"} aparecera todas
-                  las actividades que comiencen a las 10 o finalicen en dicho
-                  horario; Misma logica para los dias y nombre de actividades)
-                </li>
+
                 <br />
                 <b>Datos sobre las actividades:</b>
                 <li className="mb-2 mt-2">
