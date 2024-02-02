@@ -139,6 +139,8 @@ export function AuthProvider({ children }) {
         });
         setRecargando(false);
       }
+      await getActividadesUsuario();
+
       return data;
     } catch (error) {
       return error;
