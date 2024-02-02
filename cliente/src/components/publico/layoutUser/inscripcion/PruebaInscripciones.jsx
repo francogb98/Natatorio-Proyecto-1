@@ -199,6 +199,25 @@ function PruebaInscripciones() {
                   las actividades que comiencen a las 10 o finalicen en dicho
                   horario; Misma logica para los dias y nombre de actividades)
                 </li>
+                <li className="mb-2">
+                  En la<strong> barra de busqueda </strong>puede buscar por
+                  horario , actividad o dias. (ej:10 ----{">"} aparecera todas
+                  las actividades que comiencen a las 10 o finalicen en dicho
+                  horario; Misma logica para los dias y nombre de actividades)
+                </li>
+                <br />
+                <b>Datos sobre las actividades:</b>
+                <li className="mb-2 mt-2">
+                  <strong> Escuela de natacion para adultos: </strong>Clases de
+                  natación guiadas por profesionales desde 0 o para continuar
+                  con el aprendizaje de otros estilos: crol, espalda, pecho,
+                  mariposa
+                </li>
+                <li className="mb-2">
+                  <strong> PILETA LIBRE: </strong>Para usuarios que ya sepan
+                  nadar uno o más estilos sin la instrucción de un profesional
+                  en pileta de 25 o 50mts
+                </li>
               </ul>
             </div>
           </div>
