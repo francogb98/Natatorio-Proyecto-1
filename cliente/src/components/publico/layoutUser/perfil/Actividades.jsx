@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useContext, useState } from "react";
+import { useMutation } from "react-query";
 import { darDeBajaActividad } from "../../../../helpers/usersFetch/darDeBajaActividad";
 
 import style from "./style.module.css";
 
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function Actividades({ user }) {
+function Actividades() {
+  const { auth, userRefetch } = useContext(AuthContext);
+
   const [darDeBajaStatus, setDarDeBajaStatus] = useState(false);
-
-  const queryClient = useQueryClient();
 
   const darDeBaja = useMutation({
     mutationFn: darDeBajaActividad,
@@ -21,7 +22,7 @@ function Actividades({ user }) {
         confirmButtonText: "Aceptar",
       });
 
-      queryClient.invalidateQueries("getUser");
+      userRefetch();
     },
     onError: (error) => {
       Swal.fire({
@@ -35,27 +36,28 @@ function Actividades({ user }) {
 
   return (
     <div>
-      {!user.status && user.activity?.length > 0 ? (
+      {!auth.user.status && auth.user.activity?.length > 0 ? (
         <div className={style.body__activity}>
           <div className={style.info}>
             <label htmlFor="">Actividad:</label>
 
-            <p>{user.activity[0].name}</p>
+            <p>{auth.user.activity[0].name}</p>
             {/* icono de X para dar de baja */}
           </div>
           <div className={style.info}>
             <label htmlFor="">Dias:</label>
-            <p>{user.activity[0].date.join(" - ")}</p>
+            <p>{auth.user.activity[0].date?.join(" - ")}</p>
           </div>
           <div className={style.info}>
             <label htmlFor="">Horario:</label>
             <p>
-              {user.activity[0].hourStart} - {user.activity[0].hourFinish}
+              {auth.user.activity[0].hourStart} -{" "}
+              {auth.user.activity[0].hourFinish}
             </p>
           </div>
           <div className={style.info}>
             <label htmlFor="">Estado:</label>
-            <p className="fw-bold">Espernado confirmacion</p>
+            <p className="fw-bold">Esperando confirmacion</p>
           </div>
           {!darDeBajaStatus ? (
             <button
@@ -91,7 +93,7 @@ function Actividades({ user }) {
                 <button
                   className={style.button__confirm}
                   onClick={() => {
-                    darDeBaja.mutate(user.activity[0]._id);
+                    darDeBaja.mutate(auth.user.activity[0]._id);
                     setDarDeBajaStatus(!darDeBajaStatus);
                   }}
                 >
@@ -102,23 +104,24 @@ function Actividades({ user }) {
           )}
         </div>
       ) : null}
-      {user.status && user.activity?.length > 0 ? (
+      {auth.user.status && auth.user.activity?.length > 0 ? (
         <>
           <div className={style.body__activity}>
             <div className={style.info}>
               <label htmlFor="">Actividad:</label>
 
-              <p>{user.activity[0].name}</p>
+              <p>{auth.user.activity[0].name}</p>
               {/* icono de X para dar de baja */}
             </div>
             <div className={style.info}>
               <label htmlFor="">Dias:</label>
-              <p>{user.activity[0].date.join(" - ")}</p>
+              <p>{auth.user.activity[0].date?.join(" - ")}</p>
             </div>
             <div className={style.info}>
               <label htmlFor="">Horario:</label>
               <p>
-                {user.activity[0].hourStart} - {user.activity[0].hourFinish}
+                {auth.user.activity[0].hourStart} -{" "}
+                {auth.user.activity[0].hourFinish}
               </p>
             </div>
             {!darDeBajaStatus ? (
@@ -155,7 +158,7 @@ function Actividades({ user }) {
                   <button
                     className={style.button__confirm}
                     onClick={() => {
-                      darDeBaja.mutate(user.activity[0]._id);
+                      darDeBaja.mutate(auth.user.activity[0]._id);
                       setDarDeBajaStatus(!darDeBajaStatus);
                     }}
                   >
@@ -167,7 +170,7 @@ function Actividades({ user }) {
           </div>
         </>
       ) : null}
-      {user.status && user.activity?.length === 0 ? (
+      {auth.user.status && auth.user.activity?.length === 0 ? (
         <div className={style.info}>
           <label htmlFor="">Actividad:</label>
           <p>No tienes actividad</p>

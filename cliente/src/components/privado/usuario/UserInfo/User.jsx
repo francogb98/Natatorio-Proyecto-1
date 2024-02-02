@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
 
@@ -14,20 +14,11 @@ import Notificaciones from "./Notificaciones";
 
 import avatar from "../../../../assets/avatar.webp";
 import { getInfoUser } from "../../../../helpers/fetch";
+import { AuthContext } from "../../../../context/AuthContext";
 
 function User() {
   //accedo al id que viene por parametro
-
-  const getUserData2 = useQuery({
-    queryKey: ["getUser"],
-    queryFn: getInfoUser,
-    staleTime: 0,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        return data;
-      }
-    },
-  });
+  const { auth } = useContext(AuthContext);
 
   const [loading, setLoading] = useState(false);
 
@@ -125,7 +116,7 @@ function User() {
                 <p className="card-text">
                   Edad: <span>{user.edad}</span>
                 </p>
-                {getUserData2.data.user.role !== "PROFESOR" && (
+                {auth.role !== "PROFESOR" && (
                   <>
                     <p className="card-text">
                       Telefono: <span>{user.telefono}</span>
@@ -139,7 +130,7 @@ function User() {
                   <p className="card-text">
                     Rol: <span className="text-danger">{user.role}</span>
                   </p>
-                  {getUserData2.data.user.role === "SUPER_ADMIN" && (
+                  {auth.role === "SUPER_ADMIN" && (
                     <>
                       <label htmlFor="" style={{ maxWidth: "150px" }}>
                         Cambiar Rol:
@@ -309,7 +300,7 @@ function User() {
               <Notificaciones user={user} />
             </section>
 
-            {getUserData2.data.user.role === "SUPER_ADMIN" && (
+            {auth.role === "SUPER_ADMIN" && (
               <>
                 {user.activity && user.activity.length ? (
                   <section className={`card ${style.formulario}`}>

@@ -5,10 +5,11 @@ import { AuthContext } from "../../context/AuthContext";
 
 import style from "./home.module.css";
 
-function NavBar({ usuario }) {
+function NavBar() {
   const [show, setShow] = React.useState(true);
 
-  const { cerrarSesion } = useContext(AuthContext);
+  const { auth, cerrarSesion } = useContext(AuthContext);
+
   return (
     <>
       <button
@@ -56,8 +57,7 @@ function NavBar({ usuario }) {
           <nav className={style.menu}>
             <ul>
               <li className={style.inicio}>Inicio</li>
-              {usuario.role === "PROFESOR" ||
-              usuario.role === "GUARDAVIDA" ? null : (
+              {auth.role === "PROFESOR" || auth.role === "GUARDAVIDA" ? null : (
                 <>
                   <li className={style.link}>
                     <Link to="panel/inicio" className={style.link__item}>
@@ -79,7 +79,7 @@ function NavBar({ usuario }) {
                   Piletas
                 </Link>
               </li>
-              {usuario.role === "SUPER_ADMIN" && (
+              {auth.role === "SUPER_ADMIN" && (
                 <li className={style.link}>
                   <Link
                     to="panel/inicio/autorizar"
@@ -92,7 +92,7 @@ function NavBar({ usuario }) {
             </ul>
             <ul>
               <li className={style.inicio}>Actividades</li>
-              {usuario.role === "SUPER_ADMIN" && (
+              {auth.role === "SUPER_ADMIN" && (
                 <li className={style.link}>
                   <Link to="panel/create" className={style.link__item}>
                     Crear Actividad
@@ -107,7 +107,7 @@ function NavBar({ usuario }) {
             </ul>
             <ul>
               <li className={style.inicio}>Usuario</li>
-              {usuario.role === "SUPER_ADMIN" && (
+              {auth.role === "SUPER_ADMIN" && (
                 <>
                   <li className={style.link}>
                     <Link
@@ -127,8 +127,8 @@ function NavBar({ usuario }) {
                   </li>
                 </>
               )}
-              {(usuario.role === "SUPER_ADMIN" ||
-                usuario.role === "administrador") && (
+              {(auth.role === "SUPER_ADMIN" ||
+                auth.role === "administrador") && (
                 <li className={style.link}>
                   <Link to="panel/usuarios" className={style.link__item}>
                     Lista Usuarios

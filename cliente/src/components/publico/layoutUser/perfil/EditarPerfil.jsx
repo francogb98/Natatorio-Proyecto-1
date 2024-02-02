@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useContext, useEffect, useState } from "react";
+import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
@@ -10,10 +10,13 @@ import Actividades from "./Actividades";
 import { editarPerfilFetch } from "../../../../helpers/usersFetch/editarPerfli";
 import Foto from "./Foto";
 import InformacionPersonal from "./InformacionPersonal";
-import InformacionContacto from "./InformacionContacto";
+// import InformacionContacto from "./InformacionContacto";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function EditarPerfil({ user }) {
+function EditarPerfil() {
   // Crear un estado local para rastrear los cambios
+  const { auth, userRefetch } = useContext(AuthContext);
+
   const [formValues, setFormValues] = useState({
     nombre: "",
     apellido: "",
@@ -36,8 +39,6 @@ function EditarPerfil({ user }) {
 
   const [menorEdadAlert, setMenorEdadAlert] = useState(false);
 
-  const queryClient = useQueryClient();
-
   const editarPerfil = useMutation({
     mutationFn: editarPerfilFetch,
     onSuccess: (data) => {
@@ -48,7 +49,8 @@ function EditarPerfil({ user }) {
         confirmButtonText: "Aceptar",
       });
 
-      queryClient.invalidateQueries("getUser");
+      // queryClient.invalidateQueries("getUser");
+      userRefetch();
       setEdicionActiva(!edicionActiva);
     },
     onError: (error) => {
@@ -72,8 +74,8 @@ function EditarPerfil({ user }) {
   };
 
   useEffect(() => {
-    setFormValues(user);
-  }, [user]);
+    setFormValues(auth.user);
+  }, [auth.user]);
   useEffect(() => {
     console.log(menorEdadAlert);
   }, [menorEdadAlert]);
@@ -96,7 +98,7 @@ function EditarPerfil({ user }) {
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
-            <Link to={"perfil"}>Perfil</Link>
+            <Link to={"/user/perfil"}>Perfil</Link>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
             <strong>Informacion-Perfil</strong>
@@ -105,13 +107,13 @@ function EditarPerfil({ user }) {
       </nav>
 
       <div className={style.info}>
-        <label htmlFor="">Numero De user</label>
-        <h3>{user.customId}</h3>
+        <label htmlFor="">Numero De usuario</label>
+        <h3>{auth.user.customId}</h3>
       </div>
 
-      <Foto user={user} />
+      <Foto user={auth.user} />
 
-      <Actividades user={user} />
+      <Actividades user={auth.user} refetch={userRefetch} />
 
       <h2>Informacion Personal</h2>
 

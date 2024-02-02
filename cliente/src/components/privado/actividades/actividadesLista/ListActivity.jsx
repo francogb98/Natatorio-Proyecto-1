@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   fetchConToken,
   fetchConTokenHours,
@@ -10,8 +10,11 @@ import Modal from "./ModalActivity";
 import { deleteActivity } from "../../../../helpers/activitiesFetch/deleteActivity";
 import EditarActividad from "./EditActividad";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../../context/AuthContext";
 
 function ListActivity() {
+  const { auth } = useContext(AuthContext);
+
   const [actividades, setActivitys] = useState([]); // <---quiero que se ordene por horario
   const [nombreActividades, setNombreActivitys] = useState([]); // <---quiero que se ordene por horario
   const [hours, setHours] = useState([]);
@@ -39,12 +42,6 @@ function ListActivity() {
   const getHours = useQuery({
     queryKey: ["hours"],
     queryFn: fetchConTokenHours,
-  });
-
-  const getUser = useQuery({
-    queryKey: ["getUser"],
-    queryFn: getInfoUser,
-    staleTime: 0,
   });
 
   const deleteAct = useMutation(deleteActivity, {
@@ -179,7 +176,7 @@ function ListActivity() {
                   <th>Cupos</th>
                   <th>Usuarios Registrados</th>
                   <th>Disponibles</th>
-                  {getUser.data.user.role === "SUPER_ADMIN" && (
+                  {auth.role === "SUPER_ADMIN" && (
                     <>
                       <th>Editar</th>
                       <th>Borrar</th>
@@ -210,7 +207,7 @@ function ListActivity() {
                     <td>{actividad.users.length}</td>
                     <td>{actividad.cupos - actividad.users.length}</td>
 
-                    {getUser.data.user.role === "SUPER_ADMIN" && (
+                    {auth.role === "SUPER_ADMIN" && (
                       <>
                         <td>
                           <button

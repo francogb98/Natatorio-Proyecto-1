@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import style from "./style.module.css";
 
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 import { cambiarFoto } from "../../../../helpers/usersFetch/imagen/cambiarFoto";
 import axios from "axios";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function Foto({ user }) {
+function Foto() {
+  const { auth, userRefetch } = useContext(AuthContext);
+
   const [file, setFile] = useState();
   const [previewUrl, setPreviewUrl] = useState();
   const [loading, setLoading] = useState(false);
@@ -14,12 +17,10 @@ function Foto({ user }) {
 
   const [isImage, setIsImage] = useState(false);
 
-  const queryClient = useQueryClient();
-
   const cambiarFotoMutation = useMutation({
     mutationFn: cambiarFoto,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries("getUser");
+    onSuccess: () => {
+      userRefetch();
       setLoading(false);
     },
     onError: (error) => {
@@ -60,7 +61,7 @@ function Foto({ user }) {
         cambiarFotoMutation.mutate({
           public_id_foto: res.data.public_id,
           foto: res.data.secure_url,
-          id: user._id,
+          id: auth.user._id,
         });
       })
       .catch((err) => {
@@ -76,15 +77,15 @@ function Foto({ user }) {
 
   return (
     <div className={style.editarFoto}>
-      {user.foto && (
+      {auth.user.foto && (
         <img
-          src={user.foto}
+          src={auth.user.foto}
           alt="Imagen seleccionada"
           className={style.imagenPerfil}
         />
       )}
       <h2 style={{ textAlign: "start" }}>
-        {user.foto ? "Cambiar foto" : "Agregar foto"}
+        {auth.user.foto ? "Cambiar foto" : "Agregar foto"}
       </h2>
       <div className="input-group mb-3">
         <input
@@ -101,7 +102,7 @@ function Foto({ user }) {
         </button>
       </div>
 
-      {previewUrl && !user.foto && (
+      {previewUrl && !auth.user.foto && (
         <img
           src={previewUrl}
           alt="Imagen seleccionada"

@@ -1,25 +1,24 @@
-import React from "react";
+import { useContext } from "react";
 
 import style from "./style.module.css";
 
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 
 import { updateNotificacion } from "../../../../helpers/usersFetch/notificaciones/updateNotificacion";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function Notificaciones({ user }) {
-  const queryClient = useQueryClient();
+function Notificaciones() {
+  const { auth, userRefetch } = useContext(AuthContext);
 
   const mutation = useMutation(updateNotificacion, {
     onSuccess: () => {
-      queryClient.invalidateQueries("getUser");
+      userRefetch();
     },
   });
 
-  console.log(user);
-
   return (
     <div className={style.body}>
-      {user.notificaciones
+      {auth.user.notificaciones
         ?.slice() // Copia el array para evitar modificar el original
         .reverse() // Invierte el orden del array
         .slice(0, 5) // Limita el array a 5 elementos
@@ -59,7 +58,7 @@ function Notificaciones({ user }) {
             ) : null}
           </div>
         ))}
-      {!user.notificaciones.length && (
+      {!auth.user.notificaciones.length && (
         <div className={style.sinNotificaciones}>No hay notificaciones</div>
       )}
     </div>

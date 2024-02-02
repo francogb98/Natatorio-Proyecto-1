@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useMutation } from "react-query";
 
 import Tabla from "../../../../utilidades/Tabla";
@@ -6,9 +6,15 @@ import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/regi
 import Swal from "sweetalert2";
 
 import style from "./styles.module.css";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function PruebaInscripciones({ actividad }) {
+function PruebaInscripciones() {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
+
+  const { auth } = useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const registerInActivity = useMutation({
     mutationKey: "registerUser",
@@ -21,10 +27,10 @@ function PruebaInscripciones({ actividad }) {
           icon: data.status,
           //despues de 2 segundos lo redirecciones
           timer: 2000,
-          confirmButtonText: "Aceptar",
+          showConfirmButton: false,
         }).then(() => {
           //redirecciona al inicio
-          window.location.href = "/user/home";
+          navigate("/user/home");
         });
       } else {
         Swal.fire({
@@ -200,7 +206,11 @@ function PruebaInscripciones({ actividad }) {
       </div>
 
       <div className={style.tabla}>
-        <Tabla columns={columns} data={actividad} type={"Actividad"} />
+        <Tabla
+          columns={columns}
+          data={auth.actividadesUsuario}
+          type={"Actividad"}
+        />
       </div>
 
       <div

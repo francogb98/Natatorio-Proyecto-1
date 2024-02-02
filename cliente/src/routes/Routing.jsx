@@ -1,8 +1,6 @@
 import { useContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { useQuery } from "react-query";
-import { getInfoUser } from "../helpers/fetch";
 
 import Registro from "../components/publico/registro/RegistroPrueba";
 import Confirm from "../components/publico/confirmEmail/ConfirmEmail";
@@ -38,24 +36,23 @@ import Publico from "../components/publico/vistas/Publico";
 import HabilitarAdaptada from "../components/privado/usuario/habilitarUsuario/HabilitarAdaptada";
 
 function Routing() {
-  const { auth, dispatch } = useContext(AuthContext);
-  const getUser = useQuery({
-    queryKey: ["getUser"],
-    queryFn: getInfoUser,
-  });
+  const { auth } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (getUser.data?.status === "success" && !auth.logged) {
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          logged: true,
-          role: getUser.data.user.role,
-          user: getUser.data.user,
-        },
-      });
-    }
-  }, [getUser.data]);
+  useEffect(() => {}, [auth]);
+
+  if (!auth)
+    return (
+      <div>
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+          <Route path="/login" element={<Registro />} />
+          <Route
+            path="/recuperar-contraseña"
+            element={<RecuperarContraseña />}
+          />
+        </Routes>
+      </div>
+    );
 
   return (
     <Routes>
@@ -70,10 +67,10 @@ function Routing() {
             <Route path="/vistaPrueba" element={<Publico />} />
             <Route path="/user" element={<Publico />}>
               <Route path="home" element={<HomeUser />} />
-              <Route path="updateFiles" element={<UpdateFiles />} />
+              <Route path="perfil/updateFiles" element={<UpdateFiles />} />
               <Route path="inscripcion" element={<Inscripcion />} />
               <Route path="perfil" element={<Perfil />} />
-              <Route path="editarPerfil" element={<EditarPerfil />} />
+              <Route path="perfil/editarPerfil" element={<EditarPerfil />} />
               <Route path="notificaciones" element={<Notificaciones />} />
               <Route path="feedback" element={<Feed />} />
             </Route>

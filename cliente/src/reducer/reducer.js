@@ -2,6 +2,7 @@ export const initialState = {
   logged: false,
   role: "",
   user: {},
+  actividadesUsuario: [],
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -23,6 +24,11 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.user,
+      };
+    case "SET_ACTIVIDADES":
+      return {
+        ...state,
+        actividadesUsuario: action.payload.actividadesUsuario,
       };
     default:
       return state;

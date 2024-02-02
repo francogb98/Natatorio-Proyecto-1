@@ -8,12 +8,21 @@ export const loginUser = async (req, res) => {
   //verificamos si el usuario existe
 
   try {
-    const user = await User.findOne({ dni });
+    const user = await User.findOne({ dni }).populate({
+      path: "activity",
+      populate: {
+        path: "name",
+      },
+    });
+
     if (!user) {
       return res.status(400).json({
         status: "error",
         message: "Credenciales incorrectas",
       });
+    }
+    if (!user.activity) {
+      user.activity = [];
     }
 
     console.log(user);

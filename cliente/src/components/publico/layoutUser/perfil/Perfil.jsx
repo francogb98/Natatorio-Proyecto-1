@@ -1,13 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useMutation, useQuery } from "react-query";
-import { baseUrl } from "../../../../helpers/url";
-
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import style from "./style.module.css";
-
-import EditarPerfil from "./EditarPerfil";
-import Feed from "./Feed";
 
 function Perfil() {
   return (

@@ -1,14 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation } from "react-query";
 
 import { cargarFicha } from "../../../../helpers/usersFetch/cargarFicha";
 
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function CargarArchivos({ usuario }) {
+function CargarArchivos() {
+  const { auth, userRefetch } = useContext(AuthContext);
+
   const [imagen, setImagen] = useState();
 
   const [cud, setCud] = useState();
@@ -28,11 +31,9 @@ function CargarArchivos({ usuario }) {
   const [editarHongos, setEditarHongos] = useState(false);
   const [editarFicha, setEditarFicha] = useState(false);
 
-  const queryClient = useQueryClient();
-
   const postFicha = useMutation(cargarFicha, {
     onSuccess: () => {
-      queryClient.invalidateQueries("getUser");
+      userRefetch();
     },
   });
 
@@ -96,7 +97,7 @@ function CargarArchivos({ usuario }) {
         postFicha.mutate({
           archivo: res.data.secure_url,
           tipo: tipo,
-          id: usuario._id,
+          id: auth.user._id,
         });
         setSuccess(true);
 
@@ -177,7 +178,7 @@ function CargarArchivos({ usuario }) {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <Link to={"perfil"}>Perfil</Link>
+              <Link to={"/user/perfil"}>Perfil</Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
               <strong>Cargar Archivos</strong>
@@ -252,13 +253,13 @@ function CargarArchivos({ usuario }) {
               </p>
             </div>
 
-            {usuario.natacionAdaptada && (
+            {auth.user.natacionAdaptada && (
               <>
-                {usuario.cud && !editarCud && (
+                {auth.user.cud && !editarCud && (
                   <div className="mb-3">
                     <h5 className="form-label fw-bold">
                       CUD Cargado{" "}
-                      {usuario.cud ? (
+                      {auth.user.cud ? (
                         <i
                           className="bi bi-check-circle-fill text-success"
                           style={{ fontSize: "1.5rem" }}
@@ -275,7 +276,7 @@ function CargarArchivos({ usuario }) {
                         className="btn btn-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
-                        onClick={() => setImagen(usuario.cud)}
+                        onClick={() => setImagen(auth.user.cud)}
                       >
                         Ver Imagen
                       </button>
@@ -289,7 +290,7 @@ function CargarArchivos({ usuario }) {
                   </div>
                 )}
 
-                {(!usuario.cud || editarCud) && (
+                {(!auth.user.cud || editarCud) && (
                   <div className="mb-3">
                     <h5 className="form-label">Cargar CUD</h5>
                     <input
@@ -303,11 +304,11 @@ function CargarArchivos({ usuario }) {
               </>
             )}
 
-            {usuario.foto && !editarFotoPerfil && (
+            {auth.user.foto && !editarFotoPerfil && (
               <div className="mb-3">
                 <h5 className="form-label fw-bold">
                   Foto de perfil Cargada{" "}
-                  {usuario.foto ? (
+                  {auth.user.foto ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -324,7 +325,7 @@ function CargarArchivos({ usuario }) {
                     className="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    onClick={() => setImagen(usuario.foto)}
+                    onClick={() => setImagen(auth.user.foto)}
                   >
                     Ver Imagen
                   </button>
@@ -338,11 +339,11 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {(!usuario.foto || editarFotoPerfil) && (
+            {(!auth.user.foto || editarFotoPerfil) && (
               <div className="mb-5">
                 <h5 className="form-label fw-bold">
                   Subir foto de perfil usuario{" "}
-                  {usuario.foto ? (
+                  {auth.user.foto ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -363,11 +364,11 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {usuario.fotoDocumento && !editarDocumento && (
+            {auth.user.fotoDocumento && !editarDocumento && (
               <div className="mb-3">
                 <h5 className="form-label fw-bold">
                   Foto de documento cargada{" "}
-                  {usuario.fotoDocumento ? (
+                  {auth.user.fotoDocumento ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -384,7 +385,7 @@ function CargarArchivos({ usuario }) {
                     className="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    onClick={() => setImagen(usuario.fotoDocumento)}
+                    onClick={() => setImagen(auth.user.fotoDocumento)}
                   >
                     Ver Imagen
                   </button>
@@ -398,11 +399,11 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {(!usuario.fotoDocumento || editarDocumento) && (
+            {(!auth.user.fotoDocumento || editarDocumento) && (
               <div className="mb-5">
                 <h5 className="form-label fw-bold">
                   Subir foto del documento (parte frontal){" "}
-                  {usuario.fotoDocumento ? (
+                  {auth.user.fotoDocumento ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -423,11 +424,11 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {usuario.certificadoHongos && !editarHongos && (
+            {auth.user.certificadoHongos && !editarHongos && (
               <div className="mb-3">
                 <h5 className="form-label fw-bold">
                   Certificado de pediculosis y micosis{" "}
-                  {usuario.certificadoHongos ? (
+                  {auth.user.certificadoHongos ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -444,7 +445,7 @@ function CargarArchivos({ usuario }) {
                     className="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    onClick={() => setImagen(usuario.certificadoHongos)}
+                    onClick={() => setImagen(auth.user.certificadoHongos)}
                   >
                     Ver Imagen
                   </button>
@@ -458,11 +459,11 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {(!usuario.certificadoHongos || editarHongos) && (
+            {(!auth.user.certificadoHongos || editarHongos) && (
               <div className="mb-5">
                 <h5 className="form-label fw-bold">
                   Subir Certificado de pediculosis y micosis{" "}
-                  {usuario.certificadoHongos ? (
+                  {auth.user.certificadoHongos ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -483,11 +484,11 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {usuario.fichaMedica && !editarFicha && (
+            {auth.user.fichaMedica && !editarFicha && (
               <div className="mb-3">
                 <h5 className="form-label fw-bold">
                   Ficha medica cargada{" "}
-                  {usuario.fichaMedica ? (
+                  {auth.user.fichaMedica ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}
@@ -504,7 +505,7 @@ function CargarArchivos({ usuario }) {
                     className="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    onClick={() => setImagen(usuario.fichaMedica)}
+                    onClick={() => setImagen(auth.user.fichaMedica)}
                   >
                     Ver Archivo
                   </button>
@@ -518,11 +519,11 @@ function CargarArchivos({ usuario }) {
               </div>
             )}
 
-            {(!usuario.fichaMedica || editarFicha) && (
+            {(!auth.user.fichaMedica || editarFicha) && (
               <div className="mb-5">
                 <h5 className="form-label fw-bold">
                   Subir Ficha Medica (completada){" "}
-                  {usuario.fichaMedica ? (
+                  {auth.user.fichaMedica ? (
                     <i
                       className="bi bi-check-circle-fill text-success"
                       style={{ fontSize: "1.5rem" }}

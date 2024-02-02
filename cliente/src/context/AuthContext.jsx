@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { authReducer, initialState } from "../reducer/reducer";
 
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../helpers/url";
 
 export const AuthContext = createContext();
 
@@ -30,8 +31,16 @@ export function AuthProvider({ children }) {
         localStorage.setItem("token", data.token);
         const { usuario } = data;
 
-        await dispatch({ type: "LOGIN", payload: { role: usuario.role } });
+        await dispatch({
+          type: "LOGIN",
+          payload: { logged: true, role: usuario.role },
+        });
         await dispatch({ type: "SET_USER", payload: { user: usuario } });
+
+        if (usuario.role === "usuario") {
+          console.log({ usuario: "me ejecute" });
+          await getActividadesUsuario();
+        }
 
         Swal.fire({
           icon: "success",
@@ -55,7 +64,7 @@ export function AuthProvider({ children }) {
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: "Error en el sevidor, por favor intente mas tarde",
+          text: data.message,
         });
       }
     },
@@ -75,6 +84,46 @@ export function AuthProvider({ children }) {
     return navigate("/");
   };
 
+  const getActividadesUsuario = async () => {
+    try {
+      const url = `${baseUrl}activity/getActividadesNombre`;
+      const resp = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      const { actividades } = await resp.json();
+      await dispatch({
+        type: "SET_ACTIVIDADES",
+        payload: { actividadesUsuario: actividades },
+      });
+
+      return actividades;
+    } catch (error) {
+      return error;
+    }
+  };
+  const getInfoUser = async () => {
+    try {
+      if (!localStorage.getItem("token")) return;
+      const resp = await fetch(
+        `${baseUrl}user/infoUser/${localStorage.getItem("token")}`
+      );
+      const data = await resp.json();
+
+      if (data.status == "success") {
+        await dispatch({ type: "SET_USER", payload: { user: data.user } });
+      }
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  console.log({ contexto: authState });
+
   return (
     <AuthContext.Provider
       value={{
@@ -82,6 +131,7 @@ export function AuthProvider({ children }) {
 
         dispatch,
         login,
+        userRefetch: getInfoUser,
         // getUser,
 
         cerrarSesion,

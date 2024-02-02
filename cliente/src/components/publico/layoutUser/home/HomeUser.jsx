@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import style from "./homeUser.module.css";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function HomeUser({ user }) {
+function HomeUser() {
+  const { auth } = useContext(AuthContext);
   return (
     <div className={style.body}>
       <h1 className="text-danger">
@@ -13,10 +16,10 @@ function HomeUser({ user }) {
       <section
         className={style.seccion1}
         style={
-          user.foto &&
-          user.fichaMedica &&
-          user.certificadoHongos &&
-          user.fotoDocumento
+          auth.user.foto &&
+          auth.user.fichaMedica &&
+          auth.user.certificadoHongos &&
+          auth.user.fotoDocumento
             ? {
                 border: "2px solid green",
               }
@@ -33,53 +36,55 @@ function HomeUser({ user }) {
               Foto de perfil:{" "}
               <span
                 className={
-                  user.foto ? "text-success fw-bold" : "text-danger fw-bold"
+                  auth.user.foto
+                    ? "text-success fw-bold"
+                    : "text-danger fw-bold"
                 }
               >
-                {user.foto ? "Cargado" : "Pendiente"}
+                {auth.user.foto ? "Cargado" : "Pendiente"}
               </span>
             </p>
             <p>
               Foto de DNI:{" "}
               <span
                 className={
-                  user.fotoDocumento
+                  auth.user.fotoDocumento
                     ? "text-success fw-bold"
                     : "text-danger fw-bold"
                 }
               >
-                {user.fotoDocumento ? "Cargado" : "Pendiente"}
+                {auth.user.fotoDocumento ? "Cargado" : "Pendiente"}
               </span>
             </p>
             <p>
               Certificado Pediculosis y Micosis:{" "}
               <span
                 className={
-                  user.certificadoHongos
+                  auth.user.certificadoHongos
                     ? "text-success fw-bold"
                     : "text-danger fw-bold"
                 }
               >
-                {user.certificadoHongos ? "Cargado" : "Pendiente"}
+                {auth.user.certificadoHongos ? "Cargado" : "Pendiente"}
               </span>
             </p>
             <p>
               Ficha Medica:{" "}
               <span
                 className={
-                  user.fichaMedica
+                  auth.user.fichaMedica
                     ? "text-success fw-bold"
                     : "text-danger fw-bold"
                 }
               >
-                {user.fichaMedica ? "Cargado" : "Pendiente"}
+                {auth.user.fichaMedica ? "Cargado" : "Pendiente"}
               </span>
             </p>
           </div>
           <div className="text-center">
             <h3 className="fw-bold">
               Carga tus archivos haciendo{" "}
-              <Link to={"perfil"} className="fw-bold">
+              <Link to={"/user/perfil"} className="fw-bold">
                 Click Aqui
               </Link>
             </h3>
@@ -91,11 +96,11 @@ function HomeUser({ user }) {
       <section
         className={style.seccion2}
         style={
-          user.foto &&
-          user.fichaMedica &&
-          user.certificadoHongos &&
-          user.fotoDocumento
-            ? user.activity?.length
+          auth.user.foto &&
+          auth.user.fichaMedica &&
+          auth.user.certificadoHongos &&
+          auth.user.fotoDocumento
+            ? auth.user.activity?.length
               ? {
                   border: "2px solid green",
                 }
@@ -107,17 +112,17 @@ function HomeUser({ user }) {
               }
         }
       >
-        {user.foto &&
-        user.fichaMedica &&
-        user.certificadoHongos &&
-        user.fotoDocumento ? (
+        {auth.user.foto &&
+        auth.user.fichaMedica &&
+        auth.user.certificadoHongos &&
+        auth.user.fotoDocumento ? (
           <>
             <h2 className="fw-bold"> Inscripcion en Actividades</h2>
 
             <article className={style.seccion2_article}>
-              {user.activity?.length ? (
+              {auth.user.activity?.length ? (
                 <div>
-                  {!user.status ? (
+                  {!auth.user.status ? (
                     <div>
                       <h5>
                         <b>Te has registrado con exito</b> en tu actividad en
@@ -148,7 +153,7 @@ function HomeUser({ user }) {
               ) : (
                 <h3>
                   Dirigete a la seccion{" "}
-                  <Link to={"inscripcion"} className="fw-bold">
+                  <Link to={"/user/inscripcion"} className="fw-bold">
                     Actividades
                   </Link>{" "}
                   para inscribirte en alguna
