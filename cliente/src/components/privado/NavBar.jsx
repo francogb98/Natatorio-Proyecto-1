@@ -136,6 +136,16 @@ function NavBar() {
                 </li>
               )}
             </ul>
+            {auth.role === "SUPER_ADMIN" && (
+              <ul>
+                <li className={style.inicio}>Feeds</li>
+                <li className={style.link}>
+                  <Link to="panel/feed" className={style.link__item}>
+                    Ver Feeds
+                  </Link>
+                </li>
+              </ul>
+            )}
 
             <div className="py-2 px-1">
               <button

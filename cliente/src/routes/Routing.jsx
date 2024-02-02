@@ -34,6 +34,7 @@ import RecuperarContraseña from "../components/publico/recuperarContraseña/Rec
 import InfoActividad from "../components/privado/actividades/actividadesLista/InfoActividad";
 import Publico from "../components/publico/vistas/Publico";
 import HabilitarAdaptada from "../components/privado/usuario/habilitarUsuario/HabilitarAdaptada";
+import FeedBacks from "../components/privado/feedback/FeedBacks";
 
 function Routing() {
   const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
@@ -115,6 +116,7 @@ function Routing() {
             <Route path="panel/usuario/:id" element={<User />} />
             <Route path="panel/usuarios" element={<ListaUsuarios />} />
             <Route path="panel/estadisticas" element={<Estadisticas />} />
+            <Route path="panel/feed" element={<FeedBacks />} />
           </Route>
         ) : (
           <Route

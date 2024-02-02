@@ -31,6 +31,7 @@ import cambiarFoto from "../controllers/users/imagen/cambiarFoto.js";
 import recuperar from "../controllers/users/recuperarContraseña/recuperar.js";
 import modificarContraseña from "../controllers/users/recuperarContraseña/modificarContraseña.js";
 import NuevoFeedback from "../controllers/users/feedback/NuevoFeedback.js";
+import verFeedbacks from "../controllers/users/feedback/verFeedbacks.js";
 
 const router = Router();
 
@@ -80,5 +81,6 @@ router.post("/modificar-password", modificarContraseña);
 
 //feedback
 router.post("/feedback", validarJWT, NuevoFeedback);
+router.get("/verFeedbacks", validarJWT, verFeedbacks);
 
 export default router;

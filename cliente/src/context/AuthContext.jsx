@@ -8,6 +8,7 @@ import { authReducer, initialState } from "../reducer/reducer";
 
 import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../helpers/url";
+import { registrarUsuarioEnActividad } from "../helpers/usersFetch/registrarUsuarioEnActividad";
 
 export const AuthContext = createContext();
 
@@ -147,6 +148,42 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const registerInActivity = useMutation({
+    mutationKey: "registerUser",
+    mutationFn: registrarUsuarioEnActividad,
+    onSuccess: async (data) => {
+      if (data.status === "success") {
+        await getInfoUser();
+        Swal.fire({
+          title: "Inscripto con Exito",
+          text: "Se ha inscripto correctamente en la actividad, redireccionando a pagina principal ",
+          icon: data.status,
+          //despues de 2 segundos lo redirecciones
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          //redirecciona al inicio
+          navigate("/user/home");
+        });
+      } else {
+        Swal.fire({
+          title: data.status.toUpperCase(),
+          text: data.message,
+          icon: data.status,
+          confirmButtonText: "Aceptar",
+        });
+      }
+    },
+    onError: (error) => {
+      Swal.fire({
+        title: error.status.toUpperCase(),
+        text: error.message,
+        icon: error.status,
+        confirmButtonText: "Aceptar",
+      });
+    },
+  });
+
   return (
     <AuthContext.Provider
       value={{
@@ -159,6 +196,7 @@ export function AuthProvider({ children }) {
         restart: restartPagina,
         recargando,
         setRecargando,
+        registerInActivity,
 
         cerrarSesion,
       }}

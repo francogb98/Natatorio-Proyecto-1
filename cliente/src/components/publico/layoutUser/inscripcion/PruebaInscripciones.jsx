@@ -1,56 +1,20 @@
 import { useContext, useState } from "react";
-import { useMutation } from "react-query";
+// import { useMutation } from "react-query";
 
 import Tabla from "../../../../utilidades/Tabla";
-import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
-import Swal from "sweetalert2";
+// import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
+// import Swal from "sweetalert2";
 
 import style from "./styles.module.css";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../context/AuthContext";
 
 function PruebaInscripciones() {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
-  const { auth, dispatch } = useContext(AuthContext);
+  const { auth, registerInActivity } = useContext(AuthContext);
 
-  const navigate = useNavigate();
-
-  const registerInActivity = useMutation({
-    mutationKey: "registerUser",
-    mutationFn: registrarUsuarioEnActividad,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        dispatch({ type: "SET_USER", payload: { user: data.data.userUpdate } });
-        Swal.fire({
-          title: "Inscripto con Exito",
-          text: "Se ha inscripto correctamente en la actividad, redireccionando a pagina principal ",
-          icon: data.status,
-          //despues de 2 segundos lo redirecciones
-          timer: 2000,
-          showConfirmButton: false,
-        }).then(() => {
-          //redirecciona al inicio
-          navigate("/user/home");
-        });
-      } else {
-        Swal.fire({
-          title: data.status.toUpperCase(),
-          text: data.message,
-          icon: data.status,
-          confirmButtonText: "Aceptar",
-        });
-      }
-    },
-    onError: (error) => {
-      Swal.fire({
-        title: error.status.toUpperCase(),
-        text: error.message,
-        icon: error.status,
-        confirmButtonText: "Aceptar",
-      });
-    },
-  });
+  // const navigate = useNavigate();
 
   const handleSubmit = (id) => {
     registerInActivity.mutate({
@@ -196,9 +160,9 @@ function PruebaInscripciones() {
 
                 <li className="mb-2">
                   En la<strong> barra de busqueda </strong>puede buscar por
-                  horario , actividad o dias. (ej:10 ----{">"} aparecera todas
-                  las actividades que comiencen a las 10 o finalicen en dicho
-                  horario; Misma logica para los dias y nombre de actividades)
+                  horario o actividades . (ej:10 ----{">"} aparecera todas las
+                  actividades que comiencen a las 10 o finalicen en dicho
+                  horario; Misma logica para nombre de actividades)
                 </li>
 
                 <br />
