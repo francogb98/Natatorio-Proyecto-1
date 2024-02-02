@@ -62,7 +62,9 @@ function RecuperarContraseña() {
           .then(() => {
             window.location.href = "/";
           })
-          .catch((error) => {});
+          .catch((error) => {
+            return false;
+          });
       }
 
       if (data.status === "error") {

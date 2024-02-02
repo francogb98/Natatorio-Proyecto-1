@@ -36,9 +36,14 @@ import Publico from "../components/publico/vistas/Publico";
 import HabilitarAdaptada from "../components/privado/usuario/habilitarUsuario/HabilitarAdaptada";
 
 function Routing() {
-  const { auth } = useContext(AuthContext);
+  const { auth, restart } = useContext(AuthContext);
 
   useEffect(() => {}, [auth]);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      restart();
+    }
+  }, []);
 
   if (!auth)
     return (

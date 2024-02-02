@@ -62,7 +62,7 @@ function Foto() {
           id: auth.user._id,
         });
       })
-      .catch((err) => {
+      .catch(() => {
         setError(true);
         setLoading(false);
       });

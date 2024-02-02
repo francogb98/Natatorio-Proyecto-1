@@ -121,6 +121,27 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const restartPagina = async () => {
+    try {
+      if (!localStorage.getItem("token")) return;
+      const resp = await fetch(
+        `${baseUrl}user/infoUser/${localStorage.getItem("token")}`
+      );
+      const data = await resp.json();
+
+      if (data.status == "success") {
+        await dispatch({ type: "SET_USER", payload: { user: data.user } });
+        await dispatch({
+          type: "LOGIN",
+          payload: { logged: true, role: data.user.role },
+        });
+      }
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -130,6 +151,7 @@ export function AuthProvider({ children }) {
         login,
         userRefetch: getInfoUser,
         // getUser,
+        restart: restartPagina,
 
         cerrarSesion,
       }}
