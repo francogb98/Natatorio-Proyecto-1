@@ -4,10 +4,10 @@ import { useQuery } from "react-query";
 
 import { getUsuarios } from "../../../../helpers/getUsers";
 
-import Tabla from "../../../../utilidades/Tabla";
 import style from "./style.module.css";
 
 import { Link } from "react-router-dom";
+import TablaHabilitar from "./TablaHabilitar";
 
 function Habilitar() {
   const { data, isSuccess, status, isLoading, refetch, isRefetching } =
@@ -103,7 +103,7 @@ function Habilitar() {
               </button>
             </header>
             <div>Total usuario para habilitar: {data.users.length}</div>
-            <Tabla data={data.users} columns={columns} />
+            <TablaHabilitar data={data.users} columns={columns} />
           </>
         )}
       </section>

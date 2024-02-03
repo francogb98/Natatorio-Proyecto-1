@@ -3,6 +3,8 @@ export const initialState = {
   role: "",
   user: {},
   actividadesUsuario: [],
+  paginaHabilitar: 0,
+  paginaListaUsuarios: 0,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -29,6 +31,16 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         actividadesUsuario: action.payload.actividadesUsuario,
+      };
+    case "SET_PAGINA_HABILITAR":
+      return {
+        ...state,
+        paginaHabilitar: action.payload.paginaHabilitar,
+      };
+    case "SET_PAGINA_USUARIOS":
+      return {
+        ...state,
+        paginaListaUsuarios: action.payload.paginaListaUsuarios,
       };
     default:
       return state;

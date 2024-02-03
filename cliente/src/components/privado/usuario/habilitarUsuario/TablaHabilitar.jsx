@@ -7,12 +7,15 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 
-import style from "./tabla.module.css";
-import { useEffect, useState } from "react";
+import style from "../../../../utilidades/tabla.module.css";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../../context/AuthContext";
 
-function Tabla({ data, columns, type, pageStart }) {
+function TablaHabilitar({ data, columns, type }) {
   const [sorting, setSorting] = useState([]);
   const [filtering, setFiltering] = useState("");
+
+  const { auth, dispatch } = useContext(AuthContext);
 
   const table = useReactTable({
     data,
@@ -37,12 +40,14 @@ function Tabla({ data, columns, type, pageStart }) {
   }, []);
 
   useEffect(() => {
-    if (pageStart && pageStart > 0) {
-      table.setPageIndex(pageStart);
-    } else {
-      table.setPageIndex(0);
-    }
-  }, [pageStart]);
+    table.setPageIndex(auth.paginaHabilitar);
+    return () => {
+      dispatch({
+        type: "SET_PAGINA_HABILITAR",
+        payload: { paginaHabilitar: table.getState().pagination.pageIndex },
+      });
+    };
+  }, []);
 
   return (
     <div className={style.body}>
@@ -128,9 +133,28 @@ function Tabla({ data, columns, type, pageStart }) {
             </button>
           </>
         )}
+        <span className="flex items-center gap-1 ms-3">
+          <div>Page</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount()}
+          </strong>
+        </span>
+        <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            value={table.getState().pagination.pageIndex + 1}
+            onChange={(e) => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              table.setPageIndex(page);
+            }}
+            className="border p-1 rounded w-16"
+          />
+        </span>
       </div>
     </div>
   );
 }
 
-export default Tabla;
+export default TablaHabilitar;
