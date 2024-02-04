@@ -93,6 +93,8 @@ export const DeshabilitarUser = async (req, res) => {
       const activity = await Activity.findOneAndUpdate(
         { _id: user.activity[0]._id },
         { $pull: { users: id } },
+        //disminuto el campo de userregister
+        { $set: { userRegister: user.activity[0].userRegister - 1 } },
         { new: true }
       );
     }
