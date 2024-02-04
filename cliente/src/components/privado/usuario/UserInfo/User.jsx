@@ -272,8 +272,8 @@ function User() {
                   <>
                     <p className="card-text">
                       CUD:{" "}
-                      {user.cud === "" ? (
-                        <span className={style.span}>No cargado</span>
+                      {!user.cud ? (
+                        <span className="text-danger">No cargado</span>
                       ) : (
                         <span
                           className={style.span}
@@ -289,7 +289,9 @@ function User() {
                     </p>
                     <p className="card-text">
                       Diagnostico:{" "}
-                      <span className="text-danger">{user.diagnosticos}</span>
+                      <span className="text-danger">
+                        {user.diagnosticos ? user.diagnosticos : "falta cargar"}
+                      </span>
                     </p>
                   </>
                 )}

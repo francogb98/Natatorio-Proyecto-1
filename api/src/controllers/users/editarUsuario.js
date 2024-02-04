@@ -11,6 +11,7 @@ export default async (req, res) => {
     natacionAdaptada,
     telefono,
     telefonoContacto,
+    edad,
   } = req.body;
 
   req.body;
@@ -30,6 +31,7 @@ export default async (req, res) => {
     }
 
     user.dni = dni;
+    user.edad = edad;
     user.nombre = nombre;
     user.apellido = apellido;
     user.ciudad = ciudad;

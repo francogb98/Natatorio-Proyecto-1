@@ -197,6 +197,7 @@ export function AuthProvider({ children }) {
         recargando,
         setRecargando,
         registerInActivity,
+        getActividadesUsuario,
 
         cerrarSesion,
       }}

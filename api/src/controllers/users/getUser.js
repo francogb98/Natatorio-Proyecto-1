@@ -49,7 +49,10 @@ export const getAllUserForHability = async (req, res) => {
   ("llegue aca");
   try {
     //quiero devolver solo los usuarios que tengn sus status en false
-    let users = await User.find({ status: false }).populate({
+    let users = await User.find({
+      status: false,
+      natacionAdaptada: false,
+    }).populate({
       path: "activity",
       populate: {
         path: "name",
