@@ -175,6 +175,7 @@ function ListActivity() {
                   <th>Dias</th>
                   <th>Cupos</th>
                   <th>Usuarios Registrados</th>
+                  {/* <th>Usuarios Habilitados</th> */}
                   <th>Disponibles</th>
                   {auth.role === "SUPER_ADMIN" && (
                     <>

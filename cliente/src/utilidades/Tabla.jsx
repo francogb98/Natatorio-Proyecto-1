@@ -56,6 +56,51 @@ function Tabla({ data, columns, type, pageStart }) {
           }}
         />
       </div>
+      <div className={style.pagination}>
+        {table.getCanPreviousPage() && (
+          <>
+            <button
+              onClick={() => {
+                table.setPageIndex(0);
+              }}
+            >
+              Primera Pagina
+            </button>
+            <button
+              onClick={() => {
+                table.previousPage();
+              }}
+            >
+              <i className="bi bi-arrow-left"></i>
+            </button>
+          </>
+        )}
+
+        {table.getCanNextPage() && (
+          <>
+            <button
+              onClick={() => {
+                table.nextPage();
+              }}
+            >
+              <i className="bi bi-arrow-right"></i>
+            </button>
+            <button
+              onClick={() => {
+                table.setPageIndex(table.getPageCount() - 1);
+              }}
+            >
+              Ultima Pagina
+            </button>
+          </>
+        )}
+        <span className="flex items-center gap-1 ms-3">
+          <div>Pagina</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+          </strong>
+        </span>
+      </div>
 
       <table>
         <thead>
@@ -128,6 +173,12 @@ function Tabla({ data, columns, type, pageStart }) {
             </button>
           </>
         )}
+        <span className="flex items-center gap-1 ms-3">
+          <div>pagina</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
+          </strong>
+        </span>
       </div>
     </div>
   );
