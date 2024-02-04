@@ -41,51 +41,51 @@ function ListaUsuarios() {
       ),
     },
 
-    {
-      header: "Actividad",
-      accessorKey: "activity",
-      accessorFn: (row) => {
-        if (row.activity && row.status) {
-          return row.activity[0]?.name;
-        }
-        if (row.activity && !row.status) {
-          return "-";
-        }
-        if (!row.activity) {
-          return "-";
-        }
-      },
-    },
-    {
-      header: "Horario",
-      accessorKey: "horario",
-      accessorFn: (row) => {
-        if (row.activity && row.status) {
-          return `${row.activity[0]?.hourStart} - ${row.activity[0]?.hourFinish}`;
-        }
-        if (row.activity && !row.status) {
-          return "Esperando Habilitacion";
-        }
-        if (!row.activity) {
-          return "No tiene actividad";
-        }
-      },
-    },
-    {
-      header: "Dias",
-      accessorKey: "dias",
-      accessorFn: (row) => {
-        if (row.activity && row.status) {
-          return row.activity[0]?.date.join(" - ");
-        }
-        if (row.activity && !row.status) {
-          return "-";
-        }
-        if (!row.activity) {
-          return "-";
-        }
-      },
-    },
+    // {
+    //   header: "Actividad",
+    //   accessorKey: "activity",
+    //   accessorFn: (row) => {
+    //     if (row.activity && row.status) {
+    //       return row.activity[0]?.name;
+    //     }
+    //     if (row.activity && !row.status) {
+    //       return "-";
+    //     }
+    //     if (!row.activity) {
+    //       return "-";
+    //     }
+    //   },
+    // },
+    // {
+    //   header: "Horario",
+    //   accessorKey: "horario",
+    //   accessorFn: (row) => {
+    //     if (row.activity && row.status) {
+    //       return `${row.activity[0]?.hourStart} - ${row.activity[0]?.hourFinish}`;
+    //     }
+    //     if (row.activity && !row.status) {
+    //       return "Esperando Habilitacion";
+    //     }
+    //     if (!row.activity) {
+    //       return "No tiene actividad";
+    //     }
+    //   },
+    // },
+    // {
+    //   header: "Dias",
+    //   accessorKey: "dias",
+    //   accessorFn: (row) => {
+    //     if (row.activity && row.status) {
+    //       return row.activity[0]?.date.join(" - ");
+    //     }
+    //     if (row.activity && !row.status) {
+    //       return "-";
+    //     }
+    //     if (!row.activity) {
+    //       return "-";
+    //     }
+    //   },
+    // },
 
     //hacer buttons para habilitar y deshabilitar
     {

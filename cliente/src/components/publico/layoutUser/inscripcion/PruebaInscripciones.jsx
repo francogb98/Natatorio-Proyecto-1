@@ -1,20 +1,63 @@
 import { useContext, useState } from "react";
-// import { useMutation } from "react-query";
+import { useQuery } from "react-query";
 
 import Tabla from "../../../../utilidades/Tabla";
-// import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
-// import Swal from "sweetalert2";
 
 import style from "./styles.module.css";
-// import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../../context/AuthContext";
+import { baseUrl } from "../../../../helpers/url";
+
+const getActividadesUsuario = async () => {
+  try {
+    const url = `${baseUrl}activity/getActividadesNombre`;
+    const resp = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        authorization: `${localStorage.getItem("token")}`,
+      },
+    });
+    const { actividades } = await resp.json();
+
+    return actividades;
+  } catch (error) {
+    return error;
+  }
+};
 
 function PruebaInscripciones() {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
   const { auth, registerInActivity } = useContext(AuthContext);
 
+  const getActividades = useQuery({
+    queryKey: ["activitys"],
+    queryFn: getActividadesUsuario,
+  });
+
   // const navigate = useNavigate();
+
+  if (getActividades.isLoading)
+    return (
+      <div>
+        <h4 className="fw-bold">Cargando Actividades...</h4>
+        <img
+          src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExaHhiOHJxcHh6anJnOXM5c29hZG44cjF5aDgwbGx6YzB1YnBoaTJ5YyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/Lpd3Jzzzudg0j7REiX/giphy.gif"
+          alt="Swim Swimming Sticker by MySwimPro"
+          style={{
+            width: "40%",
+          }}
+        />
+      </div>
+    );
+
+  if (getActividades.isError) return <div>Error al cargar las actividades</div>;
+
+  if (getActividades.isSuccess && !getActividades.data)
+    return <div>Cargando xd...</div>;
+  if (getActividades.isSuccess && getActividades.data) {
+    console.log(getActividades.data);
+  }
 
   const handleSubmit = (id) => {
     registerInActivity.mutate({
@@ -187,7 +230,7 @@ function PruebaInscripciones() {
       <div className={style.tabla}>
         <Tabla
           columns={columns}
-          data={auth.actividadesUsuario}
+          data={getActividades.data}
           type={"Actividad"}
         />
       </div>

@@ -39,17 +39,20 @@ import FeedBacks from "../components/privado/feedback/FeedBacks";
 function Routing() {
   const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
 
-  useEffect(() => {}, [auth]);
   useEffect(() => {
     if (localStorage.getItem("token")) {
+      console.log("entre");
       setRecargando(true);
       restart();
+      console.log(auth);
     }
   }, []);
 
-  useEffect(() => {}, [recargando]);
+  if (recargando) {
+    return <h1>Cargando informacion del usuario</h1>;
+  }
 
-  if (!auth)
+  if (!auth.logged)
     return (
       <div>
         <Routes>
@@ -59,11 +62,28 @@ function Routing() {
             path="/recuperar-contraseña"
             element={<RecuperarContraseña />}
           />
+          <Route
+            path="*"
+            element={
+              <div>
+                <h1>Acceso Denegado</h1>
+                <h2>No tienes permisos para acceder a esta pagina</h2>
+                <button
+                  className="btn btn-lg btn-warning"
+                  onClick={() => {
+                    window.location.href = "/";
+                  }}
+                >
+                  Volver al inicio
+                </button>
+              </div>
+            }
+          />
         </Routes>
       </div>
     );
 
-  if (auth && !recargando)
+  if (auth.logged)
     return (
       <Routes>
         <Route path="/" element={<SignIn />} />
