@@ -41,10 +41,8 @@ function Routing() {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      console.log("entre");
       setRecargando(true);
       restart();
-      console.log(auth);
     }
   }, []);
 
