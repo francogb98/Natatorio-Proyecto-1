@@ -80,13 +80,22 @@ function FeedbackItem({ feed, onSend }) {
           Contestado <i class="bi bi-check"></i>
         </div>
       ) : (
-        <form action="" onSubmit={handleSubmit}>
-          <input
+        <form
+          action=""
+          onSubmit={handleSubmit}
+          className="mt-2"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "40%",
+          }}
+        >
+          <textarea
             type="text"
             value={cuerpo}
             onChange={(e) => setCuerpo(e.target.value)}
           />
-          <button>Enviar</button>
+          <button className="mt-2 btn btn-primary">Enviar</button>
         </form>
       )}
     </div>
