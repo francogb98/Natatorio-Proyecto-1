@@ -1,11 +1,14 @@
 import { useContext, useState } from "react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import Tabla from "../../../../utilidades/Tabla";
 
 import style from "./styles.module.css";
 import { AuthContext } from "../../../../context/AuthContext";
 import { baseUrl } from "../../../../helpers/url";
+import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const getActividadesUsuario = async () => {
   try {
@@ -28,7 +31,45 @@ const getActividadesUsuario = async () => {
 function PruebaInscripciones() {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
-  const { auth, registerInActivity } = useContext(AuthContext);
+  const { userRefetch } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
+  const registerInActivity = useMutation({
+    mutationKey: "registerUser",
+    mutationFn: registrarUsuarioEnActividad,
+    onSuccess: async (data) => {
+      if (data.status === "success") {
+        await userRefetch();
+        Swal.fire({
+          title: "Inscripto con Exito",
+          text: "Se ha inscripto correctamente en la actividad, redireccionando a pagina principal ",
+          icon: data.status,
+          //despues de 2 segundos lo redirecciones
+          timer: 2000,
+          showConfirmButton: false,
+        }).then(() => {
+          //redirecciona al inicio
+          navigate("/user/home");
+        });
+      } else {
+        Swal.fire({
+          title: data.status.toUpperCase(),
+          text: data.message,
+          icon: data.status,
+          confirmButtonText: "Aceptar",
+        });
+      }
+    },
+    onError: (error) => {
+      Swal.fire({
+        title: error.status.toUpperCase(),
+        text: error.message,
+        icon: error.status,
+        confirmButtonText: "Aceptar",
+      });
+    },
+  });
 
   const getActividades = useQuery({
     queryKey: ["activitys"],
