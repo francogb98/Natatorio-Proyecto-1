@@ -15,7 +15,7 @@ import { AuthContext } from "../../../../context/AuthContext";
 
 function EditarPerfil() {
   // Crear un estado local para rastrear los cambios
-  const { auth, userRefetch, getActividadesUsuario } = useContext(AuthContext);
+  const { auth, userRefetch } = useContext(AuthContext);
 
   const [formValues, setFormValues] = useState({
     nombre: "",
@@ -42,7 +42,7 @@ function EditarPerfil() {
   const editarPerfil = useMutation({
     mutationFn: editarPerfilFetch,
     onSuccess: async (data) => {
-      await getActividadesUsuario();
+   
 
       Swal.fire({
         title: data.status.toUpperCase(),
