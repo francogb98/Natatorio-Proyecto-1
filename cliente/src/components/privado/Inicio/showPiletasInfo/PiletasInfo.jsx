@@ -78,7 +78,7 @@ function PiletasInfo() {
           <div key={i}>
             <h3>
               {info.pileta.charAt(0).toUpperCase() + info.pileta.slice(1)}
-            </h3>00
+            </h3>
             <p>Total usuarios :{info.users.length}</p>
             <Tabla data={info.users} columns={columns} />
           </div>

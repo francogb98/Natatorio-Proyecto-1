@@ -8,6 +8,14 @@ export const cambioDeTurno = async (req, res) => {
     });
     let horaActual = new Date(argentinaTime).getHours();
 
+    horaActual = horaActual.toString();
+    if (horaActual.length == 1) {
+      horaActual = "0" + horaActual;
+    }
+    horaActual = horaActual + ":00";
+    
+    console.log(horaActual);
+
     // -------------extraigo informacion de las piletas -----------
     const resp = await Pileta.findOne({
       pileta: "turnoSiguiente",
