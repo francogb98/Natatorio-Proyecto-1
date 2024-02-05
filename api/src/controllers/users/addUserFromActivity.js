@@ -30,8 +30,10 @@ export const addUserFromActivity = async (req, res) => {
       });
     }
 
+
+      console.log();
     //verificamos si hay cupo
-    if (isActivityExist.userRegister >= isActivityExist.cupos) {
+    if (isActivityExist.userRegister === isActivityExist.cupos) {
       return res.status(400).json({
         status: "error",
         message: "Cupos agotados",
