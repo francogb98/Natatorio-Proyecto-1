@@ -37,6 +37,25 @@ export const agregarUsuarioAPileta = async (req, res) => {
         .json({ status: "error", msg: "El usuario no existe" });
     }
 
+    //verifico que la el horario de ingreso de la actividad corresponda con la hora actual en formato argentina
+    let dated = new Date();
+    let argentinaTime = dated.toLocaleString("en-US", {
+      timeZone: "America/Argentina/Buenos_Aires",
+    });
+    let hourStart = new Date(argentinaTime).getHours();
+    if (hourStart.toString().length === 1) {
+      hourStart = `0${hourStart}:00`;
+    } else {
+      hourStart = `${hourStart}:00`;
+    }
+
+    if (user.activity[0].hourStart !== hourStart) {
+      return res.status(400).json({
+        status: "error",
+        message: `Horario de actividad Incorrecto`,
+      });
+    }
+
     //busco la pileta corresponidente al usuario y le agrego el usuario
     const piletaExist = await Pileta.findOneAndUpdate(
       {

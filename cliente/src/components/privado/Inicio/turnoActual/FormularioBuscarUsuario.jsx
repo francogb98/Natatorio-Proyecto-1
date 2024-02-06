@@ -1,5 +1,5 @@
 import React from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import { useEffect, useState } from "react";
 
@@ -7,6 +7,7 @@ import { agregarUsuarioApileta } from "../../../../helpers/piletas/agregarUsuari
 
 import { baseUrl } from "../../../../helpers/url.js";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const getUser = async (id) => {
   const res = await fetch(`${baseUrl}user/searchUser`, {
@@ -26,6 +27,8 @@ function FormularioBuscarUsuario() {
   const [id, setId] = useState("");
   const [userEncontardo, setUserEncontrado] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const buscarUsuario = useMutation(getUser, {
     onSuccess: (data) => {
       if (data.status == "success") {
@@ -41,6 +44,21 @@ function FormularioBuscarUsuario() {
   const agregarUsuario = useMutation({
     mutationFn: agregarUsuarioApileta,
     onSuccess: (data) => {
+      if (data.status === "success") {
+        Swal.fire({
+          title: "Usuario agregado",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        });
+      }
+      if (data.status === "error") {
+        Swal.fire({
+          title: "Usuario ya agregado",
+          icon: "error",
+          text: data.message,
+          confirmButtonText: "Aceptar",
+        });
+      }
       queryClient.invalidateQueries("getUsrsByDate");
     },
   });
@@ -136,14 +154,16 @@ function FormularioBuscarUsuario() {
             >
               Cerrar
             </button>
-            <button
-              className="btn btn-sm btn-success ms-3"
-              onClick={() => {
-                agregarUsuario.mutate(buscarUsuario.data.user.customId);
-              }}
-            >
-              Agregar
-            </button>
+            {buscarUsuario.data.user.status && (
+              <button
+                className="btn btn-sm btn-success ms-3"
+                onClick={() => {
+                  agregarUsuario.mutate(buscarUsuario.data.user.customId);
+                }}
+              >
+                Agregar
+              </button>
+            )}
           </div>
         </div>
       ) : null}
