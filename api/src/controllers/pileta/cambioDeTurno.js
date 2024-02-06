@@ -14,8 +14,6 @@ export const cambioDeTurno = async (req, res) => {
     }
     horaActual = horaActual + ":00";
 
-    console.log(horaActual);
-
     // -------------extraigo informacion de las piletas -----------
     const resp = await Pileta.findOne({
       pileta: "turnoSiguiente",
@@ -41,6 +39,17 @@ export const cambioDeTurno = async (req, res) => {
         path: "activity",
       },
     });
+
+    console.log("data25", data25);
+    console.log("50", data50);
+    console.log("siguiente", resp);
+
+    if (data25.hora == horaActual || data50.hora == horaActual) {
+      return res.status(200).json({
+        ok: true,
+        msg: "ya se realizo el cambio de turno",
+      });
+    }
 
     //filtro todos los usuarios que su hora de finalizado sea igual que la hora actual
     const users25 = data25.users.filter((user) => {

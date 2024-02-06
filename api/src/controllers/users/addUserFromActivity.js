@@ -30,10 +30,6 @@ export const addUserFromActivity = async (req, res) => {
       });
     }
 
-    console.log(isActivityExist);
-    console.log(isActivityExist.users.length);
-    console.log(isActivityExist.users.cupos);
-    console.log(isActivityExist.users.length >= isActivityExist.cupos);
     //verificamos si hay cupo
     if (isActivityExist.users.length >= isActivityExist.cupos) {
       return res.status(400).json({

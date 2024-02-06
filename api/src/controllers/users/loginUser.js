@@ -50,6 +50,11 @@ export const loginUser = async (req, res) => {
       usuario: user,
     });
   } catch (error) {
-    res.status(400).json({ status: "error", message: error.message });
+    res
+      .status(400)
+      .json({
+        status: "error",
+        message: "Upss... algo salio mal,por favor vuelva a intentarlo",
+      });
   }
 };

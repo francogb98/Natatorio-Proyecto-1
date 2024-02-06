@@ -22,7 +22,18 @@ export const getPiletasOrCreate = async (req, res) => {
     //accedo a mi dia(primera letra en mayuscula) y hora actual(solo la hora) en español
     const date = new Date();
     const day = date.toLocaleDateString("es-AR", { weekday: "long" });
-    const hour = date.getHours();
+    // const hour = date.getHours();
+
+    let argentinaTime = date.toLocaleString("en-US", {
+      timeZone: "America/Argentina/Buenos_Aires",
+    });
+    let horaActual = new Date(argentinaTime).getHours();
+
+    horaActual = horaActual.toString();
+    if (horaActual.length == 1) {
+      horaActual = "0" + horaActual;
+    }
+    let hour = horaActual + ":00";
 
     //hago que l apirmera letra del dia sea en mayuscula
     const dayCapitalized = day.charAt(0).toUpperCase() + day.slice(1);

@@ -4,7 +4,7 @@ const piletaSchema = new mongoose.Schema({
   pileta: String,
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   dia: String,
-  hora: Number,
+  hora: String,
 });
 
 const Pileta = mongoose.model("Pileta", piletaSchema);
