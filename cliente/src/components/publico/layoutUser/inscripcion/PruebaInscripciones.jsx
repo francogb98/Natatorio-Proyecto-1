@@ -143,7 +143,7 @@ function PruebaInscripciones() {
         header: "Inscribirse",
         accessorKey: "inscribirse",
         cell: ({ row }) => {
-          if (row.original.cupos == row.original.userRegister) {
+          if (row.original.cupos <= row.original.users.length) {
             return (
               <div className="text-danger fw-bold text-center">Agotado</div>
             );
