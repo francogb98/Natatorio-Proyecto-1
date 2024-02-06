@@ -107,11 +107,14 @@ export const getActivitiesByDate = async (req, res) => {
 
   //accedi al da en español
 
-  let date = new Date().toLocaleDateString("es-ES", {
+  let dateInArgentina = new Date(argentinaTime).toLocaleDateString("es-ES", {
     weekday: "long",
   });
 
-  date = date.charAt(0).toUpperCase() + date.slice(1);
+  console.log(dateInArgentina);
+
+  dateInArgentina =
+    dateInArgentina.charAt(0).toUpperCase() + dateInArgentina.slice(1);
 
   if (hourStart.toString().length === 1) {
     hourStart = `0${hourStart - 1}:00`;
@@ -122,7 +125,7 @@ export const getActivitiesByDate = async (req, res) => {
   console.log({ entre: hourStart });
   try {
     const activity = await Activity.find({
-      date: { $in: [date] },
+      date: { $in: [dateInArgentina] },
       $and: [
         { hourStart: { $lte: hourStart } }, // Actividades que han comenzado antes o en este momento
         { hourFinish: { $gt: hourStart } }, // Actividades que aún no han finalizado
