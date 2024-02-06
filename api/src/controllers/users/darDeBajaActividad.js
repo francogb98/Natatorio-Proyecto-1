@@ -21,7 +21,7 @@ export const darDeBajaActividad = async (req, res) => {
       actividadABorrar.users = actividadABorrar.users.filter(
         (usuario) => usuario != id
       );
-      actividadABorrar.cupos = actividadABorrar.cupos + 1;
+      actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
       await actividadABorrar.save();
 
       return res.status(200).json({

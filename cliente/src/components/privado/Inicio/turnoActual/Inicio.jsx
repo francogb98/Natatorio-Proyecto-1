@@ -52,6 +52,7 @@ function Inicio() {
                 <h3>Cambiar Turno</h3>
               </button>
               <h2>Registrar turno actual</h2>
+          
               <Layout usuarios={usuarios} />
             </>
           )}

@@ -114,9 +114,9 @@ export const getActivitiesByDate = async (req, res) => {
   date = date.charAt(0).toUpperCase() + date.slice(1);
 
   if (hourStart.toString().length === 1) {
-    hourStart = `0${hourStart}:00`;
+    hourStart = `0${hourStart -1 }:00`;
   } else {
-    hourStart = `${hourStart}:00`;
+    hourStart = `${hourStart - 1}:00`;
   }
 
   console.log({ entre: hourStart });
@@ -130,6 +130,8 @@ export const getActivitiesByDate = async (req, res) => {
     }).populate({
       path: "users",
     });
+
+
 
     const usersArray = [];
 
@@ -161,13 +163,15 @@ export const getActivitiesByDate = async (req, res) => {
 
     //tengo que verificar que el status de los usuarios sea true
 
+
+
     // console.log(uniqueArr1);
 
     return res.status(200).json({
       status: "success",
       message: "Actividades encontradas",
-      users: uniqueArr1.filter((user) => user.status === true),
-      totalUsuarios: uniqueArr1.length,
+      users:uniqueArr1,
+      
     });
   } catch (error) {
     return res.status(400).json({

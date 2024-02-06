@@ -44,11 +44,9 @@ router.get("/getAllUsers/:hour", getAllUsersForHour);
 
 //busqueda por nombre por
 
-router.get("/searchUserByName/:name", validarJWT, searchUserByname);
+// router.get("/searchUserByName/:name", validarJWT, searchUserByname);
 router.get("/getinfoUser/:id", validarJWT, getUserById);
-
 router.post("/cargaFicha", cargaFicha);
-
 router.post("/create", createUser);
 router.post("/confirm/:token", confirmAccount);
 router.post("/login", loginUser);
@@ -69,13 +67,10 @@ router.post("/darDeBajaActividad", validarJWT, darDeBajaActividad);
 //notificaciones
 
 router.post("/notificaciones/create", createNotificacion);
-
 router.post("/notificaciones/update", validarJWT, updateNotificaciones);
-
 router.post("/notificaciones/delete", validarJWT, deleteNotificacion);
 
 router.post("/cambiarFoto", validarJWT, cambiarFoto);
-
 router.post("/comprobar-datos", recuperar);
 router.post("/modificar-password", modificarContraseña);
 
