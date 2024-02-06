@@ -114,7 +114,7 @@ export const getActivitiesByDate = async (req, res) => {
   date = date.charAt(0).toUpperCase() + date.slice(1);
 
   if (hourStart.toString().length === 1) {
-    hourStart = `0${hourStart -1 }:00`;
+    hourStart = `0${hourStart - 1}:00`;
   } else {
     hourStart = `${hourStart - 1}:00`;
   }
@@ -130,8 +130,6 @@ export const getActivitiesByDate = async (req, res) => {
     }).populate({
       path: "users",
     });
-
-
 
     const usersArray = [];
 
@@ -154,7 +152,7 @@ export const getActivitiesByDate = async (req, res) => {
     );
 
     const sonIguales = (usuario1, usuario2) =>
-      usuario1._id.toString() === usuario2._id.toString();
+      usuario1._id.toString() == usuario2._id.toString();
 
     // Filtrar usuarios únicos en arr1
     const uniqueArr1 = usersArray.filter(
@@ -163,15 +161,12 @@ export const getActivitiesByDate = async (req, res) => {
 
     //tengo que verificar que el status de los usuarios sea true
 
-
-
     // console.log(uniqueArr1);
 
     return res.status(200).json({
       status: "success",
       message: "Actividades encontradas",
-      users:uniqueArr1,
-      
+      users: uniqueArr1,
     });
   } catch (error) {
     return res.status(400).json({
