@@ -71,7 +71,16 @@ function Habilitar() {
   ];
 
   if (isLoading) {
-    return <div>Cargando...</div>;
+    return (
+      <div className="alert alert-secondary text-center">
+        <h3>Cargando Usuarios para habilitar por favor espere...</h3>
+        <img
+          src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXloaXYzamtheW4yZ3Q0a2FwMG16aGw2ZGZxZWNmOWNzanE4M2lsdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/WFEpbNDqjs312EZ06H/giphy.gif"
+          alt="Dog Swimming Sticker by Rede Genoma"
+          style={{ width: "30%" }}
+        ></img>
+      </div>
+    );
   }
 
   if (status === "error") {
@@ -86,7 +95,14 @@ function Habilitar() {
     <div className={style.body}>
       <section>
         {isRefetching ? (
-          <div className={style.searchBox}>Recargando...</div>
+          <div className="alert alert-secondary text-center">
+            <h3>Cargando Usuarios para habilitar por favor espere...</h3>
+            <img
+              src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXloaXYzamtheW4yZ3Q0a2FwMG16aGw2ZGZxZWNmOWNzanE4M2lsdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/WFEpbNDqjs312EZ06H/giphy.gif"
+              alt="Dog Swimming Sticker by Rede Genoma"
+              style={{ width: "30%" }}
+            ></img>
+          </div>
         ) : (
           <>
             <header
