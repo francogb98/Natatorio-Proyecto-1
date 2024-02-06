@@ -43,10 +43,38 @@ export const agregarUsuarioAPileta = async (req, res) => {
       timeZone: "America/Argentina/Buenos_Aires",
     });
     let hourStart = new Date(argentinaTime).getHours();
+    let Start = new Date(argentinaTime).getHours();
     if (hourStart.toString().length === 1) {
       hourStart = `0${hourStart}:00`;
     } else {
       hourStart = `${hourStart}:00`;
+    }
+
+    if (user.activity[0].hourStart == `${Start + 1}:00`) {
+      const ads = await Pileta.findOneAndUpdate(
+        {
+          pileta: "turnoSiguiente",
+          users: { $ne: user._id }, // Asegura que el usuario no esté en la lista ya
+        },
+        {
+          $addToSet: {
+            // Utiliza $addToSet en lugar de $push
+            users: user._id,
+          },
+        },
+        {
+          new: true,
+        }
+      ).populate({
+        path: "users",
+        populate: {
+          path: "activity",
+        },
+      });
+      return res.status(200).json({
+        status: "success",
+        message: "Usuario agregado correctamente al turno siguiente",
+      });
     }
 
     if (

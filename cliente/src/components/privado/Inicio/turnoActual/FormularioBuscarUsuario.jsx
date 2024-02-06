@@ -48,6 +48,7 @@ function FormularioBuscarUsuario() {
         Swal.fire({
           title: "Usuario agregado",
           icon: "success",
+          text: data.message,
           confirmButtonText: "Aceptar",
         });
       }
