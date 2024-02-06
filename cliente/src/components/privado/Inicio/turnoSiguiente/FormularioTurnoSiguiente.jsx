@@ -52,16 +52,21 @@ function Layout() {
       {
         header: "Habilitar",
         accessorKey: "habilitar",
-        cell: ({ row }) => (
-          <button
-            onClick={() => {
-              agregarUsuario.mutate(row.original.customId);
-            }}
-            className="btn btn-success"
-          >
-            Agergar
-          </button>
-        ),
+        cell: ({ row }) => {
+          if (row.original.status === false) {
+            return <div>Esperando Habilitacion</div>;
+          }
+          return (
+            <button
+              onClick={() => {
+                agregarUsuario.mutate(row.original.customId);
+              }}
+              className="btn btn-success"
+            >
+              Agergar
+            </button>
+          );
+        },
       },
     ];
 

@@ -49,7 +49,10 @@ export const agregarUsuarioAPileta = async (req, res) => {
       hourStart = `${hourStart}:00`;
     }
 
-    if (user.activity[0].hourStart !== hourStart) {
+    if (
+      user.activity[0].hourStart <= hourStart &&
+      user.activity[0].hourFinish < hourStart
+    ) {
       return res.status(400).json({
         status: "error",
         message: `Horario de actividad Incorrecto`,
@@ -95,7 +98,7 @@ export const agregarUsuarioAPileta = async (req, res) => {
       piletaExist,
     });
   } catch (error) {
-    error.message;
+    console.log(error.message);
     return res
       .status(500)
       .json({ status: "error", msg: "Error en el servidor" });
