@@ -8,6 +8,7 @@ import { cambioDeTurno } from "../../../../helpers/piletas/cambioDeTurno.js";
 import Layout from "./tablaUsuariosTurnoActual/Layout.jsx";
 
 import swal from "sweetalert2";
+import FormularioBuscarUsuario from "./FormularioBuscarUsuario.jsx";
 
 function Inicio() {
   const usuarios = useQuery("getUsrsByDate", getActivitiesByDate);
@@ -58,6 +59,7 @@ function Inicio() {
               </button>
               <h2>Registrar turno actual</h2>
 
+              <FormularioBuscarUsuario />
               <Layout usuarios={usuarios} />
             </>
           )}

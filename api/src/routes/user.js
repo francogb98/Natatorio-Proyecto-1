@@ -13,6 +13,7 @@ import {
   getUserById,
   getAllUserForHability,
   getAllUserForHabilityAdaptada,
+  getUserByIdBody,
 } from "../controllers/users/getUser.js";
 import { cargaFicha } from "../controllers/users/cargaFichaMedica.js";
 import getAllUsers from "../controllers/users/getAllUsers.js";
@@ -77,5 +78,8 @@ router.post("/modificar-password", modificarContraseña);
 //feedback
 router.post("/feedback", validarJWT, NuevoFeedback);
 router.get("/verFeedbacks", validarJWT, verFeedbacks);
+
+//buscar usuario por id
+router.post("/searchUser", validarJWT, getUserByIdBody);
 
 export default router;
