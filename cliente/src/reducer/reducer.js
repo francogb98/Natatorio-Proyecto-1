@@ -2,6 +2,7 @@ export const initialState = {
   logged: false,
   role: "",
   user: {},
+  piletas: [],
   actividadesUsuario: [],
   paginaHabilitar: 0,
   paginaListaUsuarios: 0,
@@ -41,6 +42,11 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         paginaListaUsuarios: action.payload.paginaListaUsuarios,
+      };
+    case "SET_PILETAS":
+      return {
+        ...state,
+        piletas: action.payload.piletas,
       };
     default:
       return state;

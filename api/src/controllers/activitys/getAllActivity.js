@@ -117,9 +117,9 @@ export const getActivitiesByDate = async (req, res) => {
     dateInArgentina.charAt(0).toUpperCase() + dateInArgentina.slice(1);
 
   if (hourStart.toString().length === 1) {
-    hourStart = `0${hourStart - 1}:00`;
+    hourStart = `0${hourStart}:00`;
   } else {
-    hourStart = `${hourStart - 1}:00`;
+    hourStart = `${hourStart}:00`;
   }
 
   console.log({ entre: hourStart });

@@ -11,6 +11,12 @@ import { baseUrl } from "../helpers/url";
 
 export const AuthContext = createContext();
 
+const getPiletas = async () => {
+  const resp = await fetch(`${baseUrl}pileta/getPiletas`);
+  const data = await resp.json();
+  return data;
+};
+
 export function AuthProvider({ children }) {
   const [authState, dispatch] = useReducer(authReducer, initialState);
 
@@ -38,6 +44,10 @@ export function AuthProvider({ children }) {
           payload: { logged: true, role: usuario.role },
         });
         await dispatch({ type: "SET_USER", payload: { user: usuario } });
+
+        if (usuario.role !== "usuario" || usuario.role !== "registrado") {
+          await getPiletas();
+        }
 
         Swal.fire({
           icon: "success",

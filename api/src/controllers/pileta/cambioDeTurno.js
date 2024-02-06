@@ -13,7 +13,7 @@ export const cambioDeTurno = async (req, res) => {
       horaActual = "0" + horaActual;
     }
     horaActual = horaActual + ":00";
-    
+
     console.log(horaActual);
 
     // -------------extraigo informacion de las piletas -----------
@@ -44,10 +44,10 @@ export const cambioDeTurno = async (req, res) => {
 
     //filtro todos los usuarios que su hora de finalizado sea igual que la hora actual
     const users25 = data25.users.filter((user) => {
-      return user.activity[0].hourFinish == horaActual;
+      return user.activity[0].hourFinish <= horaActual;
     });
     const users50 = data50.users.filter((user) => {
-      return user.activity[0].hourFinish == horaActual;
+      return user.activity[0].hourFinish <= horaActual;
     });
 
     const date = new Date();
@@ -134,21 +134,21 @@ export const cambioDeTurno = async (req, res) => {
     }
 
     //vacio la tabla de siguiente turno
-    // const updatedPileta = await Pileta.findOneAndUpdate(
-    //   {
-    //     pileta: "turnoSiguiente",
-    //   },
-    //   {
-    //     $set: {
-    //       users: [],
-    //       dia: dayCapitalized,
-    //       hora: hour,
-    //     },
-    //   },
-    //   {
-    //     new: true,
-    //   }
-    // );
+    const updatedPileta = await Pileta.findOneAndUpdate(
+      {
+        pileta: "turnoSiguiente",
+      },
+      {
+        $set: {
+          users: [],
+          dia: dayCapitalized,
+          hora: hour,
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     return res.status(200).json({
       ok: true,
