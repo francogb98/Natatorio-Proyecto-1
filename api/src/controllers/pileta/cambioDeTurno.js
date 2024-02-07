@@ -61,7 +61,11 @@ export const cambioDeTurno = async (req, res) => {
     const hour = date.getHours();
 
     //hago que l apirmera letra del dia sea en mayuscula
-    const dayCapitalized = day.charAt(0).toUpperCase() + day.slice(1);
+    let dayCapitalized = day.charAt(0).toUpperCase() + day.slice(1);
+
+    if (dayCapitalized === "Miércoles") {
+      dayCapitalized = "Miercoles";
+    }
 
     //eliminar de su respectiva pileta los usuarios filtrados
     for (const user of users25) {

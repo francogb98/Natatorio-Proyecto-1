@@ -36,7 +36,11 @@ export const getPiletasOrCreate = async (req, res) => {
     let hour = horaActual + ":00";
 
     //hago que l apirmera letra del dia sea en mayuscula
-    const dayCapitalized = day.charAt(0).toUpperCase() + day.slice(1);
+    let dayCapitalized = day.charAt(0).toUpperCase() + day.slice(1);
+
+    if (dayCapitalized === "Miércoles") {
+      dayCapitalized = "Miercoles";
+    }
 
     const piletas = await Pileta.find({}).populate({
       path: "users",
