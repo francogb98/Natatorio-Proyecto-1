@@ -37,9 +37,7 @@ function FormularioBuscarUsuario() {
     },
   });
 
-  useEffect(() => {
-    console.log(userEncontardo);
-  }, [userEncontardo]);
+  useEffect(() => {}, [userEncontardo]);
 
   const agregarUsuario = useMutation({
     mutationFn: agregarUsuarioApileta,
@@ -119,7 +117,8 @@ function FormularioBuscarUsuario() {
             <h6 className="card-subtitle mb-2 text-body-secondary">
               {buscarUsuario.data.user.customId}
             </h6>
-            {!buscarUsuario.data.user.activity ? (
+            {!buscarUsuario.data.user.activity ||
+            !buscarUsuario.data.user.activity.length ? (
               <p className="card-text">No tiene actividad registrada</p>
             ) : (
               <>
