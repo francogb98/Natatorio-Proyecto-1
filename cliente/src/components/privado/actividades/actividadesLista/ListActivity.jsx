@@ -27,7 +27,7 @@ function ListActivity() {
   const days = [
     { id: "a", name: "Lunes" },
     { id: "b", name: "Martes" },
-    { id: "c", name: "Miércoles" },
+    { id: "c", name: "Miercoles" },
     { id: "d", name: "Jueves" },
     { id: "e", name: "Viernes" },
   ];
