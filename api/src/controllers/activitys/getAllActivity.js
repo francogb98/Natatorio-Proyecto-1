@@ -46,6 +46,10 @@ export const getActivitiesByDateNextTurn = async (req, res) => {
     hourStart = `${hourStart + 1}:00`;
   }
 
+  if (date === "Miércoles") {
+    date = "Miercoles";
+  }
+
   try {
     const activity = await Activity.find({
       date: { $in: [date] },
@@ -122,7 +126,9 @@ export const getActivitiesByDate = async (req, res) => {
     hourStart = `${hourStart}:00`;
   }
 
-  console.log({ entre: hourStart });
+  if (dateInArgentina === "Miércoles") {
+    dateInArgentina = "Miercoles";
+  }
   try {
     const activity = await Activity.find({
       date: { $in: [dateInArgentina] },
