@@ -1,25 +1,29 @@
 import { useState, useEffect, useContext } from "react";
-import axios from "axios";
 import { useMutation } from "react-query";
 
-import { cargarFicha } from "../../../../helpers/usersFetch/cargarFicha";
+import { baseUrl } from "../../../../helpers/url";
 
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../context/AuthContext";
 
+const updateFile = async (data) => {
+  const res = await fetch(`${baseUrl}user/upload`, {
+    method: "PUT",
+    headers: {
+      "x-token": localStorage.getItem("token"),
+      authorization: `${localStorage.getItem("token")}`,
+    },
+    body: data,
+  });
+  return res.json();
+};
+
 function CargarArchivos() {
   const { auth, dispatch } = useContext(AuthContext);
 
   const [imagen, setImagen] = useState();
-
-  const [cud, setCud] = useState();
-  const [hongos, setHongos] = useState();
-  const [ficha, setFicha] = useState();
-
-  const [fotoPerfil, setFotoPerfil] = useState();
-  const [documento, setDocumento] = useState();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -31,131 +35,72 @@ function CargarArchivos() {
   const [editarHongos, setEditarHongos] = useState(false);
   const [editarFicha, setEditarFicha] = useState(false);
 
-  const postFicha = useMutation(cargarFicha, {
-    onSuccess: (data) => {
-      dispatch({ type: "SET_USER", payload: { user: data.user } });
-      return true;
-    },
-  });
+  const subirArchivo = async (e) => {
+    e.preventDefault();
 
-  const preset_key = import.meta.env.VITE_REACT_APP_PRESET_KEY;
-  const cloud_name = import.meta.env.VITE_REACT_APP_CLOUD_NAME;
-
-  const handleFileChange = (e, inputIdentifier) => {
-    const selectedFile = e.target.files[0];
-
-    // Verificar si se ha seleccionado un archivo
-    if (selectedFile) {
-      // Verificar si el tipo de archivo es una imagen permitida
-
-      // Actualizar el estado según el identificador del campo
-      if (inputIdentifier === "cud") {
-        setCud(selectedFile);
-      }
-      if (inputIdentifier === "hongos") {
-        setHongos(selectedFile);
-      }
-      if (inputIdentifier === "ficha") {
-        setFicha(selectedFile);
-      }
-      if (inputIdentifier === "fotoPerfil") {
-        setFotoPerfil(selectedFile);
-      }
-      if (inputIdentifier === "documento") {
-        setDocumento(selectedFile);
-      }
-    }
-  };
-
-  const uploadImage = (file, tipo) => {
+    //verifico que el archivo sea una imagen
     if (
-      file.type !== "image/jpeg" &&
-      file.type !== "image/png" &&
-      file.type !== "image/webp"
+      e.target.files[0].type !== "image/png" &&
+      e.target.files[0].type !== "image/jpg" &&
+      e.target.files[0].type !== "image/jpeg"
     ) {
       Swal.fire({
+        position: "center",
         icon: "error",
-        title: "Formato de archivo incorrecto",
-        text: "verifique que el archivo sea una imagen",
+        title: "El archivo no es una imagen",
+        showConfirmButton: true,
+        timer: 1500,
       });
       return;
     }
-    setLoading(true);
 
-    const formData = new FormData();
-
-    formData.append("file", file);
-    formData.append("upload_preset", preset_key);
-    formData.append("folder", preset_key);
-
-    axios
-      .post(
-        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-        formData
-      )
-      .then((res) => {
-        setError(false);
-        postFicha.mutate({
-          archivo: res.data.secure_url,
-          tipo: tipo,
-          id: auth.user._id,
-        });
-        setSuccess(true);
-
-        Swal.fire({
-          icon: "success",
-          title: "Archivo cargado con éxito",
-        });
-      })
-      .catch(() => {
-        Swal.fire({
-          icon: "error",
-          title: "Formato de archivo incorrecto",
-        });
-
-        //reiniciar valores
-      })
-      .finally(() => {
-        setLoading(false);
-        //reiniciar los campos de input file
-        // document.getElementById('miInputFile').value = '';
-
-        document.getElementById("formFile").value = "";
+    //verifico que el archivo no pese mas de 2mb
+    if (e.target.files[0].size > 2000000) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "El archivo pesa mas de 2mb",
+        showConfirmButton: true,
+        timer: 1500,
       });
+      return;
+    }
+
+    const archivoConNuevoNombre = new File([e.target.files[0]], e.target.name, {
+      type: e.target.files[0].type,
+    });
+
+    console.log(e.target.files[0].type);
+    const formData = new FormData();
+    formData.append("archivo", archivoConNuevoNombre);
+
+    mutation.mutate(formData);
   };
 
-  useEffect(() => {
-    if (cud) {
-      uploadImage(cud, "cud");
-    }
-  }, [cud]);
+  const mutation = useMutation(updateFile, {
+    onSuccess: (data) => {
+      dispatch({ type: "SET_USER", payload: { user: data.user } });
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Archivo subido con exito",
+        showConfirmButton: true,
+        timer: 1500,
+      });
+    },
+    onError: (error) => {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Error al subir el archivo",
+        showConfirmButton: true,
+        timer: 1500,
+      });
+    },
+  });
 
   useEffect(() => {
-    if (hongos) {
-      uploadImage(hongos, "hongos");
-    }
-  }, [hongos]);
-
-  useEffect(() => {
-    if (ficha) {
-      uploadImage(ficha, "ficha");
-    }
-  }, [ficha]);
-
-  useEffect(() => {
-    if (fotoPerfil) {
-      uploadImage(fotoPerfil, "fotoPerfil");
-    }
-  }, [fotoPerfil]);
-
-  useEffect(() => {
-    if (documento) {
-      uploadImage(documento, "documento");
-    }
-  }, [documento]);
-
-  useEffect(() => {
-    if (success) {
+    if (mutation.isSuccess) {
       setEditarFotoPerfil(false);
       setEditarFicha(false);
       setEditarDocumento(false);
@@ -165,13 +110,7 @@ function CargarArchivos() {
         setSuccess(false);
       }, 1500);
     }
-  }, [success]);
-
-  useEffect(() => {
-    if (postFicha.isSuccess) {
-      setLoading(false);
-    }
-  }, [postFicha.isLoading]);
+  }, [mutation.isSuccess]);
 
   return (
     <>
@@ -186,7 +125,7 @@ function CargarArchivos() {
             </li>
           </ol>
         </nav>
-        {loading ? (
+        {mutation.isLoading ? (
           <div
             className="alert alert-primary text-center"
             role="alert"
@@ -298,7 +237,8 @@ function CargarArchivos() {
                       className="form-control"
                       type="file"
                       id="formFile"
-                      onChange={(e) => handleFileChange(e, "cud")}
+                      name="cud"
+                      onChange={subirArchivo}
                     />
                   </div>
                 )}
@@ -359,8 +299,9 @@ function CargarArchivos() {
                 <input
                   className="form-control"
                   type="file"
+                  name="foto"
                   id="formFile"
-                  onChange={(e) => handleFileChange(e, "fotoPerfil")}
+                  onChange={subirArchivo}
                 />
               </div>
             )}
@@ -420,7 +361,8 @@ function CargarArchivos() {
                   className="form-control"
                   type="file"
                   id="formFile"
-                  onChange={(e) => handleFileChange(e, "documento")}
+                  name="fotoDocumento"
+                  onChange={subirArchivo}
                 />
               </div>
             )}
@@ -479,8 +421,8 @@ function CargarArchivos() {
                 <input
                   className="form-control"
                   type="file"
-                  id="formFile"
-                  onChange={(e) => handleFileChange(e, "hongos")}
+                  name="certificadoHongos"
+                  onChange={subirArchivo}
                 />
               </div>
             )}
@@ -539,8 +481,8 @@ function CargarArchivos() {
                 <input
                   className="form-control"
                   type="file"
-                  id="formFile"
-                  onChange={(e) => handleFileChange(e, "ficha")}
+                  name="fichaMedica"
+                  onChange={subirArchivo}
                 />
 
                 <div className="mt-2 text-danger">

@@ -16,6 +16,8 @@ import routerStadistics from "./src/routes/stadistics.js";
 
 import morgan from "morgan";
 
+import fileUpload from "express-fileupload";
+
 const app = express();
 const server = http.createServer(app);
 
@@ -29,6 +31,13 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204,
 };
+
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
 app.use(cors(corsOptions));
 app.use(express.json());

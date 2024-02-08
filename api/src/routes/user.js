@@ -33,6 +33,7 @@ import recuperar from "../controllers/users/recuperarContraseña/recuperar.js";
 import modificarContraseña from "../controllers/users/recuperarContraseña/modificarContraseña.js";
 import NuevoFeedback from "../controllers/users/feedback/NuevoFeedback.js";
 import verFeedbacks from "../controllers/users/feedback/verFeedbacks.js";
+import { subirArchivos } from "../controllers/subirArchivos.js";
 
 const router = Router();
 
@@ -81,5 +82,8 @@ router.get("/verFeedbacks", validarJWT, verFeedbacks);
 
 //buscar usuario por id
 router.post("/searchUser", validarJWT, getUserByIdBody);
+
+//subir imagenes
+router.put("/upload", validarJWT, subirArchivos);
 
 export default router;
