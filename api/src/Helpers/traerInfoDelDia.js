@@ -8,13 +8,13 @@ export function obtenerFechaYHoraArgentina() {
   let hora = horaActual;
   let horaAnterior = hora - 1;
 
-  if (hora.toString().length === 1) {
+  if (hora.toString().length === 1 && hora < 9) {
     hora = `0${hora}:00`;
   } else {
     hora = `${hora}:00`;
   }
 
-  if (horaAnterior.toString().length === 1) {
+  if (horaAnterior.toString().length === 1 && horaAnterior < 9) {
     horaAnterior = `0${horaAnterior}:00`;
   } else {
     horaAnterior = `${horaAnterior}:00`;
