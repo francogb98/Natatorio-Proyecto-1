@@ -42,7 +42,7 @@ export const getActivitiesByDateNextTurn = async (req, res) => {
 
   date = date.charAt(0).toUpperCase() + date.slice(1);
 
-  if (hourStart.toString().length === 1) {
+  if (hourStart.toString().length === 1 && hourStart < 9) {
     hourStart = `0${hourStart + 1}:00`;
   } else {
     hourStart = `${hourStart + 1}:00`;
@@ -52,6 +52,7 @@ export const getActivitiesByDateNextTurn = async (req, res) => {
     date = "Miercoles";
   }
 
+  console.log(date, hourStart);
   try {
     const activity = await Activity.find({
       date: { $in: [date] },

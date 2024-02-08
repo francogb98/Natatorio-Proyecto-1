@@ -7,6 +7,7 @@ export function obtenerFechaYHoraArgentina() {
   let horaActual = new Date(argentinaTime).getHours();
   let hora = horaActual;
   let horaAnterior = hora - 1;
+
   if (hora.toString().length === 1) {
     hora = `0${hora}:00`;
   } else {
