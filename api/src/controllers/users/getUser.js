@@ -36,7 +36,7 @@ export const getUserById = async (req, res) => {
         },
       });
     } else {
-      const user = await User.findOne({ _id: id }).populate({
+      user = await User.findOne({ _id: id }).populate({
         path: "activity",
         populate: {
           path: "name",
