@@ -72,7 +72,6 @@ function PruebaSubidaImage() {
       type: e.target.files[0].type,
     });
 
-    console.log(e.target.files[0].type);
     const formData = new FormData();
     formData.append("archivo", archivoConNuevoNombre);
 

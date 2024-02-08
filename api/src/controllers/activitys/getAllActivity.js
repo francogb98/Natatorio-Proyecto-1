@@ -52,7 +52,6 @@ export const getActivitiesByDateNextTurn = async (req, res) => {
     date = "Miercoles";
   }
 
-  console.log(date, hourStart);
   try {
     const activity = await Activity.find({
       date: { $in: [date] },
@@ -116,7 +115,6 @@ export const getActivitiesByDate = async (req, res) => {
       fecha = "Miercoles";
     }
 
-    console.log(hora, fecha);
     const activity = await Activity.find({
       date: { $in: [fecha] },
       $and: [

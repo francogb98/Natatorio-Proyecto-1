@@ -41,7 +41,6 @@ export const cambioDeTurno = async (req, res) => {
     });
 
     if (data25.hora == horaActual || data50.hora == horaActual) {
-      console.log("ya se realizo el cambio de turno");
       return res.status(200).json({
         ok: true,
         msg: "ya se realizo el cambio de turno",

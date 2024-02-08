@@ -37,7 +37,6 @@ export const getUsersFromActivity = async (req, res) => {
       });
     });
 
-    console.log(usersList);
     //necesito que me devuelva un array con todos los usuarios que estan en actividades que cumplen con la condicion de hora y dia
 
     return res.status(200).json({ status: "success", usersList });

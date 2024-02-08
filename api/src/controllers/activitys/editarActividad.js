@@ -1,8 +1,6 @@
 import Activity from "../../models/models/Actividades.js";
 
 export default async function (req, res) {
-  console.log(req.body.id);
-  console.log(req.body.args);
   try {
     const actividad = await Activity.findOneAndUpdate(
       { _id: req.body.id },

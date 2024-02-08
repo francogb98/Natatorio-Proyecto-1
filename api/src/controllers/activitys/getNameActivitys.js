@@ -31,7 +31,6 @@ export const getNameActivitys = async (req, res) => {
       hourStart: 1,
     });
 
-    console.log(activitys);
     //quiero ordenar las actividades de mayor a menor segun su horario de ingreso
 
     res.status(200).json({ status: "success", actividades: activitys });

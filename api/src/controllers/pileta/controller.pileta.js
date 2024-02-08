@@ -10,7 +10,6 @@ export const crearPileta = async (fecha, hora, nombrePileta) => {
     hora: hora,
   });
   if (data.length) {
-    console.log("no se creo pileta");
     return { pileta: data, status: "ok" };
   }
 
@@ -20,8 +19,6 @@ export const crearPileta = async (fecha, hora, nombrePileta) => {
     hora: hora,
   });
   await pileta.save();
-
-  console.log("Pileta creada con exito!");
 
   return { pileta, status: "ok" };
 };
@@ -52,7 +49,6 @@ export const getInfoPiletasPrueba = async (req, res) => {
 
     return res.status(200).json(resultado);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Hable con el administrador",
     });
@@ -140,7 +136,6 @@ export const agregarUsuarioAPiletaPrueba = async (req, res) => {
     }
     return res.status(200).json(resultado);
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "Hable con el administrador",
     });
@@ -149,8 +144,6 @@ export const agregarUsuarioAPiletaPrueba = async (req, res) => {
 
 const intercambioDeUsuarios = async () => {
   const { hora, fecha, horaAnterior } = obtenerFechaYHoraArgentina();
-
-  console.log(horaAnterior, fecha);
 
   const piletasAnterior = await Pileta.find({ dia: fecha, hora: horaAnterior });
 

@@ -15,8 +15,6 @@ export const subirArchivos = async (req, res) => {
 
   const user = await User.findById(req.user.id);
 
-  console.log(req.files);
-
   if (!req.files || Object.keys(req.files).length === 0 || !req.files.archivo) {
     res.status(400).json({ message: "No hay archivos para subir." });
     return;
@@ -31,12 +29,11 @@ export const subirArchivos = async (req, res) => {
   });
 
   if (name === "fichaMedica" && user.fichaMedica) {
-    console.log("entre aqui", user.fichaMedica);
     const nombreArr = user.fichaMedica.split("/");
 
     const nombre = nombreArr[nombreArr.length - 1];
     const [public_id] = nombre.split(".");
-    console.log(public_id);
+
     cloudinary.uploader.destroy(
       `Natatorio/${public_id}`,
       function (error, result) {

@@ -5,7 +5,6 @@ import User from "../../models/models/User.js";
 export const autorizar = async (req, res) => {
   const { id } = req.body;
 
-  console.log(id);
   try {
     const user = await User.findOne({ customId: id }).populate({
       path: "activity",

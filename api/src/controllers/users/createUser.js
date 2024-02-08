@@ -22,18 +22,6 @@ const createUser = async (req, res) => {
     });
   }
 
-  console.log(
-    args.nombre,
-    args.apellido,
-    args.edad,
-    args.dni,
-    args.sexo,
-    args.natacionAdaptada,
-    args.telefono,
-    args.telefonoContacto,
-    args.ciudad,
-    args.password
-  );
   if (
     !args.nombre ||
     !args.apellido ||

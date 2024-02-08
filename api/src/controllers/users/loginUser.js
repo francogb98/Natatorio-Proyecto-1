@@ -25,8 +25,6 @@ export const loginUser = async (req, res) => {
       user.activity = [];
     }
 
-    console.log(user);
-
     //comparamos las contraseñas
     const pass = await bcrypt.compare(password, user.password);
     //devolvemos un error en caso de que alguno no funcione
@@ -50,11 +48,9 @@ export const loginUser = async (req, res) => {
       usuario: user,
     });
   } catch (error) {
-    res
-      .status(400)
-      .json({
-        status: "error",
-        message: "Upss... algo salio mal,por favor vuelva a intentarlo",
-      });
+    res.status(400).json({
+      status: "error",
+      message: "Upss... algo salio mal,por favor vuelva a intentarlo",
+    });
   }
 };

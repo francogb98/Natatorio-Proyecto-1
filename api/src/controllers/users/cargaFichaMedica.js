@@ -4,10 +4,6 @@ export const cargaFicha = async (req, res) => {
   try {
     const { archivo, id, tipo } = req.body;
 
-    console.log(req.body);
-
-    req.body;
-
     const user = await User.findOne({ _id: id });
 
     if (!user) {
