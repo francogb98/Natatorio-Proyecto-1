@@ -17,6 +17,12 @@ const getPiletas = async () => {
   return data;
 };
 
+const traerInfoTablas = async () => {
+  const res = await fetch(`${baseUrl}pileta`);
+  const data = await res.json();
+  return data;
+};
+
 export function AuthProvider({ children }) {
   const [authState, dispatch] = useReducer(authReducer, initialState);
 
@@ -46,7 +52,7 @@ export function AuthProvider({ children }) {
         await dispatch({ type: "SET_USER", payload: { user: usuario } });
 
         if (usuario.role !== "usuario" || usuario.role !== "registrado") {
-          await getPiletas();
+          await traerInfoTablas();
         }
 
         Swal.fire({

@@ -7,11 +7,18 @@ import Tabla from "../../../../utilidades/Tabla";
 import { Link } from "react-router-dom";
 
 import style from "./style.module.css";
+import { baseUrl } from "../../../../helpers/url";
+
+const traerInfoTablas = async () => {
+  const res = await fetch(`${baseUrl}pileta`);
+  const data = await res.json();
+  return data;
+};
 
 function PiletasInfo() {
   const { data, isLoading, error, refetch, isRefetching } = useQuery(
     "piletas",
-    getPiletas
+    traerInfoTablas
   );
 
   //accedo a la hora actual
@@ -51,26 +58,21 @@ function PiletasInfo() {
   const columns = [
     {
       header: "ID",
-      accessorKey: "customId",
+      accessorKey: "customid",
     },
     {
       header: "Nombre y Apellido",
       accessorKey: "apellido",
       cell: ({ row }) => (
         <Link
-          to={`/admin/panel/usuario/${row.original._id}`}
-          style={
-            horaActual !== row.original.activity[0].hourStart
-              ? { color: "red" }
-              : null
-          }
-        >{`${row.original.apellido} ${row.original.nombre}`}</Link>
+          to={`/admin/panel/usuario/${row.original.customid}`}
+        >{`${row.original.nombre}`}</Link>
       ),
     },
     {
       header: "Actividad",
       accessorKey: "actividad",
-      cell: ({ row }) => <div>{row.original.activity[0].name}</div>,
+      cell: ({ row }) => <div>{row.original.actividad}</div>,
     },
   ];
 
@@ -87,13 +89,14 @@ function PiletasInfo() {
       ) : null}
 
       <div className={style.body}>
-        {data.piletas.map((info, i) => (
+        {data.map((info, i) => (
           <div key={i}>
             <h3>
-              {info.pileta.charAt(0).toUpperCase() + info.pileta.slice(1)}
+              {info.pileta[0].pileta.charAt(0).toUpperCase() +
+                info.pileta[0].pileta.slice(1)}
             </h3>
-            <p>Total usuarios :{info.users.length}</p>
-            <Tabla data={info.users} columns={columns} />
+            <p>Total usuarios :{info.pileta[0].users.length}</p>
+            <Tabla data={info.pileta[0].users} columns={columns} />
           </div>
         ))}
       </div>

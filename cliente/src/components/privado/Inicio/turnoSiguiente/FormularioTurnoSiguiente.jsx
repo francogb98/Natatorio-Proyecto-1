@@ -6,19 +6,34 @@ import Tabla from "../../../../utilidades/Tabla";
 import { Link } from "react-router-dom";
 
 import style from "./style.module.css";
+import { baseUrl } from "../../../../helpers/url";
+
+const agregarUsuarioAlTurno = async (content) => {
+  // es la peticion de arriba pero es un patch y tengo que enviar un body
+  const res = await fetch(`${baseUrl}pileta`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(content),
+  });
+  const data = await res.json();
+  return data;
+};
 
 function Layout() {
+  const queryClient = useQueryClient();
+
   const usuarios = useQuery(
     "usuariosTurnoSiguiente",
     getActivitiesByDateNextTurn
   );
 
-  const queryClient = useQueryClient();
-
-  const agregarUsuario = useMutation({
-    mutationFn: agregarUsuarioApiletaTurnoSiguiente,
+  const agregarUsuario = useMutation(agregarUsuarioAlTurno, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("usuariosTurnoSiguiente");
+      if (data.status === "success") {
+        queryClient.invalidateQueries("usuariosTurnoSiguiente");
+      }
     },
   });
 
@@ -59,7 +74,14 @@ function Layout() {
           return (
             <button
               onClick={() => {
-                agregarUsuario.mutate(row.original.customId);
+                agregarUsuario.mutate({
+                  customId: row.original.customId,
+                  nombre: row.original.nombre + " " + row.original.apellido,
+                  actividad: row.original.activity[0].name,
+                  pileta: "turnoSiguiente",
+                  horarioSalida: row.original.activity[0].hourFinish,
+                  piletaTurnoSiguiente: row.original.activity[0].pileta,
+                });
               }}
               className="btn btn-success"
             >

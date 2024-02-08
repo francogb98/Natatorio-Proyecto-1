@@ -26,13 +26,23 @@ export const getUser = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
+    let user;
 
-    const user = await User.findOne({ _id: id }).populate({
-      path: "activity",
-      populate: {
-        path: "name",
-      },
-    });
+    if (!isNaN(id)) {
+      user = await User.findOne({ customId: id }).populate({
+        path: "activity",
+        populate: {
+          path: "name",
+        },
+      });
+    } else {
+      const user = await User.findOne({ _id: id }).populate({
+        path: "activity",
+        populate: {
+          path: "name",
+        },
+      });
+    }
 
     if (!user)
       return res

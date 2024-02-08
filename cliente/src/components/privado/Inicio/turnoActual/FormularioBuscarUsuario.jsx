@@ -23,6 +23,19 @@ const getUser = async (id) => {
   return data;
 };
 
+const agregarUsuarioAlTurno = async (content) => {
+  // es la peticion de arriba pero es un patch y tengo que enviar un body
+  const res = await fetch(`${baseUrl}pileta`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(content),
+  });
+  const data = await res.json();
+  return data;
+};
+
 function FormularioBuscarUsuario() {
   const [id, setId] = useState("");
   const [userEncontardo, setUserEncontrado] = useState(false);
@@ -40,7 +53,7 @@ function FormularioBuscarUsuario() {
   useEffect(() => {}, [userEncontardo]);
 
   const agregarUsuario = useMutation({
-    mutationFn: agregarUsuarioApileta,
+    mutationFn: agregarUsuarioAlTurno,
     onSuccess: (data) => {
       if (data.status === "success") {
         Swal.fire({
@@ -158,7 +171,14 @@ function FormularioBuscarUsuario() {
               <button
                 className="btn btn-sm btn-success ms-3"
                 onClick={() => {
-                  agregarUsuario.mutate(buscarUsuario.data.user.customId);
+                  agregarUsuario.mutate({
+                    customId: buscarUsuario.data.user.customId,
+                    nombre: buscarUsuario.data.user.nombre,
+                    actividad: buscarUsuario.data.user.activity[0].name,
+                    pileta: buscarUsuario.data.user.activity[0].pileta,
+                    horarioSalida:
+                      buscarUsuario.data.user.activity[0].hourFinish,
+                  });
                 }}
               >
                 Agregar

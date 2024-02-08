@@ -24,6 +24,13 @@ h2 {
   display: none;
 }
 
+.tablaUsuarios {
+  background-color: aliceblue;
+  font-size: 13px;
+  width: 50%;
+  margin-top: 20px;
+}
+
 @media screen and (max-width: 900px) {
   .body {
     width: fit-content;
