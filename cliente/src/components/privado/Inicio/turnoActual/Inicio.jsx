@@ -96,7 +96,6 @@ function Inicio() {
       >
         <h3>Cambiar Turno</h3>
       </button>
-      <FormularioBuscarUsuario />
 
       <Layout usuarios={usuarios}></Layout>
 

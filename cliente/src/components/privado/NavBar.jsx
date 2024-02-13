@@ -79,7 +79,7 @@ function NavBar() {
                   Piletas
                 </Link>
               </li>
-              {auth.role === "SUPER_ADMIN" && (
+              {/* {auth.role === "SUPER_ADMIN" && (
                 <li className={style.link}>
                   <Link
                     to="panel/inicio/autorizar"
@@ -88,7 +88,7 @@ function NavBar() {
                     Autorizar
                   </Link>
                 </li>
-              )}
+              )} */}
             </ul>
             <ul>
               <li className={style.inicio}>Actividades</li>

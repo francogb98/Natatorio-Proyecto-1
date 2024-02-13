@@ -130,24 +130,23 @@ function FormularioBuscarUsuario() {
         onSubmit={handleSearch}
         style={{
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
+          justifyContent: "space-between",
           border: "1px solid #000",
           padding: "10px",
           borderRadius: "5px",
           backgroundColor: "#f5f5f5",
+          width: "100%",
         }}
       >
-        <label htmlFor="" className="form-label fw-bold">
-          Buscar Usuario
-        </label>
         <input
           type="text"
           value={id}
           onChange={(e) => setId(e.target.value)}
           className="form-control"
+          placeholder="buscar usuario por su id..."
         />
-        <button type="submit" className="btn btn-success mt-1">
+        <button type="submit" className="btn btn-success  ms-3">
           Buscar
         </button>
       </form>
