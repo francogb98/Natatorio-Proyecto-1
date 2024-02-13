@@ -2,81 +2,53 @@ import Pileta from "../../models/models/Pileta.js";
 
 import User from "../../models/models/User.js";
 
+import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
+
 export const autorizar = async (req, res) => {
   const { id } = req.body;
 
   try {
-    const user = await User.findOne({ customId: id }).populate({
+    const usuario = await User.findOne({ customId: id }).populate({
       path: "activity",
-    });
-
-    if (!user) {
-      return res.status(400).json({
-        status: "error",
-        msg: "No existe el usuario",
-      });
-    }
-    //busco si en pileta turno siguiente se encuentra el usuario, si se encuentra lo borro
-    await Pileta.findOneAndUpdate(
-      {
-        pileta: "turnoSiguiente",
-        users: { $eq: user._id }, // Asegura que el usuario no esté en la lista ya
-      },
-      {
-        $pull: {
-          users: user._id,
-        },
-      },
-      {
-        new: true,
-      }
-    ).populate({
-      path: "users",
       populate: {
-        path: "activity",
+        path: "name",
       },
     });
 
+    const { hora, fecha } = obtenerFechaYHoraArgentina();
     const piletaExist = await Pileta.findOneAndUpdate(
       {
-        pileta: user.activity[0].pileta,
-        users: { $ne: user._id }, // Asegura que el usuario no esté en la lista ya
+        pileta: usuario.activity ? usuario.activity[0].pileta : "pileta 50",
+        dia: fecha,
+        hora: hora,
+        "users.customid": { $ne: usuario.customId }, // Asegura que el usuario no esté en la lista ya
       },
       {
         $addToSet: {
-          users: user._id,
+          // Utiliza $addToSet en lugar de $push
+          users: {
+            customid: usuario.customId,
+            nombre: usuario.nombre + " " + usuario.apellido,
+            actividad: "autorizado",
+          },
         },
       },
       {
         new: true,
       }
-    ).populate({
-      path: "users",
-      populate: {
-        path: "activity",
-      },
-    });
-    const dateNow = new Date();
-    const day = dateNow.getDate();
-    const month = dateNow.getMonth() + 1;
-    const year = dateNow.getFullYear();
+    );
 
-    const dateNowSave = `${day}/${month}/${year}`;
-
-    //actualiso el campo de asistncia del usuario que es un array
-    user.asistencia.push(dateNowSave);
-    await user.save();
+    console.log(piletaExist);
 
     return res.status(200).json({
       status: "success",
       msg: "Usuario autorizado",
-      data: piletaExist,
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({
       status: "error",
       msg: "Error en el servidor",
-      error: error.message,
     });
   }
 };

@@ -1,133 +1,106 @@
-import { useContext, useEffect, useState } from "react";
-
+import { useContext } from "react";
+import { baseUrl } from "../../../../helpers/url";
 import style from "./style.module.css";
 
 import { useMutation } from "react-query";
-import { cambiarFoto } from "../../../../helpers/usersFetch/imagen/cambiarFoto";
-import axios from "axios";
 import { AuthContext } from "../../../../context/AuthContext";
 
-function Foto() {
-  const { auth, userRefetch } = useContext(AuthContext);
-
-  const [file, setFile] = useState();
-  const [previewUrl, setPreviewUrl] = useState();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  const [isImage, setIsImage] = useState(false);
-
-  const cambiarFotoMutation = useMutation({
-    mutationFn: cambiarFoto,
-    onSuccess: () => {
-      userRefetch();
-      setLoading(false);
+const updateFile = async (data) => {
+  const res = await fetch(`${baseUrl}user/upload`, {
+    method: "PUT",
+    headers: {
+      "x-token": localStorage.getItem("token"),
+      authorization: `${localStorage.getItem("token")}`,
     },
-    onError: (error) => {},
+    body: data,
+  });
+  return res.json();
+};
+
+function Foto() {
+  const { auth } = useContext(AuthContext);
+
+  const mutation = useMutation(updateFile, {
+    onSuccess: (data) => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Archivo subido con exito",
+        showConfirmButton: true,
+        timer: 1500,
+      });
+    },
+    onError: (error) => {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Error al subir el archivo",
+        showConfirmButton: true,
+        timer: 1500,
+      });
+    },
   });
 
-  const preset_key = import.meta.env.VITE_REACT_APP_PRESET_KEY;
-  const cloud_name = import.meta.env.VITE_REACT_APP_CLOUD_NAME;
+  const subirArchivo = async (e) => {
+    e.preventDefault();
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
-    setIsImage(true);
-
-    // Crear un objeto FileReader para leer la imagen y obtener su URL
-    const fileReader = new FileReader();
-    fileReader.onloadend = () => {
-      setPreviewUrl(fileReader.result);
-      previewUrl;
-    };
-    fileReader.readAsDataURL(selectedFile);
-  };
-
-  const uploadImage = () => {
-    setLoading(true);
-    const formData = new FormData();
-
-    formData.append("file", file);
-    formData.append("upload_preset", preset_key);
-    formData.append("folder", preset_key);
-    axios
-      .post(
-        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-        formData
-      )
-      .then((res) => {
-        cambiarFotoMutation.mutate({
-          public_id_foto: res.data.public_id,
-          foto: res.data.secure_url,
-          id: auth.user._id,
-        });
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
+    //verifico que el archivo sea una imagen
+    if (
+      e.target.files[0].type !== "image/png" &&
+      e.target.files[0].type !== "image/jpg" &&
+      e.target.files[0].type !== "image/jpeg"
+    ) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "El archivo no es una imagen",
+        showConfirmButton: true,
+        timer: 1500,
       });
+      return;
+    }
+
+    //verifico que el archivo no pese mas de 2mb
+    if (e.target.files[0].size > 2000000) {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "El archivo pesa mas de 2mb",
+        showConfirmButton: true,
+        timer: 1500,
+      });
+      return;
+    }
+
+    const archivoConNuevoNombre = new File([e.target.files[0]], e.target.name, {
+      type: e.target.files[0].type,
+    });
+
+    const formData = new FormData();
+    formData.append("archivo", archivoConNuevoNombre);
+
+    mutation.mutate(formData);
   };
 
-  //borrAR IMAGEN EN CLOUDINARY
-
-  useEffect(() => {}, [previewUrl]);
+  console.log(auth);
 
   return (
-    <div className={style.editarFoto}>
-      {auth.user.foto && (
-        <img
-          src={auth.user.foto}
-          alt="Imagen seleccionada"
-          className={style.imagenPerfil}
-        />
-      )}
-      <h2 style={{ textAlign: "start" }}>
-        {auth.user.foto ? "Cambiar foto" : "Agregar foto"}
-      </h2>
-      <div className="input-group mb-3">
+    <div className="text-center">
+      <img
+        src={auth.user.foto}
+        alt=""
+        style={{
+          width: "40%",
+        }}
+      />
+      <div className="mb-3">
+        <h4 className="form-label">Cargar Ficha Medica</h4>
         <input
           type="file"
+          name="fichaMedica"
+          onChange={subirArchivo}
           className="form-control"
-          id="inputGroupFile02"
-          onChange={handleFileChange}
         />
-        <button
-          className="input-group-text btn btn-success"
-          onClick={uploadImage}
-        >
-          Cargar <i className="bi bi-file-earmark-arrow-up"></i>
-        </button>
-      </div>
-
-      {previewUrl && !auth.user.foto && (
-        <img
-          src={previewUrl}
-          alt="Imagen seleccionada"
-          className="rounded mx-auto d-block mt-1"
-          style={{
-            maxWidth: "190px",
-            height: "50px",
-          }}
-        />
-      )}
-      <div className="mt-1 ">
-        {loading && (
-          <div className="text-center">
-            <p className="text-primary">Puede tardar unos segundos</p>
-            <div
-              className="spinner-border"
-              role="status"
-              style={{ marginTop: "-4px" }}
-            >
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        )}
-        {error && (
-          <p className="text-danger">
-            Ocurrio un error, recargue y vuelva a intentarlo
-          </p>
-        )}
       </div>
     </div>
   );

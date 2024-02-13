@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useMutation, useQueryClient } from "react-query";
 
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import { agregarUsuarioApileta } from "../../../../helpers/piletas/agregarUsuari
 import { baseUrl } from "../../../../helpers/url.js";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../../context/AuthContext.jsx";
 
 const getUser = async (id) => {
   const res = await fetch(`${baseUrl}user/searchUser`, {
@@ -35,8 +36,22 @@ const agregarUsuarioAlTurno = async (content) => {
   const data = await res.json();
   return data;
 };
+const autorizarUsuaRIO = async (content) => {
+  // es la peticion de arriba pero es un patch y tengo que enviar un body
+  const res = await fetch(`${baseUrl}pileta/autorizar`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(content),
+  });
+  const data = await res.json();
+  return data;
+};
 
 function FormularioBuscarUsuario() {
+  const { auth } = useContext(AuthContext);
+
   const [id, setId] = useState("");
   const [userEncontardo, setUserEncontrado] = useState(false);
 
@@ -54,6 +69,28 @@ function FormularioBuscarUsuario() {
 
   const agregarUsuario = useMutation({
     mutationFn: agregarUsuarioAlTurno,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        Swal.fire({
+          title: "Usuario agregado",
+          icon: "success",
+          text: data.message,
+          confirmButtonText: "Aceptar",
+        });
+      }
+      if (data.status === "error") {
+        Swal.fire({
+          title: "Usuario ya agregado",
+          icon: "error",
+          text: data.message,
+          confirmButtonText: "Aceptar",
+        });
+      }
+      queryClient.invalidateQueries("getUsrsByDate");
+    },
+  });
+  const autorizar = useMutation({
+    mutationFn: autorizarUsuaRIO,
     onSuccess: (data) => {
       if (data.status === "success") {
         Swal.fire({
@@ -158,7 +195,6 @@ function FormularioBuscarUsuario() {
                 </p>
               </>
             )}
-
             <button
               className="btn btn-sm btn-danger"
               onClick={() => {
@@ -182,6 +218,16 @@ function FormularioBuscarUsuario() {
                 }}
               >
                 Agregar
+              </button>
+            )}
+            {auth.role === "SUPER_ADMIN" && (
+              <button
+                className="btn btn-sm btn-warning ms-3"
+                onClick={() => {
+                  autorizar.mutate({ id: buscarUsuario.data.user.customId });
+                }}
+              >
+                Autorizar
               </button>
             )}
           </div>

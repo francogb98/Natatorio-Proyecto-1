@@ -29,17 +29,17 @@ export const getInfoPiletasPrueba = async (req, res) => {
 
     const piletas = ["pileta 25", "pileta 50", "turnoSiguiente"];
 
-    // if (fecha === "Sábado" || fecha === "Domingo") {
-    //   return res
-    //     .status(400)
-    //     .json("No se puede realizar la operación los fines de semana");
-    // }
+    if (fecha === "Sábado" || fecha === "Domingo") {
+      return res
+        .status(400)
+        .json("No se puede realizar la operación los fines de semana");
+    }
 
-    // if (horaActual < 8 || horaActual > 21) {
-    //   return res
-    //     .status(400)
-    //     .json("No se puede realizar la operación en este horario");
-    // }
+    if (horaActual < 8 || horaActual > 21) {
+      return res
+        .status(400)
+        .json("No se puede realizar la operación en este horario");
+    }
 
     const resultado = await Promise.all(
       piletas.map((pileta) => {

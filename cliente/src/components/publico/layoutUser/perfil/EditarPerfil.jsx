@@ -42,8 +42,6 @@ function EditarPerfil() {
   const editarPerfil = useMutation({
     mutationFn: editarPerfilFetch,
     onSuccess: async (data) => {
-   
-
       Swal.fire({
         title: data.status.toUpperCase(),
         text: data.message,
@@ -111,7 +109,15 @@ function EditarPerfil() {
         <h3>{auth.user.customId}</h3>
       </div>
 
-      <Foto user={auth.user} />
+      <div className="text-center">
+        <img
+          src={auth.user?.foto}
+          alt=""
+          style={{
+            width: "50%",
+          }}
+        />
+      </div>
 
       <Actividades user={auth.user} refetch={userRefetch} />
 
