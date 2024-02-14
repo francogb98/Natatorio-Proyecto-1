@@ -38,7 +38,7 @@ function PiletasInfo() {
     onSuccess: (data) => {
       if (data.status === "success") {
         Swal.fire({
-          title: "Usuario agregado",
+          title: "Usuario quitado de la pileta",
           icon: "success",
           text: data.message,
           confirmButtonText: "Aceptar",
