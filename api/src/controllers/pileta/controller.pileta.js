@@ -158,6 +158,7 @@ export const agregarUsuarioAPiletaPrueba = async (req, res) => {
     }
     return res.status(200).json(resultado);
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({
       message: "Hable con el administrador",
     });
@@ -190,6 +191,8 @@ export const getInfoPiletasPrueba = async (req, res) => {
 
     return res.status(200).json(resultado);
   } catch (error) {
+    console.log(error.message);
+
     return res.status(500).json({
       message: "Hable con el administrador",
     });
@@ -214,13 +217,11 @@ export const eliminarUsuarioDePileta = async (req, res) => {
     await pileta.save();
 
     console.log(pileta);
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        pileta,
-        message: "Usuario eliminado de la pileta",
-      });
+    return res.status(200).json({
+      status: "success",
+      pileta,
+      message: "Usuario eliminado de la pileta",
+    });
   } catch (err) {
     console.log(err.message);
     return res.status(500).json({
