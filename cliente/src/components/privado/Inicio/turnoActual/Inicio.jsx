@@ -32,7 +32,7 @@ function Inicio() {
 
   const cambiarTurno = useMutation(cambioTurno, {
     onSuccess: (data) => {
-      if (data.ok === true) {
+      if (data.status === "ok") {
         swal.fire({
           title: "Turno cambiado",
           icon: "success",
@@ -85,18 +85,32 @@ function Inicio() {
 
     // </>
     <div className="text-center">
-      <h1>Turno Actual</h1>
-      <button
-        className="btn btn-lg btn-warning mb-3 mt-2"
+      <div
         style={{
-          paddingTop: "15px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
       >
-        <h3>Cambiar Turno</h3>
-      </button>
+        <h1>Turno Actual</h1>
 
+        <button
+          className="btn btn-lg btn-warning mb-3 mt-2"
+          style={{
+            paddingTop: "15px",
+            width: "40%",
+          }}
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          <h3>Cambiar Turno</h3>
+        </button>
+        {cambiarTurno.isLoading && (
+          <div className="spinner-border text-primary mt-2" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        )}
+      </div>
       <Layout usuarios={usuarios}></Layout>
 
       <>
