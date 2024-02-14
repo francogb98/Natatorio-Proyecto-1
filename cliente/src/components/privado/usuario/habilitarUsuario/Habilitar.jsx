@@ -114,7 +114,9 @@ function Habilitar() {
               </button>
             </header>
             <div>Total usuario para habilitar: {data.users.length}</div>
-            <TablaHabilitar data={data.users} columns={columns} />
+            <div className={style.tablaBody}>
+              <TablaHabilitar data={data.users} columns={columns} />
+            </div>
           </>
         )}
       </section>

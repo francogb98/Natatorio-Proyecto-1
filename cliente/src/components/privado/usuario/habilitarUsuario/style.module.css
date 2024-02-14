@@ -11,6 +11,10 @@
   width: 100%;
 }
 
+.tablaBody {
+  overflow: auto;
+}
+
 .searchBox {
   text-align: center;
   background-color: red;
