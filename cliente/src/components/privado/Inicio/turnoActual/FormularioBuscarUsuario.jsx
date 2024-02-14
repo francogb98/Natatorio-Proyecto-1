@@ -108,7 +108,7 @@ function FormularioBuscarUsuario() {
           confirmButtonText: "Aceptar",
         });
       }
-      queryClient.invalidateQueries("getUsrsByDate");
+      queryClient.invalidateQueries("piletas");
     },
   });
 
@@ -202,23 +202,25 @@ function FormularioBuscarUsuario() {
             >
               Cerrar
             </button>
-            {buscarUsuario.data.user.status && (
-              <button
-                className="btn btn-sm btn-success ms-3"
-                onClick={() => {
-                  agregarUsuario.mutate({
-                    customId: buscarUsuario.data.user.customId,
-                    nombre: buscarUsuario.data.user.nombre,
-                    actividad: buscarUsuario.data.user.activity[0].name,
-                    pileta: buscarUsuario.data.user.activity[0].pileta,
-                    horarioSalida:
-                      buscarUsuario.data.user.activity[0].hourFinish,
-                  });
-                }}
-              >
-                Agregar
-              </button>
-            )}
+            {buscarUsuario.data.user.status &&
+              (auth.role === "SUPER_ADMIN" ||
+                auth.role === "administrador") && (
+                <button
+                  className="btn btn-sm btn-success ms-3"
+                  onClick={() => {
+                    agregarUsuario.mutate({
+                      customId: buscarUsuario.data.user.customId,
+                      nombre: buscarUsuario.data.user.nombre,
+                      actividad: buscarUsuario.data.user.activity[0].name,
+                      pileta: buscarUsuario.data.user.activity[0].pileta,
+                      horarioSalida:
+                        buscarUsuario.data.user.activity[0].hourFinish,
+                    });
+                  }}
+                >
+                  Agregar
+                </button>
+              )}
             {auth.role === "SUPER_ADMIN" && (
               <button
                 className="btn btn-sm btn-warning ms-3"

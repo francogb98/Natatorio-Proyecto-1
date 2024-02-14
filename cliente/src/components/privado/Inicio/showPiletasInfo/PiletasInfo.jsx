@@ -1,13 +1,13 @@
 import React from "react";
 
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { getPiletas } from "../../../../helpers/piletas/getPiletas";
 import Tabla from "../../../../utilidades/Tabla";
 import { Link } from "react-router-dom";
 
 import style from "./style.module.css";
 import { baseUrl } from "../../../../helpers/url";
+import Swal from "sweetalert2";
 
 const traerInfoTablas = async () => {
   const res = await fetch(`${baseUrl}pileta`);
@@ -15,9 +15,47 @@ const traerInfoTablas = async () => {
   return data;
 };
 
+const eliminarUsuario = async (content) => {
+  const res = await fetch(`${baseUrl}pileta/eliminar`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(content),
+  });
+  const data = await res.json();
+  return data;
+};
+
 function PiletasInfo() {
   const { data, isLoading, error, refetch, isRefetching, isFetching } =
-    useQuery("piletas", traerInfoTablas);
+    useQuery({ queryKey: ["piletas"], queryFn: traerInfoTablas });
+
+  const queryClient = useQueryClient();
+
+  const eliminar = useMutation({
+    mutationFn: eliminarUsuario,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        Swal.fire({
+          title: "Usuario agregado",
+          icon: "success",
+          text: data.message,
+          confirmButtonText: "Aceptar",
+        });
+
+        queryClient.invalidateQueries("piletas");
+      }
+      if (data.status === "error") {
+        Swal.fire({
+          title: "Usuario ya agregado",
+          icon: "error",
+          text: data.message,
+          confirmButtonText: "Aceptar",
+        });
+      }
+    },
+  });
 
   //accedo a la hora actual
   let horaActual = new Date().getHours();
@@ -84,6 +122,20 @@ function PiletasInfo() {
       accessorKey: "actividad",
       cell: ({ row }) => <div>{row.original.actividad}</div>,
     },
+    {
+      header: "Salida",
+      accessorKey: "eliminar",
+      cell: ({ row }) => (
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={() => {
+            eliminar.mutate({ customid: row.original.customid });
+          }}
+        >
+          X
+        </button>
+      ),
+    },
   ];
 
   return (
@@ -101,12 +153,18 @@ function PiletasInfo() {
       <div className={style.body}>
         {data.map((info, i) => (
           <div key={i}>
-            <h3>
-              {info.pileta[0].pileta.charAt(0).toUpperCase() +
-                info.pileta[0].pileta.slice(1)}
-            </h3>
-            <p>Total usuarios :{info.pileta[0].users.length}</p>
-            <Tabla data={info.pileta[0].users} columns={columns} />
+            {info.pileta.length ? (
+              <>
+                <h3>
+                  {info.pileta[0].pileta.charAt(0).toUpperCase() +
+                    info.pileta[0].pileta.slice(1)}
+                </h3>
+                <p>Total usuarios :{info.pileta[0].users.length}</p>
+                <Tabla data={info.pileta[0].users} columns={columns} />
+              </>
+            ) : (
+              <div>error en la carga de piletas por favor recargue</div>
+            )}
           </div>
         ))}
       </div>

@@ -16,6 +16,7 @@ export const autorizar = async (req, res) => {
     });
 
     const { hora, fecha } = obtenerFechaYHoraArgentina();
+
     const piletaExist = await Pileta.findOneAndUpdate(
       {
         pileta: usuario.activity ? usuario.activity[0].pileta : "pileta 50",
@@ -29,6 +30,8 @@ export const autorizar = async (req, res) => {
           users: {
             customid: usuario.customId,
             nombre: usuario.nombre + " " + usuario.apellido,
+            horarioSalida: "22:00",
+
             actividad: "autorizado",
           },
         },
@@ -37,8 +40,6 @@ export const autorizar = async (req, res) => {
         new: true,
       }
     );
-
-    console.log(piletaExist);
 
     return res.status(200).json({
       status: "success",

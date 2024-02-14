@@ -4,6 +4,7 @@ import {
   getInfoPiletasPrueba,
   agregarUsuarioAPiletaPrueba,
   cambiarTurno,
+  eliminarUsuarioDePileta,
 } from "../controllers/pileta/controller.pileta.js";
 
 const routerPileta = Router();
@@ -20,6 +21,7 @@ const routerPileta = Router();
 routerPileta.get("/", getInfoPiletasPrueba);
 routerPileta.patch("/", agregarUsuarioAPiletaPrueba);
 routerPileta.put("/", cambiarTurno);
+routerPileta.put("/eliminar", eliminarUsuarioDePileta);
 
 routerPileta.patch("/autorizar", autorizar);
 

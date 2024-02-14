@@ -26,13 +26,7 @@ function EditarPerfil() {
     barrio: "",
     edad: "",
     dni: "",
-
-    // Informacion Contacto
-    nombreTutor: "",
-    apellidoTutor: "",
-    emailTutor: "",
-    telefonoTutor: "",
-    dniTutor: "",
+    natacionAdaptada: "",
   });
 
   const [edicionActiva, setEdicionActiva] = useState(false);
@@ -43,7 +37,7 @@ function EditarPerfil() {
     mutationFn: editarPerfilFetch,
     onSuccess: async (data) => {
       Swal.fire({
-        title: data.status.toUpperCase(),
+        title: "Usuario Editado",
         text: data.message,
         icon: data.status,
         confirmButtonText: "Aceptar",
@@ -76,7 +70,9 @@ function EditarPerfil() {
   useEffect(() => {
     setFormValues(auth.user);
   }, [auth.user]);
-  useEffect(() => {}, [menorEdadAlert]);
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
 
   // Enviar la solicitud al backend
   const handleSubmitAdulto = (e) => {
@@ -131,6 +127,7 @@ function EditarPerfil() {
         setMenorEdadAlert={setMenorEdadAlert}
         setEdicionActiva={setEdicionActiva}
         menorEdadAlert={menorEdadAlert}
+        setFormValues={setFormValues}
       />
     </div>
   );

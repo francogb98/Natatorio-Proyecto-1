@@ -6,8 +6,7 @@ function InformacionPersonal({
   edicionActiva,
   setEdicionActiva,
   handleSubmitAdulto,
-  setMenorEdadAlert,
-  menorEdadAlert,
+  setFormValues,
 }) {
   return (
     <>
@@ -57,6 +56,47 @@ function InformacionPersonal({
             disabled={!edicionActiva}
             className="form-control"
           />
+        </div>
+
+        <div className="mt-3">
+          <div className={style.info}>
+            <label htmlFor="no" className="ms-1">
+              Natacion Convencional
+            </label>
+            <input
+              type="radio"
+              name="natacionAdaptada"
+              checked={!formValues.natacionAdaptada}
+              id="no"
+              value="no"
+              onChange={() => {
+                setFormValues({
+                  ...formValues,
+                  natacionAdaptada: false,
+                });
+              }}
+              disabled={!edicionActiva}
+            />
+          </div>
+          <div className={style.info}>
+            <label htmlFor="si" className="ms-1">
+              Natacion Adaptada
+            </label>
+            <input
+              type="radio"
+              name="natacionAdaptada"
+              checked={formValues.natacionAdaptada}
+              id="si"
+              value="si"
+              onChange={() => {
+                setFormValues({
+                  ...formValues,
+                  natacionAdaptada: true,
+                });
+              }}
+              disabled={!edicionActiva}
+            />
+          </div>
         </div>
 
         <div className={style.info}>

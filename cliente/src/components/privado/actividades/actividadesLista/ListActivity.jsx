@@ -109,18 +109,29 @@ function ListActivity() {
     return (
       <div>
         {!isEdit && (
-          <>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              overflow: "auto",
+            }}
+          >
             <h1 className="my-4" style={{ textAlign: "center" }}>
               Lista Actividades
             </h1>
             <div>
               <h2>Filtrar actividades</h2>
-              <div className="d-flex justify-content-evenly mb-2">
+              <div
+                className="d-flex mb-2"
+                style={{
+                  width: "100%",
+                  minWidth: "500px",
+                }}
+              >
                 <select
                   type="text"
                   placeholder="Horario"
                   className="form-select"
-                  style={{ width: "fit-content" }}
                   name="name"
                   onChange={handleFilter}
                 >
@@ -140,7 +151,6 @@ function ListActivity() {
                   className="form-select"
                   name="hour"
                   onChange={handleFilter}
-                  style={{ width: "fit-content" }}
                 >
                   <option value="default">--Horario--</option>
                   {hours.map((hour) => (
@@ -155,7 +165,6 @@ function ListActivity() {
                   className="form-select"
                   name="day"
                   onChange={handleFilter}
-                  style={{ width: "fit-content" }}
                 >
                   <option value="default">--Dias--</option>
                   {days.map((day) => (
@@ -239,7 +248,7 @@ function ListActivity() {
               </tbody>
             </table>
             <Modal deleteActivity={deleteActivity} />
-          </>
+          </div>
         )}
         {isEdit && (
           <div>
