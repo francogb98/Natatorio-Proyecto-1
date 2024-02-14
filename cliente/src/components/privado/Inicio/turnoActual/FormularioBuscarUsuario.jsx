@@ -204,7 +204,7 @@ function FormularioBuscarUsuario() {
             </button>
             {buscarUsuario.data.user.status &&
               (auth.role === "SUPER_ADMIN" ||
-                auth.role === "administrador") && (
+                auth.role === "ADMINISTRATIVO") && (
                 <button
                   className="btn btn-sm btn-success ms-3"
                   onClick={() => {
