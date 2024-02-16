@@ -87,6 +87,7 @@ function FormularioBuscarUsuario() {
         });
       }
       queryClient.invalidateQueries("getUsrsByDate");
+      queryClient.invalidateQueries("piletas");
     },
   });
   const autorizar = useMutation({
