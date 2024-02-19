@@ -98,7 +98,7 @@ function PruebaInscripciones() {
     return <div>Cargando xd...</div>;
   if (getActividades.isSuccess && getActividades.data) {
     const actividadesFiltradas = getActividades.data.filter(
-      (actividad) => actividad.actividadHabilitada === true
+      (actividad) => actividad.actividadHabilitada !== false
     );
 
     const handleSubmit = (id) => {
