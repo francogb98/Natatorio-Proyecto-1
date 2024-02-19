@@ -12,7 +12,6 @@ export const getNameActivitys = async (req, res) => {
     const projection = {
       _id: 0, // Excluir el campo _id
       codigoDeAcceso: 0, // Excluir otros campos (reemplaza 'campoAExcluir' con el nombre real del campo)
-      cupos: 0,
       stadistics: 0,
     };
 
