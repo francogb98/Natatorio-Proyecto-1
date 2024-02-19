@@ -17,6 +17,9 @@ export default async function (req, res) {
         actividadEspecial: req.body.args.actividadEspecial,
         desde: req.body.args.desde,
         hasta: req.body.args.hasta,
+
+        codigoDeAcceso: req.body.args.codigoDeAcceso ?? "",
+        actividadHabilitada: req.body.args.actividadHabilitada ?? true,
       },
       { new: true }
     );

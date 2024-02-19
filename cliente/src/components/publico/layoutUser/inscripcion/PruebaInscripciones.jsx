@@ -97,6 +97,10 @@ function PruebaInscripciones() {
   if (getActividades.isSuccess && !getActividades.data)
     return <div>Cargando xd...</div>;
   if (getActividades.isSuccess && getActividades.data) {
+    const actividadesFiltradas = getActividades.data.filter(
+      (actividad) => actividad.actividadHabilitada === true
+    );
+
     const handleSubmit = (id) => {
       registerInActivity.mutate({
         idActividad: id,
@@ -270,7 +274,7 @@ function PruebaInscripciones() {
         <div className={style.tabla}>
           <Tabla
             columns={columns}
-            data={getActividades.data}
+            data={actividadesFiltradas}
             type={"Actividad"}
           />
         </div>

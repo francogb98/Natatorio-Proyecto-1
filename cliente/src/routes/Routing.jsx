@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 import Registro from "../components/publico/registro/RegistroPrueba";
-import Confirm from "../components/publico/confirmEmail/ConfirmEmail";
 import SignIn from "../components/publico/inicioDeSesion/SignIn";
 import Inscripcion from "../components/publico/layoutUser/inscripcion/Inscripcion";
 import Perfil from "../components/publico/layoutUser/perfil/Perfil";
@@ -84,7 +83,6 @@ function Routing() {
         <Route path="/login" element={<Registro />} />
         <Route path="/recuperar-contraseña" element={<RecuperarContraseña />} />
 
-        <Route path="/verificar-cuenta" element={<Confirm />} />
         {auth.logged &&
           (auth.role === "usuario" || auth.role === "registrado") && (
             <>

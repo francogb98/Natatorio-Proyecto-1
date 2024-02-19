@@ -29,15 +29,22 @@ function Modal({ args, createActivity }) {
             <p>Hora de finalizacion: {args.hourFinish}</p>
             <p>Pileta: {args.pileta}</p>
             <p>Cupos: {args.cupos}</p>
+            <p>Codigo de acceso: {args.codigoDeAcceso ?? ""}</p>
             <p>Actividad Especial: {args.actividadEspecial ? "Si" : "No"}</p>
             <p>Natacion Adaptada: {args.natacionAdaptada ? "Si" : "No"}</p>
+            <p>
+              Actividad Habilitada: {args.actividadHabilitada ? "Si" : "No"}
+            </p>
           </div>
           <div className="modal-footer">
             <button
               type="button"
               className="btn btn-primary"
               data-bs-dismiss="modal"
-              onClick={() => createActivity.mutate(args)}
+              onClick={() => {
+                // console.log(args);
+                createActivity.mutate(args);
+              }}
             >
               Crear
             </button>

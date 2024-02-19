@@ -17,6 +17,9 @@ const activitySchema = new mongoose.Schema({
   // edad de usuarios
   desde: Number,
   hasta: Number,
+
+  codigoDeAcceso: String,
+  actividadHabilitada: Boolean,
 });
 
 const Activity = mongoose.model("Activity", activitySchema);

@@ -25,6 +25,9 @@ function CreateActivity() {
     cupos: "",
     actividadEspecial: false,
     natacionAdaptada: false,
+
+    codigoDeAcceso: "",
+    actividadHabilitada: true,
   });
 
   const [isSpecialActivity, setIsSpecialActivity] = useState(false);
@@ -140,32 +143,49 @@ function CreateActivity() {
     <div className={style.body}>
       {" "}
       <form action="" className={`form-group `} onSubmit={handleSubmit}>
-        <div className={style.isSpecial}>
-          <label htmlFor="isSpecial">Actividad Especial</label>
-          <input
-            type="checkbox"
-            id="isSpecial"
-            name="isSpecial"
-            value={isSpecialActivity}
-            onChange={(e) => {
-              setIsSpecialActivity(e.target.checked);
-              setArgs({ ...args, actividadEspecial: e.target.checked });
-            }}
-          />
-        </div>
-        <div className={style.isSpecial}>
-          <label htmlFor="isSpecial">Natacion Adaptada</label>
-          <input
-            type="checkbox"
-            id="isSpecial"
-            name="isSpecial"
-            value={args.natacionAdaptada}
-            onChange={(e) => {
-              setArgs({ ...args, natacionAdaptada: e.target.checked });
-            }}
-          />
-        </div>
-
+        <section
+          style={{
+            display: "flex",
+          }}
+        >
+          <div className={style.isSpecial}>
+            <label htmlFor="isSpecial">Actividad Habilitada</label>
+            <input
+              type="checkbox"
+              id="isHability"
+              name="isHability"
+              value={args.actividadHabilitada}
+              onChange={(e) => {
+                setArgs({ ...args, actividadHabilitada: e.target.checked });
+              }}
+            />
+          </div>
+          <div className={style.isSpecial}>
+            <label htmlFor="isSpecial">Actividad Especial</label>
+            <input
+              type="checkbox"
+              id="isSpecial"
+              name="isSpecial"
+              value={isSpecialActivity}
+              onChange={(e) => {
+                setIsSpecialActivity(e.target.checked);
+                setArgs({ ...args, actividadEspecial: e.target.checked });
+              }}
+            />
+          </div>
+          <div className={style.isSpecial}>
+            <label htmlFor="isSpecial">Natacion Adaptada</label>
+            <input
+              type="checkbox"
+              id="isSpecial"
+              name="isSpecial"
+              value={args.natacionAdaptada}
+              onChange={(e) => {
+                setArgs({ ...args, natacionAdaptada: e.target.checked });
+              }}
+            />
+          </div>
+        </section>
         <div>
           <label htmlFor="name">Actividad</label>
           {isSpecialActivity ? (
@@ -360,6 +380,20 @@ function CreateActivity() {
                 </span>{" "}
               </p>
             ))}
+        </div>
+
+        <div>
+          <label htmlFor="cupos">Codigo de Acceso</label>
+          <input
+            type="text"
+            id="codigo"
+            name="codigo"
+            value={args.codigoDeAcceso}
+            className="form-control"
+            onChange={(e) => {
+              setArgs({ ...args, codigoDeAcceso: e.target.value });
+            }}
+          />
         </div>
 
         {createActivity.isLoading && <h4>Creando actividad...</h4>}

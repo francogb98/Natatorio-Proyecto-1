@@ -9,11 +9,21 @@ export const getNameActivitys = async (req, res) => {
   try {
     const user = await User.findById(id);
 
+    const projection = {
+      _id: 0, // Excluir el campo _id
+      codigoDeAcceso: 0, // Excluir otros campos (reemplaza 'campoAExcluir' con el nombre real del campo)
+      cupos: 0,
+      stadistics: 0,
+    };
+
     //si el usuario es de matacion adaptada devuelvo todas las actividades de natacion adaptada
     if (user.natacionAdaptada) {
-      const activitys = await Activity.find({
-        natacionAdaptada: true,
-      }).sort({
+      const activitys = await Activity.find(
+        {
+          natacionAdaptada: true,
+        },
+        projection
+      ).sort({
         hourStart: 1,
       });
       return res
@@ -21,13 +31,16 @@ export const getNameActivitys = async (req, res) => {
         .json({ status: "success", actividades: activitys });
     }
 
-    const activitys = await Activity.find({
-      // name: activity,
-      desde: { $lte: user.edad },
-      hasta: { $gte: user.edad },
-      //quito las actividades de natacion adaptada
-      natacionAdaptada: false,
-    }).sort({
+    const activitys = await Activity.find(
+      {
+        // name: activity,
+        desde: { $lte: user.edad },
+        hasta: { $gte: user.edad },
+        //quito las actividades de natacion adaptada
+        natacionAdaptada: false,
+      },
+      projection
+    ).sort({
       hourStart: 1,
     });
 

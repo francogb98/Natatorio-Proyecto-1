@@ -14,6 +14,8 @@ export const createActivity = async (req, res) => {
     natacionAdaptada,
     desde,
     hasta,
+    actividadHabilitada,
+    codigoDeAcceso,
   } = req.body;
 
   try {
@@ -112,6 +114,9 @@ export const createActivity = async (req, res) => {
       userRegister: 0,
       natacionAdaptada: natacionAdaptada ? true : false,
       actividadEspecial: actividadEspecial ? true : false,
+
+      actividadHabilitada: actividadHabilitada ?? true,
+      codigoDeAcceso: codigoDeAcceso ?? "",
     });
 
     activity.save();
@@ -119,6 +124,7 @@ export const createActivity = async (req, res) => {
     res.status(200).json({
       status: "success",
       message: "Actividad creada con exito",
+      activity,
     });
   } catch (error) {
     res.status(500).json({
