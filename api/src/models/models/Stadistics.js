@@ -5,11 +5,8 @@ const schema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  dias: [String],
   mes: {
-    type: String,
-    required: true,
-  },
-  year: {
     type: String,
     required: true,
   },

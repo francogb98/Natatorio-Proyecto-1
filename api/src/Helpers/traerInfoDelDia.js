@@ -28,6 +28,23 @@ export function obtenerFechaYHoraArgentina() {
   let yyyy = today.getFullYear();
 
   const fecha = `${dd}/${mm}/${yyyy}`;
+  const meses = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
 
-  return { hora, fecha, horaAnterior, horaActual };
+  // Obtener el nombre del día y el mes
+  const mesNombre = meses[today.getMonth()];
+
+  return { hora, fecha, horaAnterior, horaActual, mesNombre };
 }

@@ -1,5 +1,6 @@
 import Pileta from "../../models/models/Pileta.js";
 import User from "../../models/models/User.js";
+import Stadistics from "../../models/models/Stadistics.js";
 
 import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 
@@ -62,6 +63,43 @@ const agregarUsuario = async ({
   };
 };
 
+const actualizarEstadistica = async (user) => {
+  try {
+    const { mesNombre, fecha } = obtenerFechaYHoraArgentina();
+    console.log(fecha);
+    // Buscar la estadística para la actividad y el mes correspondiente
+    const estadisticaExistente = await Stadistics.findOne({
+      activity: user.activity[0]._id,
+      mes: mesNombre,
+    });
+
+    if (!estadisticaExistente) {
+      // Si no existe una estadística para la actividad y el mes, crear una nueva
+      const nuevaEstadistica = new Stadistics({
+        usersQuantity: 1,
+        dias: [fecha], // Asegúrate de guardar la fecha como un array si esperas múltiples fechas
+        mes: mesNombre,
+        activity: user.activity[0]._id,
+      });
+      await nuevaEstadistica.save();
+    } else {
+      // Si ya existe una estadística para la actividad y el mes, actualizarla
+      estadisticaExistente.usersQuantity += 1;
+      if (!estadisticaExistente.dias.includes(fecha)) {
+        estadisticaExistente.dias.add(fecha); // Asegúrate de guardar la fecha como un array si esperas múltiples fechas
+      }
+      await estadisticaExistente.save();
+    }
+
+    return { status: "success" };
+  } catch (error) {
+    console.error("Error al actualizar la estadística:", error.message);
+    return res
+      .status(400)
+      .json({ status: "error", message: "Ocurrió un error" });
+  }
+};
+
 const asistenciaUsuario = async (customId) => {
   const { fecha } = obtenerFechaYHoraArgentina();
   const user = await User.findOneAndUpdate(
@@ -72,6 +110,7 @@ const asistenciaUsuario = async (customId) => {
 
   return {
     status: "success",
+    user,
   };
 };
 
@@ -152,10 +191,15 @@ export const agregarUsuarioAPiletaPrueba = async (req, res) => {
       return res.status(400).json(resultado.message);
     }
     //actualizar el campo de asistenciia del usuario
+
     const resultadoAsistencia = await asistenciaUsuario(customId);
     if (resultadoAsistencia.status === "error") {
       return res.status(400).json(resultadoAsistencia.message);
     }
+
+    //actualizo la estadistica
+    await actualizarEstadistica(resultadoAsistencia.user);
+
     return res.status(200).json(resultado);
   } catch (error) {
     console.log(error.message);
