@@ -31,7 +31,7 @@ const getActividadesUsuario = async () => {
 function PruebaInscripciones() {
   const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
 
-  const { userRefetch } = useContext(AuthContext);
+  const { userRefetch, auth } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -152,19 +152,32 @@ function PruebaInscripciones() {
               <div className="text-danger fw-bold text-center">Agotado</div>
             );
           } else {
-            return (
-              <button
-                className="btn btn-primary"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                onClick={() => {
-                  setActividadRegistrarse(row.original);
-                }}
-              >
-                Inscribirse
-              </button>
-            );
+            if (
+              auth.user.certificadoHongos &&
+              auth.user.fichaMedica &&
+              auth.user.fotoDocumento
+            ) {
+              return (
+                <button
+                  className="btn btn-primary"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal"
+                  onClick={() => {
+                    setActividadRegistrarse(row.original);
+                  }}
+                >
+                  Inscribirse
+                </button>
+              );
+            } else {
+              return (
+                <p>
+                  <b>Carga tus archivos</b> para poder <b>inscribirte</b> en
+                  esta actividad
+                </p>
+              );
+            }
           }
         },
       },
