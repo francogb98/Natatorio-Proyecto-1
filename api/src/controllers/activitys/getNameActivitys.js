@@ -10,9 +10,7 @@ export const getNameActivitys = async (req, res) => {
     const user = await User.findById(id);
 
     const projection = {
-      _id: 0, // Excluir el campo _id
       codigoDeAcceso: 0, // Excluir otros campos (reemplaza 'campoAExcluir' con el nombre real del campo)
-      stadistics: 0,
     };
 
     //si el usuario es de matacion adaptada devuelvo todas las actividades de natacion adaptada
