@@ -85,18 +85,19 @@ const actualizarEstadistica = async (user) => {
     } else {
       // Si ya existe una estadística para la actividad y el mes, actualizarla
       estadisticaExistente.usersQuantity += 1;
+
       if (!estadisticaExistente.dias.includes(fecha)) {
-        estadisticaExistente.dias.add(fecha); // Asegúrate de guardar la fecha como un array si esperas múltiples fechas
+        estadisticaExistente.dias.push(fecha); // Asegúrate de guardar la fecha como un array si esperas múltiples fechas
       }
       await estadisticaExistente.save();
+
+      console.log(estadisticaExistente);
     }
 
     return { status: "success" };
   } catch (error) {
     console.error("Error al actualizar la estadística:", error.message);
-    return res
-      .status(400)
-      .json({ status: "error", message: "Ocurrió un error" });
+    return { status: "error", message: "Ocurrió un error" };
   }
 };
 
