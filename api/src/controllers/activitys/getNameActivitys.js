@@ -45,6 +45,7 @@ export const getNameActivitys = async (req, res) => {
 
     res.status(200).json({ status: "success", actividades: activitys });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    console.log(error.message);
+    res.status(404).json({ message: "error en el servidor" });
   }
 };
