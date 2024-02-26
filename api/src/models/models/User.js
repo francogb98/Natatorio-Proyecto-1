@@ -133,6 +133,10 @@ const schema = new mongoose.Schema({
     type: String,
     minlength: 3,
   },
+
+  inasistencias: {
+    type: [String],
+  },
 });
 
 export default mongoose.model("User", schema);

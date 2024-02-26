@@ -33,6 +33,8 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
+app.use(morgan("dev"));
+
 app.use(
   fileUpload({
     useTempFiles: true,
@@ -49,8 +51,6 @@ app.use("/pileta", routerPileta);
 app.use("/stadistics", routerStadistics);
 app.use("/autorizado", rutaAutorizado);
 
-app.use(morgan("dev"));
-
 server.listen(process.env.PORT, "0.0.0.0", () => {
-  "Socket.IO server listening on port", process.env.PORT;
+  console.log("Socket.IO server listening on port", process.env.PORT);
 });

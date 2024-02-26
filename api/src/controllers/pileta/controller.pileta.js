@@ -3,70 +3,15 @@ import User from "../../models/models/User.js";
 import Stadistics from "../../models/models/Stadistics.js";
 
 import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
+import { colocarInasistencia } from "./utilidades/colocarInasistencia.js";
 
-const crearPileta = async (fecha, hora, nombrePileta) => {
-  const data = await Pileta.find({
-    pileta: nombrePileta,
-    dia: fecha,
-    hora: hora,
-  });
-  if (data.length) {
-    return { pileta: data, status: "ok" };
-  }
-
-  const pileta = new Pileta({
-    pileta: nombrePileta,
-    dia: fecha,
-    hora: hora,
-  });
-  await pileta.save();
-
-  return { pileta, status: "ok" };
-};
-
-const agregarUsuario = async ({
-  customId,
-  nombre,
-  actividad,
-  pileta,
-  horarioSalida,
-  piletaTurnoSiguiente,
-}) => {
-  const { hora, fecha } = obtenerFechaYHoraArgentina();
-  const piletaExist = await Pileta.findOneAndUpdate(
-    {
-      pileta: pileta,
-      dia: fecha,
-      hora: hora,
-      "users.customid": { $ne: customId }, // Asegura que el usuario no esté en la lista ya
-    },
-    {
-      $addToSet: {
-        // Utiliza $addToSet en lugar de $push
-        users: {
-          customid: customId,
-          nombre: nombre,
-          actividad: actividad,
-          horarioSalida: horarioSalida,
-          piletaTurnoSiguiente: piletaTurnoSiguiente,
-        },
-      },
-    },
-    {
-      new: true,
-    }
-  );
-
-  return {
-    pileta: piletaExist,
-    status: "success",
-  };
-};
+import { agregarUsuario } from "./utilidades/agegarUsuario.js";
+import { intercambioDeUsuarios } from "./utilidades/intercambiarUsuariosTurno.js";
+import { crearPileta } from "./utilidades/crearPileta.js";
 
 const actualizarEstadistica = async (user) => {
   try {
     const { mesNombre, fecha } = obtenerFechaYHoraArgentina();
-    console.log(fecha);
     // Buscar la estadística para la actividad y el mes correspondiente
     const estadisticaExistente = await Stadistics.findOne({
       activity: user.activity[0]._id,
@@ -115,61 +60,54 @@ const asistenciaUsuario = async (customId) => {
   };
 };
 
-const intercambioDeUsuarios = async () => {
-  const { hora, fecha, horaAnterior } = obtenerFechaYHoraArgentina();
+export const iniciarTurno = async (req, res) => {
+  try {
+    //verifico que no exitan piletas en este horario, si existen devuelvo un mensaje de error de que todavia no es hora para ejecutar el cambio de turno
+    const { hora, fecha } = obtenerFechaYHoraArgentina();
 
-  const piletasAnterior = await Pileta.find({ dia: fecha, hora: horaAnterior });
+    const resultado = await Pileta.find({
+      dia: fecha,
+      hora: hora,
+    });
 
-  //verifico todos los usuarios de las piletas anteriores, en caso de que su horario de salida sea mayor que la hora actual los agrego a las pieltas del turno actual
-  const resultado = await Promise.all(
-    piletasAnterior.map(async (pileta) => {
-      return await Promise.all(
-        pileta.users.map(async (user) => {
-          if (user.horarioSalida > hora) {
-            const resultado = await agregarUsuario({
-              customId: user.customid,
-              nombre: user.nombre,
-              actividad: user.actividad,
-              pileta:
-                pileta.pileta === "turnoSiguiente"
-                  ? user.piletaTurnoSiguiente
-                  : pileta.pileta,
-              horarioSalida: user.horarioSalida,
-            });
-            if (resultado.status === "error") {
-              return resultado.message;
-            }
-          }
-        })
-      );
-    })
-  );
+    if (resultado.length) {
+      return res.status(400).json({
+        status: "error",
+        message: "Todavia no es hora de cambiar el turno",
+      });
+    }
+
+    const crear = await crearPileta();
+    if (crear.status == "error") {
+      return res
+        .status(400)
+        .json({ status: "error", message: "error en el servidor" });
+    }
+
+    //ejecuto el cambio de turn
+    const resultadoCambio = await intercambioDeUsuarios();
+
+    const result = await colocarInasistencia();
+
+    if (result.status === "error") {
+      return res
+        .status(400)
+        .json({ status: "error", message: "error en el servidor" });
+    }
+
+    return res.status(200).json({
+      status: "ok",
+      message: "Horario cambiado con exito!,",
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res
+      .status(400)
+      .json({ status: "error", message: "error en el servidor" });
+  }
 };
 
-export const cambiarTurno = async (req, res) => {
-  //verifico que no exitan piletas en este horario, si existen devuelvo un mensaje de error de que todavia no es hora para ejecutar el cambio de turno
-  const { hora, fecha } = obtenerFechaYHoraArgentina();
-  const piletas = ["pileta 25", "pileta 50", "turnoSiguiente"];
-
-  const resultado = await Promise.all(
-    piletas.map((pileta) => {
-      return crearPileta(fecha, hora, pileta);
-    })
-  );
-
-  // if (resultado[0].pileta.length) {
-  //   return res.status(400).json("Todavia no es hora de cambiar el turno");
-  // }
-  //ejecuto el cambio de turno
-  const resultadoCambio = await intercambioDeUsuarios();
-
-  return res.status(200).json({
-    status: "ok",
-    message: "Horario cambiado con exito!",
-  });
-};
-
-export const agregarUsuarioAPiletaPrueba = async (req, res) => {
+export const agregarUsuarioAPileta = async (req, res) => {
   const {
     customId,
     nombre,
@@ -213,28 +151,12 @@ export const agregarUsuarioAPiletaPrueba = async (req, res) => {
 export const getInfoPiletasPrueba = async (req, res) => {
   try {
     const { hora, fecha, horaActual } = obtenerFechaYHoraArgentina();
+    const piletas = await Pileta.find({
+      dia: fecha,
+      hora: hora,
+    });
 
-    const piletas = ["pileta 25", "pileta 50", "turnoSiguiente"];
-
-    if (fecha === "Sábado" || fecha === "Domingo") {
-      return res
-        .status(400)
-        .json("No se puede realizar la operación los fines de semana");
-    }
-
-    if (horaActual < 7 || horaActual > 21) {
-      return res
-        .status(400)
-        .json("No se puede realizar la operación en este horario");
-    }
-
-    const resultado = await Promise.all(
-      piletas.map((pileta) => {
-        return crearPileta(fecha, hora, pileta);
-      })
-    );
-
-    return res.status(200).json(resultado);
+    return res.status(200).json({ resultado: piletas });
   } catch (error) {
     console.log(error.message);
 

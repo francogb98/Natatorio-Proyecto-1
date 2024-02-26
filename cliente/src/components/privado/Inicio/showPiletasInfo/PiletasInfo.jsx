@@ -151,22 +151,24 @@ function PiletasInfo() {
       ) : null}
 
       <div className={style.body}>
-        {data.map((info, i) => (
-          <div key={i}>
-            {info.pileta.length ? (
+        {data.resultado.length ? (
+          data.resultado.map((info, i) => (
+            <div key={i}>
               <>
                 <h3>
-                  {info.pileta[0].pileta.charAt(0).toUpperCase() +
-                    info.pileta[0].pileta.slice(1)}
+                  {info.pileta.charAt(0).toUpperCase() + info.pileta.slice(1)}
                 </h3>
-                <p>Total usuarios :{info.pileta[0].users.length}</p>
-                <Tabla data={info.pileta[0].users} columns={columns} />
+                <p>Total usuarios :{info.users.length}</p>
+                <Tabla data={info.users} columns={columns} />
               </>
-            ) : (
-              <div>error en la carga de piletas por favor recargue</div>
-            )}
-          </div>
-        ))}
+            </div>
+          ))
+        ) : (
+          <h2>
+            Inicie un nuevo turno para ver las Piletas, luego dar click en el
+            boton de recargar
+          </h2>
+        )}
       </div>
     </div>
   );

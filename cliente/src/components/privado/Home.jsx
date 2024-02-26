@@ -1,10 +1,13 @@
 import style from "./home.module.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import NavBar from "./NavBar";
 import FormularioBuscarUsuario from "./Inicio/turnoActual/FormularioBuscarUsuario";
+import NuevoTurno from "./NuevoTurno";
 
 function Home() {
+  const location = useLocation();
+
   return (
     <div className={style.bodyHome}>
       <NavBar />
@@ -17,6 +20,10 @@ function Home() {
             textAlign: "center",
           }}
         >
+          {(location.pathname.startsWith("/admin/panel/inicio") ||
+            location.pathname === "/admin/panel/listaAutorizados" ||
+            location.pathname === "/admin/panel/piletas") && <NuevoTurno />}
+
           <FormularioBuscarUsuario />
         </div>
         <Outlet />
