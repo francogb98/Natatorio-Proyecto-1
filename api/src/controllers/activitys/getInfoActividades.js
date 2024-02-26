@@ -8,11 +8,8 @@ export default async function getInfoActividades(req, res) {
 
     const estadistica = await Stadistics.find({ activity: actividad });
 
-    // DEVOLVER EL CAMPO ESTADISTICAS
-    console.log(estadistica);
-
     // console.log("total usuarios", actividad.users.length);
-    return res.status(200).json(actividad);
+    return res.status(200).json({ actividad, estadistica });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

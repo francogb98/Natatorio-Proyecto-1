@@ -7,6 +7,8 @@ import { getInfoActividades } from "../../../../helpers/activitiesFetch/getInfoA
 import { useEffect } from "react";
 import Tabla from "../../../../utilidades/Tabla";
 
+import style from "./actividades.module.css";
+
 function InfoActividad() {
   const params = useParams();
 
@@ -23,7 +25,7 @@ function InfoActividad() {
 
   if (getActivity.isSuccess && !getActivity.data) return <h1>Cargando...</h1>;
 
-  if (getActivity.isSuccess) {
+  if (getActivity.isSuccess && getActivity.data.actividad) {
     const columns = [
       {
         header: "ID",
@@ -43,7 +45,7 @@ function InfoActividad() {
         accessorKey: "dni",
       },
     ];
-    if (getActivity.data?.users) {
+    if (getActivity.data?.actividad.users) {
       return (
         <>
           <Link to={"/admin/panel/actividades"}>
@@ -58,17 +60,44 @@ function InfoActividad() {
           </Link>
 
           <div className="text-center">
-            <h1>Acitividad: {getActivity.data.name}</h1>
+            <h1>Acitividad: {getActivity.data.actividad.name}</h1>
             <h3>
               {" "}
-              <b>Dias:</b> {getActivity.data.date.join(" - ")}
+              <b>Dias:</b> {getActivity.data.actividad.date.join(" - ")}
             </h3>
             <h3>
               <b>Horario:</b>
-              {getActivity.data.hourStart} - {getActivity.data.hourFinish}
+              {getActivity.data.actividad.hourStart} -{" "}
+              {getActivity.data.actividad.hourFinish}
             </h3>
             <h2 className="mt-3">Lista de Usuarios</h2>
-            <Tabla data={getActivity.data.users} columns={columns} />
+            <Tabla data={getActivity.data.actividad.users} columns={columns} />
+          </div>
+
+          <div>
+            <h1>Estadisticas</h1>
+            <table className={style.table}>
+              <thead>
+                <th>Mes</th>
+                <th>Dias dictada</th>
+                <th>Usuarios Asistido</th>
+                <th>Promedio por clase</th>
+              </thead>
+              <tbody>
+                {getActivity.data?.estadistica.map((estadistica) => (
+                  <tr>
+                    <td>{estadistica.mes}</td>
+                    <td>{estadistica.dias.length}</td>
+                    <td>{estadistica.usersQuantity}</td>
+                    <td>
+                      {Math.floor(
+                        estadistica.usersQuantity / estadistica.dias.length
+                      )}{" "}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </>
       );

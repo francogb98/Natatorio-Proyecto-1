@@ -67,3 +67,24 @@ tr:nth-child(even) {
   margin: 0 5px;
   cursor: pointer;
 }
+
+@media screen and (max-width: 600px) {
+  table {
+    width: 100%;
+    font-size: 12px;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 900px) {
+  table {
+    width: 90%;
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 901px) {
+  table {
+    width: 80%;
+    font-size: 16px;
+  }
+}
