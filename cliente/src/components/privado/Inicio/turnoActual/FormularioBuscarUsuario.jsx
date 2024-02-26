@@ -36,6 +36,20 @@ const agregarUsuarioAlTurno = async (content) => {
   const data = await res.json();
   return data;
 };
+
+const agregarUsuarioAlistaAutorizados = async (content) => {
+  // es la peticion de arriba pero es un patch y tengo que enviar un body
+  const res = await fetch(`${baseUrl}autorizado`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(content),
+  });
+  const data = await res.json();
+  return data;
+};
+
 const autorizarUsuaRIO = async (content) => {
   // es la peticion de arriba pero es un patch y tengo que enviar un body
   const res = await fetch(`${baseUrl}pileta/autorizar`, {
@@ -67,6 +81,18 @@ function FormularioBuscarUsuario() {
 
   useEffect(() => {}, [userEncontardo]);
 
+  const agregarUsuarioAListaAutorizado = useMutation({
+    mutationFn: agregarUsuarioAlistaAutorizados,
+    onSuccess: (data) => {
+      Swal.fire({
+        title: "Usuario agregado",
+        icon: "success",
+        text: data.message,
+        confirmButtonText: "Aceptar",
+      });
+      queryClient.invalidateQueries("lista_autorizados");
+    },
+  });
   const agregarUsuario = useMutation({
     mutationFn: agregarUsuarioAlTurno,
     onSuccess: (data) => {
@@ -223,14 +249,26 @@ function FormularioBuscarUsuario() {
                 </button>
               )}
             {auth.role === "SUPER_ADMIN" && (
-              <button
-                className="btn btn-sm btn-warning ms-3"
-                onClick={() => {
-                  autorizar.mutate({ id: buscarUsuario.data.user.customId });
-                }}
-              >
-                Autorizar
-              </button>
+              <>
+                <button
+                  className="btn btn-sm btn-warning ms-3"
+                  onClick={() => {
+                    autorizar.mutate({ id: buscarUsuario.data.user.customId });
+                  }}
+                >
+                  Autorizar
+                </button>
+                <button
+                  className="btn btn-sm btn-secondary ms-3 mt-2 me-3"
+                  onClick={() => {
+                    agregarUsuarioAListaAutorizado.mutate({
+                      user: buscarUsuario.data.user._id,
+                    });
+                  }}
+                >
+                  Agregar a lista
+                </button>
+              </>
             )}
           </div>
         </div>

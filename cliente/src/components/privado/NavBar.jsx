@@ -72,6 +72,14 @@ function NavBar() {
                       Registrar Turno Siguiente
                     </Link>
                   </li>
+                  <li className={style.link__item__especial}>
+                    <Link
+                      to="panel/listaAutorizados"
+                      className={style.link__item}
+                    >
+                      Autorizar
+                    </Link>
+                  </li>
                 </>
               )}
               <li className={style.link}>

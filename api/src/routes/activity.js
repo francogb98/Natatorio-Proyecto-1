@@ -21,7 +21,7 @@ const routerActivity = Router();
 
 routerActivity.get("/getAll", getActivities);
 routerActivity.get("/getActividadesNombre", validarJWT, getNameActivitys);
-routerActivity.get("/getActividad/:id", validarJWT, getInfoActividades);
+routerActivity.get("/getActividad/:id", /*validarJWT,*/ getInfoActividades);
 
 routerActivity.get("/getActividadesPorHora", getActivitiesByDate);
 

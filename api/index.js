@@ -17,6 +17,7 @@ import routerStadistics from "./src/routes/stadistics.js";
 import morgan from "morgan";
 
 import fileUpload from "express-fileupload";
+import rutaAutorizado from "./src/routes/autorizado.router.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -46,6 +47,7 @@ app.use("/activity", routerActivity);
 app.use("/hour", routerHours);
 app.use("/pileta", routerPileta);
 app.use("/stadistics", routerStadistics);
+app.use("/autorizado", rutaAutorizado);
 
 app.use(morgan("dev"));
 
