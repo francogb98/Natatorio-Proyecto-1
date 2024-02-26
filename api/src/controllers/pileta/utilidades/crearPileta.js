@@ -5,6 +5,7 @@ export const crearPileta = async () => {
   try {
     const { hora, fecha } = obtenerFechaYHoraArgentina();
     const piletas = ["pileta 25", "pileta 50", "turnoSiguiente"];
+    const piletasCreadas = [];
 
     for (const nombrePileta of piletas) {
       const data = await Pileta.find({
@@ -14,8 +15,8 @@ export const crearPileta = async () => {
       });
 
       if (data.length) {
-        // Si hay datos, devuelve el objeto con la información de la pileta y el estado "ok"
-        return { pileta: data, status: "ok" };
+        // Si hay datos, agrega el objeto con la información de la pileta a la lista de piletas creadas
+        piletasCreadas.push({ pileta: data, status: "ok" });
       } else {
         // Si no hay datos, crea una nueva entrada en la base de datos para la pileta actual
         const pileta = new Pileta({
@@ -24,9 +25,13 @@ export const crearPileta = async () => {
           hora: hora,
         });
         await pileta.save();
-        return { pileta, status: "ok" };
+        // Agrega la nueva pileta a la lista de piletas creadas
+        piletasCreadas.push({ pileta, status: "ok" });
       }
     }
+
+    // Retorna la lista de piletas creadas
+    return piletasCreadas;
   } catch (error) {
     console.log(error.message);
     return { status: "error" };
