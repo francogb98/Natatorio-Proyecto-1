@@ -3,8 +3,6 @@ import { useMutation, useQueryClient } from "react-query";
 
 import { useEffect, useState } from "react";
 
-import { agregarUsuarioApileta } from "../../../../helpers/piletas/agregarUsuarioApileta.js";
-
 import { baseUrl } from "../../../../helpers/url.js";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -84,13 +82,22 @@ function FormularioBuscarUsuario() {
   const agregarUsuarioAListaAutorizado = useMutation({
     mutationFn: agregarUsuarioAlistaAutorizados,
     onSuccess: (data) => {
-      Swal.fire({
-        title: "Usuario agregado",
-        icon: "success",
-        text: data.message,
-        confirmButtonText: "Aceptar",
-      });
-      queryClient.invalidateQueries("lista_autorizados");
+      if (data.status === "success") {
+        Swal.fire({
+          title: "Usuario agregado",
+          icon: "success",
+          text: data.message,
+          confirmButtonText: "Aceptar",
+        });
+        queryClient.invalidateQueries("lista_autorizados");
+      }
+      if (data.status === "error") {
+        Swal.fire({
+          title: "Error!",
+          text: data.message,
+          icon: "error",
+        });
+      }
     },
   });
   const agregarUsuario = useMutation({

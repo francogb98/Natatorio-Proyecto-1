@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 
 import style from "./style.module.css";
 import { baseUrl } from "../../../../helpers/url";
+import Swal from "sweetalert2";
 
 const agregarUsuarioAlTurno = async (content) => {
   // es la peticion de arriba pero es un patch y tengo que enviar un body
@@ -33,6 +34,13 @@ function Layout() {
     onSuccess: (data) => {
       if (data.status === "success") {
         queryClient.invalidateQueries("usuariosTurnoSiguiente");
+      }
+      if (data.status === "error") {
+        Swal.fire({
+          title: "Error!",
+          text: data.message,
+          icon: "error",
+        });
       }
     },
   });

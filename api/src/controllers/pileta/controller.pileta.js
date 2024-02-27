@@ -117,6 +117,20 @@ export const agregarUsuarioAPileta = async (req, res) => {
     piletaTurnoSiguiente,
   } = req.body;
   try {
+    const { hora, fecha } = obtenerFechaYHoraArgentina();
+
+    const resultadoPileta = await Pileta.find({
+      dia: fecha,
+      hora: hora,
+    });
+
+    if (!resultadoPileta.length) {
+      return res.status(400).json({
+        status: "error",
+        message: "Iniciar nuevo turno",
+      });
+    }
+
     const resultado = await agregarUsuario({
       customId,
       nombre,

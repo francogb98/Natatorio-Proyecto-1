@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 import { baseUrl } from "../../../../../helpers/url";
 
+import swal from "sweetalert2";
+
 import style from "./style.module.css";
 
 const agregarUsuarioAlTurno = async (content) => {
@@ -28,6 +30,13 @@ function Layout({ usuarios }) {
     onSuccess: (data) => {
       if (data.status === "success") {
         queryClient.invalidateQueries("getUsrsByDate");
+      }
+      if (data.status === "error") {
+        swal.fire({
+          title: "Error!",
+          text: data.message,
+          icon: "error",
+        });
       }
     },
   });

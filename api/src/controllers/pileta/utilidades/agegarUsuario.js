@@ -10,6 +10,12 @@ export const agregarUsuario = async ({
   piletaTurnoSiguiente,
 }) => {
   const { hora, fecha } = obtenerFechaYHoraArgentina();
+
+  const resultado = await Pileta.find({
+    dia: fecha,
+    hora: hora,
+  });
+
   const piletaExist = await Pileta.findOneAndUpdate(
     {
       pileta: pileta,
