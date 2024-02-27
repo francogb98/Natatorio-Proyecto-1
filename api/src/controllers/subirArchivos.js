@@ -21,15 +21,46 @@ export const subirArchivos = async (req, res) => {
   }
   const { tempFilePath, name } = req.files.archivo;
 
+  let cloud_name = "";
+  let api_key = "";
+  let api_secret = "";
+
+  if (user.customId % 2 === 0) {
+    cloud_name = process.env.CLOUDINARY_CLOUD_NAME;
+    api_key = process.env.CLOUDINARY_API_KEY;
+    api_secret = process.env.CLOUDINARY_API_SECRET;
+  } else {
+    cloud_name = process.env.CLOUDINARY_CLOUD_NAME_2;
+    api_key = process.env.CLOUDINARY_API_KEY_2;
+    api_secret = process.env.CLOUDINARY_API_SECRET_2;
+  }
+
   cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: cloud_name,
+    api_key: api_key,
+    api_secret: api_secret,
     secure: true,
   });
 
+  console.log(cloud_name);
+  console.log(api_key);
+  console.log(api_secret);
+
   if (name === "fichaMedica" && user.fichaMedica) {
     const nombreArr = user.fichaMedica.split("/");
+
+    const nombre = nombreArr[nombreArr.length - 1];
+    const [public_id] = nombre.split(".");
+
+    cloudinary.uploader.destroy(
+      `Natatorio/${public_id}`,
+      function (error, result) {
+        console.log(result, error);
+      }
+    );
+  }
+  if (name === "cud" && user.cud) {
+    const nombreArr = user.cud.split("/");
 
     const nombre = nombreArr[nombreArr.length - 1];
     const [public_id] = nombre.split(".");
@@ -91,6 +122,9 @@ export const subirArchivos = async (req, res) => {
     //result.secure_url esta la url que tenemos que guardar en la base de datos
     if (name === "fichaMedica") {
       user.fichaMedica = result.secure_url;
+    }
+    if (name === "cud") {
+      user.cud = result.secure_url;
     }
     if (name === "foto") {
       user.foto = result.secure_url;
