@@ -133,13 +133,21 @@ function ActividadConClave({ registerInActivity }) {
 
       <form
         action=""
-        style={{ width: "40%", margin: "20px auto", display: "flex" }}
+        style={{
+          width: "40%",
+          margin: "20px auto",
+          display: "flex",
+          justifyContent: "center",
+        }}
         onSubmit={handleSubmit}
       >
         <input
           type="number"
           placeholder="Ingrese codigo de acceso"
           className="form-control"
+          style={{
+            width: "120px",
+          }}
           value={clave}
           onChange={(e) => {
             setClave(e.target.value);
