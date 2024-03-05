@@ -21,6 +21,7 @@ const routerActivity = Router();
 
 routerActivity.get("/getAll", getActivities);
 routerActivity.get("/getActividadesNombre", validarJWT, getNameActivitys);
+
 routerActivity.get("/getActividad/:id", /*validarJWT,*/ getInfoActividades);
 
 routerActivity.get("/getActividadesPorHora", getActivitiesByDate);
@@ -31,9 +32,9 @@ routerActivity.get(
 );
 
 routerActivity.post("/getActivityByName", validarJWT, getActividadesByNames);
-routerActivity.post("/createActivity", validarJWT, createActivity);
 routerActivity.post("/getActivitiesByDate", validarJWT, getActivitiesByDate);
 
+routerActivity.post("/createActivity", validarJWT, createActivity);
 //ruta para eliminar actividad
 routerActivity.delete("/deleteActivity/:id", validarJWT, deleteActivity);
 

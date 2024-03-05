@@ -1,4 +1,4 @@
-import Feedback from "../../../models/models/FeedBack.js";
+import Feedback from "../../models/models/FeedBack.js";
 
 export default async function NuevoFeedback(req, res) {
   try {

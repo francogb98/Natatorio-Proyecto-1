@@ -168,6 +168,7 @@ export const HabilitarUser = async (req, res) => {
         "Usted ha sido registrado correctamente en la actividad, podrás ver los horarios en la sección de actividades, Recuerda que debes asistir a la actividad para que no seas deshabilitado, ademas de actualizar tu certificado de mucosis y pediculosis cada 1 mes, para mas información comunicate con el administrador del natatorio",
     });
 
+    user.inasistencias = [];
     user.asistencia = dateNowSave;
     await user.save();
 

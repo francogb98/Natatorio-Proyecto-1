@@ -1,25 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { baseUrl } from "../../../helpers/url";
 
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";
 
-const verFeeds = async () => {
-  try {
-    const resp = await fetch(baseUrl + "user/verFeedbacks", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `${localStorage.getItem("token")}`,
-      },
-    });
-
-    const data = await resp.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
 const responder = async (content) => {
   try {
     const resp = await fetch(baseUrl + "user/notificaciones/create", {
@@ -60,6 +44,10 @@ function FeedbackItem({ feed, onSend }) {
       style={{
         border: "1px solid black",
         padding: "5px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "space-between",
+        justifyContent: "space-between",
       }}
     >
       <div
@@ -87,11 +75,14 @@ function FeedbackItem({ feed, onSend }) {
           style={{
             display: "flex",
             flexDirection: "column",
-            width: "40%",
           }}
         >
           <textarea
             type="text"
+            style={{
+              width: "100%",
+              height: "100px",
+            }}
             value={cuerpo}
             onChange={(e) => setCuerpo(e.target.value)}
           />
@@ -103,11 +94,35 @@ function FeedbackItem({ feed, onSend }) {
 }
 
 function FeedBacks() {
+  const [pagina, setPagina] = useState(1);
+
+  const verFeeds = async () => {
+    try {
+      const resp = await fetch(baseUrl + `feedback/${pagina}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
+
   const queryClient = useQueryClient();
   const getFeeds = useQuery({
     queryKey: ["verFeeds"],
     queryFn: verFeeds,
   });
+
+  useEffect(() => {
+    getFeeds.refetch();
+  }, [pagina]);
+
   const responderFeed = useMutation({
     mutationKey: "verFeeds",
     mutationFn: responder,
@@ -121,18 +136,78 @@ function FeedBacks() {
     },
   });
 
+  // if (getFeeds.isRefetching) return <h1>Cargando</h1>;
   if (getFeeds.isLoading) return <h1>Cargando</h1>;
   if (getFeeds.isSuccess && !getFeeds.data) return <h1>Cargando</h1>;
   return (
-    <div>
-      {getFeeds.data.feedbacks?.map((feed) => (
-        <FeedbackItem
-          key={feed._id}
-          feed={feed}
-          onSend={(data) => responderFeed.mutate(data)}
-        />
-      ))}
-    </div>
+    <>
+      <nav
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBlock: "5px",
+        }}
+      >
+        <ul class="pagination">
+          <li class={`page-item ${pagina != 1 ? null : "disabled"}`}>
+            <button
+              class="page-link me-1"
+              style={{
+                fontSize: "16px",
+              }}
+              onClick={() => {
+                setPagina(1);
+              }}
+            >
+              Primera Pagina
+            </button>
+          </li>
+          <li class={`page-item ${pagina != 1 ? null : "disabled"}`}>
+            <button
+              class="page-link"
+              onClick={() => {
+                setPagina(pagina - 1);
+              }}
+            >
+              Anterior
+            </button>
+          </li>
+          <li class="page-item">
+            <h5 className="mt-1 mx-3">{pagina}</h5>
+          </li>
+          <li
+            class={`page-item ${
+              getFeeds.data.feedbacks.length == 20 ? null : "disabled"
+            }`}
+          >
+            <button
+              class="page-link"
+              href="#"
+              onClick={() => {
+                setPagina(pagina + 1);
+              }}
+            >
+              Siguiente
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+          gap: "10px",
+        }}
+      >
+        {getFeeds.data.feedbacks?.map((feed) => (
+          <FeedbackItem
+            key={feed._id}
+            feed={feed}
+            onSend={(data) => responderFeed.mutate(data)}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 

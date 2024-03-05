@@ -18,6 +18,10 @@ export const getNameActivitys = async (req, res) => {
       const activitys = await Activity.find(
         {
           natacionAdaptada: true,
+          $or: [
+            { codigoDeAcceso: "" }, // Actividades donde el campo codigoDeAcceso es igual a una cadena vacía
+            { codigoDeAcceso: { $exists: false } }, // Actividades donde el campo codigoDeAcceso no existe
+          ],
         },
         projection
       ).sort({
@@ -35,6 +39,10 @@ export const getNameActivitys = async (req, res) => {
         hasta: { $gte: user.edad },
         //quito las actividades de natacion adaptada
         natacionAdaptada: false,
+        $or: [
+          { codigoDeAcceso: "" }, // Actividades donde el campo codigoDeAcceso es igual a una cadena vacía
+          { codigoDeAcceso: { $exists: false } }, // Actividades donde el campo codigoDeAcceso no existe
+        ],
       },
       projection
     ).sort({

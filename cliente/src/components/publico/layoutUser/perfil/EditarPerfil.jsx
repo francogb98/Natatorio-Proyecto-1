@@ -8,9 +8,8 @@ import style from "./style.module.css";
 
 import Actividades from "./Actividades";
 import { editarPerfilFetch } from "../../../../helpers/usersFetch/editarPerfli";
-import Foto from "./Foto";
 import InformacionPersonal from "./InformacionPersonal";
-// import InformacionContacto from "./InformacionContacto";
+
 import { AuthContext } from "../../../../context/AuthContext";
 
 function EditarPerfil() {
@@ -109,8 +108,10 @@ function EditarPerfil() {
         <img
           src={auth.user?.foto}
           alt=""
+          class="rounded mx-auto d-block"
           style={{
-            width: "50%",
+            width: "200px",
+            height: "200px",
           }}
         />
       </div>
@@ -118,6 +119,16 @@ function EditarPerfil() {
       <Actividades user={auth.user} refetch={userRefetch} />
 
       <h2>Informacion Personal</h2>
+      {/* <div className="d-flex fs-3">
+        <p>Inasitencias: </p>
+        <p className="text-danger fw-bold">{auth.user.inasistencias.length}</p>
+      </div>
+      <div className="d-flex fs-3">
+        <p>Fecha de carga certificado Pediculos y Micosis: </p>
+        <p className="text-danger fw-bold">
+          {auth.user.fechaCargaCertificadoHongos}
+        </p>
+      </div> */}
 
       <InformacionPersonal
         formValues={formValues}

@@ -2,15 +2,26 @@ import Activity from "../../models/models/Actividades.js";
 import Stadistics from "../../models/models/Stadistics.js";
 
 export default async function getInfoActividades(req, res) {
-  const id = req.params.id;
+  const { id } = req.params;
   try {
-    const actividad = await Activity.findById(id).populate("users");
+    if (isNaN(id)) {
+      const actividad = await Activity.findById(id).populate("users");
+      const estadistica = await Stadistics.find({ activity: actividad });
+      return res.status(200).json({ actividad, estadistica });
+    }
 
-    const estadistica = await Stadistics.find({ activity: actividad });
+    const actividad = await Activity.findOne({
+      codigoDeAcceso: id,
+    });
+    if (!actividad) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "actividad no encontrada" });
+    }
 
-    // console.log("total usuarios", actividad.users.length);
-    return res.status(200).json({ actividad, estadistica });
+    return res.status(200).json(actividad);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    console.log(error.message);
+    return res.status(500).json({ message: "error en el servidor" });
   }
 }

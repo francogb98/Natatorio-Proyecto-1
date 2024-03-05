@@ -1,127 +1,267 @@
 import { useQuery } from "react-query";
-
-//traigo todos los usuarios para habilitar
-
-import { getUsuarios } from "../../../../helpers/getUsers";
-
-import style from "./style.module.css";
-
 import { Link } from "react-router-dom";
-import TablaHabilitar from "./TablaHabilitar";
+import { useEffect, useState } from "react";
+import { baseUrl } from "../../../../helpers/url";
 
 function Habilitar() {
-  const { data, isSuccess, status, isLoading, refetch, isRefetching } =
-    useQuery({
-      queryKey: ["usuarios"],
-      queryFn: getUsuarios,
+  const [page, setPage] = useState(1);
+
+  const traerUsuarios = async () => {
+    const res = await fetch(`${baseUrl}user/habilitar/${page}`, {
+      method: "GET",
     });
+    const data = await res.json();
 
-  const columns = [
-    {
-      header: "ID",
-      accessorKey: "customId",
-    },
-    {
-      header: "Nombre y Apellido",
-      accessorKey: "apellido",
-      cell: ({ row }) => (
-        <div>{`${row.original.apellido} ${row.original.nombre}`}</div>
-      ),
-    },
+    return data;
+  };
 
-    {
-      header: "Actividad",
-      accessorKey: "activity",
-      accessorFn: (row) => {
-        return row.activity ? row.activity[0]?.name : "no tiene";
-      },
-    },
-    {
-      header: "Horario",
-      accessorKey: "horario",
-      accessorFn: (row) => {
-        return row.activity
-          ? `${row.activity[0]?.hourStart} - ${row.activity[0]?.hourFinish}`
-          : "no tiene";
-      },
-    },
-    {
-      header: "Dias",
-      accessorKey: "dias",
-      accessorFn: (row) => {
-        return row.activity
-          ? `${row.activity[0]?.date.join(" - ")}`
-          : "no tiene";
-      },
-    },
+  const { data, isLoading, isError, error, isRefetching, refetch } = useQuery(
+    "usuarios",
+    traerUsuarios
+  );
 
-    //hacer buttons para habilitar y deshabilitar
-    {
-      header: "Habilitar",
-      accessorKey: "habilitar",
-      cell: ({ row }) => (
-        <Link
-          to={`/admin/panel/usuario/${row.original._id}`}
-          className="btn btn-success"
-        >
-          Habilitar
-        </Link>
-      ),
-    },
-  ];
+  useEffect(() => {
+    refetch();
+  }, [page]);
 
   if (isLoading) {
     return (
-      <div className="alert alert-secondary text-center">
-        <h3>Cargando Usuarios para habilitar por favor espere...</h3>
-      </div>
+      <h1
+        style={{
+          textAlign: "center",
+        }}
+      >
+        Cargando...
+      </h1>
     );
   }
 
-  if (status === "error") {
-    return <div>Error al obtener los usuarios</div>;
-  }
+  if (data?.users) {
+    console.log(Math.ceil(data.total / 20));
+    return (
+      <div
+        style={{
+          textAlign: "center",
+        }}
+      >
+        <h1>Todos los usuarios</h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div className="fw-bold fs-5 text-warning">{data.total} Usuarios</div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end mt-2">
+              {isRefetching && (
+                <div
+                  className="spinner-border text-primary mt-1 me-5"
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              )}
+              <li
+                class={`page-item ${
+                  page == 1 || isRefetching ? "disabled" : null
+                }`}
+              >
+                <button
+                  class="page-link ms-1"
+                  onClick={() => {
+                    setPage(1);
+                  }}
+                >
+                  Primera
+                </button>
+              </li>
+              <li
+                class={`page-item ${
+                  page == 1 || isRefetching ? "disabled" : null
+                }`}
+              >
+                <button
+                  class="page-link"
+                  onClick={() => {
+                    setPage(page - 1);
+                  }}
+                >
+                  Anterior
+                </button>
+              </li>
+              <li class={`page-item mt-2 mx-2 fw-bold`}>
+                <p>
+                  {page} / {Math.ceil(data.total / 20)}
+                </p>
+              </li>
 
-  if (data.length === 0) {
-    return <div>No hay usuarios para habilitar</div>;
-  }
+              <li
+                class={`page-item ${
+                  Math.ceil(data.total / 20) <= page || isRefetching
+                    ? "disabled"
+                    : null
+                }`}
+              >
+                <button
+                  class="page-link"
+                  onClick={() => {
+                    setPage(page + 1);
+                  }}
+                >
+                  Siguiente
+                </button>
+              </li>
+              <li
+                class={`page-item ${
+                  Math.ceil(data.total / 20) <= page || isRefetching
+                    ? "disabled"
+                    : null
+                }`}
+              >
+                <button
+                  class="page-link ms-1"
+                  onClick={() => {
+                    setPage(Math.ceil(data.total / 20));
+                  }}
+                >
+                  Ultima
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr>
+              <th style={{ border: "1px solid black", padding: "5px" }}>Id</th>
+              <th style={{ border: "1px solid black", padding: "5px" }}>
+                Nombre
+              </th>
+              <th style={{ border: "1px solid black", padding: "5px" }}>
+                Actividad
+              </th>
+              <th style={{ border: "1px solid black", padding: "5px" }}>
+                Habilitar
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.users.map((user) => (
+              <tr key={user._id}>
+                <td style={{ border: "1px solid black", padding: "5px" }}>
+                  {user.customId}
+                </td>
+                <td style={{ border: "1px solid black", padding: "5px" }}>
+                  <Link to={`/admin/panel/usuario/${user._id}`}>
+                    {user.nombre} {user.apellido}
+                  </Link>
+                </td>
+                <td style={{ border: "1px solid black", padding: "5px" }}>
+                  {user.activity?.length ? user.activity[0].name : "No tiene"}
+                </td>
 
-  return (
-    <div className={style.body}>
-      <section>
-        {isRefetching ? (
-          <div className="alert alert-secondary text-center">
-            <h3>Cargando Usuarios para habilitar por favor espere...</h3>
-            <img
-              src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXloaXYzamtheW4yZ3Q0a2FwMG16aGw2ZGZxZWNmOWNzanE4M2lsdiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/WFEpbNDqjs312EZ06H/giphy.gif"
-              alt="Dog Swimming Sticker by Rede Genoma"
-              style={{ width: "30%" }}
-            ></img>
-          </div>
-        ) : (
-          <>
-            <header
-              style={{
-                width: "fit-content",
-                margin: "10px auto",
-              }}
+                <td
+                  style={{
+                    border: "1px solid black",
+                    padding: "5px",
+                    textAlign: "center",
+                  }}
+                >
+                  <Link
+                    to={`/admin/panel/usuario/${user._id}`}
+                    className="btn btn-success"
+                  >
+                    Habilitar
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end mt-2">
+            {isRefetching && (
+              <div
+                className="spinner-border text-primary mt-1 me-5"
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            )}
+            <li
+              class={`page-item ${
+                page == 1 || isRefetching ? "disabled" : null
+              }`}
             >
               <button
-                className="btn btn-lg btn-warning"
-                onClick={() => refetch()}
+                class="page-link ms-1"
+                onClick={() => {
+                  setPage(1);
+                }}
               >
-                Recargar
+                Primera
               </button>
-            </header>
-            <div>Total usuario para habilitar: {data.users.length}</div>
-            <div className={style.tablaBody}>
-              <TablaHabilitar data={data.users} columns={columns} />
-            </div>
-          </>
-        )}
-      </section>
-    </div>
-  );
+            </li>
+            <li
+              class={`page-item ${
+                page == 1 || isRefetching ? "disabled" : null
+              }`}
+            >
+              <button
+                class="page-link"
+                onClick={() => {
+                  setPage(page - 1);
+                }}
+              >
+                Anterior
+              </button>
+            </li>
+            <li class={`page-item mt-2 mx-2 fw-bold`}>
+              <p>
+                {page} / {Math.ceil(data.total / 20)}
+              </p>
+            </li>
+
+            <li
+              class={`page-item ${
+                Math.ceil(data.total / 20) <= page || isRefetching
+                  ? "disabled"
+                  : null
+              }`}
+            >
+              <button
+                class="page-link"
+                onClick={() => {
+                  setPage(page + 1);
+                }}
+              >
+                Siguiente
+              </button>
+            </li>
+            <li
+              class={`page-item ${
+                Math.ceil(data.total / 20) <= page || isRefetching
+                  ? "disabled"
+                  : null
+              }`}
+            >
+              <button
+                class="page-link ms-1"
+                onClick={() => {
+                  setPage(Math.ceil(data.total / 20));
+                }}
+              >
+                Ultima
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    );
+  }
 }
 
 export default Habilitar;

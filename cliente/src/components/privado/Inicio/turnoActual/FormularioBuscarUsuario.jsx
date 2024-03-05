@@ -8,14 +8,14 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../context/AuthContext.jsx";
 
-const getUser = async (id) => {
-  const res = await fetch(`${baseUrl}user/searchUser`, {
+const getUser = async (filtro) => {
+  const res = await fetch(`${baseUrl}user/findUser`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       authorization: `${localStorage.getItem("token")}`,
     },
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ filtro }),
   });
   const data = await res.json();
 
@@ -64,7 +64,7 @@ const autorizarUsuaRIO = async (content) => {
 function FormularioBuscarUsuario() {
   const { auth } = useContext(AuthContext);
 
-  const [id, setId] = useState("");
+  const [filtro, setFiltro] = useState("");
   const [userEncontardo, setUserEncontrado] = useState(false);
 
   const queryClient = useQueryClient();
@@ -148,7 +148,7 @@ function FormularioBuscarUsuario() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    buscarUsuario.mutate(id);
+    buscarUsuario.mutate(filtro);
   };
   return (
     <section
@@ -175,8 +175,8 @@ function FormularioBuscarUsuario() {
       >
         <input
           type="text"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          value={filtro}
+          onChange={(e) => setFiltro(e.target.value)}
           className="form-control"
           placeholder="buscar usuario por su id..."
         />
@@ -188,98 +188,120 @@ function FormularioBuscarUsuario() {
       {buscarUsuario.data?.status === "error" ? (
         <h3>{buscarUsuario.data.message}</h3>
       ) : null}
-      {buscarUsuario.data?.status === "success" && userEncontardo ? (
-        <div className="card" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title">
-              <Link to={`/admin/panel/usuario/${buscarUsuario.data.user._id}`}>
-                {buscarUsuario.data.user.nombre}{" "}
-                {buscarUsuario.data.user.apellido}
-              </Link>
-            </h5>
-            <h6 className="card-subtitle mb-2 text-body-secondary">
-              {buscarUsuario.data.user.customId}
-            </h6>
-            {!buscarUsuario.data.user.activity ||
-            !buscarUsuario.data.user.activity.length ? (
-              <p className="card-text">No tiene actividad registrada</p>
-            ) : (
-              <>
-                <p className="card-text">
-                  <b>{buscarUsuario.data.user.activity[0].name}</b>/
-                  <b>{buscarUsuario.data.user.activity[0].hourStart}</b>-
-                  <b>{buscarUsuario.data.user.activity[0].hourFinish}</b>
-                </p>
-                <p className="card-text">
-                  <b>{buscarUsuario.data.user.activity[0].date.join(" - ")}</b>
-                </p>
-                <p
-                  className={`card-text ${
-                    buscarUsuario.data.user.status
-                      ? "text-success"
-                      : "text-danger"
-                  }`}
-                >
-                  <b>
-                    {buscarUsuario.data.user.status
-                      ? "Habilitado"
-                      : "Esperando Habilitacion"}
-                  </b>
-                </p>
-              </>
-            )}
-            <button
-              className="btn btn-sm btn-danger"
-              onClick={() => {
-                setUserEncontrado(false);
-              }}
-            >
-              Cerrar
-            </button>
-            {buscarUsuario.data.user.status &&
-              (auth.role === "SUPER_ADMIN" ||
-                auth.role === "ADMINISTRATIVO") && (
-                <button
-                  className="btn btn-sm btn-success ms-3"
-                  onClick={() => {
-                    agregarUsuario.mutate({
-                      customId: buscarUsuario.data.user.customId,
-                      nombre: buscarUsuario.data.user.nombre,
-                      actividad: buscarUsuario.data.user.activity[0].name,
-                      pileta: buscarUsuario.data.user.activity[0].pileta,
-                      horarioSalida:
-                        buscarUsuario.data.user.activity[0].hourFinish,
-                    });
-                  }}
-                >
-                  Agregar
-                </button>
-              )}
-            {auth.role === "SUPER_ADMIN" && (
-              <>
-                <button
-                  className="btn btn-sm btn-warning ms-3"
-                  onClick={() => {
-                    autorizar.mutate({ id: buscarUsuario.data.user.customId });
-                  }}
-                >
-                  Autorizar
-                </button>
-                <button
-                  className="btn btn-sm btn-secondary ms-3 mt-2 me-3"
-                  onClick={() => {
-                    agregarUsuarioAListaAutorizado.mutate({
-                      user: buscarUsuario.data.user._id,
-                    });
-                  }}
-                >
-                  Agregar a lista
-                </button>
-              </>
-            )}
+      {userEncontardo && (
+        <>
+          <button
+            className="btn btn-lg btn-danger"
+            onClick={() => {
+              setUserEncontrado(false);
+            }}
+          >
+            Cerrar
+          </button>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "20px",
+              justifyContent: "center",
+            }}
+          >
+            {buscarUsuario.data?.status === "success"
+              ? buscarUsuario.data.users.map((user) => (
+                  <div className="card" style={{ width: "18rem" }}>
+                    <div className="card-body">
+                      <h5 className="card-title">
+                        <Link to={`/admin/panel/usuario/${user._id}`}>
+                          {user.nombre} {user.apellido}
+                        </Link>
+                      </h5>
+                      <h6 className="card-subtitle mb-2 text-body-secondary">
+                        {user.customId}
+                      </h6>
+                      {!user.activity || !user.activity.length ? (
+                        <p className="card-text">
+                          No tiene actividad registrada
+                        </p>
+                      ) : (
+                        <>
+                          <p className="card-text">
+                            <b>{user.activity[0].name}</b>/
+                            <b>{user.activity[0].hourStart}</b>-
+                            <b>{user.activity[0].hourFinish}</b>
+                          </p>
+                          <p className="card-text">
+                            <b>{user.activity[0].date.join(" - ")}</b>
+                          </p>
+                          <p
+                            className={`card-text ${
+                              user.status ? "text-success" : "text-danger"
+                            }`}
+                          >
+                            <b>
+                              {user.status
+                                ? "Habilitado"
+                                : "Esperando Habilitacion"}
+                            </b>
+                          </p>
+                        </>
+                      )}
+
+                      {user.status &&
+                        (auth.role === "SUPER_ADMIN" ||
+                          auth.role === "ADMINISTRATIVO") && (
+                          <button
+                            className="btn btn-sm btn-success ms-3"
+                            onClick={() => {
+                              agregarUsuario.mutate({
+                                customId: user.customId,
+                                nombre: user.nombre,
+                                actividad: user.activity[0].name,
+                                pileta: user.activity[0].pileta,
+                                horarioSalida: user.activity[0].hourFinish,
+                              });
+                            }}
+                          >
+                            Agregar
+                          </button>
+                        )}
+                      {auth.role === "SUPER_ADMIN" && (
+                        <>
+                          <button
+                            className="btn btn-sm btn-warning ms-3"
+                            onClick={() => {
+                              autorizar.mutate({ id: user.customId });
+                            }}
+                          >
+                            Autorizar
+                          </button>
+                          <button
+                            className="btn btn-sm btn-secondary ms-3 mt-2 me-3"
+                            onClick={() => {
+                              agregarUsuarioAListaAutorizado.mutate({
+                                user: user._id,
+                              });
+                            }}
+                          >
+                            Agregar a lista
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                ))
+              : null}
           </div>
-        </div>
-      ) : null}
+          <button
+            className="btn btn-lg btn-danger"
+            onClick={() => {
+              setUserEncontrado(false);
+            }}
+          >
+            Cerrar
+          </button>
+        </>
+      )}
     </section>
   );
 }

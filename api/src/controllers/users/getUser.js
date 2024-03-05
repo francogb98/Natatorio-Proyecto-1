@@ -22,12 +22,10 @@ export const getUser = async (req, res) => {
     res.status(404).json({ status: "error", message: error.message });
   }
 };
-
 export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     let user;
-
     if (!isNaN(id)) {
       user = await User.findOne({ customId: id }).populate({
         path: "activity",
@@ -43,7 +41,6 @@ export const getUserById = async (req, res) => {
         },
       });
     }
-
     if (!user)
       return res
         .status(404)
@@ -51,73 +48,7 @@ export const getUserById = async (req, res) => {
 
     res.status(200).json({ status: "success", user });
   } catch (error) {
-    res.status(404).json({ status: "error", message: error.message });
-  }
-};
-
-export const getUserByIdBody = async (req, res) => {
-  try {
-    const { id } = req.body;
-
-    const user = await User.findOne({ customId: id }).populate({
-      path: "activity",
-      populate: {
-        path: "name",
-      },
-    });
-
-    if (!user)
-      return res
-        .status(404)
-        .json({ status: "error", message: "Usuario no Encontrado" });
-
-    res.status(200).json({ status: "success", user });
-  } catch (error) {
-    res.status(404).json({ status: "error", message: error.message });
-  }
-};
-
-export const getAllUserForHability = async (req, res) => {
-  ("llegue aca");
-  try {
-    //quiero devolver solo los usuarios que tengn sus status en false
-    let users = await User.find({
-      status: false,
-      natacionAdaptada: false,
-    }).populate({
-      path: "activity",
-      populate: {
-        path: "name",
-      },
-    });
-
-    //los usuarios que tengan un array vacio o no tengan actividad, los borro del array de usuarios asi no los retorne al cleinte
-    users = users.filter((user) => user.activity.length > 0);
-
-    res.status(200).json({ status: "success", users });
-  } catch (error) {
-    res.status(404).json({ status: "error", message: error.message });
-  }
-};
-export const getAllUserForHabilityAdaptada = async (req, res) => {
-  ("llegue aca");
-  try {
-    //quiero devolver solo los usuarios que tengn sus status en false
-    let users = await User.find({
-      status: false,
-      natacionAdaptada: true,
-    }).populate({
-      path: "activity",
-      populate: {
-        path: "name",
-      },
-    });
-
-    //los usuarios que tengan un array vacio o no tengan actividad, los borro del array de usuarios asi no los retorne al cleinte
-    users = users.filter((user) => user.activity.length > 0);
-
-    res.status(200).json({ status: "success", users });
-  } catch (error) {
-    res.status(404).json({ status: "error", message: error.message });
+    console.log(error.message);
+    res.status(404).json({ status: "error", message: "Error en el servidor" });
   }
 };

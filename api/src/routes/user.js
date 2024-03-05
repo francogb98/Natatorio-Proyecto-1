@@ -1,27 +1,17 @@
 import { Router } from "express";
 import createUser from "../controllers/users/createUser.js";
 import { loginUser } from "../controllers/users/loginUser.js";
-import { confirmAccount } from "../controllers/users/confirmAccount.js";
+
 import {
   DeshabilitarUser,
   HabilitarUser,
   addUserFromActivity,
 } from "../controllers/users/addUserFromActivity.js";
+
 import { validarJWT } from "../middlewares/validar-jwt.js";
-import {
-  getUser,
-  getUserById,
-  getAllUserForHability,
-  getAllUserForHabilityAdaptada,
-  getUserByIdBody,
-} from "../controllers/users/getUser.js";
-import { cargaFicha } from "../controllers/users/cargaFichaMedica.js";
-import getAllUsers from "../controllers/users/getAllUsers.js";
 import { suspenderUsuario } from "../controllers/users/suspenderUsuario.js";
 import { cambiarRole } from "../controllers/users/cambiarRole.js";
 
-import { searchUserByname } from "../controllers/users/searchUserByName.js";
-import { getAllUsersForHour } from "../controllers/users/getAllUserForHour.js";
 import editarUsuario from "../controllers/users/editarUsuario.js";
 import { darDeBajaActividad } from "../controllers/users/darDeBajaActividad.js";
 
@@ -31,26 +21,23 @@ import { deleteNotificacion } from "../controllers/users/notificaciones/deleteNo
 import cambiarFoto from "../controllers/users/imagen/cambiarFoto.js";
 import recuperar from "../controllers/users/recuperarContraseña/recuperar.js";
 import modificarContraseña from "../controllers/users/recuperarContraseña/modificarContraseña.js";
-import NuevoFeedback from "../controllers/users/feedback/NuevoFeedback.js";
-import verFeedbacks from "../controllers/users/feedback/verFeedbacks.js";
 import { subirArchivos } from "../controllers/subirArchivos.js";
+
+import { getUser, getUserById } from "../controllers/users/getUser.js";
+import { getUsers } from "../controllers/users/archivos_para_npo_borrar/getUsers.js";
+import { findUser } from "../controllers/users/archivos_para_npo_borrar/findUser.js";
 
 const router = Router();
 
 router.get("/infoUser/:token", getUser);
-router.get("/getAllUsers/paraHabilitar", getAllUserForHability);
-router.get("/getAllUsers/paraHabilitarAdaptada", getAllUserForHabilityAdaptada);
+router.get("/getinfoUser/:id", getUserById);
+router.get("/:filter/:page", getUsers);
 
-router.get("/getAllUsers", getAllUsers);
-router.get("/getAllUsers/:hour", getAllUsersForHour);
+router.post("/findUser", validarJWT, findUser);
 
 //busqueda por nombre por
 
-// router.get("/searchUserByName/:name", validarJWT, searchUserByname);
-router.get("/getinfoUser/:id", validarJWT, getUserById);
-router.post("/cargaFicha", cargaFicha);
 router.post("/create", createUser);
-router.post("/confirm/:token", confirmAccount);
 router.post("/login", loginUser);
 
 //creo las dos rutas para habilitar y desabilitar ususarios
@@ -75,13 +62,6 @@ router.post("/notificaciones/delete", validarJWT, deleteNotificacion);
 router.post("/cambiarFoto", validarJWT, cambiarFoto);
 router.post("/comprobar-datos", recuperar);
 router.post("/modificar-password", modificarContraseña);
-
-//feedback
-router.post("/feedback", validarJWT, NuevoFeedback);
-router.get("/verFeedbacks", validarJWT, verFeedbacks);
-
-//buscar usuario por id
-router.post("/searchUser", validarJWT, getUserByIdBody);
 
 //subir imagenes
 router.put("/upload", validarJWT, subirArchivos);

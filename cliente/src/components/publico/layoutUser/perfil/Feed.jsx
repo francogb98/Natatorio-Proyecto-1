@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 
 const mandarFeed = async (content) => {
   try {
-    const resp = await fetch(baseUrl + "user/feedback", {
+    const resp = await fetch(baseUrl + "feedback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

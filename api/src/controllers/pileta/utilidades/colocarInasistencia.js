@@ -43,9 +43,11 @@ export const colocarInasistencia = async (req, res) => {
       allUsers.map(async (user) => {
         if (!customIds.includes(user)) {
           const userSearch = await User.findOne({ customId: user });
-          if (!userSearch.inasistencias.includes(fecha)) {
-            userSearch.inasistencias.push(fecha);
-            await userSearch.save();
+          if (user.status) {
+            if (!userSearch.inasistencias.includes(fecha)) {
+              userSearch.inasistencias.push(fecha);
+              await userSearch.save();
+            }
           }
         }
       })

@@ -1,18 +1,32 @@
 import { useQuery } from "react-query";
 import { getAllUsuarios } from "../../../../helpers/getUsers";
 import Tabla from "../../../../utilidades/Tabla";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import style from "./listaUsuarios.module.css";
+import { baseUrl } from "../../../../helpers/url";
 
 function ListaUsuarios() {
-  const { data, isLoading, isError, error, isRefetching } = useQuery(
+  const [page, setPage] = useState(1);
+
+  const traerUsuarios = async () => {
+    const res = await fetch(`${baseUrl}user/todos/${page}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+
+    return data;
+  };
+
+  const { data, isLoading, isError, error, isRefetching, refetch } = useQuery(
     "usuarios",
-    getAllUsuarios
+    traerUsuarios
   );
 
-  useEffect(() => {}, [data]);
+  useEffect(() => {
+    refetch();
+  }, [page]);
 
   if (isLoading) {
     return (
@@ -26,86 +40,164 @@ function ListaUsuarios() {
     );
   }
 
-  const columns = [
-    {
-      header: "ID",
-      accessorKey: "customId",
-    },
-    {
-      header: "Nombre y Apellido",
-      accessorKey: "apellido",
-      cell: ({ row }) => (
-        <Link
-          to={`/admin/panel/usuario/${row.original._id}`}
-        >{`${row.original.apellido} ${row.original.nombre}`}</Link>
-      ),
-    },
-
-    // {
-    //   header: "Actividad",
-    //   accessorKey: "activity",
-    //   accessorFn: (row) => {
-    //     if (row.activity && row.status) {
-    //       return row.activity[0]?.name;
-    //     }
-    //     if (row.activity && !row.status) {
-    //       return "-";
-    //     }
-    //     if (!row.activity) {
-    //       return "-";
-    //     }
-    //   },
-    // },
-    // {
-    //   header: "Horario",
-    //   accessorKey: "horario",
-    //   accessorFn: (row) => {
-    //     if (row.activity && row.status) {
-    //       return `${row.activity[0]?.hourStart} - ${row.activity[0]?.hourFinish}`;
-    //     }
-    //     if (row.activity && !row.status) {
-    //       return "Esperando Habilitacion";
-    //     }
-    //     if (!row.activity) {
-    //       return "No tiene actividad";
-    //     }
-    //   },
-    // },
-    // {
-    //   header: "Dias",
-    //   accessorKey: "dias",
-    //   accessorFn: (row) => {
-    //     if (row.activity && row.status) {
-    //       return row.activity[0]?.date.join(" - ");
-    //     }
-    //     if (row.activity && !row.status) {
-    //       return "-";
-    //     }
-    //     if (!row.activity) {
-    //       return "-";
-    //     }
-    //   },
-    // },
-
-    //hacer buttons para habilitar y deshabilitar
-    {
-      header: "Asistencia",
-      accessorKey: "asistencia",
-      accessorFn: (row) => {
-        return row.asistencia[row.asistencia.length]
-          ? row.asistencia[row.asistencia.length]
-          : "No se registran";
-      },
-    },
-  ];
   if (data?.users) {
+    console.log(Math.ceil(data.total / 20));
     return (
-      <div>
-        {isRefetching ? (
-          <div className={style.searchBox}>Recargando...</div>
-        ) : (
-          <Tabla data={data.users} columns={columns} />
-        )}
+      <div
+        style={{
+          textAlign: "center",
+        }}
+      >
+        <h1>Todos los usuarios</h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div className="fw-bold fs-5 text-warning">{data.total} Usuarios</div>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end mt-2">
+              {isRefetching && (
+                <div
+                  className="spinner-border text-primary mt-1 me-5"
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              )}
+              <li
+                class={`page-item ${
+                  page == 1 || isRefetching ? "disabled" : null
+                }`}
+              >
+                <button
+                  class="page-link"
+                  onClick={() => {
+                    setPage(page - 1);
+                  }}
+                >
+                  Anterior
+                </button>
+              </li>
+              <li class={`page-item mt-2 mx-2 fw-bold`}>
+                <p>
+                  {page} / {Math.ceil(data.total / 20)}
+                </p>
+              </li>
+
+              <li
+                class={`page-item ${
+                  Math.ceil(data.total / 20) <= page || isRefetching
+                    ? "disabled"
+                    : null
+                }`}
+              >
+                <button
+                  class="page-link"
+                  onClick={() => {
+                    setPage(page + 1);
+                  }}
+                >
+                  Siguiente
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <table style={{ borderCollapse: "collapse", width: "100%" }}>
+          <thead>
+            <tr>
+              <th style={{ border: "1px solid black", padding: "5px" }}>Id</th>
+              <th style={{ border: "1px solid black", padding: "5px" }}>
+                Nombre
+              </th>
+              <th style={{ border: "1px solid black", padding: "5px" }}>
+                Actividad
+              </th>
+              <th style={{ border: "1px solid black", padding: "5px" }}>
+                Inasistencias
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.users.map((user) => (
+              <tr key={user._id}>
+                <td style={{ border: "1px solid black", padding: "5px" }}>
+                  {user.customId}
+                </td>
+                <td style={{ border: "1px solid black", padding: "5px" }}>
+                  <Link to={`/admin/panel/usuario/${user._id}`}>
+                    {user.nombre} {user.apellido}
+                  </Link>
+                </td>
+                <td style={{ border: "1px solid black", padding: "5px" }}>
+                  {user.activity?.length ? user.activity[0].name : "No tiene"}
+                </td>
+
+                <td
+                  style={{
+                    border: "1px solid black",
+                    padding: "5px",
+                    textAlign: "center",
+                  }}
+                >
+                  {user.inasistencias.length}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end mt-2">
+            {isRefetching && (
+              <div
+                className="spinner-border text-primary mt-1 me-5"
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            )}
+            <li
+              class={`page-item ${
+                page == 1 || isRefetching ? "disabled" : null
+              }`}
+            >
+              <button
+                class="page-link"
+                onClick={() => {
+                  setPage(page - 1);
+                }}
+              >
+                Anterior
+              </button>
+            </li>
+            <li class={`page-item mt-2 mx-2 fw-bold`}>
+              <p>
+                {page} / {Math.ceil(data.total / 20)}
+              </p>
+            </li>
+
+            <li
+              class={`page-item ${
+                Math.ceil(data.total / 20) <= page || isRefetching
+                  ? "disabled"
+                  : null
+              }`}
+            >
+              <button
+                class="page-link"
+                onClick={() => {
+                  setPage(page + 1);
+                }}
+              >
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     );
   }

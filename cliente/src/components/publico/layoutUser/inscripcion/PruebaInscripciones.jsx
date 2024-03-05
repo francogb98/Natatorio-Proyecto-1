@@ -9,6 +9,7 @@ import { baseUrl } from "../../../../helpers/url";
 import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/registrarUsuarioEnActividad";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import ActividadConClave from "./ActividadConClave";
 
 const getActividadesUsuario = async () => {
   try {
@@ -291,6 +292,9 @@ function PruebaInscripciones() {
             type={"Actividad"}
           />
         </div>
+
+        <hr />
+        <ActividadConClave registerInActivity={registerInActivity} />
 
         <div
           className="modal fade"
