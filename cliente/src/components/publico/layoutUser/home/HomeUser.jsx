@@ -1,17 +1,81 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import style from "./homeUser.module.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../../context/AuthContext";
 
 function HomeUser() {
   const { auth } = useContext(AuthContext);
+  const [fechaCargaCertificadoHongos, setFechaCargaCertificadoHongos] =
+    useState(false);
+
+  useEffect(() => {
+    var fecha = new Date(auth.user.fechaCargaCertificadoHongos);
+    // Añadir un mes a la fecha proporcionada
+    fecha.setMonth(fecha.getMonth() + 1);
+    // Obtener la fecha actual
+    var fechaActual = new Date();
+    // Comparar las fechas
+    if (fecha <= fechaActual) {
+      setFechaCargaCertificadoHongos(true);
+    }
+  }, []);
+
   return (
     <div className={style.body}>
       <h1 className="text-danger">
         Pasos a seguir para la inscripcion en actividades
       </h1>
 
-      <hr />
+      <section
+        style={{
+          border: `1px solid ${fechaCargaCertificadoHongos ? "red" : "green"}`,
+          padding: "8px",
+        }}
+      >
+        <div
+          className="d-flex fs-3 fw-bold"
+          style={{
+            justifyContent: "space-between",
+          }}
+        >
+          <p>Inasitencias: </p>
+          <p className="text-danger fw-bold">
+            {auth.user.inasistencias.length}
+          </p>
+        </div>
+        <div
+          className="d-flex fs-3"
+          style={{
+            justifyContent: "space-between",
+          }}
+        >
+          <p
+            style={{
+              fontSize: "15px",
+              fontWeight: "bold",
+              width: "65%",
+            }}
+          >
+            Fecha de carga certificado Pediculos y Micosis:{" "}
+          </p>
+          <p
+            className={`${
+              fechaCargaCertificadoHongos ? "text-danger" : "text-success"
+            } fw-bold`}
+          >
+            {auth.user.fechaCargaCertificadoHongos}
+          </p>
+        </div>
+        {fechaCargaCertificadoHongos && (
+          <>
+            <div className={`text-danger`}>
+              Debes Actualizar tu certificado para continuar con tu actividad.
+              <br />
+              Pasado el lapso de dos semanas se te dara de baja de la actividad
+            </div>
+          </>
+        )}
+      </section>
 
       <section
         className={style.seccion1}

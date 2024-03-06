@@ -72,7 +72,6 @@ function EditarPerfil() {
   useEffect(() => {
     console.log(formValues);
   }, [formValues]);
-
   // Enviar la solicitud al backend
   const handleSubmitAdulto = (e) => {
     e.preventDefault();
@@ -118,18 +117,38 @@ function EditarPerfil() {
 
       <Actividades user={auth.user} refetch={userRefetch} />
 
-      <h2>Informacion Personal</h2>
-      {/* <div className="d-flex fs-3">
+      <h1 className="text-center fw-bold">Informacion Personal</h1>
+
+      <hr />
+      <div
+        className="d-flex fs-3 fw-bold"
+        style={{
+          justifyContent: "space-between",
+        }}
+      >
         <p>Inasitencias: </p>
         <p className="text-danger fw-bold">{auth.user.inasistencias.length}</p>
       </div>
-      <div className="d-flex fs-3">
-        <p>Fecha de carga certificado Pediculos y Micosis: </p>
+      <div
+        className="d-flex fs-3"
+        style={{
+          justifyContent: "space-between",
+        }}
+      >
+        <p
+          style={{
+            fontSize: "15px",
+            fontWeight: "bold",
+          }}
+        >
+          Fecha de carga certificado Pediculos y Micosis:{" "}
+        </p>
         <p className="text-danger fw-bold">
           {auth.user.fechaCargaCertificadoHongos}
         </p>
-      </div> */}
+      </div>
 
+      <hr />
       <InformacionPersonal
         formValues={formValues}
         handleInputChange={handleInputChange}
