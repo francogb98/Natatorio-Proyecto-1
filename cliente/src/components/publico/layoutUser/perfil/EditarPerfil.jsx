@@ -120,15 +120,19 @@ function EditarPerfil() {
       <h1 className="text-center fw-bold">Informacion Personal</h1>
 
       <hr />
-      <div
-        className="d-flex fs-3 fw-bold"
-        style={{
-          justifyContent: "space-between",
-        }}
-      >
-        <p>Inasitencias: </p>
-        <p className="text-danger fw-bold">{auth.user.inasistencias.length}</p>
-      </div>
+      {auth.user.status && (
+        <div
+          className="d-flex fs-3 fw-bold"
+          style={{
+            justifyContent: "space-between",
+          }}
+        >
+          <p>Inasitencias: </p>
+          <p className="text-danger fw-bold">
+            {auth.user.inasistencias.length}
+          </p>
+        </div>
+      )}
       <div
         className="d-flex fs-3"
         style={{
