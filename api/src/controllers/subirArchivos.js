@@ -4,6 +4,7 @@ import { dirname } from "path";
 import { v2 as cloudinary } from "cloudinary";
 
 import User from "../models/models/User.js";
+import { obtenerFechaYHoraArgentina } from "../Helpers/traerInfoDelDia.js";
 
 // Obtener la ruta del directorio del archivo actual
 const __filename = fileURLToPath(import.meta.url);
@@ -133,7 +134,9 @@ export const subirArchivos = async (req, res) => {
       user.fotoDocumento = result.secure_url;
     }
     if (name === "certificadoHongos") {
+      const { fecha } = obtenerFechaYHoraArgentina();
       user.certificadoHongos = result.secure_url;
+      user.fechaCargaCertificadoHongos = fecha;
     }
     await user.save();
 

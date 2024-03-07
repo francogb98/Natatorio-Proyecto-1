@@ -26,6 +26,7 @@ import { subirArchivos } from "../controllers/subirArchivos.js";
 import { getUser, getUserById } from "../controllers/users/getUser.js";
 import { getUsers } from "../controllers/users/archivos_para_npo_borrar/getUsers.js";
 import { findUser } from "../controllers/users/archivos_para_npo_borrar/findUser.js";
+import User from "../models/models/User.js";
 
 const router = Router();
 

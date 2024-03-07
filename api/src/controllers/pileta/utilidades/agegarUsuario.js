@@ -40,6 +40,7 @@ export const agregarUsuario = async ({
     }
   );
 
+  console.log(piletaExist);
   return {
     pileta: piletaExist,
     status: "success",
