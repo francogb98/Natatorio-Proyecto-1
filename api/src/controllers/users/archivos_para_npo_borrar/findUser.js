@@ -4,8 +4,15 @@ export const findUser = async (req, res) => {
   try {
     const { filtro } = req.body;
 
-    console.log(filtro);
-    console.log(req.body);
+    const datos = [
+      "apellido",
+      "nombre",
+      "status",
+      "inasistencias",
+      "customId",
+      "foto",
+      "fechaCargaCertificadoHongos",
+    ];
 
     if (isNaN(filtro)) {
       const users = await User.find({
@@ -19,7 +26,7 @@ export const findUser = async (req, res) => {
             path: "name",
           },
         })
-        .select(["apellido", "nombre", "status", "inasistencias", "customId"]);
+        .select(datos);
       if (!users.length) {
         return res.status(200).json({
           status: "error",
@@ -39,7 +46,7 @@ export const findUser = async (req, res) => {
           path: "name",
         },
       })
-      .select(["apellido", "nombre", "status", "inasistencias", "customId"]);
+      .select(datos);
     if (!users.length) {
       return res.status(200).json({
         status: "error",
