@@ -2,8 +2,8 @@ import style from "./home.module.css";
 import { Outlet, useLocation } from "react-router-dom";
 
 import NavBar from "./NavBar";
-import FormularioBuscarUsuario from "./Inicio/turnoActual/FormularioBuscarUsuario";
 import NuevoTurno from "./NuevoTurno";
+import FormularioBuscarUsuario from "./FormularioBuscarUsuario";
 
 function Home() {
   const location = useLocation();
