@@ -50,8 +50,6 @@ function Layout() {
     buscar.mutate(formData);
   };
 
-  console.log(buscar.data);
-
   const columns = [
     {
       header: "ID",
@@ -81,7 +79,7 @@ function Layout() {
   return (
     <div>
       <div className="row">
-        <form action="" className="d-flex" onSubmit={handleSubmit}>
+        <form action="" className="d-flex mt-3" onSubmit={handleSubmit}>
           <input
             type="date"
             name="dia"
@@ -102,11 +100,23 @@ function Layout() {
               </option>
             ))}
           </select>
-          <button className="btn btn-primary">Buscar</button>
+          <button
+            className="btn btn-primary"
+            disabled={!formData.dia || !formData.hora}
+          >
+            Buscar
+          </button>
         </form>
       </div>
       <div className="row my-3">
-        {buscar.data && (
+        {buscar.isLoading && (
+          <div
+            className="d-block mx-auto spinner-border text-primary"
+            role="status"
+          ></div>
+        )}
+
+        {buscar.data && buscar.data.status == "success" && (
           <div>
             {buscar.data.pileta.map((pileta) => {
               if (pileta.pileta !== "turnoSiguiente") {
@@ -121,6 +131,14 @@ function Layout() {
                 );
               }
             })}
+          </div>
+        )}
+
+        {buscar.data?.status == "error" && (
+          <div className="px-4">
+            <div className="text-center alert alert-info text-danger fw-bold">
+              No se encontraron piletas
+            </div>
           </div>
         )}
       </div>

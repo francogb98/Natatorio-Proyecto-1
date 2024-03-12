@@ -60,10 +60,12 @@ const funcion_actualizar_usuario = async (user, customIds) => {
   try {
     const { fecha } = obtenerFechaYHoraArgentina();
     let userSearch = await User.findOne({ customId: user });
+    console.log(userSearch.customId);
     if (userSearch.status) {
       // Controlar fecha de carga certificado de hongos
       if (!userSearch.fechaCargaCertificadoHongos) {
         // Mandar notificacion al usuario de que cargue el certificado.
+
         userSearch.notificaciones.push({
           asunto: "Cargar Certificado Pediculosis y Micosis",
           cuerpo:
@@ -71,11 +73,12 @@ const funcion_actualizar_usuario = async (user, customIds) => {
           fecha: fecha,
         });
         // Ponerle la fecha del dia de hoy menos un mes, para que asi tenga 14 dias para cargar o sera dado de baja.
+
         userSearch.fechaCargaCertificadoHongos = fecha;
       } else {
         const expiro = calcular_fecha(userSearch.fechaCargaCertificadoHongos);
-
         // si expiro es mayor a 10 y menor a 14 se le envia una notificacion de que esta pronto a vencer su certificado
+
         if (expiro > 10 && expiro < 14) {
           userSearch.notificaciones.push({
             asunto: "Actualizar Certificado Pediculosis y Micosis",
@@ -84,6 +87,8 @@ const funcion_actualizar_usuario = async (user, customIds) => {
             } Dias. Atte:Natatorio Olimpico`,
             fecha: fecha,
           });
+
+          console.log("notificacion mandada", userSearch.customId);
         } else if (expiro > 14) {
           // Si expiro es mayot o igual a 14 se da de baja al usuario de la actividad.
           userSearch.activity = [];
@@ -199,9 +204,9 @@ export const colocarInasistencia = async (req, res) => {
         }
       })
     );
-    return { status: "ok" };
+    return res.status(200).json({ status: "ok" });
   } catch (error) {
     console.log(error.message);
-    return { status: "error" };
+    return res.status(400).json({ status: "error" });
   }
 };

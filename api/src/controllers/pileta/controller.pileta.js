@@ -223,10 +223,12 @@ export const obtener_pileta = async (req, res) => {
     console.log(pileta);
 
     if (!pileta.length) {
-      return res.status(401).json({ msg: "pileta no encontrada" });
+      return res
+        .status(401)
+        .json({ status: "error", msg: "pileta no encontrada" });
     }
 
-    return res.status(200).json({ pileta });
+    return res.status(200).json({ status: "success", pileta });
   } catch (error) {
     console.log(error.message);
   }

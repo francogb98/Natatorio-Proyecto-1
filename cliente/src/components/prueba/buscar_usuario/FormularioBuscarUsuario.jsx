@@ -1,6 +1,11 @@
 import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { cambioTurno } from "../helpers/cambiarTurno.js";
+
 import peticiones_buscador from "./peticiones_buscador.jsx";
+
 import Card_User from "./Card_User.jsx";
+import Swal from "sweetalert2";
 
 function FormularioBuscarUsuario() {
   const [filtro, setFiltro] = useState("");
@@ -8,12 +13,55 @@ function FormularioBuscarUsuario() {
   const { userEncontardo, setUserEncontrado, buscarUsuario } =
     peticiones_buscador();
 
+  const queryClient = useQueryClient();
+
+  const cambiarTurno = useMutation(cambioTurno, {
+    onSuccess: (data) => {
+      if (data.status === "ok") {
+        swal.fire({
+          title: "Turno cambiado",
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        });
+
+        queryClient.invalidateQueries("getUsrsByDate");
+        queryClient.invalidateQueries("piletas");
+        queryClient.invalidateQueries("usuariosTurnoSiguiente");
+      } else if (data.status === "error") {
+        swal.fire({
+          title: "Error",
+          text: data.message,
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    },
+    onError: (data) => {
+      Swal.fire({
+        title: "Error",
+        text: data.message,
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+    },
+  });
+
   const handleSearch = (e) => {
     e.preventDefault();
     buscarUsuario.mutate(filtro);
   };
   return (
     <section className="container">
+      <div className="col-12 d-flex justify-content-center mb-2">
+        <button
+          className="btn btn-lg btn-danger"
+          onClick={() => {
+            cambiarTurno.mutate();
+          }}
+        >
+          Iniciar Turno
+        </button>
+      </div>
       <form
         action=""
         onSubmit={handleSearch}
