@@ -64,20 +64,20 @@ const funcion_actualizar_usuario = async (user, customIds) => {
       // Controlar fecha de carga certificado de hongos
       if (!userSearch.fechaCargaCertificadoHongos) {
         // Mandar notificacion al usuario de que cargue el certificado.
-        user.notificaciones.push({
+        userSearch.notificaciones.push({
           asunto: "Cargar Certificado Pediculosis y Micosis",
           cuerpo:
             "Por favor cargar certificado de Pediculosis y Micosis o sera dado de baja en los proximos 14 Dias. Atte:Natatorio Olimpico",
           fecha: fecha,
         });
         // Ponerle la fecha del dia de hoy menos un mes, para que asi tenga 14 dias para cargar o sera dado de baja.
-        user.fechaCargaCertificadoHongos = fecha;
+        userSearch.fechaCargaCertificadoHongos = fecha;
       } else {
         const expiro = calcular_fecha(userSearch.fechaCargaCertificadoHongos);
 
         // si expiro es mayor a 10 y menor a 14 se le envia una notificacion de que esta pronto a vencer su certificado
         if (expiro > 10 && expiro < 14) {
-          user.notificaciones.push({
+          userSearch.notificaciones.push({
             asunto: "Actualizar Certificado Pediculosis y Micosis",
             cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
               14 - expiro
@@ -86,11 +86,11 @@ const funcion_actualizar_usuario = async (user, customIds) => {
           });
         } else if (expiro > 14) {
           // Si expiro es mayot o igual a 14 se da de baja al usuario de la actividad.
-          user.activity = [];
-          user.status = false;
-          user.inasistencias = [];
+          userSearch.activity = [];
+          userSearch.status = false;
+          userSearch.inasistencias = [];
           // Enviamos una notificacion al Usuario de la dada de baja.
-          user.notificaciones.push({
+          userSearch.notificaciones.push({
             asunto: "Actividad dada de baja",
             cuerpo: `Debido a no actualizar el certificado de Pediculosis y Micosis en los terminos, se le a dado de baja de su actividad, para volver a inscribirse en una actividad por favor actualizar el certificado. Atte:Natatorio Olimpico`,
             fecha: fecha,
@@ -128,15 +128,15 @@ const funcion_actualizar_usuario = async (user, customIds) => {
                   .json({ status: "error", msg: "error en el servidor" });
               }
               // Hago una notificacion con el aviso de la dada de baja debido a las inasistencias.
-              user.notificaciones.push({
+              userSearch.notificaciones.push({
                 asunto: "Actividad dada de baja",
                 cuerpo: `Debido a las inasistencias el usuario fue dado de baja. Atte:Natatorio Olimpico`,
                 fecha: fecha,
               });
               // reinicio las Inasistencias, y el campo actividad del usuario.
-              user.activity = [];
-              user.status = false;
-              user.inasistencias = [];
+              userSearch.activity = [];
+              userSearch.status = false;
+              userSearch.inasistencias = [];
             } else {
               userSearch.inasistencias.push(fecha);
             }
