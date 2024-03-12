@@ -59,7 +59,7 @@ const borrarUsuarioDeActividad = async (activityId, userId) => {
 const funcion_actualizar_usuario = async (user, customIds) => {
   try {
     const { fecha } = obtenerFechaYHoraArgentina();
-    const userSearch = await User.findOne({ customId: user });
+    let userSearch = await User.findOne({ customId: user });
     if (userSearch.status) {
       // Controlar fecha de carga certificado de hongos
       if (!userSearch.fechaCargaCertificadoHongos) {
