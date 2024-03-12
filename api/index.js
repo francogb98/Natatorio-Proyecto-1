@@ -28,6 +28,7 @@ const corsOptions = {
     "https://www.natatorioolimpicomdc.com",
     "http://localhost:5173",
     "https://natatorio-proyecto-1-zvny.vercel.app",
+    "https://natatorio-proyecto-1-zvny-git-main-francogb98.vercel.app/",
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
