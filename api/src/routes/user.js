@@ -35,6 +35,7 @@ router.get("/getinfoUser/:id", getUserById);
 router.get("/:filter/:page", getUsers);
 
 router.post("/findUser", validarJWT, findUser);
+router.post("/getinfoUser", getUserById);
 
 //busqueda por nombre por
 

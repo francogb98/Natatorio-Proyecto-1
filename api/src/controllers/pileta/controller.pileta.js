@@ -210,3 +210,24 @@ export const eliminarUsuarioDePileta = async (req, res) => {
     });
   }
 };
+
+export const obtener_pileta = async (req, res) => {
+  try {
+    const { dia, hora } = req.body;
+    console.log(dia, hora);
+    const pileta = await Pileta.find({
+      dia,
+      hora,
+    });
+
+    console.log(pileta);
+
+    if (!pileta.length) {
+      return res.status(401).json({ msg: "pileta no encontrada" });
+    }
+
+    return res.status(200).json({ pileta });
+  } catch (error) {
+    console.log(error.message);
+  }
+};

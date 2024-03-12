@@ -1,6 +1,6 @@
 import { createContext, useReducer, useState } from "react";
 import { fetchSinToken } from "../helpers/fetch";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import Swal from "sweetalert2";
 
@@ -10,18 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { baseUrl } from "../helpers/url";
 
 export const AuthContext = createContext();
-
-const getPiletas = async () => {
-  const resp = await fetch(`${baseUrl}pileta/getPiletas`);
-  const data = await resp.json();
-  return data;
-};
-
-const traerInfoTablas = async () => {
-  const res = await fetch(`${baseUrl}pileta`);
-  const data = await res.json();
-  return data;
-};
 
 export function AuthProvider({ children }) {
   const [authState, dispatch] = useReducer(authReducer, initialState);
@@ -50,10 +38,6 @@ export function AuthProvider({ children }) {
           payload: { logged: true, role: usuario.role },
         });
         await dispatch({ type: "SET_USER", payload: { user: usuario } });
-
-        if (usuario.role !== "usuario" || usuario.role !== "registrado") {
-          await traerInfoTablas();
-        }
 
         Swal.fire({
           icon: "success",

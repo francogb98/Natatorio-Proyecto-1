@@ -81,6 +81,7 @@ const schema = new mongoose.Schema({
     {
       asunto: String,
       cuerpo: String,
+      fecha: String,
       leido: {
         type: Boolean,
         default: false, // Por defecto, la notificación no está leída

@@ -36,6 +36,14 @@ import HabilitarAdaptada from "../components/privado/usuario/habilitarUsuario/Ha
 import FeedBacks from "../components/privado/feedback/FeedBacks";
 import Autorizado from "../components/privado/autorizados/Autorizado";
 
+import RegistroUsuarios from "../components/prueba/piletas/RegistroUsuarios";
+import HomePrueba from "../components/prueba/HomePrueba";
+import UserPerfil from "../components/prueba/users/UserPerfil";
+import Layout from "../components/prueba/piletas/buscarPileta/Layout";
+import Habilitar_prueba from "../components/prueba/users/habilitarUsuario/Habilitar";
+import HabilitarAdaptada_prueba from "../components/prueba/users/habilitarUsuario/HabilitarAdaptada";
+import CreateActivity_prueba from "../components/prueba/actividades/createActivity/CreateActivity";
+
 function Routing() {
   const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
 
@@ -103,35 +111,61 @@ function Routing() {
         (auth.logged && auth.role === "PROFESOR") ||
         (auth.logged && auth.role === "GUARDAVIDA") ||
         (auth.logged && auth.role === "SUPER_ADMIN") ? (
-          <Route path="/admin" element={<Home />}>
-            <Route path="panel/inicio" element={<Inicio />} />
-            <Route
-              path="panel/inicio/turno-siguiente"
-              element={<FormularioTurnoSiguiente />}
-            />
-            <Route
-              path="panel/inicio/autorizar"
-              element={<FormularioPrueba />}
-            />
-            <Route path="panel/piletas" element={<PiletasInfo />} />
-            <Route path="panel/create" element={<CreateActivity />} />
-            <Route path="panel/actividades" element={<ListActivity />} />
-            <Route
-              path="panel/actividades/infoActividad/:id"
-              element={<InfoActividad />}
-            />
-            <Route path="panel/buscar-usuario" element={<SearchUser />} />
-            <Route path="panel/habilitar-usuario" element={<Habilitar />} />
-            <Route
-              path="panel/habilitar-usuario-adaptada"
-              element={<HabilitarAdaptada />}
-            />
-            <Route path="panel/usuario/:id" element={<User />} />
-            <Route path="panel/usuarios" element={<ListaUsuarios />} />
-            <Route path="panel/estadisticas" element={<Estadisticas />} />
-            <Route path="panel/feed" element={<FeedBacks />} />
-            <Route path="panel/listaAutorizados" element={<Autorizado />} />
-          </Route>
+          <>
+            <Route path="/admin" element={<Home />}>
+              <Route path="panel/inicio" element={<Inicio />} />
+              <Route
+                path="panel/inicio/turno-siguiente"
+                element={<FormularioTurnoSiguiente />}
+              />
+              <Route
+                path="panel/inicio/autorizar"
+                element={<FormularioPrueba />}
+              />
+              <Route path="panel/piletas" element={<PiletasInfo />} />
+
+              <Route path="panel/create" element={<CreateActivity />} />
+              <Route path="panel/actividades" element={<ListActivity />} />
+              <Route
+                path="panel/actividades/infoActividad/:id"
+                element={<InfoActividad />}
+              />
+              <Route path="panel/buscar-usuario" element={<SearchUser />} />
+              <Route path="panel/habilitar-usuario" element={<Habilitar />} />
+              <Route
+                path="panel/habilitar-usuario-adaptada"
+                element={<HabilitarAdaptada />}
+              />
+              <Route path="panel/usuario/:id" element={<User />} />
+              <Route path="panel/usuarios" element={<ListaUsuarios />} />
+              <Route path="panel/estadisticas" element={<Estadisticas />} />
+              <Route path="panel/feed" element={<FeedBacks />} />
+              <Route path="panel/listaAutorizados" element={<Autorizado />} />
+            </Route>
+
+            <Route path="home" element={<HomePrueba />}>
+              <Route path="/home" element={<RegistroUsuarios />} />
+              <Route path="/home/buscar" element={<Layout />} />
+              <Route path="usuario/:id" element={<UserPerfil />} />
+
+              {/* actividades */}
+              <Route path="actividades" element={<ListActivity />} />
+              <Route
+                path="actividades/infoActividad/:id"
+                element={<InfoActividad />}
+              />
+              <Route
+                path="actividades/create"
+                element={<CreateActivity_prueba />}
+              />
+
+              <Route path="habilitar-usuario" element={<Habilitar_prueba />} />
+              <Route
+                path="habilitar-usuario-adaptada"
+                element={<HabilitarAdaptada_prueba />}
+              />
+            </Route>
+          </>
         ) : (
           <Route
             path="*"

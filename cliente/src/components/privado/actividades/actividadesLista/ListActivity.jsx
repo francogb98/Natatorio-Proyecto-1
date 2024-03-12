@@ -176,77 +176,79 @@ function ListActivity() {
               </div>
             </div>
 
-            <table className="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th className="bg-primary text-white fw-bold">Horario</th>
-                  <th>Nombre</th>
-                  <th>Dias</th>
-                  <th>Cupos</th>
-                  <th>Usuarios Registrados</th>
-                  {/* <th>Usuarios Habilitados</th> */}
-                  <th>Disponibles</th>
-                  {auth.role === "SUPER_ADMIN" && (
-                    <>
-                      <th>Editar</th>
-                      <th>Borrar</th>
-                    </>
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredActivities.length === 0 && (
+            <div className="table-responsive">
+              <table className="table table-striped table-hover table-bordered table-sm border-dark">
+                <thead>
                   <tr>
-                    <td colSpan="7" style={{ textAlign: "center" }}>
-                      No hay actividades
-                    </td>
-                  </tr>
-                )}
-                {filteredActivities.map((actividad) => (
-                  <tr key={actividad._id}>
-                    <td className="bg-primary text-white fw-bold">
-                      {actividad.hourStart} - {actividad.hourFinish}
-                    </td>
-                    <td>
-                      <Link to={`infoActividad/${actividad._id}`}>
-                        {actividad.name}
-                      </Link>
-                    </td>
-                    <td>{actividad.date.join(" - ")}</td>
-                    <td>{actividad.cupos}</td>
-                    <td>{actividad.users.length}</td>
-                    <td>{actividad.cupos - actividad.users.length}</td>
-
+                    <th className="bg-primary text-white fw-bold">Horario</th>
+                    <th>Nombre</th>
+                    <th>Dias</th>
+                    <th>Cupos</th>
+                    <th>Usuarios Registrados</th>
+                    {/* <th>Usuarios Habilitados</th> */}
+                    <th>Disponibles</th>
                     {auth.role === "SUPER_ADMIN" && (
                       <>
-                        <td>
-                          <button
-                            className="btn btn-primary"
-                            onClick={() => {
-                              setIsEdit(true);
-                              setActividadEdit(actividad);
-                            }}
-                          >
-                            {/* icono de lapiz */}
-                            <i className="bi bi-pencil"></i>
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            className="btn btn-danger"
-                            data-bs-toggle="modal"
-                            data-bs-target="#modalDelete"
-                            onClick={() => setIdDelete(actividad._id)}
-                          >
-                            X
-                          </button>
-                        </td>
+                        <th>Editar</th>
+                        <th>Borrar</th>
                       </>
                     )}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredActivities.length === 0 && (
+                    <tr>
+                      <td colSpan="7" style={{ textAlign: "center" }}>
+                        No hay actividades
+                      </td>
+                    </tr>
+                  )}
+                  {filteredActivities.map((actividad) => (
+                    <tr key={actividad._id}>
+                      <td className="bg-primary text-white fw-bold">
+                        {actividad.hourStart} - {actividad.hourFinish}
+                      </td>
+                      <td>
+                        <Link to={`infoActividad/${actividad._id}`}>
+                          {actividad.name}
+                        </Link>
+                      </td>
+                      <td>{actividad.date.join(" - ")}</td>
+                      <td>{actividad.cupos}</td>
+                      <td>{actividad.users.length}</td>
+                      <td>{actividad.cupos - actividad.users.length}</td>
+
+                      {auth.role === "SUPER_ADMIN" && (
+                        <>
+                          <td>
+                            <button
+                              className="btn btn-primary"
+                              onClick={() => {
+                                setIsEdit(true);
+                                setActividadEdit(actividad);
+                              }}
+                            >
+                              {/* icono de lapiz */}
+                              <i className="bi bi-pencil"></i>
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              className="btn btn-danger"
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalDelete"
+                              onClick={() => setIdDelete(actividad._id)}
+                            >
+                              X
+                            </button>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <Modal deleteActivity={deleteActivity} />
           </div>
         )}

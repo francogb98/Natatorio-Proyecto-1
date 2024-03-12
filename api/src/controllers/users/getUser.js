@@ -22,9 +22,21 @@ export const getUser = async (req, res) => {
     res.status(404).json({ status: "error", message: error.message });
   }
 };
+
 export const getUserById = async (req, res) => {
   try {
-    const { id } = req.params;
+    let id;
+    if (req.params.id) {
+      id = req.params.id;
+    } else if (req.body.id) {
+      console.log(req.body);
+      id = req.body.id;
+    } else {
+      return res
+        .status(400)
+        .json({ status: "error", message: "Falta el ID del usuario" });
+    }
+
     let user;
     if (!isNaN(id)) {
       user = await User.findOne({ customId: id }).populate({
@@ -41,14 +53,15 @@ export const getUserById = async (req, res) => {
         },
       });
     }
+
     if (!user)
       return res
         .status(404)
-        .json({ status: "error", message: "Usuario no Encontrado" });
+        .json({ status: "error", message: "Usuario no encontrado" });
 
     res.status(200).json({ status: "success", user });
   } catch (error) {
     console.log(error.message);
-    res.status(404).json({ status: "error", message: "Error en el servidor" });
+    res.status(500).json({ status: "error", message: "Error en el servidor" });
   }
 };

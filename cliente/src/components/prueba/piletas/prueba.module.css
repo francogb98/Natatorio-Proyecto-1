@@ -1,0 +1,25 @@
+.fondo {
+  /* background-color: #eee; */
+  /* height: 100%; */
+}
+
+.mainBody {
+  display: flex;
+  justify-content: space-around;
+}
+
+.tabla {
+  background-color: white;
+  font-size: 12px;
+  width: 100%;
+}
+
+.tabla thead {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.tabla th {
+  border: 1px solid black;
+}
