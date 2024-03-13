@@ -93,7 +93,7 @@ const funcion_actualizar_usuario = async (user, customIds) => {
           // Si expiro es mayot o igual a 14 se da de baja al usuario de la actividad.
           userSearch.activity = [];
           userSearch.status = false;
-          userSearch.inasistencias = [];
+
           // Enviamos una notificacion al Usuario de la dada de baja.
           userSearch.notificaciones.push({
             asunto: "Actividad dada de baja",
@@ -141,7 +141,6 @@ const funcion_actualizar_usuario = async (user, customIds) => {
               // reinicio las Inasistencias, y el campo actividad del usuario.
               userSearch.activity = [];
               userSearch.status = false;
-              userSearch.inasistencias = [];
             } else {
               userSearch.inasistencias.push(fecha);
             }
