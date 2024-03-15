@@ -23,6 +23,7 @@ export const intercambioDeUsuarios = async () => {
               actividad: user.actividad,
               pileta: user.pileta,
               horarioSalida: user.horarioSalida,
+              horarioIngreso: user.horarioIngreso ?? horaActual,
             });
             if (resultado.status === "error") {
               return resultado.message;

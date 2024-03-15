@@ -1,5 +1,6 @@
 import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
 import Pileta from "../../../models/models/Pileta.js";
+import User from "../../../models/models/User.js";
 
 export const agregarUsuario = async ({
   customId,
@@ -15,12 +16,9 @@ export const agregarUsuario = async ({
     dia: fecha,
     hora: hora,
   });
-
   let [horaActual] = hora.split(":");
   let [horaIngresoActual] = horarioIngreso.split(":");
-
   // turnoSiguiente
-
   const piletaExist = await Pileta.findOneAndUpdate(
     {
       pileta: horaIngresoActual !== horaActual ? "turnoSiguiente" : pileta,
@@ -37,6 +35,7 @@ export const agregarUsuario = async ({
           pileta: pileta,
           actividad: actividad,
           horarioSalida: horarioSalida,
+          horarioIngreso: horarioIngreso,
           piletaTurnoSiguiente: horaIngresoActual !== horaActual ?? false,
         },
       },
@@ -46,7 +45,16 @@ export const agregarUsuario = async ({
     }
   );
 
-  console.log(piletaExist);
+  const user = await User.findOneAndUpdate(
+    { customId: customId },
+    {
+      $addToSet: {
+        asistencia: fecha,
+      },
+    },
+    { new: true }
+  );
+
   return {
     pileta: piletaExist,
     status: "success",

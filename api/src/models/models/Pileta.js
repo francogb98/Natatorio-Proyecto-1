@@ -8,6 +8,7 @@ const piletaSchema = new mongoose.Schema({
       nombre: String,
       actividad: String,
       horarioSalida: String,
+      horarioIngreso: String,
       pileta: String,
       piletaTurnoSiguiente: Boolean,
     },

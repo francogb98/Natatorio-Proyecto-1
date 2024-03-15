@@ -114,6 +114,7 @@ export const agregarUsuarioAPileta = async (req, res) => {
     const { hora, fecha } = obtenerFechaYHoraArgentina();
     let [horaActual] = hora.split(":");
     let [horaIngresoActual] = horarioIngreso.split(":");
+    console.log("llegue aqui");
 
     if (horaIngresoActual - horaActual >= 2) {
       return res.status(400).json({
@@ -239,5 +240,49 @@ export const obtener_pileta = async (req, res) => {
     return res.status(200).json({ status: "success", pileta });
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const cambio_forzado = async (req, res) => {
+  try {
+    const { dia, hora, horaActual } = req.body;
+
+    const pileta = await Pileta.find({
+      dia,
+      hora,
+    });
+    const piletaAhora = await Pileta.find({
+      dia,
+      hora: horaActual,
+    });
+
+    const resultado = await Promise.all(
+      pileta.map(async (pileta) => {
+        return await Promise.all(
+          pileta.users.map(async (user) => {
+            let [horaActualX] = horaActual.split(":");
+            let [horarioSalidaNumero] = user.horarioSalida.split(":");
+            // verificamos que el horario de salida, sea mayor al horario actual
+            if (horarioSalidaNumero > horaActualX) {
+              const resultado = await agregarUsuario({
+                customId: user.customid,
+                nombre: user.nombre,
+                actividad: user.actividad,
+                pileta: user.pileta,
+                horarioSalida: user.horarioSalida,
+                horarioIngreso: user.horarioIngreso ?? horaActual,
+              });
+              if (resultado.status === "error") {
+                return resultado.message;
+              }
+            }
+          })
+        );
+      })
+    );
+
+    return res.status(200).json({ pileta });
+  } catch (error) {
+    return res.status(200).json({ msg: error.message });
   }
 };
