@@ -115,12 +115,10 @@ export const agregarUsuarioAPileta = async (req, res) => {
     let [horaActual] = hora.split(":");
     let [horaIngresoActual] = horarioIngreso.split(":");
 
-    if (
-      horaIngresoActual - horaActual >= 2 ||
-      horaIngresoActual - horaActual < 0
-    ) {
+    if (horaIngresoActual - horaActual >= 2) {
       return res.status(400).json({
-        msg: "El usuario todavia no esta en horario de ser registrado",
+        status: "error",
+        message: "El usuario todavia no esta en horario de ser registrado",
       });
     }
 
@@ -146,22 +144,27 @@ export const agregarUsuarioAPileta = async (req, res) => {
     });
 
     if (resultado.status === "error") {
-      return res.status(400).json(resultado.message);
+      return res
+        .status(400)
+        .json({ status: "error", message: resultado.message });
     }
     //actualizar el campo de asistenciia del usuario
 
     const resultadoAsistencia = await asistenciaUsuario(customId);
     if (resultadoAsistencia.status === "error") {
-      return res.status(400).json(resultadoAsistencia.message);
+      return res
+        .status(400)
+        .json({ status: "error", message: resultado.message });
     }
 
     //actualizo la estadistica
     await actualizarEstadistica(resultadoAsistencia.user);
 
-    return res.status(200).json(resultado);
+    return res.status(200).json({ status: "success", resultado });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({
+      status: "error",
       message: "Hable con el administrador",
     });
   }
