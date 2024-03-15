@@ -121,29 +121,28 @@ const funcion_actualizar_usuario = async (user, customIds) => {
           //verifico que no se le haya puesto la inasistencia en esta fecha
 
           if (!userSearch.inasistencias.includes(fecha)) {
-            if (userSearch.inasistencias.length > 5) {
-              //si el usuario tiene 5 o mas inasistencias lo doy de baja de la actividad.
-              const result = await borrarUsuarioDeActividad(
-                userSearch.activity[0],
-                userSearch._id
-              );
-              if (!result) {
-                return res
-                  .status(400)
-                  .json({ status: "error", msg: "error en el servidor" });
-              }
-              // Hago una notificacion con el aviso de la dada de baja debido a las inasistencias.
-              userSearch.notificaciones.push({
-                asunto: "Actividad dada de baja",
-                cuerpo: `Debido a las inasistencias el usuario fue dado de baja. Atte:Natatorio Olimpico`,
-                fecha: fecha,
-              });
-              // reinicio las Inasistencias, y el campo actividad del usuario.
-              userSearch.activity = [];
-              userSearch.status = false;
-            } else {
-              userSearch.inasistencias.push(fecha);
-            }
+            // if (userSearch.inasistencias.length > 5) {
+            //   //si el usuario tiene 5 o mas inasistencias lo doy de baja de la actividad.
+            //   const result = await borrarUsuarioDeActividad(
+            //     userSearch.activity[0],
+            //     userSearch._id
+            //   );
+            //   if (!result) {
+            //     return res
+            //       .status(400)
+            //       .json({ status: "error", msg: "error en el servidor" });
+            //   }
+            //   // Hago una notificacion con el aviso de la dada de baja debido a las inasistencias.
+            //   userSearch.notificaciones.push({
+            //     asunto: "Actividad dada de baja",
+            //     cuerpo: `Debido a las inasistencias el usuario fue dado de baja. Atte:Natatorio Olimpico`,
+            //     fecha: fecha,
+            //   });
+            //   // reinicio las Inasistencias, y el campo actividad del usuario.
+            //   userSearch.activity = [];
+            //   userSearch.status = false;
+            // } else {
+            userSearch.inasistencias.push(fecha);
           }
         }
       }
