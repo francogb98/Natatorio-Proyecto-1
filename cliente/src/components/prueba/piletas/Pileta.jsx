@@ -92,10 +92,16 @@ function TablaPrueba({ data, columns, type, pageStart }) {
 
       {/* paginacion */}
 
-      <div className={style.pagination}>
+      <div
+        className="d-flex gap-2"
+        style={{
+          height: "fit-content",
+        }}
+      >
         {table.getCanPreviousPage() && (
           <>
             <button
+              className="btn btn-primary"
               onClick={() => {
                 table.setPageIndex(0);
               }}
@@ -103,6 +109,7 @@ function TablaPrueba({ data, columns, type, pageStart }) {
               Primera Pagina
             </button>
             <button
+              className="btn btn-warning"
               onClick={() => {
                 table.previousPage();
               }}
@@ -115,6 +122,7 @@ function TablaPrueba({ data, columns, type, pageStart }) {
         {table.getCanNextPage() && (
           <>
             <button
+              className="btn btn-warning"
               onClick={() => {
                 table.nextPage();
               }}
@@ -122,6 +130,7 @@ function TablaPrueba({ data, columns, type, pageStart }) {
               <i className="bi bi-arrow-right"></i>
             </button>
             <button
+              className="btn btn-primary"
               onClick={() => {
                 table.setPageIndex(table.getPageCount() - 1);
               }}

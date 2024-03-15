@@ -7,20 +7,21 @@ export const intercambioDeUsuarios = async () => {
 
   const piletasAnterior = await Pileta.find({ dia: fecha, hora: horaAnterior });
 
-  //verifico todos los usuarios de las piletas anteriores, en caso de que su horario de salida sea mayor que la hora actual los agrego a las pieltas del turno actual
+  //verifico todos los usuarios de las piletas anteriores, en caso de que su horario de salida sea mayor que la hora actual los agrego a las piletas del turno actual
   const resultado = await Promise.all(
     piletasAnterior.map(async (pileta) => {
       return await Promise.all(
         pileta.users.map(async (user) => {
-          if (user.horarioSalida > hora) {
+          let [horaActual] = hora.split(":");
+          let [horarioSalida] = user.horarioSalida.split(":");
+
+          // verificamos que el horario de salida, sea mayor al horario actual
+          if (horarioSalida > horaActual) {
             const resultado = await agregarUsuario({
               customId: user.customid,
               nombre: user.nombre,
               actividad: user.actividad,
-              pileta:
-                pileta.pileta === "turnoSiguiente"
-                  ? user.piletaTurnoSiguiente
-                  : pileta.pileta,
+              pileta: user.pileta,
               horarioSalida: user.horarioSalida,
             });
             if (resultado.status === "error") {

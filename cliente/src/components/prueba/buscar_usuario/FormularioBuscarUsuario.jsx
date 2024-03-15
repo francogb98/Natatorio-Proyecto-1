@@ -18,7 +18,7 @@ function FormularioBuscarUsuario() {
   const cambiarTurno = useMutation(cambioTurno, {
     onSuccess: (data) => {
       if (data.status === "ok") {
-        swal.fire({
+        Swal.fire({
           title: "Turno cambiado",
           icon: "success",
           confirmButtonText: "Aceptar",
@@ -28,7 +28,7 @@ function FormularioBuscarUsuario() {
         queryClient.invalidateQueries("piletas");
         queryClient.invalidateQueries("usuariosTurnoSiguiente");
       } else if (data.status === "error") {
-        swal.fire({
+        Swal.fire({
           title: "Error",
           text: data.message,
           icon: "error",

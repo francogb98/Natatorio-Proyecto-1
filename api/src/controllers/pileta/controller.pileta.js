@@ -108,16 +108,21 @@ export const iniciarTurno = async (req, res) => {
 };
 
 export const agregarUsuarioAPileta = async (req, res) => {
-  const {
-    customId,
-    nombre,
-    actividad,
-    pileta,
-    horarioSalida,
-    piletaTurnoSiguiente,
-  } = req.body;
+  const { customId, nombre, actividad, pileta, horarioIngreso, horarioSalida } =
+    req.body;
   try {
     const { hora, fecha } = obtenerFechaYHoraArgentina();
+    let [horaActual] = hora.split(":");
+    let [horaIngresoActual] = horarioIngreso.split(":");
+
+    if (
+      horaIngresoActual - horaActual >= 2 ||
+      horaIngresoActual - horaActual < 0
+    ) {
+      return res.status(400).json({
+        msg: "El usuario todavia no esta en horario de ser registrado",
+      });
+    }
 
     const resultadoPileta = await Pileta.find({
       dia: fecha,
@@ -136,8 +141,8 @@ export const agregarUsuarioAPileta = async (req, res) => {
       nombre,
       actividad,
       pileta,
+      horarioIngreso,
       horarioSalida,
-      piletaTurnoSiguiente,
     });
 
     if (resultado.status === "error") {

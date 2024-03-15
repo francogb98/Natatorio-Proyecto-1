@@ -6,8 +6,8 @@ export const agregarUsuario = async ({
   nombre,
   actividad,
   pileta,
+  horarioIngreso,
   horarioSalida,
-  piletaTurnoSiguiente,
 }) => {
   const { hora, fecha } = obtenerFechaYHoraArgentina();
 
@@ -16,9 +16,14 @@ export const agregarUsuario = async ({
     hora: hora,
   });
 
+  let [horaActual] = hora.split(":");
+  let [horaIngresoActual] = horarioIngreso.split(":");
+
+  // turnoSiguiente
+
   const piletaExist = await Pileta.findOneAndUpdate(
     {
-      pileta: pileta,
+      pileta: horaIngresoActual !== horaActual ? "turnoSiguiente" : pileta,
       dia: fecha,
       hora: hora,
       "users.customid": { $ne: customId }, // Asegura que el usuario no esté en la lista ya
@@ -29,9 +34,10 @@ export const agregarUsuario = async ({
         users: {
           customid: customId,
           nombre: nombre,
+          pileta: pileta,
           actividad: actividad,
           horarioSalida: horarioSalida,
-          piletaTurnoSiguiente: piletaTurnoSiguiente,
+          piletaTurnoSiguiente: horaIngresoActual !== horaActual ?? false,
         },
       },
     },

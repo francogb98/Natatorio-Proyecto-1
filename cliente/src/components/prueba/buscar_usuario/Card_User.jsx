@@ -134,6 +134,7 @@ function Card_User({ user }) {
                       nombre: user.nombre,
                       actividad: user.activity[0].name,
                       pileta: user.activity[0].pileta,
+                      horarioIngreso: user.activity[0].hourStart,
                       horarioSalida: user.activity[0].hourFinish,
                     });
                   }}
