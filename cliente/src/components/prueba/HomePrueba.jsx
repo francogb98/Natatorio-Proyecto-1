@@ -17,13 +17,18 @@ function HomePrueba() {
       <main
         className="row mt-5"
         style={{
-          marginBottom: "60px",
+          marginBottom: "10px",
         }}
       >
         <div className="col-12 col-sm-4">
           <FormularioBuscarUsuario />
         </div>
-        <div className="col-12 col-sm-8">
+        <div
+          className="col-12 col-sm-8 overflow-scroll"
+          style={{
+            height: "90vh",
+          }}
+        >
           <Outlet />
         </div>
       </main>

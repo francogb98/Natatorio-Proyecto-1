@@ -10,7 +10,6 @@ export const addUserFromActivity = async (req, res) => {
       _id: req.user.id,
     });
 
-    user;
     //verificamos si el usuario ya esta registrado en la actividad
     if (user.activity?.length) {
       return res.status(400).json({
@@ -169,8 +168,11 @@ export const HabilitarUser = async (req, res) => {
     });
 
     user.inasistencias = [];
-    user.asistencia = dateNowSave;
+    user.asistencia = [];
+    user.asistencia.push(dateNowSave);
     await user.save();
+
+    console.log(user);
 
     return res.status(200).json({
       status: "success",

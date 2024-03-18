@@ -1,8 +1,10 @@
 import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
 
-import Pileta from "../../../models/models/Pileta.js";
 import Activity from "../../../models/models/Actividades.js";
 import User from "../../../models/models/User.js";
+import Stadistics from "../../../models/models/Stadistics.js";
+
+import moment from "moment";
 
 function calcular_fecha(fecha_carga) {
   // Convertir la cadena de fecha en un objeto de fecha
@@ -22,6 +24,46 @@ function calcular_fecha(fecha_carga) {
   return diasPasados;
 }
 
+const cantidad_inasistecias = async (actividad, asistencia) => {
+  try {
+    const estadistica = await Stadistics.find({
+      activity: actividad,
+    });
+
+    const allDays = estadistica.reduce((acc, obj) => {
+      acc.push(...obj.dias);
+      return acc;
+    }, []);
+
+    const fechaAsistencia = moment(asistencia[0], "DD/MM/YYYY");
+    let fechaCercana = null;
+    let diferenciaMinima = Number.MAX_VALUE;
+
+    for (const fecha of allDays) {
+      const fechaComparar = moment(fecha, "DD/MM/YYYY");
+      if (
+        fechaComparar.isAfter(fechaAsistencia) &&
+        fechaComparar.diff(fechaAsistencia, "days") < diferenciaMinima
+      ) {
+        fechaCercana = fecha;
+        diferenciaMinima = fechaComparar.diff(fechaAsistencia, "days");
+      }
+    }
+
+    if (!fechaCercana) {
+      return 0;
+    }
+
+    const indice = allDays.indexOf(fechaCercana);
+    const arr = allDays.slice(indice);
+
+    return arr.length - (asistencia.length - 1);
+  } catch (error) {
+    console.log(error.message);
+    return false;
+  }
+};
+
 const actividadesEspeciales = [
   "equipo de natacion mdc",
   "equipo de natacion artistica",
@@ -29,136 +71,11 @@ const actividadesEspeciales = [
   "equipo de natacion masters",
 ];
 
-const borrarUsuarioDeActividad = async (activityId, userId) => {
+//
+export const verificacionEstadoUsuarios = async () => {
   try {
-    const activity = await Activity.findById(activityId);
-    if (!activity) {
-      throw new Error("La actividad no fue encontrada.");
-    }
+    const { horaAnterior, fecha } = obtenerFechaYHoraArgentina();
 
-    // Verificar si el usuario está presente en la actividad
-    const index = activity.users.indexOf(userId);
-    if (index === -1) {
-      throw new Error("El usuario no está registrado en esta actividad.");
-    }
-
-    // Eliminar al usuario de la lista de usuarios de la actividad
-    activity.users.splice(index, 1);
-    activity.userRegister = activity.userRegister - 1;
-
-    // Guardar la actividad actualizada
-    await activity.save();
-
-    return activity;
-  } catch (error) {
-    console.log(error.message);
-    return false;
-  }
-};
-
-const funcion_actualizar_usuario = async (user, customIds) => {
-  try {
-    const { fecha } = obtenerFechaYHoraArgentina();
-    let userSearch = await User.findOne({ customId: user });
-    console.log(userSearch.customId);
-    if (userSearch.status) {
-      // Controlar fecha de carga certificado de hongos
-      if (!userSearch.fechaCargaCertificadoHongos) {
-        // Mandar notificacion al usuario de que cargue el certificado.
-
-        userSearch.notificaciones.push({
-          asunto: "Cargar Certificado Pediculosis y Micosis",
-          cuerpo:
-            "Por favor cargar certificado de Pediculosis y Micosis o sera dado de baja en los proximos 14 Dias. Atte:Natatorio Olimpico",
-          fecha: fecha,
-        });
-        // Ponerle la fecha del dia de hoy menos un mes, para que asi tenga 14 dias para cargar o sera dado de baja.
-
-        userSearch.fechaCargaCertificadoHongos = fecha;
-      } else {
-        const expiro = calcular_fecha(userSearch.fechaCargaCertificadoHongos);
-        // si expiro es mayor a 10 y menor a 14 se le envia una notificacion de que esta pronto a vencer su certificado
-
-        if (expiro > 10 && expiro < 14) {
-          userSearch.notificaciones.push({
-            asunto: "Actualizar Certificado Pediculosis y Micosis",
-            cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
-              14 - expiro
-            } Dias. Atte:Natatorio Olimpico`,
-            fecha: fecha,
-          });
-
-          console.log("notificacion mandada", userSearch.customId);
-        } else if (expiro > 14) {
-          // Si expiro es mayot o igual a 14 se da de baja al usuario de la actividad.
-          userSearch.activity = [];
-          userSearch.status = false;
-
-          // Enviamos una notificacion al Usuario de la dada de baja.
-          userSearch.notificaciones.push({
-            asunto: "Actividad dada de baja",
-            cuerpo: `Debido a no actualizar el certificado de Pediculosis y Micosis en los terminos, se le a dado de baja de su actividad, para volver a inscribirse en una actividad por favor actualizar el certificado. Atte:Natatorio Olimpico`,
-            fecha: fecha,
-          });
-          // Reiniciamos las inasistencias
-          // borramos al usuario de la actividad
-          const result = await borrarUsuarioDeActividad(
-            userSearch.activity[0],
-            userSearch._id
-          );
-
-          if (!result) {
-            return res
-              .status(400)
-              .json({ status: "error", msg: "error en el servidor" });
-          }
-        }
-      }
-      // Busco si el usuario accedio al dia de hoy a la pileta
-      if (!customIds.includes(userSearch.customId)) {
-        //verifico que no sea de alguna actividad especial
-        if (!actividadesEspeciales.includes(userSearch.activity[0].name)) {
-          //verifico que no se le haya puesto la inasistencia en esta fecha
-
-          if (!userSearch.inasistencias.includes(fecha)) {
-            // if (userSearch.inasistencias.length > 5) {
-            //   //si el usuario tiene 5 o mas inasistencias lo doy de baja de la actividad.
-            //   const result = await borrarUsuarioDeActividad(
-            //     userSearch.activity[0],
-            //     userSearch._id
-            //   );
-            //   if (!result) {
-            //     return res
-            //       .status(400)
-            //       .json({ status: "error", msg: "error en el servidor" });
-            //   }
-            //   // Hago una notificacion con el aviso de la dada de baja debido a las inasistencias.
-            //   userSearch.notificaciones.push({
-            //     asunto: "Actividad dada de baja",
-            //     cuerpo: `Debido a las inasistencias el usuario fue dado de baja. Atte:Natatorio Olimpico`,
-            //     fecha: fecha,
-            //   });
-            //   // reinicio las Inasistencias, y el campo actividad del usuario.
-            //   userSearch.activity = [];
-            //   userSearch.status = false;
-            // } else {
-            userSearch.inasistencias.push(fecha);
-          }
-        }
-      }
-    }
-
-    await userSearch.save();
-    return true;
-  } catch (error) {
-    console.log(error.message);
-    return false;
-  }
-};
-
-export const colocarInasistencia = async (req, res) => {
-  try {
-    const { hora, fecha, horaAnterior } = obtenerFechaYHoraArgentina();
     let date = new Date().toLocaleDateString("es-ES", {
       weekday: "long",
     });
@@ -167,44 +84,105 @@ export const colocarInasistencia = async (req, res) => {
     if (date === "Miércoles") {
       date = "Miercoles";
     }
-
-    const piletasAnterior = await Pileta.find({
-      dia: fecha,
-      hora: horaAnterior,
-      pileta: { $ne: "turnoSiguiente" },
-    }).select("users.customid");
-
-    const customIds = piletasAnterior
-      .map((pileta) => pileta.users.map((user) => user.customid))
-      .flat();
-    //busco
+    //buscar las actividades de la hora actual
     const activity = await Activity.find({
       date: { $in: [date] },
-      $and: [
-        { hourStart: { $lte: horaAnterior } }, // Actividades que han comenzado antes o en este momento
-        { hourFinish: { $gt: horaAnterior } }, // Actividades que aún no han finalizado
-      ],
+      hourStart: "14:00", // Actividades que han comenzado antes o en este momento
     }).populate({
       path: "users",
       select: "customId",
     });
 
-    const allUsers = activity
-      .map((activity) => activity.users.map((user) => user.customId))
-      .flat();
+    const allUsers = activity.reduce((acc, obj) => {
+      acc.push(...obj.users);
+      return acc;
+    }, []);
 
-    await Promise.all(
-      allUsers.map(async (user) => {
-        const result = await funcion_actualizar_usuario(user, customIds);
+    //recorrer todos los usuarios y verificar que el certificado de hongos este actualizado
+    for (const user of allUsers) {
+      const userSearch = await User.findOne({
+        customId: user.customId,
+      }).populate({
+        path: "activity",
+        populate: {
+          path: "name",
+        },
+      });
+      //si el certificado expiro y la diferencia es mayor a 10 pero menor a 14 mando una notificacion
 
-        if (!result) {
-          return res.status(400).json({ msg: "error en el servidor" });
+      if (userSearch.status) {
+        const expiro = calcular_fecha(userSearch.fechaCargaCertificadoHongos);
+
+        if (expiro > 9 && expiro < 14) {
+          userSearch.notificaciones.push({
+            asunto: "Actualizar Certificado Pediculosis y Micosis",
+            cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
+              14 - expiro
+            } Dias. Atte:Natatorio Olimpico`,
+            fecha: fecha,
+          });
+          userSearch.save();
         }
-      })
-    );
-    return res.status(200).json({ status: "ok" });
+
+        if (expiro > 14) {
+          //borrar al usuario de la actividad
+          const updatedActivity = await Activity.findOneAndUpdate(
+            { _id: userSearch.activity[0]._id },
+            { $pull: { users: userSearch._id } },
+            { new: true }
+          );
+
+          if (updatedActivity) {
+            userSearch.notificaciones.push({
+              asunto: "Actividad dada de baja",
+              cuerpo: `Debido a la no actualizacion del certificado de pediculosis y micosis
+                   se le dio de baja de dicha activida, por favor cargar el
+                   certificado actualizado y volver a inscribirse en la actividad.
+                   Dias. Atte:Natatorio Olimpico`,
+              fecha: fecha,
+            });
+            userSearch.activity = [];
+            userSearch.status = false;
+            userSearch.save();
+          } else {
+            console.log("No se pudo eliminar al usuario de la actividad.");
+          }
+        }
+
+        if (!actividadesEspeciales.includes(userSearch.activity[0].name)) {
+          const result = await cantidad_inasistecias(
+            userSearch.activity[0]._id,
+            userSearch.asistencia
+          );
+
+          if (result > 6) {
+            const updatedActivity = await Activity.findOneAndUpdate(
+              { _id: userSearch.activity[0]._id },
+              { $pull: { users: userSearch._id } },
+              { new: true }
+            );
+
+            if (updatedActivity) {
+              userSearch.notificaciones.push({
+                asunto: "Actividad dada de baja",
+                cuerpo: `Debido a la cantidad de inasistencias
+                   se le dio de baja de dicha activida, por favor en caso de desear continuar asistiendo al natatorio volver a inscribirse en una actividad. Atte:Natatorio Olimpico`,
+                fecha: fecha,
+              });
+              userSearch.activity = [];
+              userSearch.status = false;
+              userSearch.save();
+            } else {
+              console.log("No se pudo eliminar al usuario de la actividad.");
+            }
+          }
+        }
+      }
+    }
+
+    return true;
   } catch (error) {
     console.log(error.message);
-    return res.status(400).json({ status: "error" });
+    return false;
   }
 };

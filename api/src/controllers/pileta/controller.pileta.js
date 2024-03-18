@@ -3,11 +3,11 @@ import User from "../../models/models/User.js";
 import Stadistics from "../../models/models/Stadistics.js";
 
 import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
-import { colocarInasistencia } from "./utilidades/colocarInasistencia.js";
 
 import { agregarUsuario } from "./utilidades/agegarUsuario.js";
 import { intercambioDeUsuarios } from "./utilidades/intercambiarUsuariosTurno.js";
 import { crearPileta } from "./utilidades/crearPileta.js";
+import { verificacionEstadoUsuarios } from "./utilidades/colocarInasistencia.js";
 
 const actualizarEstadistica = async (user) => {
   try {
@@ -87,9 +87,9 @@ export const iniciarTurno = async (req, res) => {
     //ejecuto el cambio de turn
     const resultadoCambio = await intercambioDeUsuarios();
 
-    const result = await colocarInasistencia();
+    const result = await verificacionEstadoUsuarios();
 
-    if (result.status === "error") {
+    if (!result) {
       return res
         .status(400)
         .json({ status: "error", message: "error en el servidor" });

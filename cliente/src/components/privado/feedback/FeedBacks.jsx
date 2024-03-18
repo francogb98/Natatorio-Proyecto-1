@@ -177,7 +177,7 @@ function FeedBacks() {
           </li>
           <li
             class={`page-item ${
-              getFeeds.data.feedbacks.length == 20 ? null : "disabled"
+              getFeeds.data.feedbacks.length == 30 ? null : "disabled"
             }`}
           >
             <button

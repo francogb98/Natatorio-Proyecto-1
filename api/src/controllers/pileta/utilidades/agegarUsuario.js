@@ -21,7 +21,7 @@ export const agregarUsuario = async ({
   // turnoSiguiente
   const piletaExist = await Pileta.findOneAndUpdate(
     {
-      pileta: horaIngresoActual !== horaActual ? "turnoSiguiente" : pileta,
+      pileta: horaIngresoActual > horaActual ? "turnoSiguiente" : pileta,
       dia: fecha,
       hora: hora,
       "users.customid": { $ne: customId }, // Asegura que el usuario no esté en la lista ya

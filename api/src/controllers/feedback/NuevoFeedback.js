@@ -1,11 +1,19 @@
+import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import Feedback from "../../models/models/FeedBack.js";
 
 export default async function NuevoFeedback(req, res) {
   try {
     const { content } = req.body;
+    const { fecha } = obtenerFechaYHoraArgentina();
 
-    const feedback = new Feedback({ user: req.user.id, mensage: content });
+    const feedback = new Feedback({
+      user: req.user.id,
+      fecha,
+      mensage: content,
+    });
     await feedback.save();
+
+    console.log(feedback);
 
     return res
       .status(201)
