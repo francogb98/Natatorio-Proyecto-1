@@ -120,7 +120,7 @@ function EditarPerfil() {
       <h1 className="text-center fw-bold">Informacion Personal</h1>
 
       <hr />
-      {auth.user.status && (
+      {/* {auth.user.status && (
         <div
           className="d-flex fs-3 fw-bold"
           style={{
@@ -132,7 +132,7 @@ function EditarPerfil() {
             {auth.user.inasistencias.length}
           </p>
         </div>
-      )}
+      )} */}
       <div
         className="d-flex fs-3"
         style={{

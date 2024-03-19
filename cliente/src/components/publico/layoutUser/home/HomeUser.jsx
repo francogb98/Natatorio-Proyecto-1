@@ -34,7 +34,7 @@ function HomeUser() {
           padding: "8px",
         }}
       >
-        {auth.user.status && (
+        {/* {auth.user.status && (
           <div
             className="d-flex fs-3 fw-bold"
             style={{
@@ -46,7 +46,7 @@ function HomeUser() {
               {auth.user.inasistencias.length}
             </p>
           </div>
-        )}
+        )} */}
 
         <div
           className="d-flex fs-3"
