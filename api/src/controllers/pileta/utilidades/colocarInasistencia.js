@@ -87,7 +87,7 @@ export const verificacionEstadoUsuarios = async () => {
     //buscar las actividades de la hora actual
     const activity = await Activity.find({
       date: { $in: [date] },
-      hourStart: "14:00", // Actividades que han comenzado antes o en este momento
+      hourStart: horaAnterior, // Actividades que han comenzado antes o en este momento
     }).populate({
       path: "users",
       select: "customId",
