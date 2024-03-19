@@ -24,7 +24,7 @@ function HomePrueba() {
           <FormularioBuscarUsuario />
         </div>
         <div
-          className="col-12 col-sm-8 overflow-scroll"
+          className="col-12 col-sm-8 overflow-scroll pb-3"
           style={{
             height: "90vh",
           }}

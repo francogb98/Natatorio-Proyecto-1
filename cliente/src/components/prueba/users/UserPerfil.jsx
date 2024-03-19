@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { baseUrl } from "../../../helpers/url";
 
 import avatar from "../../../assets/avatar.webp";
+import { AuthContext } from "../../../context/AuthContext";
 
 export const getUser = async (id) => {
   try {
@@ -31,6 +32,10 @@ const actividadesEspeciales = [
 ];
 
 function UserPerfil() {
+  const { auth } = useContext(AuthContext);
+
+  console.log(auth);
+
   const { id } = useParams();
 
   const { data, isSuccess, isLoading, refetch, isRefetching } = useQuery({
@@ -42,7 +47,7 @@ function UserPerfil() {
     refetch();
   }, [id]);
 
-  if (!data || isRefetching) {
+  if (!data /*|| isRefetching*/) {
     return <h1 className="text-center">Cargando...</h1>;
   }
 
@@ -139,7 +144,7 @@ function UserPerfil() {
 
           {/* Notificaciones */}
 
-          <div className="col-6">
+          <div className="col-6 overflow-scroll" style={{ maxHeight: "280px" }}>
             <h2 className="text-center">Notificaciones</h2>
             {user.notificaciones.length == 0 ? (
               <div>No tiene</div>
@@ -170,6 +175,57 @@ function UserPerfil() {
             )}
           </div>
         </div>
+
+        <hr />
+
+        {auth.role == "SUPER_ADMIN" && (
+          <div className="row mb-4 border">
+            <h2 className="text-center ">Acciones Administrador</h2>
+            <div className="col-6">
+              <div className="mb-2">
+                <button className="btn btn-sm btn-primary">
+                  Enviar Notificacion
+                </button>
+              </div>
+              <label className="fw-bold">Actividad:</label>
+              <div className="d-flex justify-content-around mb-2">
+                <button className="btn btn-sm btn-success">Habilitar</button>
+                <button className="btn btn-sm btn-danger">Inhabilitar</button>
+              </div>
+
+              <div className="mb-3">
+                <label className="fw-bold">Cambiar Rol:</label>
+                <select
+                  name=""
+                  id=""
+                  style={{ maxWidth: "100%" }}
+                  // onChange={(e) => {
+                  //   cambiar.mutate({
+                  //     id: user._id,
+                  //     role: e.target.value,
+                  //   });
+                  // }}
+                  defaultValue={user.role}
+                  className="form-select mb-2"
+                >
+                  <option value="SUPER_ADMIN">--Seleccionar Rol--</option>
+                  <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+                  <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
+                  <option value="GUARDAVIDA">GUARDAVIDA</option>
+                  <option value="PROFESOR">PROFESOR</option>
+                  <option value="usuario">usuario</option>
+                </select>
+              </div>
+
+              <div className="d-flex mb-2">
+                <button className="btn btn-sm btn-warning">
+                  Agregar a una actividad
+                </button>
+              </div>
+            </div>
+            <div className="col-6"></div>
+          </div>
+        )}
       </div>
     );
   }

@@ -6,6 +6,8 @@ export default async function NuevoFeedback(req, res) {
     const { content } = req.body;
     const { fecha } = obtenerFechaYHoraArgentina();
 
+    console.log(req.user);
+
     const feedback = new Feedback({
       user: req.user.id,
       fecha,

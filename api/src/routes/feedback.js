@@ -6,7 +6,7 @@ import NuevoFeedback from "../controllers/feedback/NuevoFeedback.js";
 const rutaFeed = Router();
 
 //feedback
-rutaFeed.post("/", NuevoFeedback);
+rutaFeed.post("/", validarJWT, NuevoFeedback);
 rutaFeed.get("/:pagina", verFeedbacks);
 
 export default rutaFeed;
