@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from "react";
-import ImageViewer from "react-simple-image-viewer";
 
 import style from "./style.module.css";
 
