@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { baseUrl } from "../../../helpers/url";
 
 import avatar from "../../../assets/avatar.webp";
 import { AuthContext } from "../../../context/AuthContext";
+import UserImages from "./habilitarUsuario/UserImages";
 
 export const getUser = async (id) => {
   try {
@@ -34,7 +35,8 @@ const actividadesEspeciales = [
 function UserPerfil() {
   const { auth } = useContext(AuthContext);
 
-  console.log(auth);
+  const [imagen, setImagen] = useState(null);
+  const [view, setView] = useState(false);
 
   const { id } = useParams();
 
@@ -46,6 +48,8 @@ function UserPerfil() {
   useEffect(() => {
     refetch();
   }, [id]);
+
+  useEffect(() => {}, [view, imagen]);
 
   if (!data /*|| isRefetching*/) {
     return <h1 className="text-center">Cargando...</h1>;
@@ -133,15 +137,73 @@ function UserPerfil() {
             // }}
           >
             <h2 className="text-center">Archivos</h2>
-            <p>Ficha Medica: {user.fichaMedica ? "Abrir" : "Falta Cargar"}</p>
-            <p>Foto DNI: {user.dni ? "Abrir" : "Falta Cargar"}</p>
+            <p>
+              Ficha Medica:{" "}
+              {user.fichaMedica ? (
+                <span
+                  onClick={() => {
+                    setView(true);
+                    setImagen(user.fichaMedica);
+                  }}
+                  style={{
+                    cursor: "pointer",
+
+                    color: "blue",
+                  }}
+                >
+                  Abrir
+                </span>
+              ) : (
+                "Falta Cargar"
+              )}
+            </p>
+            <p>
+              Foto DNI:{" "}
+              {user.fotoDocumento ? (
+                <span
+                  onClick={() => {
+                    setView(true);
+                    setImagen(user.fotoDocumento);
+                  }}
+                  style={{
+                    color: "blue",
+                    cursor: "pointer",
+                  }}
+                >
+                  Abrir
+                </span>
+              ) : (
+                "Falta Cargar"
+              )}
+            </p>
             <p>
               Certificado PyM:{" "}
-              {user.certificadoHongos ? "Abrir" : "Falta Cargar"}
+              {user.certificadoHongos ? (
+                <span
+                  onClick={() => {
+                    setView(true);
+                    setImagen(user.certificadoHongos);
+                  }}
+                  style={{
+                    color: "blue",
+                    cursor: "pointer",
+                  }}
+                >
+                  Abrir
+                </span>
+              ) : (
+                "Falta Cargar"
+              )}
             </p>
             <p>Fecha de Carga: {user.fechaCargaCertificadoHongos}</p>
           </div>
-
+          {view && (
+            <UserImages
+              imagen={imagen}
+              setView={setView}
+              setImagen={setImagen}
+            />
+          )}
           {/* Notificaciones */}
 
           <div className="col-6 overflow-scroll" style={{ maxHeight: "280px" }}>

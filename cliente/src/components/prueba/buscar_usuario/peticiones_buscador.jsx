@@ -3,6 +3,7 @@ import { baseUrl } from "../../../helpers/url";
 import { useEffect, useState } from "react";
 
 import Swal from "sweetalert2";
+import { toast } from "sonner";
 
 const getUser = async (filtro) => {
   const res = await fetch(`${baseUrl}user/findUser`, {
@@ -97,20 +98,10 @@ function peticiones_buscador() {
     mutationFn: agregarUsuarioAlTurno,
     onSuccess: (data) => {
       if (data.status === "success") {
-        Swal.fire({
-          title: "Usuario agregado",
-          icon: "success",
-          text: data.message,
-          confirmButtonText: "Aceptar",
-        });
+        toast.success("Usuario agregado");
       }
       if (data.status === "error") {
-        Swal.fire({
-          title: "Usuario ya agregado",
-          icon: "error",
-          text: data.message,
-          confirmButtonText: "Aceptar",
-        });
+        toast.error(data.message);
       }
       queryClient.invalidateQueries("getUsrsByDate");
       queryClient.invalidateQueries("piletas");

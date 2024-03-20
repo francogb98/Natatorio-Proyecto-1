@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import peticiones_buscador from "./peticiones_buscador";
 import { AuthContext } from "../../../context/AuthContext";
 
+import { Toaster } from "sonner";
+
 function calcular_fecha(fecha_carga) {
   // Convertir la cadena de fecha en un objeto de fecha
   var partesFecha = fecha_carga.split("/");
@@ -44,7 +46,7 @@ function Card_User({ user }) {
 
   return (
     <>
-      <div className="card" style={{ width: "18rem", fontSize: "12px" }}>
+      <div className="card px-2" style={{ width: "18rem", fontSize: "12px" }}>
         <div className="card-body">
           <h5 className="card-title fs-6">
             <Link
@@ -122,7 +124,16 @@ function Card_User({ user }) {
             </>
           )}
 
-          <div className="d-flex align-items-center justify-content-center">
+          {agregarUsuario.isLoading && (
+            <div
+              className="spinner-border text-primary d-block mx-auto my-2"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          )}
+
+          <div className="d-flex flex-wrap gap-2 align-items-center justify-content-center">
             {user.status &&
               (auth.role === "SUPER_ADMIN" ||
                 auth.role === "ADMINISTRATIVO") && (
@@ -170,6 +181,7 @@ function Card_User({ user }) {
             )}
           </div>
         </div>
+        <Toaster position="bottom-right" richColors />
       </div>
     </>
   );
