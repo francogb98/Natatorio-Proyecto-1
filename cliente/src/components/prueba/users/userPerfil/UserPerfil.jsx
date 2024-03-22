@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import { baseUrl } from "../../../helpers/url";
+import { Form, useParams } from "react-router-dom";
+import { baseUrl } from "../../../../helpers/url";
 
-import avatar from "../../../assets/avatar.webp";
-import { AuthContext } from "../../../context/AuthContext";
-import UserImages from "./habilitarUsuario/UserImages";
+import avatar from "../../../../assets/avatar.webp";
+import { AuthContext } from "../../../../context/AuthContext";
+import UserImages from "../utilidades/UserImages";
+import Acciones_administrador from "./Acciones_administrador";
+import Funciones_administrador from "../hooks/Funciones_administrador";
+import { Toaster, toast } from "sonner";
 
 export const getUser = async (id) => {
   try {
@@ -39,6 +42,8 @@ function UserPerfil() {
   const [view, setView] = useState(false);
 
   const { id } = useParams();
+
+  const { eliminarNotificacion } = Funciones_administrador();
 
   const { data, isSuccess, isLoading, refetch, isRefetching } = useQuery({
     queryKey: ["getUserData"],
@@ -81,7 +86,7 @@ function UserPerfil() {
 
         <div className="row">
           {/* Actividades */}
-          {user.activity?.length && (
+          {user.activity?.length ? (
             <div
               className="col-6 border-end"
               // style={{
@@ -113,7 +118,7 @@ function UserPerfil() {
                 </>
               )}
             </div>
-          )}
+          ) : null}
           {/* Datos */}
           <div className={user.activity?.length ? "col-6" : "col-12"}>
             <h2 className="text-center">Datos</h2>
@@ -122,6 +127,7 @@ function UserPerfil() {
             <p>Dni: {user.dni}</p>
             <p>Telefono: {user.telefono}</p>
             <p>Telefono de Emergencia: {user.telefonoContacto}</p>
+            <p>Rol: {user.role}</p>
           </div>
         </div>
 
@@ -213,9 +219,43 @@ function UserPerfil() {
             ) : (
               <div>
                 {user.notificaciones.map((notificacion) => (
-                  <div key={notificacion._id}>
+                  <div key={notificacion._id} className="border-bottom py-2">
                     <div className="d-flex justify-content-between">
                       <p className="fw-bold">{notificacion.asunto}</p>
+
+                      <button
+                        className="btn py-0 px-1"
+                        style={{
+                          height: "fit-content",
+                          width: "fit-content",
+                        }}
+                        onClick={() => {
+                          toast.info("notificacion eliminada");
+
+                          eliminarNotificacion.mutate({
+                            idNotificacion: notificacion._id,
+                            idUsuario: user._id,
+                          });
+                        }}
+                      >
+                        <i
+                          className="bi bi-trash3"
+                          style={{
+                            fontSize: "13px",
+                          }}
+                        ></i>
+                      </button>
+                    </div>
+
+                    <p
+                      style={{
+                        fontSize: "12px",
+                      }}
+                    >
+                      {notificacion.cuerpo}
+                    </p>
+                    <div className="d-flex justify-content-between">
+                      <small>{notificacion.fecha ?? null}</small>
                       <p
                         className={
                           notificacion.leido ? "text-success" : "text-warning"
@@ -224,13 +264,6 @@ function UserPerfil() {
                         {notificacion.leido ? "Leido" : "No Leido"}
                       </p>
                     </div>
-                    <p
-                      style={{
-                        fontSize: "12px",
-                      }}
-                    >
-                      {notificacion.cuerpo}
-                    </p>
                   </div>
                 ))}
               </div>
@@ -238,56 +271,10 @@ function UserPerfil() {
           </div>
         </div>
 
+        <Toaster position="bottom-center" richColors />
         <hr />
 
-        {auth.role == "SUPER_ADMIN" && (
-          <div className="row mb-4 border">
-            <h2 className="text-center ">Acciones Administrador</h2>
-            <div className="col-6">
-              <div className="mb-2">
-                <button className="btn btn-sm btn-primary">
-                  Enviar Notificacion
-                </button>
-              </div>
-              <label className="fw-bold">Actividad:</label>
-              <div className="d-flex justify-content-around mb-2">
-                <button className="btn btn-sm btn-success">Habilitar</button>
-                <button className="btn btn-sm btn-danger">Inhabilitar</button>
-              </div>
-
-              <div className="mb-3">
-                <label className="fw-bold">Cambiar Rol:</label>
-                <select
-                  name=""
-                  id=""
-                  style={{ maxWidth: "100%" }}
-                  // onChange={(e) => {
-                  //   cambiar.mutate({
-                  //     id: user._id,
-                  //     role: e.target.value,
-                  //   });
-                  // }}
-                  defaultValue={user.role}
-                  className="form-select mb-2"
-                >
-                  <option value="SUPER_ADMIN">--Seleccionar Rol--</option>
-                  <option value="SUPER_ADMIN">SUPER_ADMIN</option>
-                  <option value="ADMINISTRATIVO">ADMINISTRATIVO</option>
-                  <option value="GUARDAVIDA">GUARDAVIDA</option>
-                  <option value="PROFESOR">PROFESOR</option>
-                  <option value="usuario">usuario</option>
-                </select>
-              </div>
-
-              <div className="d-flex mb-2">
-                <button className="btn btn-sm btn-warning">
-                  Agregar a una actividad
-                </button>
-              </div>
-            </div>
-            <div className="col-6"></div>
-          </div>
-        )}
+        {auth.role == "SUPER_ADMIN" && <Acciones_administrador user={user} />}
       </div>
     );
   }

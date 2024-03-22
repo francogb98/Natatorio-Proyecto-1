@@ -54,7 +54,7 @@ function Habilitar() {
         >
           <div className="fw-bold fs-5 text-warning">{data.total} Usuarios</div>
           <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-end mt-2">
+            <ul className="pagination justify-content-end mt-2">
               {isRefetching && (
                 <div
                   className="spinner-border text-primary mt-1 me-5"
@@ -64,12 +64,12 @@ function Habilitar() {
                 </div>
               )}
               <li
-                class={`page-item ${
+                className={`page-item ${
                   page == 1 || isRefetching ? "disabled" : null
                 }`}
               >
                 <button
-                  class="page-link ms-1"
+                  className="page-link ms-1"
                   onClick={() => {
                     setPage(1);
                   }}
@@ -78,12 +78,12 @@ function Habilitar() {
                 </button>
               </li>
               <li
-                class={`page-item ${
+                className={`page-item ${
                   page == 1 || isRefetching ? "disabled" : null
                 }`}
               >
                 <button
-                  class="page-link"
+                  className="page-link"
                   onClick={() => {
                     setPage(page - 1);
                   }}
@@ -91,21 +91,21 @@ function Habilitar() {
                   Anterior
                 </button>
               </li>
-              <li class={`page-item mt-2 mx-2 fw-bold`}>
+              <li className={`page-item mt-2 mx-2 fw-bold`}>
                 <p>
                   {page} / {Math.ceil(data.total / 20)}
                 </p>
               </li>
 
               <li
-                class={`page-item ${
+                className={`page-item ${
                   Math.ceil(data.total / 20) <= page || isRefetching
                     ? "disabled"
                     : null
                 }`}
               >
                 <button
-                  class="page-link"
+                  className="page-link"
                   onClick={() => {
                     setPage(page + 1);
                   }}
@@ -114,14 +114,14 @@ function Habilitar() {
                 </button>
               </li>
               <li
-                class={`page-item ${
+                className={`page-item ${
                   Math.ceil(data.total / 20) <= page || isRefetching
                     ? "disabled"
                     : null
                 }`}
               >
                 <button
-                  class="page-link ms-1"
+                  className="page-link ms-1"
                   onClick={() => {
                     setPage(Math.ceil(data.total / 20));
                   }}
@@ -182,7 +182,7 @@ function Habilitar() {
         </table>
 
         <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end mt-2">
+          <ul className="pagination justify-content-end mt-2">
             {isRefetching && (
               <div
                 className="spinner-border text-primary mt-1 me-5"
@@ -192,12 +192,12 @@ function Habilitar() {
               </div>
             )}
             <li
-              class={`page-item ${
+              className={`page-item ${
                 page == 1 || isRefetching ? "disabled" : null
               }`}
             >
               <button
-                class="page-link ms-1"
+                className="page-link ms-1"
                 onClick={() => {
                   setPage(1);
                 }}
@@ -206,12 +206,12 @@ function Habilitar() {
               </button>
             </li>
             <li
-              class={`page-item ${
+              className={`page-item ${
                 page == 1 || isRefetching ? "disabled" : null
               }`}
             >
               <button
-                class="page-link"
+                className="page-link"
                 onClick={() => {
                   setPage(page - 1);
                 }}
@@ -219,21 +219,21 @@ function Habilitar() {
                 Anterior
               </button>
             </li>
-            <li class={`page-item mt-2 mx-2 fw-bold`}>
+            <li className={`page-item mt-2 mx-2 fw-bold`}>
               <p>
                 {page} / {Math.ceil(data.total / 20)}
               </p>
             </li>
 
             <li
-              class={`page-item ${
+              className={`page-item ${
                 Math.ceil(data.total / 20) <= page || isRefetching
                   ? "disabled"
                   : null
               }`}
             >
               <button
-                class="page-link"
+                className="page-link"
                 onClick={() => {
                   setPage(page + 1);
                 }}
@@ -242,14 +242,14 @@ function Habilitar() {
               </button>
             </li>
             <li
-              class={`page-item ${
+              className={`page-item ${
                 Math.ceil(data.total / 20) <= page || isRefetching
                   ? "disabled"
                   : null
               }`}
             >
               <button
-                class="page-link ms-1"
+                className="page-link ms-1"
                 onClick={() => {
                   setPage(Math.ceil(data.total / 20));
                 }}

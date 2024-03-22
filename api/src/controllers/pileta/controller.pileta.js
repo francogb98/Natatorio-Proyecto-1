@@ -7,7 +7,7 @@ import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import { agregarUsuario } from "./utilidades/agegarUsuario.js";
 import { intercambioDeUsuarios } from "./utilidades/intercambiarUsuariosTurno.js";
 import { crearPileta } from "./utilidades/crearPileta.js";
-import { verificacionEstadoUsuarios } from "./utilidades/colocarInasistencia.js";
+import { verificacionEstadoUsuarios } from "./utilidades/estadoUsuario.js";
 
 const actualizarEstadistica = async (user) => {
   try {
@@ -46,18 +46,28 @@ const actualizarEstadistica = async (user) => {
   }
 };
 
-const asistenciaUsuario = async (customId) => {
-  const { fecha } = obtenerFechaYHoraArgentina();
-  const user = await User.findOneAndUpdate(
-    { customId: customId },
-    { asistencia: fecha },
-    { new: true }
-  );
-
-  return {
-    status: "success",
-    user,
-  };
+const asistenciaUsuario = async (customId, fecha) => {
+  try {
+    const user = await User.findOneAndUpdate(
+      { customId: customId },
+      {
+        $addToSet: {
+          asistencia: fecha,
+        },
+        $unset: {
+          inasistencias: "", // Puedes poner cualquier valor en blanco aquí
+        },
+      },
+      { new: true }
+    );
+    return {
+      status: "success",
+      user,
+    };
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ status: "error" });
+  }
 };
 
 export const iniciarTurno = async (req, res) => {
@@ -114,7 +124,6 @@ export const agregarUsuarioAPileta = async (req, res) => {
     const { hora, fecha } = obtenerFechaYHoraArgentina();
     let [horaActual] = hora.split(":");
     let [horaIngresoActual] = horarioIngreso.split(":");
-    console.log("llegue aqui");
 
     if (horaIngresoActual - horaActual >= 2) {
       return res.status(400).json({
@@ -151,7 +160,7 @@ export const agregarUsuarioAPileta = async (req, res) => {
     }
     //actualizar el campo de asistenciia del usuario
 
-    const resultadoAsistencia = await asistenciaUsuario(customId);
+    const resultadoAsistencia = await asistenciaUsuario(customId, fecha);
     if (resultadoAsistencia.status === "error") {
       return res
         .status(400)

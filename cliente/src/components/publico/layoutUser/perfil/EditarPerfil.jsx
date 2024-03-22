@@ -107,7 +107,7 @@ function EditarPerfil() {
         <img
           src={auth.user?.foto}
           alt=""
-          class="rounded mx-auto d-block"
+          className="rounded mx-auto d-block"
           style={{
             width: "200px",
             height: "200px",

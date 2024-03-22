@@ -109,7 +109,11 @@ function FormularioBuscarUsuario() {
           {buscarUsuario.data?.status === "success"
             ? buscarUsuario.data.users.map((user) => (
                 <div className={`col-12 d-flex justify-content-center g-1`}>
-                  <Card_User key={user._id} user={user}></Card_User>
+                  <Card_User
+                    key={user._id}
+                    user={user}
+                    inasistencia={buscarUsuario.data.inasistencias}
+                  ></Card_User>
                 </div>
               ))
             : null}

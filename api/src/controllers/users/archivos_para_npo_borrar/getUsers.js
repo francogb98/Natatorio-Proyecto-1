@@ -1,22 +1,34 @@
 import User from "../../../models/models/User.js";
 
-const usuariosParaHabilitar = async ({ page, adaptada = false }) => {
-  const limit = 20;
-  const skip = (page - 1) * limit;
-
-  let users = await User.find({
+const usuariosParaHabilitar = async ({ adaptada = false, codigo = false }) => {
+  let usersSearch = await User.find({
     status: false,
     natacionAdaptada: adaptada,
     activity: { $ne: [], $exists: true },
-  })
-    .populate({
-      path: "activity",
-      populate: {
-        path: "name",
-      },
-    })
-    .skip(skip)
-    .limit(limit);
+    "activity[0].codigoDeAcceso": { $in: [null, ""] },
+  }).populate({
+    path: "activity",
+
+    populate: {
+      path: "name",
+    },
+  });
+
+  let users = [];
+
+  for (let user of usersSearch) {
+    if (
+      user.activity.length > 0 &&
+      (!user.activity[0].codigoDeAcceso ||
+        user.activity[0].codigoDeAcceso === "" ||
+        user.activity[0].codigoDeAcceso === null)
+    ) {
+      // The first element in the activity array does not have a codigoDeAcceso field
+      // or it is null or an empty string.
+      // Do something here.
+      users.push(user);
+    }
+  }
 
   users.sort((a, b) => {
     const nameA = a.activity[0].name.toLowerCase();
@@ -24,67 +36,47 @@ const usuariosParaHabilitar = async ({ page, adaptada = false }) => {
     return nameA.localeCompare(nameB);
   });
 
-  const totalUsers = await User.find({
-    status: false,
-    natacionAdaptada: adaptada,
-    activity: { $ne: [], $exists: true },
-  }).select("_id"); // Para obtener una estimación del número de documentos (puede ser menos preciso pero más rápido)
-
-  return { users, total: totalUsers.length };
-};
-
-const todosLosUsuarios = async (page) => {
-  const limit = 50;
-  const skip = (page - 1) * limit;
-
-  let users = await User.find()
-    .populate({
-      path: "activity",
-      populate: {
-        path: "name",
-      },
-    })
-    .skip(skip)
-    .limit(limit);
-
-  const totalUsers = await User.countDocuments(); // Para obtener una estimación del número de documentos (puede ser menos preciso pero más rápido)
-
-  return { users, total: totalUsers };
+  return {
+    users: !codigo ? usersSearch : users,
+    total: !codigo ? usersSearch.length : users.length,
+  };
 };
 
 export const getUsers = async (req, res) => {
   try {
-    const { filter, page } = req.params;
+    const { filter } = req.params;
 
     let result = [];
     let totalUsers = 0;
-    if (filter === "habilitar") {
-      const { users, total } = await usuariosParaHabilitar({ page });
+    if (filter === "todos") {
+      const { users, total } = await usuariosParaHabilitar({
+        adaptada: false,
+        codigo: false,
+      });
       result = users;
       totalUsers = total;
     }
-    if (filter === "habilitarAdaptada") {
+    if (filter === "convencional") {
       const { users, total } = await usuariosParaHabilitar({
-        page,
+        adaptada: false,
+        codigo: true,
+      });
+      result = users;
+      totalUsers = total;
+    }
+    if (filter === "adaptada") {
+      const { users, total } = await usuariosParaHabilitar({
         adaptada: true,
       });
       result = users;
       totalUsers = total;
     }
-    if (filter === "todos") {
-      const { users, total } = await todosLosUsuarios(page);
-      result = users;
-      totalUsers = total;
-    }
-
     if (!result.length) {
       return res.status(200).json({
         message: "No se encontraron usuarios",
       });
     }
-
     return res.status(200).json({
-      pagina: page,
       total: totalUsers,
       totalUsuarios: result.length,
       users: result,

@@ -75,6 +75,13 @@ export const DeshabilitarUser = async (req, res) => {
   try {
     //busco el usuario por el id
 
+    const dateNow = new Date();
+    const day = dateNow.getDate();
+    const month = dateNow.getMonth() + 1;
+    const year = dateNow.getFullYear();
+
+    const dateNowSave = `${day}/${month}/${year}`;
+
     if (!asunto || !cuerpo) {
       return res.status(400).json({
         status: "error",
@@ -109,6 +116,7 @@ export const DeshabilitarUser = async (req, res) => {
     user.notificaciones.push({
       asunto: asunto,
       cuerpo: cuerpo,
+      fecha: dateNowSave,
     });
 
     await user.save();
@@ -165,6 +173,7 @@ export const HabilitarUser = async (req, res) => {
       asunto: "Usuario registrado correctamente",
       cuerpo:
         "Usted ha sido registrado correctamente en la actividad, podrás ver los horarios en la sección de actividades, Recuerda que debes asistir a la actividad para que no seas deshabilitado, ademas de actualizar tu certificado de mucosis y pediculosis cada 1 mes, para mas información comunicate con el administrador del natatorio",
+      fecha: dateNowSave,
     });
 
     user.inasistencias = [];

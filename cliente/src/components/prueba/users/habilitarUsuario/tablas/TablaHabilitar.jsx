@@ -7,9 +7,10 @@ import {
   getFilteredRowModel,
 } from "@tanstack/react-table";
 
-import style from "../../../../utilidades/tabla.module.css";
+import style from "../../utilidades/style.module.css";
+
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../../context/AuthContext";
+import { AuthContext } from "../../../../../context/AuthContext";
 
 function TablaHabilitar({ data, columns, type }) {
   const [sorting, setSorting] = useState([]);
@@ -50,52 +51,61 @@ function TablaHabilitar({ data, columns, type }) {
   }, []);
 
   return (
-    <div className={style.body}>
+    <div className="container">
       {/* estructura basica de una tabal */}
-      <div className={style.searchBox}>
-        <label htmlFor="">Buscar {type}</label>
-        <input
-          type="text"
-          onChange={(e) => {
-            table.setGlobalFilter(e.target.value);
-          }}
-        />
+      <div className="row d-flex">
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="buscar usuario"
+            onChange={(e) => {
+              table.setGlobalFilter(e.target.value);
+            }}
+          />
+        </div>
       </div>
-
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup, i) => (
-            <tr key={i}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row, i) => (
-            <tr key={i}>
-              {row.getVisibleCells().map((cell, i) => (
-                <td key={i}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
+      <div className="table-responsive">
+        <table className="table table-striped table-hover table-sm table-bordered">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup, i) => (
+              <tr key={i}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row, i) => (
+              <tr key={i}>
+                {row.getVisibleCells().map((cell, i) => (
+                  <td key={i}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {/* paginacion */}
 
-      <div className={style.pagination}>
+      <div
+        className={style.pagination}
+        style={{
+          display: "block",
+          margin: "0 auto",
+        }}
+      >
         {table.getCanPreviousPage() && (
           <>
             <button

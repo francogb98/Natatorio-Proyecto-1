@@ -8,7 +8,6 @@ import {
   obtener_pileta,
   cambio_forzado,
 } from "../controllers/pileta/controller.pileta.js";
-import { verificacionEstadoUsuarios } from "../controllers/pileta/utilidades/colocarInasistencia.js";
 import User from "../models/models/User.js";
 
 const routerPileta = Router();
@@ -21,8 +20,6 @@ routerPileta.patch("/autorizar", autorizar);
 
 routerPileta.post("/obtenerPileta", obtener_pileta);
 routerPileta.post("/forzado", cambio_forzado);
-
-routerPileta.get("/prueba_cambio_turno", verificacionEstadoUsuarios);
 
 routerPileta.get("/enviar", async (req, res) => {
   try {

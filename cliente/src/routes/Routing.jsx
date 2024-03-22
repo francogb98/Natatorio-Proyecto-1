@@ -38,11 +38,10 @@ import Autorizado from "../components/privado/autorizados/Autorizado";
 
 import RegistroUsuarios from "../components/prueba/piletas/RegistroUsuarios";
 import HomePrueba from "../components/prueba/HomePrueba";
-import UserPerfil from "../components/prueba/users/UserPerfil";
+import UserPerfil from "../components/prueba/users/userPerfil/UserPerfil";
 import Layout from "../components/prueba/piletas/buscarPileta/Layout";
-import Habilitar_prueba from "../components/prueba/users/habilitarUsuario/Habilitar";
-import HabilitarAdaptada_prueba from "../components/prueba/users/habilitarUsuario/HabilitarAdaptada";
 import CreateActivity_prueba from "../components/prueba/actividades/createActivity/CreateActivity";
+import HabilitarConvencional from "../components/prueba/users/habilitarUsuario/HabilitarConvencional";
 
 function Routing() {
   const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
@@ -159,10 +158,9 @@ function Routing() {
                 element={<CreateActivity_prueba />}
               />
 
-              <Route path="habilitar-usuario" element={<Habilitar_prueba />} />
               <Route
-                path="habilitar-usuario-adaptada"
-                element={<HabilitarAdaptada_prueba />}
+                path="habilitar/:filtro"
+                element={<HabilitarConvencional />}
               />
             </Route>
           </>

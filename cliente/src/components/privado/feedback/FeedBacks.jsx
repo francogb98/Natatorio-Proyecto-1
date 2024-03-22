@@ -65,7 +65,7 @@ function FeedbackItem({ feed, onSend }) {
 
       {feed.contestado ? (
         <div className="text-success">
-          Contestado <i class="bi bi-check"></i>
+          Contestado <i className="bi bi-check"></i>
         </div>
       ) : (
         <form
@@ -148,10 +148,10 @@ function FeedBacks() {
           marginBlock: "5px",
         }}
       >
-        <ul class="pagination">
-          <li class={`page-item ${pagina != 1 ? null : "disabled"}`}>
+        <ul className="pagination">
+          <li className={`page-item ${pagina != 1 ? null : "disabled"}`}>
             <button
-              class="page-link me-1"
+              className="page-link me-1"
               style={{
                 fontSize: "16px",
               }}
@@ -162,9 +162,9 @@ function FeedBacks() {
               Primera Pagina
             </button>
           </li>
-          <li class={`page-item ${pagina != 1 ? null : "disabled"}`}>
+          <li className={`page-item ${pagina != 1 ? null : "disabled"}`}>
             <button
-              class="page-link"
+              className="page-link"
               onClick={() => {
                 setPagina(pagina - 1);
               }}
@@ -172,16 +172,16 @@ function FeedBacks() {
               Anterior
             </button>
           </li>
-          <li class="page-item">
+          <li className="page-item">
             <h5 className="mt-1 mx-3">{pagina}</h5>
           </li>
           <li
-            class={`page-item ${
+            className={`page-item ${
               getFeeds.data.feedbacks.length == 30 ? null : "disabled"
             }`}
           >
             <button
-              class="page-link"
+              className="page-link"
               href="#"
               onClick={() => {
                 setPagina(pagina + 1);

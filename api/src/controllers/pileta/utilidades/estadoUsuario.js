@@ -1,10 +1,9 @@
-import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
-
 import Activity from "../../../models/models/Actividades.js";
 import User from "../../../models/models/User.js";
-import Stadistics from "../../../models/models/Stadistics.js";
+import UsuariosFalta from "../../../models/models/UsuariosFaltas.js";
 
-import moment from "moment";
+import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
+import { cantidad_inasistecias } from "../../../Helpers/cantidad_inasistencias.js";
 
 function calcular_fecha(fecha_carga) {
   // Convertir la cadena de fecha en un objeto de fecha
@@ -23,46 +22,6 @@ function calcular_fecha(fecha_carga) {
 
   return diasPasados;
 }
-
-const cantidad_inasistecias = async (actividad, asistencia) => {
-  try {
-    const estadistica = await Stadistics.find({
-      activity: actividad,
-    });
-
-    const allDays = estadistica.reduce((acc, obj) => {
-      acc.push(...obj.dias);
-      return acc;
-    }, []);
-
-    const fechaAsistencia = moment(asistencia[0], "DD/MM/YYYY");
-    let fechaCercana = null;
-    let diferenciaMinima = Number.MAX_VALUE;
-
-    for (const fecha of allDays) {
-      const fechaComparar = moment(fecha, "DD/MM/YYYY");
-      if (
-        fechaComparar.isAfter(fechaAsistencia) &&
-        fechaComparar.diff(fechaAsistencia, "days") < diferenciaMinima
-      ) {
-        fechaCercana = fecha;
-        diferenciaMinima = fechaComparar.diff(fechaAsistencia, "days");
-      }
-    }
-
-    if (!fechaCercana) {
-      return 0;
-    }
-
-    const indice = allDays.indexOf(fechaCercana);
-    const arr = allDays.slice(indice);
-
-    return arr.length - (asistencia.length - 1);
-  } catch (error) {
-    console.log(error.message);
-    return false;
-  }
-};
 
 const actividadesEspeciales = [
   "equipo de natacion mdc",
@@ -125,27 +84,22 @@ export const verificacionEstadoUsuarios = async () => {
         }
 
         if (expiro > 14) {
-          //borrar al usuario de la actividad
-          const updatedActivity = await Activity.findOneAndUpdate(
-            { _id: userSearch.activity[0]._id },
-            { $pull: { users: userSearch._id } },
-            { new: true }
-          );
+          let falta = await UsuariosFalta.findOne({
+            motivo: "certificado_expirado",
+          });
 
-          if (updatedActivity) {
-            userSearch.notificaciones.push({
-              asunto: "Actividad dada de baja",
-              cuerpo: `Debido a la no actualizacion del certificado de pediculosis y micosis
-                   se le dio de baja de dicha activida, por favor cargar el
-                   certificado actualizado y volver a inscribirse en la actividad.
-                   Dias. Atte:Natatorio Olimpico`,
-              fecha: fecha,
+          if (!falta) {
+            const nuevo = new UsuariosFalta({
+              motivo: "certificado_expirado",
+              users: [userSearch], // Agregar users como un array con el primer elemento userSearch
             });
-            userSearch.activity = [];
-            userSearch.status = false;
-            userSearch.save();
+            await nuevo.save();
           } else {
-            console.log("No se pudo eliminar al usuario de la actividad.");
+            await UsuariosFalta.findOneAndUpdate(
+              { motivo: "certificado_expirado" },
+              { $addToSet: { users: userSearch } },
+              { new: true }
+            );
           }
         }
 
@@ -156,24 +110,22 @@ export const verificacionEstadoUsuarios = async () => {
           );
 
           if (result > 6) {
-            const updatedActivity = await Activity.findOneAndUpdate(
-              { _id: userSearch.activity[0]._id },
-              { $pull: { users: userSearch._id } },
-              { new: true }
-            );
+            let falta = await UsuariosFalta.findOne({
+              motivo: "excedio_faltas",
+            });
 
-            if (updatedActivity) {
-              userSearch.notificaciones.push({
-                asunto: "Actividad dada de baja",
-                cuerpo: `Debido a la cantidad de inasistencias
-                   se le dio de baja de dicha activida, por favor en caso de desear continuar asistiendo al natatorio volver a inscribirse en una actividad. Atte:Natatorio Olimpico`,
-                fecha: fecha,
+            if (!falta) {
+              const nuevo = new UsuariosFalta({
+                motivo: "excedio_faltas",
+                users: [userSearch], // Agregar users como un array con el primer elemento userSearch
               });
-              userSearch.activity = [];
-              userSearch.status = false;
-              userSearch.save();
+              await nuevo.save();
             } else {
-              console.log("No se pudo eliminar al usuario de la actividad.");
+              await UsuariosFalta.findOneAndUpdate(
+                { motivo: "excedio_faltas" },
+                { $addToSet: { users: userSearch } },
+                { new: true }
+              );
             }
           }
         }

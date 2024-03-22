@@ -87,17 +87,17 @@ function ActividadConClave({ registerInActivity }) {
 
       {actividadConClave && (
         <div
-          class="card"
+          className="card"
           style={{ width: "250px", fontSize: "20px", margin: "20px auto" }}
         >
-          <div class="card-body">
-            <h5 class="card-title mb-3">{actividadConClave.name}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">
+          <div className="card-body">
+            <h5 className="card-title mb-3">{actividadConClave.name}</h5>
+            <h6 className="card-subtitle mb-2 text-body-secondary">
               {actividadConClave.hourStart} - {actividadConClave.hourFinish}
             </h6>
-            <p class="card-text">{actividadConClave.date?.join(" - ")}</p>
+            <p className="card-text">{actividadConClave.date?.join(" - ")}</p>
             <button
-              class="btn btn-danger me-3"
+              className="btn btn-danger me-3"
               onClick={() => {
                 setActividadConClave(null);
               }}
@@ -105,7 +105,7 @@ function ActividadConClave({ registerInActivity }) {
               Cerrar
             </button>
             <button
-              class="btn btn-success"
+              className="btn btn-success"
               onClick={() => {
                 registerInActivity.mutate({
                   idActividad: actividadConClave._id,

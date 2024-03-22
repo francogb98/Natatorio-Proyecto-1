@@ -28,7 +28,7 @@ function calcular_fecha(fecha_carga) {
   return diasPasados;
 }
 
-function Card_User({ user }) {
+function Card_User({ user, inasistencia }) {
   const { auth } = useContext(AuthContext);
 
   const {
@@ -92,7 +92,7 @@ function Card_User({ user }) {
                         : "text-danger"
                     }`}
                   >
-                    {user.inasistencias.length}
+                    {inasistencia}
                   </span>
                 </b>
               </p>

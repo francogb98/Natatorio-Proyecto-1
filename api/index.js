@@ -19,6 +19,7 @@ import morgan from "morgan";
 import fileUpload from "express-fileupload";
 import rutaAutorizado from "./src/routes/autorizado.router.js";
 import rutaFeed from "./src/routes/feedback.js";
+import rutaUsuarioFalta from "./src/routes/faltaUsuarios.route.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -53,6 +54,7 @@ app.use("/pileta", routerPileta);
 app.use("/stadistics", routerStadistics);
 app.use("/autorizado", rutaAutorizado);
 app.use("/feedback", rutaFeed);
+app.use("/falta", rutaUsuarioFalta);
 
 server.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("Socket.IO server listening on port", process.env.PORT);

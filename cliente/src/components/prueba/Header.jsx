@@ -8,13 +8,13 @@ function Header() {
   return (
     <nav className="nav justify-content-around">
       <li
-        class="nav-item dropdown"
+        className="nav-item dropdown"
         style={{
           listStyle: "none",
         }}
       >
         <a
-          class="nav-link dropdown-toggle"
+          className="nav-link dropdown-toggle"
           href="#"
           role="button"
           data-bs-toggle="dropdown"
@@ -22,14 +22,14 @@ function Header() {
         >
           Piletas
         </a>
-        <ul class="dropdown-menu">
+        <ul className="dropdown-menu">
           <li>
-            <Link class="dropdown-item" to="/home">
+            <Link className="dropdown-item" to="/home">
               Lista
             </Link>
           </li>
           <li>
-            <Link class="dropdown-item" to="/home/buscar">
+            <Link className="dropdown-item" to="/home/buscar">
               Buscar
             </Link>
           </li>
@@ -37,13 +37,13 @@ function Header() {
       </li>
       {auth.role == "SUPER_ADMIN" && (
         <li
-          class="nav-item dropdown"
+          className="nav-item dropdown"
           style={{
             listStyle: "none",
           }}
         >
           <a
-            class="nav-link dropdown-toggle"
+            className="nav-link dropdown-toggle"
             href="#"
             role="button"
             data-bs-toggle="dropdown"
@@ -51,14 +51,14 @@ function Header() {
           >
             Actividades
           </a>
-          <ul class="dropdown-menu">
+          <ul className="dropdown-menu">
             <li>
-              <Link class="dropdown-item" to="actividades">
+              <Link className="dropdown-item" to="actividades">
                 Lista
               </Link>
             </li>
             <li>
-              <Link class="dropdown-item" to="actividades/create">
+              <Link className="dropdown-item" to="actividades/create">
                 Crear
               </Link>
             </li>
@@ -73,13 +73,13 @@ function Header() {
 
       {auth.role == "SUPER_ADMIN" && (
         <li
-          class="nav-item dropdown"
+          className="nav-item dropdown"
           style={{
             listStyle: "none",
           }}
         >
           <a
-            class="nav-link dropdown-toggle"
+            className="nav-link dropdown-toggle"
             href="#"
             role="button"
             data-bs-toggle="dropdown"
@@ -87,15 +87,36 @@ function Header() {
           >
             Usuarios
           </a>
-          <ul class="dropdown-menu">
+          <ul className="dropdown-menu">
             <li>
-              <Link class="dropdown-item" to="habilitar-usuario">
+              <Link className="dropdown-item" to="habilitar/todos">
                 Habilitar
               </Link>
             </li>
             <li>
-              <Link class="dropdown-item" to="habilitar-usuario-adaptada">
+              <Link className="dropdown-item" to="habilitar/convencional">
+                Habilitar Convencional
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="habilitar/adaptada">
                 Habilitar Adaptada
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="dropdown-item border-top"
+                to="habilitar/adaptada"
+              >
+                Faltas
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="dropdown-item border-top"
+                to="habilitar/adaptada"
+              >
+                Feeds
               </Link>
             </li>
           </ul>
