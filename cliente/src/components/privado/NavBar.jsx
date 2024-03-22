@@ -45,6 +45,9 @@ function NavBar() {
           <h5 className="offcanvas-title" id="offcanvasExampleLabel">
             Menu
           </h5>
+          <Link to="/home" className={style.link__item}>
+            <button className="btn btn-warning">Panel Oficial</button>
+          </Link>
           <button
             type="button"
             className="btn-close"

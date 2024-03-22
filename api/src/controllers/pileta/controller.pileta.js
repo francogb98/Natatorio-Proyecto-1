@@ -74,29 +74,24 @@ export const iniciarTurno = async (req, res) => {
   try {
     //verifico que no exitan piletas en este horario, si existen devuelvo un mensaje de error de que todavia no es hora para ejecutar el cambio de turno
     const { hora, fecha } = obtenerFechaYHoraArgentina();
-
     const resultado = await Pileta.find({
       dia: fecha,
       hora: hora,
     });
-
     if (resultado.length) {
       return res.status(400).json({
         status: "error",
         message: "Todavia no es hora de cambiar el turno",
       });
     }
-
     const crear = await crearPileta();
     if (crear.status == "error") {
       return res
         .status(400)
         .json({ status: "error", message: "error en el servidor" });
     }
-
     //ejecuto el cambio de turn
     const resultadoCambio = await intercambioDeUsuarios();
-
     const result = await verificacionEstadoUsuarios();
 
     if (!result) {

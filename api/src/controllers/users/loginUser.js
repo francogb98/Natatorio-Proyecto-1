@@ -2,6 +2,7 @@ import User from "../../models/models/User.js";
 import jwt from "jsonwebtoken";
 
 import bcrypt from "bcrypt";
+import { cantidad_inasistecias } from "../../Helpers/cantidad_inasistencias.js";
 
 export const loginUser = async (req, res) => {
   const { dni, password } = req.body;
@@ -40,12 +41,22 @@ export const loginUser = async (req, res) => {
       nombre: user.nombre,
       id: user._id,
     };
+
+    let inasistencias = 0;
+    if (user.activity && user.activity.length > 0 && user.status) {
+      inasistencias = await cantidad_inasistecias(
+        user.activity[0],
+        user.asistencia
+      );
+    }
+
     return res.status(200).json({
       status: "success",
       token: jwt.sign(userForToken, process.env.JWT_SECRET, {
         expiresIn: "1d",
       }),
       usuario: user,
+      inasistencias,
     });
   } catch (error) {
     res.status(400).json({

@@ -129,23 +129,4 @@ router.post("/modificar-password", modificarContraseña);
 //subir imagenes
 router.put("/upload", validarJWT, subirArchivos);
 
-router.put("/colocar_asistencia", async (req, res) => {
-  try {
-    const { customId, fecha } = req.body;
-
-    const user = await User.findOneAndUpdate(
-      { customId: customId },
-      {
-        $addToSet: {
-          asistencia: fecha,
-        },
-      },
-      { new: true }
-    );
-    res.status(200).json({ status: "success", user });
-  } catch (error) {
-    res.status(400).json({ msg: error.message });
-  }
-});
-
 export default router;
