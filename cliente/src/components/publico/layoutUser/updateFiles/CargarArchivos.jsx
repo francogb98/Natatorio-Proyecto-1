@@ -54,25 +54,7 @@ function CargarArchivos() {
       return;
     }
 
-    //verifico que el archivo no pese mas de 2mb
-    if (
-      e.target.files[0].size > 2000000 &&
-      e.target.name !== "certificadoHongos"
-    ) {
-      Swal.fire({
-        position: "center",
-        icon: "error",
-        title: "El archivo pesa mas de 2mb",
-        showConfirmButton: true,
-        timer: 1500,
-      });
-      return;
-    }
-
-    if (
-      e.target.files[0].size > 4000000 &&
-      e.target.name == "certificadoHongos"
-    ) {
+    if (e.target.files[0].size > 4000000) {
       Swal.fire({
         position: "center",
         icon: "error",
