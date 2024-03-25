@@ -9,9 +9,9 @@ export default async function verFeedbacks(req, res) {
 
     const feedbacks = await Feedback.find()
       .populate("user")
-      // .skip(skip)
-      // .limit(limit)
-      .sort({ contestado: false });
+      .where("contestado")
+      .equals(false)
+      .sort({ _id: -1 });
 
     return res.status(201).json({ status: "success", feedbacks });
   } catch (error) {

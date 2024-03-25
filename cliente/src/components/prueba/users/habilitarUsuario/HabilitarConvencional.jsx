@@ -7,7 +7,7 @@ import TablaHabilitar from "./tablas/TablaHabilitar";
 
 import UserImages from "../utilidades/UserImages";
 import Funciones_administrador from "../hooks/Funciones_administrador";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 
 function HabilitarConvencional() {
   const { filtro } = useParams();
@@ -37,7 +37,7 @@ function HabilitarConvencional() {
     refetch();
   }, [filtro]);
 
-  if (isLoading /*|| isRefetching*/) {
+  if (isLoading) {
     return <LoadingTable find={true} />;
   }
 
@@ -144,7 +144,7 @@ function HabilitarConvencional() {
         {
           header: "Actividad",
           accessorKey: "activity",
-          cell: ({ row }) => <div>{row.original.activity[0].name}</div>,
+          cell: ({ row }) => <div>{row.original.activity[0]?.name}</div>,
         },
         {
           header: "fecha de carga",
@@ -160,10 +160,10 @@ function HabilitarConvencional() {
             <div div className="d-flex gap-3 flex-wrap justify-content-center">
               <button
                 className="btn btn-sm btn-danger"
+                disabled={isRefetching}
                 onClick={() => {
                   inhabilitar.mutate({
                     id: row.original._id,
-
                     asunto:
                       filtro == "certificado"
                         ? "Certificado no Actualizado a tiempo"
