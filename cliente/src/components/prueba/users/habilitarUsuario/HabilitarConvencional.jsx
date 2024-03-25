@@ -12,7 +12,11 @@ import { Toaster, toast } from "sonner";
 function HabilitarConvencional() {
   const { filtro } = useParams();
 
-  const { inhabilitar, habilitar, quitar_lista } = Funciones_administrador();
+  const { inhabilitar, habilitar, quitar_lista, enviarNotificacion } =
+    Funciones_administrador();
+
+  const [notificacion, setNotificacion] = useState(false);
+  const [userId, setUserId] = useState("");
 
   const traerUsuarios = async () => {
     const res = await fetch(`${baseUrl}user/${filtro}`, {
@@ -31,7 +35,7 @@ function HabilitarConvencional() {
   const [imagen, setImagen] = useState(null);
   const [view, setView] = useState(false);
 
-  useEffect(() => {}, [view, imagen]);
+  useEffect(() => {}, [view, imagen, notificacion]);
 
   useEffect(() => {
     refetch();
@@ -115,14 +119,77 @@ function HabilitarConvencional() {
           header: "Habilitar",
           accessorKey: "habilitar",
           cell: ({ row }) => (
-            <button
-              className="btn btn-sm btn-success"
-              onClick={() => {
-                habilitar.mutate({ id: row.original._id });
-              }}
-            >
-              Habilitar
-            </button>
+            <div className="d-flex gap-3 flex-wrap">
+              <button
+                className="btn btn-sm btn-success"
+                onClick={() => {
+                  habilitar.mutate({ id: row.original._id });
+                }}
+              >
+                Habilitar
+              </button>
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => {
+                  setNotificacion(true);
+                  setUserId(row.original._id);
+                }}
+              >
+                Enviar Notificacion
+              </button>
+              {notificacion && row.original._id == userId && (
+                <div>
+                  <form
+                    action=""
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      const formData = new FormData(e.target);
+
+                      if (
+                        !formData.get("asunto").trim() ||
+                        !formData.get("cuerpo").trim()
+                      ) {
+                        toast.error("Por favor, completa ambos campos.");
+                        return;
+                      }
+                      const content = {
+                        id: row.original._id,
+                        asunto: formData.get("asunto"),
+                        cuerpo: formData.get("cuerpo"),
+                      };
+                      toast.info("Enviando mensaje");
+                      enviarNotificacion.mutate(content);
+                      setNotificacion(false);
+                      setUserId("");
+                    }}
+                  >
+                    <div className="mb-1 d-flex">
+                      <label htmlFor="" className="form-label">
+                        Asunto
+                      </label>
+                      <input
+                        type="text"
+                        name="asunto"
+                        id=""
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="mb-1 d-flex">
+                      <label htmlFor="" className="form-label">
+                        cuerpo
+                      </label>
+                      <textarea
+                        type="text"
+                        name="cuerpo"
+                        id=""
+                        className="form-control"
+                      />
+                    </div>
+                    <button className="btn btn-warning">Enviar</button>
+                  </form>
+                </div>
+              )}
+            </div>
           ),
         },
       ];
