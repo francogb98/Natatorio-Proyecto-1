@@ -13,17 +13,6 @@ function Header() {
           listStyle: "none",
         }}
       >
-        <Link className="dropdown-item" to="/admin/panel/inicio">
-          <button className="btn btn-warning">Panel anterior</button>
-        </Link>
-      </li>
-
-      <li
-        className="nav-item dropdown"
-        style={{
-          listStyle: "none",
-        }}
-      >
         <a
           className="nav-link dropdown-toggle"
           href="#"

@@ -6,6 +6,7 @@ import peticiones_buscador from "./peticiones_buscador.jsx";
 
 import Card_User from "./Card_User.jsx";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 function FormularioBuscarUsuario() {
   const [filtro, setFiltro] = useState("");
@@ -52,7 +53,11 @@ function FormularioBuscarUsuario() {
   };
   return (
     <section className="container">
-      <div className="col-12 d-flex justify-content-center mb-2">
+      <div className="col-12 d-flex flex-column align-items-center mb-3">
+        <Link to="/admin/panel/inicio">
+          <button className="btn btn-warning mb-3">Panel anterior</button>
+        </Link>
+
         <button
           className="btn btn-lg btn-danger"
           onClick={() => {
