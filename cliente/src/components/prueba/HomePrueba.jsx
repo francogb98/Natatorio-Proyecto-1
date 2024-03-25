@@ -15,7 +15,7 @@ function HomePrueba() {
       </header>
 
       <main
-        className="row mt-5"
+        className="row my-5 "
         style={{
           marginBottom: "10px",
         }}
@@ -24,7 +24,7 @@ function HomePrueba() {
           <FormularioBuscarUsuario />
         </div>
         <div
-          className="col-12 col-sm-8 overflow-scroll pb-3"
+          className="col-12 col-sm-8 overflow-scroll pb-5"
           style={{
             height: "90vh",
           }}

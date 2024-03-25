@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import peticiones_buscador from "./peticiones_buscador";
 import { AuthContext } from "../../../context/AuthContext";
 
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 
 function calcular_fecha(fecha_carga) {
   // Convertir la cadena de fecha en un objeto de fecha
@@ -124,15 +124,6 @@ function Card_User({ user, inasistencia }) {
             </>
           )}
 
-          {agregarUsuario.isLoading && (
-            <div
-              className="spinner-border text-primary d-block mx-auto my-2"
-              role="status"
-            >
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          )}
-
           <div className="d-flex flex-wrap gap-2 align-items-center justify-content-center">
             {user.status &&
               (auth.role === "SUPER_ADMIN" ||
@@ -140,6 +131,7 @@ function Card_User({ user, inasistencia }) {
                 <button
                   className="btn btn-sm btn-success ms-0"
                   onClick={() => {
+                    toast.info("Agregando usuario");
                     agregarUsuario.mutate({
                       customId: user.customId,
                       nombre: user.nombre,
