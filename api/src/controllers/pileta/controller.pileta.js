@@ -165,7 +165,9 @@ export const agregarUsuarioAPileta = async (req, res) => {
     //actualizo la estadistica
     await actualizarEstadistica(resultadoAsistencia.user);
 
-    return res.status(200).json({ status: "success", resultado });
+    return res
+      .status(200)
+      .json({ status: "success", resultado, user: customId });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({

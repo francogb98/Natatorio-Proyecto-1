@@ -1,4 +1,5 @@
 import User from "../../../models/models/User.js";
+import UsuariosFalta from "../../../models/models/UsuariosFaltas.js";
 
 const usuariosParaHabilitar = async ({ adaptada = false, codigo = false }) => {
   let usersSearch = await User.find({
@@ -71,6 +72,46 @@ export const getUsers = async (req, res) => {
       result = users;
       totalUsers = total;
     }
+
+    if (filter === "certificado") {
+      const users = await UsuariosFalta.find({
+        motivo: "certificado_expirado",
+      }).populate({
+        path: "users",
+        populate: {
+          path: "activity",
+        },
+      });
+
+      result = users[0].users;
+      totalUsers = users[0].users.length;
+
+      return res.status(200).json({
+        total: totalUsers,
+        totalUsuarios: result.length,
+        users: result,
+      });
+    }
+    if (filter === "faltas") {
+      const users = await UsuariosFalta.find({
+        motivo: "excedio_faltas",
+      }).populate({
+        path: "users",
+        populate: {
+          path: "nombre",
+        },
+      });
+
+      result = users[0].users;
+      totalUsers = users[0].users.length;
+
+      return res.status(200).json({
+        total: totalUsers,
+        totalUsuarios: result.length,
+        users: result,
+      });
+    }
+
     if (!result.length) {
       return res.status(200).json({
         message: "No se encontraron usuarios",

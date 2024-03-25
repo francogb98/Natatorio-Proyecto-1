@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UsuariosFalta from "../models/models/UsuariosFaltas.js";
+import mongoose from "mongoose";
 
 const rutaUsuarioFalta = Router();
 
@@ -18,6 +19,35 @@ rutaUsuarioFalta.get("/", async (req, res) => {
 });
 
 //dar de baja
-rutaUsuarioFalta.post("/", (req, res) => {});
+rutaUsuarioFalta.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const users = await UsuariosFalta.updateOne(
+      { users: { $in: [id] } },
+      { $pull: { users: id } }
+    )
+      .then((result) => {
+        if (result.modifiedCount === 0) {
+          console.log("No UsuariosFalta document found with user ID:", id);
+        } else {
+          console.log("User ID", id, "successfully removed");
+        }
+      })
+      .catch((err) => {
+        console.error(
+          "Error removing user ID",
+          userIdToRemove,
+          "from UsuariosFalta:",
+          err
+        );
+      });
+    return res.status(200).json({ msg: "todo ok" });
+  } catch (error) {
+    console.log(error.message);
+
+    return res.status(400).json({ msg: "error en el servidor" });
+  }
+});
 
 export default rutaUsuarioFalta;

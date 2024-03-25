@@ -5,6 +5,7 @@ import {
   getActivities,
   getActivitiesByDate,
   getActivitiesByDateNextTurn,
+  getActivitiesUsuarios,
 } from "../controllers/activitys/getAllActivity.js";
 import { createActivity } from "../controllers/activitys/createActivity.js";
 
@@ -20,6 +21,7 @@ const routerActivity = Router();
 // routerActivity.post("/activity/create", validarJWT, createActivity);
 
 routerActivity.get("/getAll", getActivities);
+routerActivity.get("/getAllUsuarios", getActivitiesUsuarios);
 routerActivity.get("/getActividadesNombre", validarJWT, getNameActivitys);
 
 routerActivity.get("/getActividad/:id", /*validarJWT,*/ getInfoActividades);

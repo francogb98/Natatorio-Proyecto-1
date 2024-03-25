@@ -42,6 +42,8 @@ import UserPerfil from "../components/prueba/users/userPerfil/UserPerfil";
 import Layout from "../components/prueba/piletas/buscarPileta/Layout";
 import CreateActivity_prueba from "../components/prueba/actividades/createActivity/CreateActivity";
 import HabilitarConvencional from "../components/prueba/users/habilitarUsuario/HabilitarConvencional";
+import Inicio_prueba from "../components/prueba_publico/Inicio_prueba";
+import Feeds from "../components/prueba/users/feeds/Feeds";
 
 function Routing() {
   const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
@@ -58,6 +60,7 @@ function Routing() {
       <div>
         <Routes>
           <Route path="/" element={<SignIn />} />
+          {/* <Route path="/" element={<Inicio_prueba />} /> */}
           <Route path="/login" element={<Registro />} />
           <Route
             path="/recuperar-contraseña"
@@ -146,6 +149,7 @@ function Routing() {
               <Route path="/home" element={<RegistroUsuarios />} />
               <Route path="/home/buscar" element={<Layout />} />
               <Route path="usuario/:id" element={<UserPerfil />} />
+              <Route path="usuario/feeds" element={<Feeds />} />
 
               {/* actividades */}
               <Route path="actividades" element={<ListActivity />} />

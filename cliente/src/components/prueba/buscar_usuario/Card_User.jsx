@@ -181,7 +181,7 @@ function Card_User({ user, inasistencia }) {
             )}
           </div>
         </div>
-        <Toaster position="bottom-right" richColors />
+        <Toaster position="bottom-left" richColors />
       </div>
     </>
   );

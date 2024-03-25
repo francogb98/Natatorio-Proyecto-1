@@ -65,6 +65,25 @@ export const getActividades = async () => {
     return error;
   }
 };
+export const quitar = async ({ id }) => {
+  try {
+    const url = `${baseUrl}falta/${id}`;
+    const token = localStorage.getItem("token");
+    const resp = await fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        authorization: token,
+      },
+    });
+
+    const respuesta = await resp.json();
+
+    return respuesta.data;
+  } catch (error) {
+    return error;
+  }
+};
 
 function Funciones_administrador() {
   const queryClient = useQueryClient();
@@ -89,9 +108,7 @@ function Funciones_administrador() {
     onSuccess: (data) => {
       if (data.status === "success") {
         toast.success("Usuario Inhabilitado");
-
-        queryClient.invalidateQueries("getUserData");
-        queryClient.invalidateQueries("usuarios");
+        quitar_lista.mutate({ id: data.data.user._id });
       } else {
         toast.error(data.message);
       }
@@ -156,6 +173,15 @@ function Funciones_administrador() {
     },
   });
 
+  const quitar_lista = useMutation(quitar, {
+    onSuccess: () => {
+      toast.info("Usuario quitado de la lista");
+
+      queryClient.invalidateQueries("getUserData");
+      queryClient.invalidateQueries("usuarios");
+    },
+  });
+
   return {
     cambiar,
     inhabilitar,
@@ -163,6 +189,7 @@ function Funciones_administrador() {
     eliminarNotificacion,
     enviarNotificacion,
     agregar_usuario_actividad,
+    quitar_lista,
   };
 }
 

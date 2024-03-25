@@ -115,18 +115,17 @@ function Header() {
               </Link>
             </li>
             <li>
-              <Link
-                className="dropdown-item border-top"
-                to="habilitar/adaptada"
-              >
+              <Link className="dropdown-item border-top" to="habilitar/faltas">
                 Faltas
               </Link>
             </li>
             <li>
-              <Link
-                className="dropdown-item border-top"
-                to="habilitar/adaptada"
-              >
+              <Link className="dropdown-item" to="habilitar/certificado">
+                Certificado
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item border-top" to="usuario/feeds">
                 Feeds
               </Link>
             </li>

@@ -1,0 +1,16 @@
+.cardBody {
+  height: 100px;
+}
+.cardBodyNo {
+  height: 100px;
+}
+
+.cardBody:hover {
+  cursor: pointer;
+  background-color: greenyellow;
+}
+.cardBodyNo:hover {
+  cursor: pointer;
+  background-color: rgb(255, 0, 0, 0.5);
+  color: white;
+}
