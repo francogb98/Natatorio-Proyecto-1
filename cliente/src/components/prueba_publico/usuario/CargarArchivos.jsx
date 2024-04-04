@@ -158,15 +158,15 @@ function CargarArchivos({ user }) {
               />
             </div>
             <div>
-              <label
-                htmlFor=""
-                name="fotoDocumento"
-                onChange={subirArchivo}
-                className="form-label"
-              >
+              <label htmlFor="" className="form-label">
                 Foto DNI
               </label>
-              <input type="file" className="form-control" />
+              <input
+                type="file"
+                className="form-control"
+                name="fotoDocumento"
+                onChange={subirArchivo}
+              />
             </div>
           </form>
         </div>
