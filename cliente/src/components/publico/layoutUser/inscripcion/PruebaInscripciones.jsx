@@ -10,6 +10,7 @@ import { registrarUsuarioEnActividad } from "../../../../helpers/usersFetch/regi
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import ActividadConClave from "./ActividadConClave";
+import { toast, Toaster } from "sonner";
 
 const getActividadesUsuario = async () => {
   try {
@@ -42,6 +43,7 @@ function PruebaInscripciones() {
     onSuccess: async (data) => {
       if (data.status === "success") {
         await userRefetch();
+        toast.success("Inscripto con exito");
         Swal.fire({
           title: "Inscripto con Exito",
           text: "Se ha inscripto correctamente en la actividad, redireccionando a pagina principal ",
@@ -54,6 +56,8 @@ function PruebaInscripciones() {
           navigate("/user/home");
         });
       } else {
+        toast.error("Algo salio mal");
+
         Swal.fire({
           title: data.status.toUpperCase(),
           text: data.message,
@@ -63,6 +67,8 @@ function PruebaInscripciones() {
       }
     },
     onError: (error) => {
+      toast.error("Algo salio mal");
+
       Swal.fire({
         title: error.status.toUpperCase(),
         text: error.message,
@@ -103,6 +109,7 @@ function PruebaInscripciones() {
     );
 
     const handleSubmit = (id) => {
+      toast.info("Inscribiendo en actividad");
       registerInActivity.mutate({
         idActividad: id,
       });
@@ -186,19 +193,6 @@ function PruebaInscripciones() {
 
     return (
       <div>
-        {registerInActivity.isLoading && (
-          <div
-            className="alert alert-danger"
-            style={{
-              position: "fixed",
-              top: "0",
-              width: "100%",
-            }}
-          >
-            Registrando...
-          </div>
-        )}
-
         <div
           className={`accordion accordion-flush ${style.acordion}`}
           id="accordionFlushExample"
@@ -354,6 +348,8 @@ function PruebaInscripciones() {
             </div>
           </div>
         </div>
+
+        <Toaster position="bottom-left" richColors />
       </div>
     );
   }

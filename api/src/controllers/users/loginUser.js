@@ -28,6 +28,7 @@ export const loginUser = async (req, res) => {
 
     //comparamos las contraseñas
     const pass = await bcrypt.compare(password, user.password);
+
     //devolvemos un error en caso de que alguno no funcione
     if (!user || !pass) {
       return res.status(400).json({

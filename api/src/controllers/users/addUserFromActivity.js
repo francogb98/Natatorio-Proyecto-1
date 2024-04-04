@@ -11,12 +11,6 @@ export const addUserFromActivity = async (req, res) => {
     });
 
     //verificamos si el usuario ya esta registrado en la actividad
-    if (user.activity?.length) {
-      return res.status(400).json({
-        status: "error",
-        message: "El usuario ya se encuentra inscripto en una actividad",
-      });
-    }
 
     const isActivityExist = await Activity.findById({
       _id: idActividad,
@@ -29,6 +23,16 @@ export const addUserFromActivity = async (req, res) => {
       });
     }
 
+    if (user.activity?.length && !isActivityExist.codigoDeAcceso) {
+      return res.status(400).json({
+        status: "error",
+        message: "El usuario ya se encuentra inscripto en una actividad",
+      });
+    }
+
+    console.log(isActivityExist.users.length);
+    console.log(isActivityExist.cupos);
+    console.log(isActivityExist.name);
     //verificamos si hay cupo
     if (isActivityExist.users.length >= isActivityExist.cupos) {
       return res.status(400).json({
@@ -45,7 +49,7 @@ export const addUserFromActivity = async (req, res) => {
     );
 
     //   //le añadimos al usuario la actividad, con sus respectivos horarios
-    user.activity = activityUpdate;
+    user.activity.push(activityUpdate);
 
     user.status = false;
 

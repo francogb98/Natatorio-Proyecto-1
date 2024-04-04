@@ -42,8 +42,11 @@ import UserPerfil from "../components/prueba/users/userPerfil/UserPerfil";
 import Layout from "../components/prueba/piletas/buscarPileta/Layout";
 import CreateActivity_prueba from "../components/prueba/actividades/createActivity/CreateActivity";
 import HabilitarConvencional from "../components/prueba/users/habilitarUsuario/HabilitarConvencional";
-import Inicio_prueba from "../components/prueba_publico/Inicio_prueba";
+// import Inicio_prueba from "../components/prueba_publico/Inicio_prueba";
 import Feeds from "../components/prueba/users/feeds/Feeds";
+import LayoutUser from "../components/prueba_publico/usuario/LayoutUser";
+import Actividades_lista from "../components/prueba_publico/actividades/Actividades_lista";
+import PruebaInscripciones from "../components/publico/layoutUser/inscripcion/PruebaInscripciones";
 
 function Routing() {
   const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
@@ -102,7 +105,7 @@ function Routing() {
                 <Route path="home" element={<HomeUser />} />
                 <Route path="perfil/updateFiles" element={<UpdateFiles />} />
                 <Route path="inscripcion" element={<Inscripcion />} />
-                <Route path="perfil" element={<Perfil />} />
+                <Route path="perfil" element={<LayoutUser />} />
                 <Route path="perfil/editarPerfil" element={<EditarPerfil />} />
                 <Route path="notificaciones" element={<Notificaciones />} />
                 <Route path="feedback" element={<Feed />} />

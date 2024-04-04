@@ -1,9 +1,9 @@
-import { baseUrl } from "../../helpers/url";
-
+import { baseUrl } from "../../../helpers/url";
 import { useQuery } from "react-query";
 import CardActividad from "./CardActividad";
-import { fetchConToken, fetchConTokenHours } from "../../helpers/fetch";
+import { fetchConTokenHours } from "../../../helpers/fetch";
 import { useEffect, useState } from "react";
+import ActividadConClave from "../../publico/layoutUser/inscripcion/ActividadConClave";
 
 export const getActividades = async () => {
   try {
@@ -22,7 +22,11 @@ export const getActividades = async () => {
   }
 };
 
-function Main() {
+function Actividades_lista() {
+  const [actividadRegistrarse, setActividadRegistrarse] = useState(null);
+
+  useEffect(() => {}, [actividadRegistrarse]);
+
   const [actividades, setActivitys] = useState([]); // <---quiero que se ordene por horario
   const [nombreActividades, setNombreActivitys] = useState([]); // <---quiero que se ordene por horario
   const [hours, setHours] = useState([]);
@@ -67,7 +71,11 @@ function Main() {
       );
 
       setNombreActivitys([...uniqueNames]);
-      setHours(getHours.data.data.hours);
+      setHours(
+        getHours.data.data.hours.sort((a, b) =>
+          a.hourStart.localeCompare(b.hourStart)
+        )
+      );
     }
   }, [getActivity.data, getHours.data]);
 
@@ -117,8 +125,9 @@ function Main() {
         return true;
       });
     });
+
     return (
-      <main className="container">
+      <main className="container mb-5">
         <div className="row text-center mt-2">
           <h1>Nuestras Actividades</h1>
         </div>
@@ -184,14 +193,22 @@ function Main() {
                 className="col-12 col-md-6 col-lg-4 col-xl-3 d-flex justify-content-center"
                 key={actividad._id}
               >
-                <CardActividad actividad={actividad} />
+                <CardActividad
+                  actividad={actividad}
+                  actividadRegistrarse={actividadRegistrarse}
+                  setActividadRegistrarse={setActividadRegistrarse}
+                />
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="text-center">
+          <ActividadConClave />
         </div>
       </main>
     );
   }
 }
 
-export default Main;
+export default Actividades_lista;

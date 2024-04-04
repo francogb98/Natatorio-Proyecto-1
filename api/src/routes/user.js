@@ -29,6 +29,7 @@ import { findUser } from "../controllers/users/archivos_para_npo_borrar/findUser
 import User from "../models/models/User.js";
 import Activity from "../models/models/Actividades.js";
 import { enviarNotificacion } from "../controllers/users/archivos_para_npo_borrar/notificacion.controller.js";
+import { editarUsuarioPrueba } from "../controllers/users/archivos_para_npo_borrar/editarUsuario.controller.js";
 
 const router = Router();
 
@@ -38,6 +39,8 @@ router.get("/:filter", getUsers);
 
 router.post("/findUser", validarJWT, findUser);
 router.post("/getinfoUser", getUserById);
+
+router.patch("/editar/:filtro", validarJWT, editarUsuarioPrueba);
 
 router.patch("/agregarUsuarioActividad", validarJWT, async (req, res) => {
   try {

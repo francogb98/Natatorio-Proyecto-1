@@ -217,7 +217,23 @@ function HabilitarConvencional() {
           header: "fecha de carga",
           accessorKey: "fechaCargaCertificadoHongos",
           cell: ({ row }) => (
-            <div>{row.original.fechaCargaCertificadoHongos}</div>
+            <>
+              <div>{row.original.fechaCargaCertificadoHongos}</div>
+              <div>
+                <p
+                  onClick={() => {
+                    setView(true);
+                    setImagen(row.original.certificadoHongos);
+                  }}
+                  className="text-primary"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                >
+                  PyM
+                </p>
+              </div>
+            </>
           ),
         },
         {
