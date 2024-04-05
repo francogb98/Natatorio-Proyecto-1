@@ -105,7 +105,7 @@ function EditarDatos({ user }) {
             className="form-control"
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-1">
           <label className="form-label" htmlFor="sexo">
             Sexo:
           </label>
@@ -123,16 +123,38 @@ function EditarDatos({ user }) {
         </div>
 
         <div className="mb-3">
-          <label className="form-label" htmlFor="natacionAdaptada">
-            Natación Adaptada:
-          </label>
-          <input
-            type="checkbox"
-            name="natacionAdaptada"
-            id="natacionAdaptada"
-            checked={userInfo.natacionAdaptada}
-            onChange={handleChange}
-          />
+          <div>
+            <label htmlFor="no">Natacion Convencional</label>
+            <input
+              type="radio"
+              name="natacionAdaptada"
+              checked={!userInfo.natacionAdaptada}
+              id="no"
+              value="no"
+              onChange={() => {
+                setUserInfo({
+                  ...userInfo,
+                  natacionAdaptada: false,
+                });
+              }}
+            />
+          </div>
+          <div>
+            <label htmlFor="si">Natacion Adaptada</label>
+            <input
+              type="radio"
+              name="natacionAdaptada"
+              checked={userInfo.natacionAdaptada}
+              id="si"
+              value="si"
+              onChange={() => {
+                setUserInfo({
+                  ...userInfo,
+                  natacionAdaptada: true,
+                });
+              }}
+            />
+          </div>
         </div>
 
         <div className="mb-3">

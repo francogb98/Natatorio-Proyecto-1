@@ -1,8 +1,6 @@
-import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import style from "./navBar.module.css";
-import { AuthContext } from "../../../../context/AuthContext";
 
 function NavBar({ user }) {
   const location = useLocation();

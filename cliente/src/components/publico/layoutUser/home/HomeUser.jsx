@@ -20,8 +20,6 @@ function HomeUser() {
     }
   }, []);
 
-  console.log(auth.user);
-
   return (
     <div className={style.body}>
       <h1 className="text-danger">

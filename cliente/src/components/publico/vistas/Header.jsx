@@ -4,15 +4,27 @@ import { Link, useLocation } from "react-router-dom";
 import style from "./publico.module.css";
 import { AuthContext } from "../../../context/AuthContext";
 
+import avatar from "../../../assets/avatar.webp";
+
 function Header({ user }) {
-  const { cerrarSesion } = useContext(AuthContext);
+  const { cerrarSesion, auth } = useContext(AuthContext);
 
   const [cerrarConfirmacion, setCerrarConfirmacion] = useState(false);
 
   return (
     <section className={style.sectionHeader}>
       <Link to={"home"} className={style.info}>
-        <div>
+        <img
+          src={auth.user.foto ?? avatar}
+          alt=""
+          style={{
+            widht: "65px",
+            height: "65px",
+            borderRadius: "50%",
+          }}
+        />
+
+        <div className="pt-3">
           <h2
             style={{
               marginBottom: "-4px",

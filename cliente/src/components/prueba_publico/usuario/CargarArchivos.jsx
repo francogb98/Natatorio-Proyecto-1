@@ -131,6 +131,34 @@ function CargarArchivos({ user }) {
               </span>
             )}
           </p>
+
+          {user.natacionAdaptada && (
+            <p>
+              CUD:
+              {user.cud ? (
+                <span
+                  onClick={() => {
+                    setView(true);
+                    setImagen(user.cud);
+                  }}
+                  style={{
+                    color: "blue",
+                    cursor: "pointer",
+                  }}
+                >
+                  Abrir
+                </span>
+              ) : (
+                <span
+                  className={`fw-bold "text-danger"
+              `}
+                >
+                  {" "}
+                  No cargado
+                </span>
+              )}
+            </p>
+          )}
         </div>
         <div className="col-12 col-sm-6">
           <h2 className="text-center text-success">Cargar Archivos</h2>
@@ -169,6 +197,20 @@ function CargarArchivos({ user }) {
                 onChange={subirArchivo}
               />
             </div>
+            {user.natacionAdaptada && (
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">
+                  CUD
+                </label>
+                <input
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  name="cud"
+                  onChange={subirArchivo}
+                />
+              </div>
+            )}
             <div>
               <label htmlFor="" className="form-label">
                 Foto DNI
