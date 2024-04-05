@@ -18,8 +18,8 @@ function Header({ user }) {
           src={auth.user.foto ?? avatar}
           alt=""
           style={{
-            widht: "65px",
-            height: "65px",
+            width: "60px",
+            height: "60px",
             borderRadius: "50%",
           }}
         />

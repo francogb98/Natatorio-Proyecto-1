@@ -20,9 +20,9 @@ function LayoutUser() {
             src={auth.user.foto}
             alt=""
             style={{
-              widht: "200px",
+              width: "200px",
               height: "200px",
-              borderRadius: "50%",
+              borderRadius: "100%",
             }}
           />
           <h2>
