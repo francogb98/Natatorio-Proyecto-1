@@ -59,7 +59,6 @@ function ActividadConClave({ registerInActivity }) {
     }
     setCargando(true);
     const result = await getActividadPorClave(clave);
-    console.log(result);
     if (result.status && result.status == "error") {
       setIntentosRestantes(intentosRestantes - 1);
       setCargando(false);

@@ -78,9 +78,6 @@ function calcular_fecha(fecha_carga) {
   // Convertir la diferencia de milisegundos a días
   var diasPasados = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
 
-  console.log(
-    "Han pasado " + diasPasados + " días desde la fecha proporcionada."
-  );
   return diasPasados;
 }
 

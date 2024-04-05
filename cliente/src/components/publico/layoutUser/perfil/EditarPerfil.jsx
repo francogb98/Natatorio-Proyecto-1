@@ -69,9 +69,7 @@ function EditarPerfil() {
   useEffect(() => {
     setFormValues(auth.user);
   }, [auth.user]);
-  useEffect(() => {
-    console.log(formValues);
-  }, [formValues]);
+  useEffect(() => {}, [formValues]);
   // Enviar la solicitud al backend
   const handleSubmitAdulto = (e) => {
     e.preventDefault();

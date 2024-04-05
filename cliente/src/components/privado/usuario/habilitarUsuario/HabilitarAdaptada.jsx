@@ -37,7 +37,6 @@ function HabilitarAdaptada() {
   }
 
   if (data?.users) {
-    console.log(Math.ceil(data.total / 20));
     return (
       <div
         style={{

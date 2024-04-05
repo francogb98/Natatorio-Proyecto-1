@@ -5,7 +5,5 @@ export const info_tablas = async () => {
     const res = await fetch(`${baseUrl}pileta`);
     const data = await res.json();
     return data;
-  } catch (error) {
-    console.log(error.message);
-  }
+  } catch (error) {}
 };

@@ -41,7 +41,6 @@ function EditarDatos({ user }) {
     const formData = new FormData(e.target);
 
     for (const [key, value] of formData.entries()) {
-      console.log(key, value);
       // Aquí puedes manejar los datos como desees,
       // por ejemplo, actualizar el estado de tu componente
       setUserInfo((prevState) => ({
@@ -132,10 +131,10 @@ function EditarDatos({ user }) {
               id="no"
               value="no"
               onChange={() => {
-                setUserInfo({
-                  ...userInfo,
+                setUserInfo((prevState) => ({
+                  ...prevState,
                   natacionAdaptada: false,
-                });
+                }));
               }}
             />
           </div>
@@ -148,10 +147,10 @@ function EditarDatos({ user }) {
               id="si"
               value="si"
               onChange={() => {
-                setUserInfo({
-                  ...userInfo,
+                setUserInfo((prevState) => ({
+                  ...prevState,
                   natacionAdaptada: true,
-                });
+                }));
               }}
             />
           </div>

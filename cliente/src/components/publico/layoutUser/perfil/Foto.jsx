@@ -82,8 +82,6 @@ function Foto() {
     mutation.mutate(formData);
   };
 
-  console.log(auth);
-
   return (
     <div className="text-center">
       <img

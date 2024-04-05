@@ -9,8 +9,6 @@ import { darDeBajaActividad } from "../../../helpers/usersFetch/darDeBajaActivid
 const editar_informacion = async (content) => {
   const { filtro, body } = content;
 
-  console.log(body);
-
   try {
     const url = `${baseUrl}user/editar/${filtro}`;
     const resp = await fetch(url, {
