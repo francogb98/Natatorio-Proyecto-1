@@ -137,6 +137,18 @@ function CargarArchivos({ user }) {
           <form action="">
             <div className="mb-3">
               <label htmlFor="" className="form-label">
+                Foto de perfil
+              </label>
+              <input
+                className="form-control"
+                type="file"
+                name="foto"
+                id="formFile"
+                onChange={subirArchivo}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="" className="form-label">
                 Ficha Medica
               </label>
               <input
