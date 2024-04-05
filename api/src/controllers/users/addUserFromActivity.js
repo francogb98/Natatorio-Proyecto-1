@@ -49,6 +49,9 @@ export const addUserFromActivity = async (req, res) => {
     );
 
     //   //le añadimos al usuario la actividad, con sus respectivos horarios
+    if (!user.activity) {
+      user.activity = [];
+    }
     user.activity.push(activityUpdate);
 
     user.status = false;
@@ -68,7 +71,7 @@ export const addUserFromActivity = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: error.message,
+      message: "error en el servidor",
     });
   }
 };
@@ -135,7 +138,7 @@ export const DeshabilitarUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: error.message,
+      message: "error en el servidor",
     });
   }
 };
@@ -195,7 +198,7 @@ export const HabilitarUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: error.message,
+      message: "error en el servidor",
     });
   }
 };
