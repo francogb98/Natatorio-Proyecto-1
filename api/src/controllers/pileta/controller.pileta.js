@@ -116,16 +116,16 @@ export const agregarUsuarioAPileta = async (req, res) => {
   const { customId, nombre, actividad, pileta, horarioIngreso, horarioSalida } =
     req.body;
   try {
-    const { hora, fecha } = obtenerFechaYHoraArgentina();
+    const { hora, fecha, date } = obtenerFechaYHoraArgentina();
     let [horaActual] = hora.split(":");
     let [horaIngresoActual] = horarioIngreso.split(":");
 
-    if (horaIngresoActual - horaActual >= 2) {
-      return res.status(400).json({
-        status: "error",
-        message: "El usuario todavia no esta en horario de ser registrado",
-      });
-    }
+    // if (horaIngresoActual - horaActual >= 2) {
+    //   return res.status(400).json({
+    //     status: "error",
+    //     message: "El usuario todavia no esta en horario de ser registrado",
+    //   });
+    // }
 
     const resultadoPileta = await Pileta.find({
       dia: fecha,
@@ -137,6 +137,32 @@ export const agregarUsuarioAPileta = async (req, res) => {
         status: "error",
         message: "Iniciar nuevo turno",
       });
+    }
+
+    const user = await User.findOne({ customId: customId }).populate({
+      path: "activity",
+      populate: {
+        path: "name",
+      },
+    });
+
+    if (user.activity[0].codigoDeAcceso !== null) {
+      if (!user.activity[0].date.includes(date)) {
+        return res.status(400).json({
+          status: "error",
+          message:
+            "La actividad del usuario no corresponde al dia actual. Acceso denegado",
+        });
+      }
+    }
+    if (user.activity[1]?.codigoDeAcceso !== null) {
+      if (!user.activity[0].date.includes(date)) {
+        return res.status(400).json({
+          status: "error",
+          message:
+            "La actividad del usuario no corresponde al dia actual. Acceso denegado",
+        });
+      }
     }
 
     const resultado = await agregarUsuario({

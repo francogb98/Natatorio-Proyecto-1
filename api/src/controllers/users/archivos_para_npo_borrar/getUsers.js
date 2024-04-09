@@ -98,7 +98,7 @@ export const getUsers = async (req, res) => {
       }).populate({
         path: "users",
         populate: {
-          path: "nombre",
+          path: "activity",
         },
       });
 

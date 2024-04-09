@@ -3,14 +3,14 @@ import {
   fetchConToken,
   fetchConTokenHours,
   getInfoUser,
-} from "../../../../helpers/fetch";
+} from "../../../helpers/fetch";
 import { useQuery, useMutation } from "react-query";
 import Modal from "./ModalActivity";
 
-import { deleteActivity } from "../../../../helpers/activitiesFetch/deleteActivity";
+import { deleteActivity } from "../../../helpers/activitiesFetch/deleteActivity";
 import EditarActividad from "./EditActividad";
 import { Link } from "react-router-dom";
-import { AuthContext } from "../../../../context/AuthContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 function ListActivity() {
   const { auth } = useContext(AuthContext);

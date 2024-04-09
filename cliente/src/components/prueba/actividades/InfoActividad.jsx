@@ -2,24 +2,26 @@ import { Link, useParams } from "react-router-dom";
 
 import { useQuery } from "react-query";
 
-import { getInfoActividades } from "../../../../helpers/activitiesFetch/getInfoActividades";
+import { getInfoActividades } from "../../../helpers/activitiesFetch/getInfoActividades";
 
 import { useEffect } from "react";
-import Tabla from "../../../../utilidades/Tabla";
+import Tabla from "../../../utilidades/Tabla";
 
 import style from "./actividades.module.css";
 
 function InfoActividad() {
-  const params = useParams();
-
+  const { id } = useParams();
   const getActivity = useQuery({
     queryKey: ["activitys"],
-    queryFn: () => getInfoActividades(params.id),
+    queryFn: () => getInfoActividades(id),
   });
 
-  useEffect(() => {}, [getActivity.isLoading]);
+  useEffect(() => {
+    getActivity.refetch();
+  }, []);
 
-  if (getActivity.isLoading) return <h1>Cargando...</h1>;
+  if (getActivity.isLoading || getActivity.isRefetching)
+    return <h1>Cargando...</h1>;
 
   if (getActivity.isError) return <h1>Hubo un error al cargar la actividad</h1>;
 
@@ -36,7 +38,7 @@ function InfoActividad() {
         accessorKey: "apellido",
         cell: ({ row }) => (
           <Link
-            to={`/admin/panel/usuario/${row.original._id}`}
+            to={`/home/usuario/${row.original._id}`}
           >{`${row.original.apellido} ${row.original.nombre}`}</Link>
         ),
       },
@@ -48,7 +50,7 @@ function InfoActividad() {
     if (getActivity.data?.actividad.users) {
       return (
         <>
-          <Link to={"/admin/panel/actividades"}>
+          <Link to={"/home/actividades"}>
             <i
               className="bi bi-arrow-left-circle-fill"
               style={{

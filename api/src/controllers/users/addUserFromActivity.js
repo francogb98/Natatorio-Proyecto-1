@@ -8,6 +8,11 @@ export const addUserFromActivity = async (req, res) => {
   try {
     const user = await User.findOne({
       _id: req.user.id,
+    }).populate({
+      path: "activity",
+      populate: {
+        path: "name",
+      },
     });
 
     //verificamos si el usuario ya esta registrado en la actividad
@@ -23,16 +28,15 @@ export const addUserFromActivity = async (req, res) => {
       });
     }
 
-    if (user.activity?.length && !isActivityExist.codigoDeAcceso) {
-      return res.status(400).json({
-        status: "error",
-        message: "El usuario ya se encuentra inscripto en una actividad",
-      });
+    if (!isActivityExist.codigoDeAcceso && user.activity?.length) {
+      if (!user.activity[0].codigoDeAcceso || user.activity.length >= 2) {
+        return res.status(400).json({
+          status: "error",
+          message: "El usuario ya se encuentra inscripto en una actividad",
+        });
+      }
     }
 
-    console.log(isActivityExist.users.length);
-    console.log(isActivityExist.cupos);
-    console.log(isActivityExist.name);
     //verificamos si hay cupo
     if (isActivityExist.users.length >= isActivityExist.cupos) {
       return res.status(400).json({
@@ -69,6 +73,7 @@ export const addUserFromActivity = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error.message);
     return res.status(500).json({
       status: "error",
       message: "error en el servidor",
@@ -81,7 +86,7 @@ export const DeshabilitarUser = async (req, res) => {
   const { id, asunto, cuerpo } = req.body;
   try {
     //busco el usuario por el id
-
+    console.log(asunto, cuerpo);
     const dateNow = new Date();
     const day = dateNow.getDate();
     const month = dateNow.getMonth() + 1;
@@ -159,7 +164,7 @@ export const HabilitarUser = async (req, res) => {
     const user = await User.findOneAndUpdate(
       { _id: id },
       {
-        $set: { status: true },
+        $set: { status: true, asistencia: [] },
         //en caso de que tenga un campo mensaje lo borro
         $unset: { mensaje: 1 },
       },
@@ -185,6 +190,7 @@ export const HabilitarUser = async (req, res) => {
 
     user.inasistencias = [];
     user.asistencia = [];
+
     user.asistencia.push(dateNowSave);
     await user.save();
 

@@ -11,6 +11,7 @@ export const cantidad_inasistecias = async (actividad, asistencia) => {
       activity: actividad,
     });
 
+    console.log(estadistica);
     const allDays = estadistica.reduce((acc, obj) => {
       acc.push(...obj.dias);
       return acc;
@@ -25,6 +26,7 @@ export const cantidad_inasistecias = async (actividad, asistencia) => {
       );
     });
 
+    console.log(inasistenciasPosteriores);
     return inasistenciasPosteriores.includes(fecha)
       ? inasistenciasPosteriores.length - 1
       : inasistenciasPosteriores.length;

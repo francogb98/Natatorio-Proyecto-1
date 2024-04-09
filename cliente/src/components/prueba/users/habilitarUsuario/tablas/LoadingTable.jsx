@@ -38,6 +38,7 @@ function LoadingTable({ find }) {
                   >
                     <span className="visually-hidden">Loading...</span>
                   </div>
+                  <p className="me-5">Cargando Usuarios</p>
                 </td>
               ) : (
                 <td colSpan="5" className="text-center">

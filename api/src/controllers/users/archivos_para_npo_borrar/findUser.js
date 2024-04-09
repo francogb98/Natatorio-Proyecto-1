@@ -65,8 +65,6 @@ export const findUser = async (req, res) => {
       );
     }
 
-    console.log(users);
-
     return res.status(200).json({ status: "success", users, inasistencias });
   } catch (error) {
     console.log(error.message);

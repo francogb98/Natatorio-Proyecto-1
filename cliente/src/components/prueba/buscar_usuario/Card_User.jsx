@@ -89,7 +89,7 @@ function Card_User({ user, inasistencia }) {
                         : "text-danger"
                     }`}
                   >
-                    {inasistencia}
+                    {inasistencia - 1}
                   </span>
                 </b>
               </p>

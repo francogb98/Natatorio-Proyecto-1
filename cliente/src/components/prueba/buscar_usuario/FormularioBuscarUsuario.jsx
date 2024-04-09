@@ -54,10 +54,6 @@ function FormularioBuscarUsuario() {
   return (
     <section className="container">
       <div className="col-12 d-flex flex-column align-items-center mb-3">
-        <Link to="/admin/panel/inicio">
-          <button className="btn btn-warning mb-3">Panel anterior</button>
-        </Link>
-
         <button
           className="btn btn-lg btn-danger"
           onClick={() => {

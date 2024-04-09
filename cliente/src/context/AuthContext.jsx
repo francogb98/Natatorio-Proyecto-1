@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
           ) {
             return navigate("/user/home");
           }
-          return navigate("/admin/panel/inicio");
+          return navigate("/home");
           // window.location.href = "/home";
         }, 1500);
       } else {

@@ -41,7 +41,7 @@ function HabilitarConvencional() {
     refetch();
   }, [filtro]);
 
-  if (isLoading) {
+  if (isLoading || isRefetching) {
     return <LoadingTable find={true} />;
   }
 
@@ -253,8 +253,24 @@ function HabilitarConvencional() {
                         : "Exceso de inasistencias",
                     cuerpo:
                       filtro == "certificado"
-                        ? "Debido a que el usuario no actualizo a tiempo su certificado de pediculosis y micosis se le a dado de baja de dicha actividad. Por favor actualizar el documento y volver a inscibirse en una actividad. Muchas gracias. atte:Administracion del Natatorio"
-                        : "Debido a que el usuario excedio el limite de faltas se le a dado de baja de dicha actividad. Por favor actualizar el documento y volver a inscibirse en una actividad. Muchas gracias. atte:Administracion del Natatorio",
+                        ? `Debido a que el usuario no actualizo a tiempo su certificado de pediculosis y micosis se le a dado de baja de la actividad: ${
+                            row.original.activity[0].name
+                          }, en los dias: ${row.original.activity[0].date.join(
+                            " - "
+                          )}, en el horario de :${
+                            row.original.activity[0].hourStart
+                          } - ${
+                            row.original.activity[0].hourFinish
+                          }. Por favor actualizar el documento y volver a inscibirse en una actividad. Muchas gracias. atte: Administracion del Natatorio`
+                        : `Debido a que el usuario excedio el limite de faltas se le a dado de baja de la actividad: ${
+                            row.original.activity[0].name
+                          }, en los dias: ${row.original.activity[0].date.join(
+                            " - "
+                          )}, en el horario de :${
+                            row.original.activity[0].hourStart
+                          } - ${
+                            row.original.activity[0].hourFinish
+                          }. Por favor actualizar el documento y volver a inscibirse en una actividad. Muchas gracias. atte:Administracion del Natatorio`,
                   });
                 }}
               >

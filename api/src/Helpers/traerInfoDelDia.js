@@ -46,5 +46,15 @@ export function obtenerFechaYHoraArgentina() {
   // Obtener el nombre del día y el mes
   const mesNombre = meses[today.getMonth()];
 
-  return { hora, fecha, horaAnterior, horaActual, mesNombre };
+  let date = new Date().toLocaleDateString("es-ES", {
+    weekday: "long",
+  });
+
+  date = date.charAt(0).toUpperCase() + date.slice(1);
+
+  if (date === "Miércoles") {
+    date = "Miercoles";
+  }
+
+  return { hora, fecha, horaAnterior, horaActual, mesNombre, date };
 }
