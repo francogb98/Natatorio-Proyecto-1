@@ -60,8 +60,6 @@ const schema = new mongoose.Schema({
   },
   barrio: {
     type: String,
-
-    minlength: 3,
   },
 
   password: {

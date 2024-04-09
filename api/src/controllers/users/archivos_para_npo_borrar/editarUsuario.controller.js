@@ -8,8 +8,6 @@ export const editarUsuarioPrueba = async (req, res) => {
     if (filtro == "datos") {
       const newData = req.body;
 
-      console.log(newData);
-
       const updatedUser = await User.findByIdAndUpdate(id, newData, {
         new: true,
       });
@@ -18,7 +16,6 @@ export const editarUsuarioPrueba = async (req, res) => {
         .json({ status: "success", msg: "actualizare datos", updatedUser });
     }
     if (filtro == "archivo") {
-      console.log(req.files);
       if (
         !req.files ||
         Object.keys(req.files).length === 0 ||
@@ -28,8 +25,6 @@ export const editarUsuarioPrueba = async (req, res) => {
         return;
       }
       const { tempFilePath, name } = req.files.archivo;
-
-      console.log(tempFilePath, name);
 
       return res
         .status(200)
