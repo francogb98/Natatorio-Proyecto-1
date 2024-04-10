@@ -154,7 +154,7 @@ export const agregarUsuarioAPileta = async (req, res) => {
             "La actividad del usuario no corresponde al dia actual. Acceso denegado",
         });
       }
-    }*/
+    }
     if (user.activity[1]?.codigoDeAcceso !== null) {
       if (!user.activity[0].date.includes(date)) {
         return res.status(400).json({
@@ -163,7 +163,7 @@ export const agregarUsuarioAPileta = async (req, res) => {
             "La actividad del usuario no corresponde al dia actual. Acceso denegado",
         });
       }
-    }
+    }*/
 
     const resultado = await agregarUsuario({
       customId,
