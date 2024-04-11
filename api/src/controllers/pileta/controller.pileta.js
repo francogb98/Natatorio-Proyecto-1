@@ -165,7 +165,7 @@ export const agregarUsuarioAPileta = async (req, res) => {
     });
 
     if (user.activity[0].codigoDeAcceso !== null) {
-      if (!user.activity[0].date.includes(date)) {
+      if (!user.activity[0].date.includes(diaNombre)) {
         return res.status(400).json({
           status: "error",
 
