@@ -79,7 +79,7 @@ function Card_User({ user, inasistencia }) {
                   {user.status ? "Habilitado" : "Esperando Habilitacion"}
                 </b>
               </p>
-              <p className={`card-text mb-1`}>
+              {/*<p className={`card-text mb-1`}>
                 <b>
                   Inasistencias:{" "}
                   <span
@@ -92,7 +92,7 @@ function Card_User({ user, inasistencia }) {
                     {inasistencia - 1}
                   </span>
                 </b>
-              </p>
+              </p>*/}
               <p className={`card-text d-flex justify-content-between mb-1`}>
                 <b>
                   Certificado PyM:{" "}
