@@ -182,7 +182,7 @@ export const agregarUsuarioAPileta = async (req, res) => {
             "La actividad del usuario no corresponde al dia actual. Acceso denegado",
         });
       }
-    }*/
+    }
 
     const resultado = await agregarUsuario({
       customId,
