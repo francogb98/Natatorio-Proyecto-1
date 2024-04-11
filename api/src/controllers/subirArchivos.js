@@ -144,6 +144,6 @@ export const subirArchivos = async (req, res) => {
   } catch (error) {
     // Manejamos los errores y enviamos una respuesta de error al cliente en caso de fallo
     console.error("Error al subir el archivo:", error);
-    res.status(500).json({ message: "Error al subir el archivo." });
+    res.status(500).json({ status: "error", message: "Error en el servidor." });
   }
 };

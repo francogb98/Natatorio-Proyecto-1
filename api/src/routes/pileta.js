@@ -6,7 +6,6 @@ import {
   iniciarTurno,
   eliminarUsuarioDePileta,
   obtener_pileta,
-  cambio_forzado,
 } from "../controllers/pileta/controller.pileta.js";
 import User from "../models/models/User.js";
 
@@ -19,7 +18,6 @@ routerPileta.put("/eliminar", eliminarUsuarioDePileta);
 routerPileta.patch("/autorizar", autorizar);
 
 routerPileta.post("/obtenerPileta", obtener_pileta);
-routerPileta.post("/forzado", cambio_forzado);
 
 routerPileta.get("/enviar", async (req, res) => {
   try {
