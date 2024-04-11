@@ -7,13 +7,15 @@ const usuariosParaHabilitar = async ({ adaptada = false, codigo = false }) => {
     natacionAdaptada: adaptada,
     activity: { $ne: [], $exists: true },
     "activity[0].codigoDeAcceso": { $in: [null, ""] },
-  }).populate({
-    path: "activity",
+  })
+    .populate({
+      path: "activity",
 
-    populate: {
-      path: "name",
-    },
-  });
+      populate: {
+        path: "name",
+      },
+    })
+    .sort({ "activity[0].name": 1 });
 
   let users = [];
 

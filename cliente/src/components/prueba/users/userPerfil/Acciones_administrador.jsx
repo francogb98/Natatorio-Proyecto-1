@@ -260,7 +260,7 @@ function Acciones_administrador({ user }) {
           </div>
         )}
       </div>
-      <Toaster position="bottom-center" richColors />
+      <Toaster position="bottom-left" richColors />
     </div>
   );
 }

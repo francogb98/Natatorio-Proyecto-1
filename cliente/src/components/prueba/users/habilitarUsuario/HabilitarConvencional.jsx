@@ -23,7 +23,6 @@ function HabilitarConvencional() {
       method: "GET",
     });
     const data = await res.json();
-
     return data;
   };
 
@@ -41,7 +40,7 @@ function HabilitarConvencional() {
     refetch();
   }, [filtro]);
 
-  if (isLoading || isRefetching) {
+  if (isLoading) {
     return <LoadingTable find={true} />;
   }
 
@@ -123,6 +122,7 @@ function HabilitarConvencional() {
               <button
                 className="btn btn-sm btn-success"
                 onClick={() => {
+                  toast.info("habilitando usuario");
                   habilitar.mutate({ id: row.original._id });
                 }}
               >
@@ -210,7 +210,7 @@ function HabilitarConvencional() {
         },
         {
           header: "Actividad",
-          accessorKey: "activity",
+          accessorKey: "activity.name",
           cell: ({ row }) => <div>{row.original.activity[0]?.name}</div>,
         },
         {
@@ -302,7 +302,7 @@ function HabilitarConvencional() {
         {view && (
           <UserImages imagen={imagen} setView={setView} setImagen={setImagen} />
         )}
-        <Toaster position="bottom-right" richColors />
+        <Toaster position="bottom-left" richColors />
       </div>
     );
   }

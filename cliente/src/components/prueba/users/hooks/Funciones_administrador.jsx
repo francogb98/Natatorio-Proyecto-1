@@ -120,14 +120,7 @@ function Funciones_administrador() {
     mutationFn: HabilitarUsuario,
     onSuccess: (data) => {
       if (data.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Usuario habilitado",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-
-        queryClient.invalidateQueries("getUserData");
+        toast.success("Usuario habilitado");
         queryClient.invalidateQueries("usuarios");
       } else {
         Swal.fire({

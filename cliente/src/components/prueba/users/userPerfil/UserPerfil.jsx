@@ -271,7 +271,7 @@ function UserPerfil() {
           </div>
         </div>
 
-        <Toaster position="bottom-center" richColors />
+        <Toaster position="bottom-left" richColors />
         <hr />
 
         {auth.role == "SUPER_ADMIN" && <Acciones_administrador user={user} />}
