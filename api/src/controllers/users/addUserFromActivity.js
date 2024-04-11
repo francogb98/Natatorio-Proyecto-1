@@ -28,11 +28,20 @@ export const addUserFromActivity = async (req, res) => {
       });
     }
 
+    if (isActivityExist.users.includes(user._id)) {
+      console.log(isActivityExist.users.includes(user._id));
+      return res.status(400).json({
+        status: "error",
+        message: "El usuario ya se encuentra inscripto en esta actividad",
+      });
+    }
+
     if (!isActivityExist.codigoDeAcceso && user.activity?.length) {
       if (!user.activity[0].codigoDeAcceso || user.activity.length >= 2) {
         return res.status(400).json({
           status: "error",
-          message: "El usuario ya se encuentra inscripto en una actividad",
+          message:
+            "El usuario ya se encuentra inscripto en una actividad convencional.",
         });
       }
     }
