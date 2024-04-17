@@ -1,13 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
-import FormularioBuscarUsuario from "./buscar_usuario/FormularioBuscarUsuario";
+import FormularioBuscarUsuario from "./aside/FormularioBuscarUsuario";
 import info_user_perfil from "./hooks/info_user_perfil";
 import Header from "./Header";
 
 function HomePrueba() {
-  const { perfilUsuario, setPerfilUsuario, buscar_usuario } =
-    info_user_perfil();
-
   return (
     <div className="container-fluid">
       <header className="row fixed-top bg-light border-bottom border-dark">

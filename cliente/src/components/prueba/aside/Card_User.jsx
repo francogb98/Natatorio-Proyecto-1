@@ -62,42 +62,12 @@ function Card_User({ user, inasistencia }) {
             <p className="card-text">No tiene actividad registrada</p>
           ) : (
             <>
-              <p className="card-text mb-1">
-                <b>{user.activity[0].name}</b> |
-                <b>{user.activity[0].hourStart}</b>-
-                <b>{user.activity[0].hourFinish}</b>
-              </p>
-              <p className="card-text mb-1">
-                <b>{user.activity[0].date.join(" - ")}</b>
-              </p>
-              <p
-                className={`card-text mb-1 ${
-                  user.status ? "text-success" : "text-danger"
-                }`}
-              >
-                <b className="mb-1">
-                  {user.status ? "Habilitado" : "Esperando Habilitacion"}
-                </b>
-              </p>
-              {/*<p className={`card-text mb-1`}>
-                <b>
-                  Inasistencias:{" "}
-                  <span
-                    className={`${
-                      user.inasistencias.length < 4
-                        ? "text-success"
-                        : "text-danger"
-                    }`}
-                  >
-                    {inasistencia - 1}
-                  </span>
-                </b>
-              </p>*/}
               <p className={`card-text d-flex justify-content-between mb-1`}>
                 <b>
                   Certificado PyM:{" "}
                   <span>{user.fechaCargaCertificadoHongos}</span>
-                </b>
+                </b>{" "}
+                |{" "}
                 {user.fechaCargaCertificadoHongos && (
                   <>
                     <b
@@ -118,30 +88,54 @@ function Card_User({ user, inasistencia }) {
                   </>
                 )}
               </p>
+
+              {user.activity.map((activity) => (
+                <div key={activity._id} className="border mb-1 p-2">
+                  <p className="card-text mb-1">
+                    <b>
+                      {activity.name.charAt(0).toUpperCase() +
+                        activity.name.slice(1)}
+                    </b>{" "}
+                    |<b>{activity.hourStart}</b>-<b>{activity.hourFinish}</b>
+                  </p>
+                  <p className="card-text mb-1">
+                    <b>{activity.date.join(" - ")}</b>
+                  </p>
+                  <p
+                    className={`card-text mb-1 ${
+                      user.status ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    <b className="mb-1">
+                      {user.status ? "Habilitado" : "Esperando Habilitacion"}
+                    </b>
+                  </p>
+                  {user.status &&
+                    (auth.role === "SUPER_ADMIN" ||
+                      auth.role === "ADMINISTRATIVO") && (
+                      <button
+                        className="btn btn-sm btn-success ms-0 w-100"
+                        onClick={() => {
+                          toast.info("Agregando usuario");
+                          agregarUsuario.mutate({
+                            customId: user.customId,
+                            nombre: user.nombre,
+                            actividad: activity.name,
+                            pileta: activity.pileta,
+                            horarioIngreso: activity.hourStart,
+                            horarioSalida: activity.hourFinish,
+                          });
+                        }}
+                      >
+                        Agregar
+                      </button>
+                    )}
+                </div>
+              ))}
             </>
           )}
 
           <div className="d-flex flex-wrap gap-2 align-items-center justify-content-center">
-            {user.status &&
-              (auth.role === "SUPER_ADMIN" ||
-                auth.role === "ADMINISTRATIVO") && (
-                <button
-                  className="btn btn-sm btn-success ms-0"
-                  onClick={() => {
-                    toast.info("Agregando usuario");
-                    agregarUsuario.mutate({
-                      customId: user.customId,
-                      nombre: user.nombre,
-                      actividad: user.activity[0].name,
-                      pileta: user.activity[0].pileta,
-                      horarioIngreso: user.activity[0].hourStart,
-                      horarioSalida: user.activity[0].hourFinish,
-                    });
-                  }}
-                >
-                  Agregar
-                </button>
-              )}
             {auth.role === "SUPER_ADMIN" && (
               <>
                 <button
