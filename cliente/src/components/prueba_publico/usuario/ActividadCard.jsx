@@ -23,9 +23,9 @@ function ActividadCard({ actividad, user }) {
       <p>
         Estado: <span>{user.status ? "Aprobado" : "Pendiente"}</span>
       </p>
-      <p>
+      {/* <p>
         Asistencia: <span> {user.asistencia.join(" - ")}</span>
-      </p>
+      </p> */}
       <button
         className="btn btn-danger"
         onClick={() => {

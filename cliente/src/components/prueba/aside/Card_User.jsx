@@ -45,17 +45,18 @@ function Card_User({ user, inasistencia }) {
     <>
       <div className="card px-2" style={{ width: "18rem", fontSize: "12px" }}>
         <div className="card-body">
-          <h5 className="card-title fs-6">
+          <h5 className="card-title fs-6 text-center">
             <Link
               to={`usuario/${user._id}`}
               onClick={() => {
                 setUserEncontrado(false);
               }}
             >
-              {user.nombre} {user.apellido}
+              {user.nombre.charAt(0).toUpperCase() + user.nombre.slice(1)}{" "}
+              {user.apellido.charAt(0).toUpperCase() + user.apellido.slice(1)}
             </Link>
           </h5>
-          <h6 className="card-subtitle mb-1 text-body-secondary fs-6">
+          <h6 className="card-subtitle mb-1 text-body-secondary fs-6 text-center">
             {user.customId}
           </h6>
           {!user.activity || !user.activity.length ? (

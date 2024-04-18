@@ -77,8 +77,10 @@ function UserPerfil() {
           />
           <div className="col-12 mt-2">
             <h2>
-              {user.nombre} {user.apellido}
+              {user.nombre.charAt(0).toUpperCase() + user.nombre.slice(1)}{" "}
+              {user.apellido.charAt(0).toUpperCase() + user.apellido.slice(1)}
             </h2>
+            <h4>{user.customId}</h4>
           </div>
         </div>
 
@@ -86,39 +88,80 @@ function UserPerfil() {
 
         <div className="row">
           {/* Actividades */}
-          {user.activity?.length ? (
-            <div
-              className="col-6 border-end"
-              // style={{
-              //   borderRight: "1px solid black",
-              // }}
-            >
-              <h2 className="text-center">Actividad</h2>
-              <p>Actividad: {user.activity[0].name}</p>
-              <p>Dias: {user.activity[0].date.join(" - ")}</p>
-              <p>
-                Horario: {user.activity[0].hourStart} -{" "}
-                {user.activity[0].hourFinish}{" "}
-              </p>
+          <div
+            className="col-6 border-end"
+            // style={{
+            //   borderRight: "1px solid black",
+            // }}
+          >
+            {user.activity?.length &&
+              user.activity.map((activity) => (
+                <div key={activity._id} className="mb-3 text-center border p-2">
+                  <h3>
+                    {activity.name.charAt(0).toUpperCase() +
+                      activity.name.slice(1)}
+                  </h3>
 
-              {!actividadesEspeciales.includes(user.activity[0].name) && (
-                <>
                   <p>
-                    Inasistencias:{" "}
-                    {user.inasistencias.length
-                      ? user.inasistencias.join(" - ")
-                      : "No tiene"}
+                    <b>Dias:</b>
+                    {activity.date.join(" - ")}
                   </p>
                   <p>
-                    Total:{" "}
-                    {user.inasistencias.length
-                      ? user.inasistencias.length
-                      : "No tiene"}
+                    <b>Horario:</b>
+                    {activity.hourStart} - {activity.hourFinish}{" "}
                   </p>
-                </>
-              )}
-            </div>
-          ) : null}
+                  <p
+                    className={`card-text mb-1 ${
+                      user.status ? "text-success" : "text-danger"
+                    }`}
+                  >
+                    <b className="mb-1">
+                      {user.status ? "Habilitado" : "Esperando Habilitacion"}
+                    </b>
+                  </p>
+
+                  {/* <div className="d-flex justify-content-around">
+                    <button
+                      className="btn btn-sm btn-success"
+                      onClick={() => {
+                        habilitar.mutate({
+                          id: user._id,
+                          activityId: activity._id,
+                        });
+                      }}
+                    >
+                      Habilitar
+                    </button>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => {
+                        setAccion("inhabilitar");
+                        setEjecutarAccion(true);
+                      }}
+                    >
+                      Inhabilitar
+                    </button>
+                  </div> */}
+
+                  {/* {!actividadesEspeciales.includes(activity.name) && (
+                    <>
+                      <p>
+                        Inasistencias:{" "}
+                        {user.inasistencias.length
+                          ? user.inasistencias.join(" - ")
+                          : "No tiene"}
+                      </p>
+                      <p>
+                        Total:{" "}
+                        {user.inasistencias.length
+                          ? user.inasistencias.length
+                          : "No tiene"}
+                      </p>
+                    </>
+                  )} */}
+                </div>
+              ))}
+          </div>
           {/* Datos */}
           <div className={user.activity?.length ? "col-6" : "col-12"}>
             <h2 className="text-center">Datos</h2>
