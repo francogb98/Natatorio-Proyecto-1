@@ -48,6 +48,9 @@ const agregarUsuarioAlistaAutorizados = async (content) => {
   return data;
 };
 
+//comentario de prueba
+
+
 const autorizarUsuaRIO = async (content) => {
   // es la peticion de arriba pero es un patch y tengo que enviar un body
   const res = await fetch(`${baseUrl}pileta/autorizar`, {
