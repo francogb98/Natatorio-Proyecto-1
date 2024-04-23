@@ -48,7 +48,11 @@ function editar_datos() {
     mutationFn: updateFile,
 
     onSuccess: (data) => {
-      toast.success("Informacion actualizada");
+      if (data.status === "success") {
+        toast.success("Informacion actualizada");
+      } else {
+        toast.error("Error en el servidor");
+      }
       userRefetch();
     },
     onError: () => {
