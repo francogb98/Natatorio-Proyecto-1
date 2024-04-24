@@ -82,6 +82,9 @@ router.patch("/agregarUsuarioActividad", validarJWT, async (req, res) => {
       fecha: dateNowSave,
     });
 
+    if (!user.activity) {
+      user.activity = [];
+    }
     user.activity.push(activityUpdate);
     user.status = true;
     user.inasistencias = [];
