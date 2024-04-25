@@ -173,9 +173,9 @@ export const agregarUsuarioAPileta = async (req, res) => {
         });
       }
     }
-    if (user.activity[1]?.codigoDeAcceso == null) {
+    if (user.activity[1] && user.activity[1]?.codigoDeAcceso == null) {
       console.log("entre aqui 2");
-      if (!user.activity[1].date.includes(diaNombre)) {
+      if (!user.activity[1]?.date.includes(diaNombre)) {
         return res.status(400).json({
           status: "error",
           message:
