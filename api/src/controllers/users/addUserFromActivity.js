@@ -29,10 +29,14 @@ export const addUserFromActivity = async (req, res) => {
     }
 
     if (isActivityExist.users.includes(user._id)) {
-      console.log(isActivityExist.users.includes(user._id));
-      return res.status(400).json({
-        status: "error",
-        message: "El usuario ya se encuentra inscripto en esta actividad",
+      user.activity = user.activity.filter((act) => act._id == isActivityExist._id);
+      user.activity.push(isActivityExist);
+      user.status = true;
+      const userUpdate = await user.save();
+      console.log(userUpdate);
+      return res.status(200).json({
+        status: "success",
+        message: "Usuario registrado correctamente en la actividad",
       });
     }
 
