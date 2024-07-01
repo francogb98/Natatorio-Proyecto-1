@@ -121,6 +121,38 @@ function Header() {
           </ul>
         </li>
       )}
+
+      {auth.role == "ADMINISTRATIVO" && (
+        <li
+          className="nav-item dropdown"
+          style={{
+            listStyle: "none",
+          }}
+        >
+          <a
+            className="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Usuarios
+          </a>
+          <ul className="dropdown-menu">
+            <li>
+              <Link className="dropdown-item" to="habilitar/convencional">
+                Habilitar Convencional
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="habilitar/certificado">
+                Certificado
+              </Link>
+            </li>
+            
+          </ul>
+        </li>
+      )}
     </nav>
   );
 }

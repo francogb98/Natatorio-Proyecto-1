@@ -9,6 +9,7 @@ import UserImages from "../utilidades/UserImages";
 import Acciones_administrador from "./Acciones_administrador";
 import Funciones_administrador from "../hooks/Funciones_administrador";
 import { Toaster, toast } from "sonner";
+import Acciones_mesa_entrada from "./Acciones_mesa_entrada";
 
 export const getUser = async (id) => {
   try {
@@ -119,46 +120,6 @@ function UserPerfil() {
                       {user.status ? "Habilitado" : "Esperando Habilitacion"}
                     </b>
                   </p>
-
-                  {/* <div className="d-flex justify-content-around">
-                    <button
-                      className="btn btn-sm btn-success"
-                      onClick={() => {
-                        habilitar.mutate({
-                          id: user._id,
-                          activityId: activity._id,
-                        });
-                      }}
-                    >
-                      Habilitar
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => {
-                        setAccion("inhabilitar");
-                        setEjecutarAccion(true);
-                      }}
-                    >
-                      Inhabilitar
-                    </button>
-                  </div> */}
-
-                  {/* {!actividadesEspeciales.includes(activity.name) && (
-                    <>
-                      <p>
-                        Inasistencias:{" "}
-                        {user.inasistencias.length
-                          ? user.inasistencias.join(" - ")
-                          : "No tiene"}
-                      </p>
-                      <p>
-                        Total:{" "}
-                        {user.inasistencias.length
-                          ? user.inasistencias.length
-                          : "No tiene"}
-                      </p>
-                    </>
-                  )} */}
                 </div>
               ))}
           </div>
@@ -318,6 +279,9 @@ function UserPerfil() {
         <hr />
 
         {auth.role == "SUPER_ADMIN" && <Acciones_administrador user={user} />}
+        {auth.role === "ADMINISTRATIVO" && (
+          <Acciones_mesa_entrada user={user} />
+        )}
       </div>
     );
   }
