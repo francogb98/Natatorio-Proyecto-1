@@ -43,7 +43,6 @@ export const addUserFromActivity = async (req, res) => {
     if(!isActivityExist.codigoDeAcceso){
       for (let i = 0; i < user.activity.length; i++) {
         const actividad = user.activity[i];
-        console.log(actividad);
         if (!actividad.codigoDeAcceso) {
           return res.status(400).json({
             status: "error",
@@ -54,7 +53,8 @@ export const addUserFromActivity = async (req, res) => {
       }      
     }
 
-    if(isActivityExist.users.includes(user._id)){
+    if(isActivityExist.users.includes(user._id) && isActivityExist.codigoDeAcceso){
+      console.log("entre aqui 312");
       return res.status(200).json({
         status: "success",
         message: "Usuario agregado a la actividad",
