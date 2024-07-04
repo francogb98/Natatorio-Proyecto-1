@@ -4,7 +4,6 @@ import User from "../../models/models/User.js";
 export const addUserFromActivity = async (req, res) => {
   const { idActividad } = req.body;
 
-  idActividad;
   try {
     const user = await User.findOne({
       _id: req.user.id,
@@ -27,34 +26,39 @@ export const addUserFromActivity = async (req, res) => {
         message: "La actividad seleccionada no existe",
       });
     }
-
-    if (isActivityExist.users.includes(user._id)) {
-      user.activity = user.activity.filter((act) => act._id == isActivityExist._id);
-      user.activity.push(isActivityExist);
-      user.status = true;
-      const userUpdate = await user.save();
-      console.log(userUpdate);
-      return res.status(200).json({
-        status: "success",
-        message: "Usuario registrado correctamente en la actividad",
-      });
-    }
-
-    if (!isActivityExist.codigoDeAcceso && user.activity?.length) {
-      if (!user.activity[0].codigoDeAcceso || user.activity.length >= 2) {
-        return res.status(400).json({
-          status: "error",
-          message:
-            "El usuario ya se encuentra inscripto en una actividad convencional.",
-        });
-      }
-    }
-
     //verificamos si hay cupo
     if (isActivityExist.users.length >= isActivityExist.cupos) {
       return res.status(400).json({
         status: "error",
         message: "Cupos agotados",
+      });
+    }
+
+    if (!user.activity) {
+      user.activity = [];
+    }
+
+
+    //si la actividad seleccionada no tiene codigo de acceso verifico que el usuario no este registrado en una actividad con codigo de acceso
+    if(!isActivityExist.codigoDeAcceso){
+      for (let i = 0; i < user.activity.length; i++) {
+        const actividad = user.activity[i];
+        console.log(actividad);
+        if (!actividad.codigoDeAcceso) {
+          return res.status(400).json({
+            status: "error",
+            message:
+              "Usuario ya inscripto en una actividad, por favor dar de baja la actividad actual para poder inscribirse en una nueva.",
+          });
+        }
+      }      
+    }
+
+    if(isActivityExist.users.includes(user._id)){
+      return res.status(200).json({
+        status: "success",
+        message: "Usuario agregado a la actividad",
+
       });
     }
 
@@ -64,18 +68,14 @@ export const addUserFromActivity = async (req, res) => {
       { $push: { users: user }, $inc: { userRegister: 1 } },
       { new: true }
     );
-
     //   //le añadimos al usuario la actividad, con sus respectivos horarios
-    if (!user.activity) {
-      user.activity = [];
-    }
     user.activity.push(activityUpdate);
 
-    user.status = false;
+    if(user.activity.length == 1){
+      user.status = false
+    }
 
     const userUpdate = await user.save();
-
-    userUpdate;
 
     return res.status(200).json({
       status: "success",
