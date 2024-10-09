@@ -1,138 +1,82 @@
 import { Router } from "express";
-import createUser from "../controllers/users/createUser.js";
-import { loginUser } from "../controllers/users/loginUser.js";
-
-import {
-  DeshabilitarUser,
-  HabilitarUser,
-  addUserFromActivity,
-} from "../controllers/users/addUserFromActivity.js";
 
 import { validarJWT } from "../middlewares/validar-jwt.js";
-import { suspenderUsuario } from "../controllers/users/suspenderUsuario.js";
-import { cambiarRole } from "../controllers/users/cambiarRole.js";
+import { getUser } from "../middlewares/findUser.js";
 
-import editarUsuario from "../controllers/users/editarUsuario.js";
-import { darDeBajaActividad } from "../controllers/users/darDeBajaActividad.js";
+import { userController } from "../controllers/User/userController.js";
+import { AdminController } from "../controllers/User/AdminController.js";
+import { ClienteController } from "../controllers/User/clienteController.js";
+import { getUsers } from "../controllers/User/UsuariosFalta.js";
 
-import createNotificacion from "../controllers/users/notificaciones/createNotificacion.js";
-import updateNotificaciones from "../controllers/users/notificaciones/updateNotificaciones.js";
-import { deleteNotificacion } from "../controllers/users/notificaciones/deleteNotificacion.js";
-import cambiarFoto from "../controllers/users/imagen/cambiarFoto.js";
-import recuperar from "../controllers/users/recuperarContraseña/recuperar.js";
-import modificarContraseña from "../controllers/users/recuperarContraseña/modificarContraseña.js";
-import { subirArchivos } from "../controllers/subirArchivos.js";
+const UserRouter = Router();
 
-import { getUser, getUserById } from "../controllers/users/getUser.js";
-import { getUsers } from "../controllers/users/archivos_para_npo_borrar/getUsers.js";
-import { findUser } from "../controllers/users/archivos_para_npo_borrar/findUser.js";
-import User from "../models/models/User.js";
-import Activity from "../models/models/Actividades.js";
-import { enviarNotificacion } from "../controllers/users/archivos_para_npo_borrar/notificacion.controller.js";
-import { editarUsuarioPrueba } from "../controllers/users/archivos_para_npo_borrar/editarUsuario.controller.js";
+UserRouter.param("userId", getUser);
 
-const router = Router();
+//*-------------- Administradores ----------*/
 
-router.get("/infoUser/:token", getUser);
-router.get("/getinfoUser/:id", getUserById);
-router.get("/:filter", getUsers);
+UserRouter.get("/:filter", getUsers);
+UserRouter.get("/infoUser/:token", userController.getUser);
+UserRouter.post("/getinfoUser/:type/:id", userController.getUserById);
+UserRouter.post(
+  "/findUserByLastName/:apellido",
+  validarJWT,
+  userController.getUserByLastName
+);
 
-router.post("/findUser", validarJWT, findUser);
-router.post("/getinfoUser", getUserById);
+//*-------------- Super Admin -----------------*/
 
-router.patch("/editar/:filtro", validarJWT, editarUsuarioPrueba);
+UserRouter.patch(
+  "/agregarUsuarioActividad/:userId",
+  validarJWT,
+  AdminController.agregarUsuarioAUnaActividad
+);
+UserRouter.patch(
+  "/enviarNotificacion/:userId",
+  validarJWT,
+  AdminController.enviarNotificacion
+);
+UserRouter.post("/deshabilitar/:userId", AdminController.DeshabilitarUser);
+UserRouter.post(
+  "/habilitar/:userId",
+  validarJWT,
+  AdminController.HabilitarUser
+);
 
-router.patch("/agregarUsuarioActividad", validarJWT, async (req, res) => {
-  try {
-    const { actividad, id } = req.body;
+UserRouter.post(
+  "/cambiarRole/:role/:userId",
+  validarJWT,
+  AdminController.cambiarRole
+);
+UserRouter.post(
+  "/notificaciones/delete/:userId",
+  validarJWT,
+  AdminController.deleteNotificacion
+);
 
-    const dateNow = new Date();
-    const day = dateNow.getDate();
-    const month = dateNow.getMonth() + 1;
-    const year = dateNow.getFullYear();
+/** -------- Usuarios convencionales --------*/
+UserRouter.post("/create", ClienteController.createUser);
+UserRouter.post("/login", ClienteController.loginUser);
+UserRouter.post("/comprobar-datos", ClienteController.recuperar);
+UserRouter.post("/modificar-password", ClienteController.modificarContraseña);
+UserRouter.patch("/editarUsuario", ClienteController.editarUsuario);
+/**----Archivos */
+UserRouter.put("/upload", validarJWT, ClienteController.subirArchivos);
 
-    const dateNowSave = `${day}/${month}/${year}`;
+/**----Actividades */
+UserRouter.post(
+  "/resgisterActivity/:userId",
+  validarJWT,
+  userController.solicitudDeInscripcion
+);
+UserRouter.post(
+  "/darDeBajaActividad",
+  validarJWT,
+  ClienteController.darDeBajaActividad
+);
+UserRouter.post(
+  "/notificaciones/update/:userId",
+  validarJWT,
+  ClienteController.notificacionLeida
+);
 
-    const user = await User.findOne({ customId: id });
-
-    if (!user) {
-      return res.status(400).json({
-        status: "error",
-        msg: `Usuario con el id ${id} no encontrado`,
-      });
-    }
-
-    const activityUpdate = await Activity.findOneAndUpdate(
-      { _id: actividad },
-      { $push: { users: user }, $inc: { userRegister: 1 } },
-      { new: true }
-    );
-
-    if (!activityUpdate) {
-      console.log(actividad);
-      return res
-        .status(400)
-        .json({ status: "error", msg: "actividad no encontrada" });
-    }
-
-    user.notificaciones.push({
-      asunto: "Usuario registrado correctamente",
-      cuerpo:
-        "Usted ha sido registrado correctamente en la actividad, podrás ver los horarios en la sección de actividades, Recuerda que debes asistir a la actividad para que no seas deshabilitado, ademas de actualizar tu certificado de mucosis y pediculosis cada 1 mes, para mas información comunicate con el administrador del natatorio",
-      fecha: dateNowSave,
-    });
-
-    if (!user.activity) {
-      user.activity = [];
-    }
-    user.activity.push(activityUpdate);
-    user.status = true;
-    user.inasistencias = [];
-    user.asistencia = [];
-    user.asistencia.push(dateNowSave);
-    await user.save();
-
-    return res.status(200).json({
-      status: "success",
-      msg: "Usuario agregado a la actividad con exito",
-    });
-  } catch (error) {
-    console.log(error.message);
-    res.status(400).json({ status: "error", msg: "error en el servidor" });
-  }
-});
-
-router.patch("/enviarNotificacion", validarJWT, enviarNotificacion);
-
-//busqueda por nombre por
-
-router.post("/create", createUser);
-router.post("/login", loginUser);
-
-//creo las dos rutas para habilitar y desabilitar ususarios
-router.post("/deshabilitar", validarJWT, DeshabilitarUser);
-router.post("/habilitar/:id", validarJWT, HabilitarUser);
-
-router.post("/suspenderUsuario", validarJWT, suspenderUsuario);
-router.post("/cambiarRole", validarJWT, cambiarRole);
-
-router.post("/resgisterActivity", validarJWT, addUserFromActivity);
-
-router.post("/editarUsuario", editarUsuario);
-
-router.post("/darDeBajaActividad", validarJWT, darDeBajaActividad);
-
-//notificaciones
-
-router.post("/notificaciones/create", createNotificacion);
-router.post("/notificaciones/update", validarJWT, updateNotificaciones);
-router.post("/notificaciones/delete", validarJWT, deleteNotificacion);
-
-router.post("/cambiarFoto", validarJWT, cambiarFoto);
-router.post("/comprobar-datos", recuperar);
-router.post("/modificar-password", modificarContraseña);
-
-//subir imagenes
-router.put("/upload", validarJWT, subirArchivos);
-
-export default router;
+export { UserRouter };

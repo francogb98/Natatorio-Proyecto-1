@@ -1,5 +1,5 @@
 import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
-import Pileta from "../../../models/models/Pileta.js";
+import { Pileta } from "../../../models/index.js";
 
 export const agregarUsuario = async ({
   customId,

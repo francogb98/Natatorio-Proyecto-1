@@ -1,13 +1,12 @@
 import { createContext, useReducer, useState } from "react";
-import { fetchSinToken } from "../helpers/fetch";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 
 import Swal from "sweetalert2";
 
 import { authReducer, initialState } from "../reducer/reducer";
 
 import { useNavigate } from "react-router-dom";
-import { baseUrl } from "../helpers/url";
+import { UserFetch } from "../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 export const AuthContext = createContext();
 
@@ -18,7 +17,7 @@ export function AuthProvider({ children }) {
 
   const navigate = useNavigate();
   const login = useMutation({
-    mutationFn: fetchSinToken,
+    mutationFn: UserFetch.login,
     onSuccess: async (data) => {
       if (data.status === "success") {
         if (data.usuario.role === "suspendido") {
@@ -82,33 +81,22 @@ export function AuthProvider({ children }) {
   };
 
   const getInfoUser = async () => {
-    try {
-      if (!localStorage.getItem("token")) return;
-      const resp = await fetch(
-        `${baseUrl}user/infoUser/${localStorage.getItem("token")}`
-      );
-      const data = await resp.json();
-
-      if (data.status == "success") {
-        await dispatch({ type: "SET_USER", payload: { user: data.user } });
-      }
-      return data;
-    } catch (error) {
-      return error;
+    if (!localStorage.getItem("token")) return;
+    const data = await UserFetch.getInfoUser();
+    if (data.status == "success") {
+      dispatch({ type: "SET_USER", payload: { user: data.user } });
     }
+    return data;
   };
 
   const restartPagina = async () => {
     try {
       if (!localStorage.getItem("token")) return;
-      const resp = await fetch(
-        `${baseUrl}user/infoUser/${localStorage.getItem("token")}`
-      );
-      const data = await resp.json();
+      const data = await UserFetch.getInfoUser();
 
       if (data.status == "success") {
-        await dispatch({ type: "SET_USER", payload: { user: data.user } });
-        await dispatch({
+        dispatch({ type: "SET_USER", payload: { user: data.user } });
+        dispatch({
           type: "LOGIN",
           payload: { logged: true, role: data.user.role },
         });

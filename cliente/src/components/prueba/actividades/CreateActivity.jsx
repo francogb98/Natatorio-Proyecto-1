@@ -414,4 +414,4 @@ function CreateActivity_prueba() {
   );
 }
 
-export default CreateActivity_prueba;
+export { CreateActivity_prueba };

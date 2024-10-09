@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 
 import Funciones_administrador, {
@@ -14,14 +14,8 @@ function Acciones_administrador({ user }) {
 
   useEffect(() => {}, [accion, ejecutarAccion]);
 
-  const {
-    cambiar,
-    inhabilitar,
-    habilitar,
-    eliminarNotificacion,
-    enviarNotificacion,
-    agregar_usuario_actividad,
-  } = Funciones_administrador();
+  const { cambiar, habilitar, enviarNotificacion, agregar_usuario_actividad } =
+    Funciones_administrador();
 
   return (
     <div className="row mb-4 border">
@@ -50,15 +44,6 @@ function Acciones_administrador({ user }) {
                 }}
               >
                 Habilitar
-              </button>
-              <button
-                className="btn btn-sm btn-danger"
-                onClick={() => {
-                  setAccion("inhabilitar");
-                  setEjecutarAccion(true);
-                }}
-              >
-                Inhabilitar
               </button>
             </div>
           </>
@@ -94,8 +79,8 @@ function Acciones_administrador({ user }) {
             onClick={async () => {
               setAccion("agregar_actividad");
               const respuesta = await getActividades();
-
-              setActividadesLista(respuesta.activity);
+              console.log(respuesta);
+              setActividadesLista(respuesta.actividades);
               setEjecutarAccion(true);
             }}
           >
@@ -106,57 +91,6 @@ function Acciones_administrador({ user }) {
       <div className="col-6 border-start">
         {ejecutarAccion && (
           <div>
-            {accion == "inhabilitar" && (
-              <div className="text-center">
-                <h5>Inhabilitar Usuario</h5>
-
-                <form
-                  action=""
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-
-                    if (
-                      !formData.get("asunto").trim() ||
-                      !formData.get("cuerpo").trim()
-                    ) {
-                      toast.error("Por favor, completa ambos campos.");
-                      return;
-                    }
-                    const content = {
-                      id: user._id,
-                      asunto: formData.get("asunto"),
-                      cuerpo: formData.get("cuerpo"),
-                    };
-                    toast.info("Inhabilitando Usuario");
-                    inhabilitar.mutate(content);
-                  }}
-                >
-                  <div className="d-flex flex-column align-items-start mb-2">
-                    <label htmlFor="" className="form-label">
-                      Asunto
-                    </label>
-                    <input className="form-control" name="asunto" />
-                  </div>
-                  <div className="d-flex flex-column align-items-start">
-                    <label htmlFor="" className="form-label">
-                      Cuerpo
-                    </label>
-                    <input className="form-control" name="cuerpo" />
-                  </div>
-
-                  <button
-                    className="btn my-2"
-                    style={{
-                      background: "rgb(250,0,0,0.6)",
-                      color: "white",
-                    }}
-                  >
-                    Inhabilitar
-                  </button>
-                </form>
-              </div>
-            )}
             {accion == "agregar_actividad" && (
               <div className="text-center">
                 <h5>Agregar a Actividad</h5>
@@ -166,12 +100,11 @@ function Acciones_administrador({ user }) {
                   onSubmit={(e) => {
                     e.preventDefault();
 
-                    const content = {
-                      id: user.customId,
-                      actividad: idActividad,
-                    };
                     toast.info("Agregando usuario a la actividad");
-                    agregar_usuario_actividad.mutate(content);
+                    agregar_usuario_actividad.mutate({
+                      idActividad,
+                      id: user._id,
+                    });
                   }}
                 >
                   <label className="fw-bold">Cambiar Rol:</label>
@@ -230,7 +163,7 @@ function Acciones_administrador({ user }) {
                       cuerpo: formData.get("cuerpo"),
                     };
                     toast.info("Enviando mensaje");
-                    enviarNotificacion.mutate(content);
+                    enviarNotificacion.mutate({ content, id: user._id });
                   }}
                 >
                   <div className="d-flex flex-column align-items-start mb-2">

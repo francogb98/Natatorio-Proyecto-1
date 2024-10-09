@@ -1,11 +1,25 @@
-import React, { useState } from "react";
-
-import editar_datos from "../funciones_usuario/editar_datos.hook";
+import React, { useContext, useState } from "react";
 
 import { Toaster, toast } from "sonner";
+import { useMutation } from "react-query";
+import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
+import { AuthContext } from "../../../context/AuthContext";
 
 function EditarDatos({ user }) {
-  const { editar } = editar_datos();
+  const { userRefetch } = useContext(AuthContext);
+
+  const editar = useMutation({
+    mutationFn: UserFetch.editar_informacion,
+
+    onSuccess: (data) => {
+      toast.success("Informacion actualizada");
+      userRefetch();
+    },
+    onError: () => {
+      toast.error("Error en el servidor");
+      userRefetch();
+    },
+  });
 
   const [userInfo, setUserInfo] = useState({
     nombre: user.nombre,

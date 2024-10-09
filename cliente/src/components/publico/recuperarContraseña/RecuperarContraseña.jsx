@@ -1,18 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
 import style from "../inicioDeSesion/styleSignIn.module.css";
-
 import Logo from "../inicioDeSesion/Logo.jpg";
-
-import {
-  comprobarDatos,
-  modificarContraseña,
-} from "../../../helpers/usersFetch/recuperarContraseña";
-
 import { useMutation } from "react-query";
 
 import Swal from "sweetalert2";
+import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 function RecuperarContraseña() {
   const [viewPass, setViewPass] = useState(false);
@@ -22,7 +15,7 @@ function RecuperarContraseña() {
 
   const [dni, setDni] = useState(0);
 
-  const mutation = useMutation(comprobarDatos, {
+  const mutation = useMutation(UserFetch.comprobarDatos, {
     onSuccess: (data) => {
       //volver valores de los input a 0
 
@@ -44,7 +37,7 @@ function RecuperarContraseña() {
     },
   });
 
-  const mutation2 = useMutation(modificarContraseña, {
+  const mutation2 = useMutation(UserFetch.modificarContraseña, {
     onSuccess: (data) => {
       //volver valores de los input a 0
       document.querySelector('input[name="password"]').value = "";
@@ -62,7 +55,7 @@ function RecuperarContraseña() {
           .then(() => {
             window.location.href = "/";
           })
-          .catch((error) => {
+          .catch(() => {
             return false;
           });
       }

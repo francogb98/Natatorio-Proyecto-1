@@ -236,4 +236,4 @@ function HomeUser() {
   );
 }
 
-export default HomeUser;
+export { HomeUser };

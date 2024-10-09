@@ -1,9 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import {
-  fetchConToken,
-  fetchConTokenHours,
-  getInfoUser,
-} from "../../../helpers/fetch";
+import { fetchConTokenHours } from "../../../helpers/fetch";
 import { useQuery, useMutation } from "react-query";
 import Modal from "./ModalActivity";
 
@@ -11,6 +7,7 @@ import { deleteActivity } from "../../../helpers/activitiesFetch/deleteActivity"
 import EditarActividad from "./EditActividad";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../context/AuthContext";
+import { ActividadesFetch } from "../../../helpers/activitiesFetch/Actividades-fetch-class";
 
 function ListActivity() {
   const { auth } = useContext(AuthContext);
@@ -37,8 +34,9 @@ function ListActivity() {
 
   const getActivity = useQuery({
     queryKey: ["activitys"],
-    queryFn: fetchConToken,
+    queryFn: ActividadesFetch.getActivities,
   });
+
   const getHours = useQuery({
     queryKey: ["hours"],
     queryFn: fetchConTokenHours,
@@ -50,15 +48,15 @@ function ListActivity() {
     },
   });
   useEffect(() => {
-    if (getActivity.data?.data && getHours.data?.data) {
-      const sortedActivities = getActivity.data.data.activity.sort((a, b) => {
+    if (getActivity.data?.actividades && getHours.data?.data) {
+      const sortedActivities = getActivity.data.actividades.sort((a, b) => {
         const dateA = new Date(`1970-01-01T${a.hourStart}`);
         const dateB = new Date(`1970-01-01T${b.hourStart}`);
         return dateA - dateB;
       });
       setActivitys(sortedActivities);
       const uniqueNames = new Set(
-        getActivity.data.data.activity.map((actividad) => actividad.name)
+        getActivity.data.actividades.map((actividad) => actividad.name)
       );
 
       setNombreActivitys([...uniqueNames]);
@@ -71,7 +69,7 @@ function ListActivity() {
   if (getActivity.isError || getHours.isError)
     return <h1>Hubo un error al cargar las actividades</h1>;
 
-  if (getActivity.data?.data && getHours.data?.data) {
+  if (getActivity.data?.actividades && getHours.data?.data) {
     const handleFilter = (e) => {
       const value = e.target.value;
       const name = e.target.name;
@@ -266,4 +264,4 @@ function ListActivity() {
   }
 }
 
-export default ListActivity;
+export { ListActivity };

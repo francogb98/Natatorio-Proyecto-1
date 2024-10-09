@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -113,11 +113,6 @@ function Header() {
                 Certificado
               </Link>
             </li>
-            <li>
-              <Link className="dropdown-item border-top" to="usuario/feeds">
-                Feeds
-              </Link>
-            </li>
           </ul>
         </li>
       )}
@@ -149,10 +144,15 @@ function Header() {
                 Certificado
               </Link>
             </li>
-            
           </ul>
         </li>
       )}
+
+      <li>
+        <button className="mt-1 btn btn-sm btn-warning" onClick={cerrarSesion}>
+          Cerrar cesion
+        </button>
+      </li>
     </nav>
   );
 }

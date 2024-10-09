@@ -1,5 +1,5 @@
 import { Router } from "express";
-import UsuariosFalta from "../models/models/UsuariosFaltas.js";
+import { UsuariosFalta } from "../models/UsuariosFaltas.js";
 import mongoose from "mongoose";
 
 const rutaUsuarioFalta = Router();
@@ -10,6 +10,20 @@ rutaUsuarioFalta.get("/", async (req, res) => {
     const usuariosConFalta = await UsuariosFalta.find();
 
     return res.status(200).json({ status: "success", usuariosConFalta });
+  } catch (error) {
+    console.log(error.message);
+    return res
+      .status(400)
+      .json({ status: "error", message: "error en el sevidor" });
+  }
+});
+rutaUsuarioFalta.post("/", async (req, res) => {
+  try {
+    const nuevo = new UsuariosFalta({
+      motivo: "certificado_expirado",
+    });
+    await nuevo.save();
+    return res.status(200).json({ msg: "pileta creada" });
   } catch (error) {
     console.log(error.message);
     return res

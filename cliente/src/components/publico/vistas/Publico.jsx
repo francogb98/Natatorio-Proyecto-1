@@ -25,4 +25,4 @@ function Publico() {
   );
 }
 
-export default Publico;
+export { Publico };

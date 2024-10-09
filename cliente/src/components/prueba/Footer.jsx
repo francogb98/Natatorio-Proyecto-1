@@ -1,5 +1,3 @@
-import React from "react";
-import style from "./home.module.css";
 import { useQuery } from "react-query";
 
 import { info_tablas } from "./helpers/info_tablas.fetch";
@@ -89,7 +87,7 @@ function Footer() {
                 </li>
                 <li className="nav-link">
                   Usuarios pileta 25:{" "}
-                  <span className="text-danger"> {data.users.length}</span>
+                  <span className="text-danger"> {data.users?.length}</span>
                 </li>
               </>
             );
@@ -97,7 +95,7 @@ function Footer() {
           return (
             <li key={data._id} className="nav-link">
               Usuarios {data.pileta}:
-              <span className="text-danger"> {data.users.length}</span>
+              <span className="text-danger"> {data.users?.length}</span>
             </li>
           );
         })}

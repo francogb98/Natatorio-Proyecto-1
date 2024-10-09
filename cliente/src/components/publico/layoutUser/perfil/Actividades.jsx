@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { useMutation } from "react-query";
-import { darDeBajaActividad } from "../../../../helpers/usersFetch/darDeBajaActividad";
 
 import style from "./style.module.css";
 
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../context/AuthContext";
+import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 function Actividades() {
   const { auth, userRefetch } = useContext(AuthContext);
@@ -13,7 +13,7 @@ function Actividades() {
   const [darDeBajaStatus, setDarDeBajaStatus] = useState(false);
 
   const darDeBaja = useMutation({
-    mutationFn: darDeBajaActividad,
+    mutationFn: UserFetch.darDeBajaActividad,
     onSuccess: (data) => {
       Swal.fire({
         title: data.status.toUpperCase(),

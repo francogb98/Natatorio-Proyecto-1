@@ -1,7 +1,8 @@
 .body {
-  background-color: #808080;
   height: 100vh;
   overflow: hidden;
+  max-width: 1200px;
+  margin: auto;
   /* display: grid; */
   /* grid-template-columns: 1fr; */
   /* grid-template-rows: 15% 75% 10%; */
@@ -14,15 +15,14 @@
 }
 
 .main {
-  padding-block: 0.4rem;
-  overflow-y: scroll;
+  background-color: #fff;
 }
 
 .sectionMain {
-  background-color: aliceblue;
   height: 80vh;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  max-width: 100%;
 }
 
 .sectionMain::-webkit-scrollbar {

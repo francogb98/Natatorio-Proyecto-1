@@ -1,5 +1,5 @@
 import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
-import Pileta from "../../../models/models/Pileta.js";
+import { Pileta } from "../../../models/index.js";
 import { agregarUsuario } from "./agegarUsuario.js";
 
 export const intercambioDeUsuarios = async () => {

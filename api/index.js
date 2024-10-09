@@ -2,24 +2,14 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 
-import router from "./src/routes/user.js";
-import routerActivity from "./src/routes/activity.js";
-import routerPileta from "./src/routes/pileta.js";
-
 import dotenv from "dotenv";
 dotenv.config();
 
 import "./src/db.js";
-import routerHours from "./src/routes/hours.js";
-
-import routerStadistics from "./src/routes/stadistics.js";
 
 import morgan from "morgan";
 
 import fileUpload from "express-fileupload";
-import rutaAutorizado from "./src/routes/autorizado.router.js";
-import rutaFeed from "./src/routes/feedback.js";
-import rutaUsuarioFalta from "./src/routes/faltaUsuarios.route.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -47,14 +37,26 @@ app.use(
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/user", router);
+
+import {
+  UserRouter,
+  routerActivity,
+  routerHours,
+  routerPileta,
+  routerStadistics,
+} from "./src/routes/index.js";
+
+import rutaUsuarioFalta from "./src/routes/faltaUsuarios.route.js";
+
+app.use("/user", UserRouter);
 app.use("/activity", routerActivity);
-app.use("/hour", routerHours);
 app.use("/pileta", routerPileta);
+app.use("/hour", routerHours);
 app.use("/stadistics", routerStadistics);
-app.use("/autorizado", rutaAutorizado);
-app.use("/feedback", rutaFeed);
-app.use("/falta", rutaUsuarioFalta);
+app.use("/a", rutaUsuarioFalta);
+
+// app.use("/autorizado", rutaAutorizado);
+// app.use("/falta", rutaUsuarioFalta);
 
 server.listen(process.env.PORT, "0.0.0.0", () => {
   console.log("Socket.IO server listening on port", process.env.PORT);

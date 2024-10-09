@@ -1,7 +1,7 @@
 import style from "./styles.module.css";
 
 import { Link } from "react-router-dom";
-import PruebaInscripciones from "./PruebaInscripciones";
+import RegistroActividadesUsuario from "./RegistroActividadesUsuario";
 import { useContext } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
 
@@ -44,10 +44,10 @@ function Inscripcion() {
             </div>
           </div>
         )}
-        <PruebaInscripciones />
+        <RegistroActividadesUsuario />
       </div>
     </div>
   );
 }
 
-export default Inscripcion;
+export { Inscripcion };

@@ -1,10 +1,24 @@
-import React from "react";
-import editar_datos from "../funciones_usuario/editar_datos.hook";
+import React, { useContext } from "react";
 
 import { toast } from "sonner";
+import { useMutation } from "react-query";
+import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
+import { AuthContext } from "../../../context/AuthContext";
 
 function ActividadCard({ actividad, user }) {
-  const { darDeBaja } = editar_datos();
+  const { userRefetch } = useContext(AuthContext);
+
+  const darDeBaja = useMutation({
+    mutationFn: UserFetch.darDeBajaActividad,
+    onSuccess: (data) => {
+      toast.success("Informacion actualizada");
+      userRefetch();
+    },
+    onError: () => {
+      toast.error("Error en el servidor");
+      userRefetch();
+    },
+  });
 
   return (
     <div>

@@ -7,10 +7,10 @@ import Swal from "sweetalert2";
 import style from "./style.module.css";
 
 import Actividades from "./Actividades";
-import { editarPerfilFetch } from "../../../../helpers/usersFetch/editarPerfli";
 import InformacionPersonal from "./InformacionPersonal";
 
 import { AuthContext } from "../../../../context/AuthContext";
+import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 function EditarPerfil() {
   // Crear un estado local para rastrear los cambios
@@ -33,7 +33,7 @@ function EditarPerfil() {
   const [menorEdadAlert, setMenorEdadAlert] = useState(false);
 
   const editarPerfil = useMutation({
-    mutationFn: editarPerfilFetch,
+    mutationFn: UserFetch.editar_informacion,
     onSuccess: async (data) => {
       Swal.fire({
         title: "Usuario Editado",
@@ -165,4 +165,4 @@ function EditarPerfil() {
   );
 }
 
-export default EditarPerfil;
+export { EditarPerfil };

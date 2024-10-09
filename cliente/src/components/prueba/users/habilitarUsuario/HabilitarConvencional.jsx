@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import LoadingTable from "./tablas/LoadingTable";
 import { baseUrl } from "../../../../helpers/url";
@@ -26,7 +26,7 @@ function HabilitarConvencional() {
     return data;
   };
 
-  const { data, isLoading, isError, error, isRefetching, refetch } = useQuery({
+  const { data, isLoading, isRefetching, refetch } = useQuery({
     queryKey: ["usuarios"],
     queryFn: traerUsuarios,
   });
@@ -210,8 +210,14 @@ function HabilitarConvencional() {
         },
         {
           header: "Actividad",
-          accessorKey: "activity.name",
-          cell: ({ row }) => <div>{row.original.activity[0]?.name}</div>,
+          accessorKey: "activity",
+          cell: ({ row }) => (
+            <div>
+              {row.original.activity?.length
+                ? row.original.activity[0].name
+                : null}
+            </div>
+          ),
         },
         {
           header: "fecha de carga",
@@ -240,37 +246,14 @@ function HabilitarConvencional() {
           header: "Inhabilitar",
           accessorKey: "Inhabilitar",
           cell: ({ row }) => (
-            <div div className="d-flex gap-3 flex-wrap justify-content-center">
+            <div className="d-flex gap-3 flex-wrap justify-content-center">
               <button
                 className="btn btn-sm btn-danger"
                 disabled={isRefetching}
                 onClick={() => {
                   inhabilitar.mutate({
                     id: row.original._id,
-                    asunto:
-                      filtro == "certificado"
-                        ? "Certificado no Actualizado a tiempo"
-                        : "Exceso de inasistencias",
-                    cuerpo:
-                      filtro == "certificado"
-                        ? `Debido a que el usuario no actualizo a tiempo su certificado de pediculosis y micosis se le a dado de baja de la actividad: ${
-                            row.original.activity[0].name
-                          }, en los dias: ${row.original.activity[0].date.join(
-                            " - "
-                          )}, en el horario de :${
-                            row.original.activity[0].hourStart
-                          } - ${
-                            row.original.activity[0].hourFinish
-                          }. Por favor actualizar el documento y volver a inscibirse en una actividad. Muchas gracias. atte: Administracion del Natatorio`
-                        : `Debido a que el usuario excedio el limite de faltas se le a dado de baja de la actividad: ${
-                            row.original.activity[0].name
-                          }, en los dias: ${row.original.activity[0].date.join(
-                            " - "
-                          )}, en el horario de :${
-                            row.original.activity[0].hourStart
-                          } - ${
-                            row.original.activity[0].hourFinish
-                          }. Por favor actualizar el documento y volver a inscibirse en una actividad. Muchas gracias. atte:Administracion del Natatorio`,
+                    activityId: row.original.activity[0]._id,
                   });
                 }}
               >
@@ -308,4 +291,4 @@ function HabilitarConvencional() {
   }
 }
 
-export default HabilitarConvencional;
+export { HabilitarConvencional };

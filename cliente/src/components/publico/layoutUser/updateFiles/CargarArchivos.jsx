@@ -1,32 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 import { useMutation } from "react-query";
-
-import { baseUrl } from "../../../../helpers/url";
-
 import { Link } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../context/AuthContext";
-
-const updateFile = async (data) => {
-  const res = await fetch(`${baseUrl}user/upload`, {
-    method: "PUT",
-    headers: {
-      "x-token": localStorage.getItem("token"),
-      authorization: `${localStorage.getItem("token")}`,
-    },
-    body: data,
-  });
-  return res.json();
-};
+import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 function CargarArchivos() {
   const { auth, dispatch } = useContext(AuthContext);
 
   const [imagen, setImagen] = useState();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const [editarFotoPerfil, setEditarFotoPerfil] = useState(false);
@@ -75,7 +59,7 @@ function CargarArchivos() {
     mutation.mutate(formData);
   };
 
-  const mutation = useMutation(updateFile, {
+  const mutation = useMutation(UserFetch.updateFile, {
     onSuccess: (data) => {
       dispatch({ type: "SET_USER", payload: { user: data.user } });
       Swal.fire({

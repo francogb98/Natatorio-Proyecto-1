@@ -1,46 +1,45 @@
 import { Router } from "express";
-import { autorizar } from "../controllers/pileta/autorizar.js";
-import {
-  getInfoPiletasPrueba,
-  agregarUsuarioAPileta,
-  iniciarTurno,
-  eliminarUsuarioDePileta,
-  obtener_pileta,
-} from "../controllers/pileta/controller.pileta.js";
-import User from "../models/models/User.js";
+import { PiletaController } from "../controllers/pileta/controller.pileta.js";
+import { verificacionEstadoUsuarios } from "../controllers/pileta/utilidades/estadoUsuario.js";
 
 const routerPileta = Router();
 
-routerPileta.get("/", getInfoPiletasPrueba);
-routerPileta.patch("/", agregarUsuarioAPileta);
-routerPileta.put("/", iniciarTurno);
-routerPileta.put("/eliminar", eliminarUsuarioDePileta);
-routerPileta.patch("/autorizar", autorizar);
+routerPileta.get("/", PiletaController.getInfoPiletas);
+routerPileta.patch("/", PiletaController.agregarUsuarioAPileta);
+routerPileta.put(
+  "/",
+  PiletaController.verificarCambioDeTurno,
+  verificacionEstadoUsuarios,
+  PiletaController.iniciarTurno
+);
+routerPileta.put("/eliminar", PiletaController.eliminarUsuarioDePileta);
+routerPileta.post("/obtenerPileta", PiletaController.obtener_pileta);
+routerPileta.post("/prueba", verificacionEstadoUsuarios);
 
-routerPileta.post("/obtenerPileta", obtener_pileta);
+// routerPileta.patch("/autorizar", autorizar);
 
-routerPileta.get("/enviar", async (req, res) => {
-  try {
-    const { users } = req.body;
+// routerPileta.get("/enviar", async (req, res) => {
+//   try {
+//     const { users } = req.body;
 
-    for (const user of users) {
-      const userSearch = await User.findOne({ customId: user });
-      //si el certificado expiro y la diferencia es mayor a 10 pero menor a 14 mando una notificacion
-      userSearch.notificaciones.push({
-        asunto: "Actividad dada de baja",
-        cuerpo: `Debido a la no actualizacion del certificado de pediculosis y micosis
-             se le dio de baja de dicha activida, por favor cargar el certificado actualizado y volver a inscribirse en la actividad.
-             Dias. Atte:Natatorio Olimpico`,
-        fecha: fecha,
-      });
+//     for (const user of users) {
+//       const userSearch = await User.findOne({ customId: user });
+//       //si el certificado expiro y la diferencia es mayor a 10 pero menor a 14 mando una notificacion
+//       userSearch.notificaciones.push({
+//         asunto: "Actividad dada de baja",
+//         cuerpo: `Debido a la no actualizacion del certificado de pediculosis y micosis
+//              se le dio de baja de dicha activida, por favor cargar el certificado actualizado y volver a inscribirse en la actividad.
+//              Dias. Atte:Natatorio Olimpico`,
+//         fecha: fecha,
+//       });
 
-      console.log("notificacion mandada", userSearch.customId);
-    }
+//       console.log("notificacion mandada", userSearch.customId);
+//     }
 
-    return res.status(200).json(users);
-  } catch (error) {
-    return res.status(400).json({ msg: error.message });
-  }
-});
+//     return res.status(200).json(users);
+//   } catch (error) {
+//     return res.status(400).json({ msg: error.message });
+//   }
+// });
 
-export default routerPileta;
+export { routerPileta };

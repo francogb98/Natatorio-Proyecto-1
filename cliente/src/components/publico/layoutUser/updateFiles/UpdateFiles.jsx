@@ -11,4 +11,4 @@ function UpdateFiles({ user }) {
   );
 }
 
-export default UpdateFiles;
+export { UpdateFiles };

@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import FormularioBuscarUsuario from "./aside/FormularioBuscarUsuario";
-import info_user_perfil from "./hooks/info_user_perfil";
 import Header from "./Header";
 
 function HomePrueba() {
@@ -32,4 +31,4 @@ function HomePrueba() {
   );
 }
 
-export default HomePrueba;
+export { HomePrueba };

@@ -1,4 +1,4 @@
-import Stadistics from "../models/models/Stadistics.js";
+import { Stadistic } from "../models/index.js";
 import moment from "moment";
 
 import { obtenerFechaYHoraArgentina } from "./traerInfoDelDia.js";
@@ -7,11 +7,10 @@ export const cantidad_inasistecias = async (actividad, asistencia) => {
   const { fecha } = obtenerFechaYHoraArgentina();
 
   try {
-    const estadistica = await Stadistics.find({
+    const estadistica = await Stadistic.find({
       activity: actividad,
     });
 
-    console.log(estadistica);
     const allDays = estadistica.reduce((acc, obj) => {
       acc.push(...obj.dias);
       return acc;
@@ -26,7 +25,6 @@ export const cantidad_inasistecias = async (actividad, asistencia) => {
       );
     });
 
-    console.log(inasistenciasPosteriores);
     return inasistenciasPosteriores.includes(fecha)
       ? inasistenciasPosteriores.length - 1
       : inasistenciasPosteriores.length;

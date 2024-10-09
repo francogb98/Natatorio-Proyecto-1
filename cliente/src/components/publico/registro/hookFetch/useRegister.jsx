@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 import Swal from "sweetalert2";
-import { fetchSinToken } from "../../../../helpers/fetch";
 import { useMutation } from "react-query";
+import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 function useRegister() {
   const [usuario, setUsuario] = useState({
@@ -42,7 +42,7 @@ function useRegister() {
   const [isNatacionAdaptada, setIsNatacionAdaptada] = useState(false);
 
   const registro = useMutation({
-    mutationFn: fetchSinToken,
+    mutationFn: UserFetch.register,
     onSuccess: (data) => {
       if (data.status === "success") {
         Swal.fire({

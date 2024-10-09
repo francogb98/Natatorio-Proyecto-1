@@ -51,9 +51,9 @@ function RegistroUsuarios() {
       header: "Nombre y Apellido",
       accessorKey: "apellido",
       cell: ({ row }) => (
-        <Link
-          to={`usuario/${row.original.customid}`}
-        >{`${row.original.nombre}`}</Link>
+        <Link to={`usuario/${row.original.customid}`}>{`${
+          row.original.nombre
+        } ${row.original.apellido ? row.original.apellido : ""}`}</Link>
       ),
     },
     {
@@ -101,4 +101,4 @@ function RegistroUsuarios() {
   );
 }
 
-export default RegistroUsuarios;
+export { RegistroUsuarios };

@@ -73,4 +73,4 @@ function LayoutUser() {
   );
 }
 
-export default LayoutUser;
+export { LayoutUser };

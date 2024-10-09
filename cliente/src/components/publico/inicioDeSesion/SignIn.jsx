@@ -1,9 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { fetchSinToken } from "../../../helpers/fetch";
-import { useMutation } from "react-query";
 import { Link } from "react-router-dom";
 
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 import style from "./styleSignIn.module.css";
@@ -12,7 +9,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import Logo from "./Logo.jpg";
 
 function SignIn() {
-  const { dispatch, login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const [viewPass, setViewPass] = React.useState(false);
 
@@ -34,10 +31,6 @@ function SignIn() {
     });
   };
 
-  useEffect(() => {
-    if (login.isSuccess) {
-    }
-  }, [login.isSuccess]);
   return (
     <div className={style.container}>
       <div className={`form-group ${style.formBody}`}>

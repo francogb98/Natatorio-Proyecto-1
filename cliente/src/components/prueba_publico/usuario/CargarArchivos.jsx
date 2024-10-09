@@ -1,11 +1,30 @@
-import React, { useState } from "react";
-import editar_datos from "../funciones_usuario/editar_datos.hook";
+import { useContext, useState } from "react";
 
 import { Toaster, toast } from "sonner";
 import UserImages from "../../prueba/users/utilidades/UserImages";
+import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
+import { useMutation } from "react-query";
+import { AuthContext } from "../../../context/AuthContext";
 
 function CargarArchivos({ user }) {
-  const { cargarArchivo } = editar_datos();
+  const { userRefetch } = useContext(AuthContext);
+
+  const cargarArchivo = useMutation({
+    mutationFn: UserFetch.updateFile,
+
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        toast.success("Informacion actualizada");
+      } else {
+        toast.error("Error en el servidor");
+      }
+      userRefetch();
+    },
+    onError: () => {
+      toast.error("Error en el servidor");
+      userRefetch();
+    },
+  });
 
   const [view, setView] = useState(false);
   const [imagen, setImagen] = useState("");

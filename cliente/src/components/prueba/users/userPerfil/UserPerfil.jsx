@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Form, useParams } from "react-router-dom";
-import { baseUrl } from "../../../../helpers/url";
+import { useParams } from "react-router-dom";
 
 import avatar from "../../../../assets/avatar.webp";
 import { AuthContext } from "../../../../context/AuthContext";
@@ -10,31 +9,7 @@ import Acciones_administrador from "./Acciones_administrador";
 import Funciones_administrador from "../hooks/Funciones_administrador";
 import { Toaster, toast } from "sonner";
 import Acciones_mesa_entrada from "./Acciones_mesa_entrada";
-
-export const getUser = async (id) => {
-  try {
-    const response = await fetch(`${baseUrl}user/getinfoUser/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("token")}`,
-      },
-    });
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-const actividadesEspeciales = [
-  "equipo de natacion mdc",
-  "equipo de natacion artistica",
-  "equipo e.n.m.b",
-  "equipo de natacion masters",
-];
+import { UserFetchPrivado } from "../../../../helpers/UserFetchConClases/FETCH-privado/UserFetch-Privado";
 
 function UserPerfil() {
   const { auth } = useContext(AuthContext);
@@ -44,11 +19,12 @@ function UserPerfil() {
 
   const { id } = useParams();
 
-  const { eliminarNotificacion } = Funciones_administrador();
+  const { eliminarNotificacion, inhabilitar, habilitar } =
+    Funciones_administrador();
 
-  const { data, isSuccess, isLoading, refetch, isRefetching } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["getUserData"],
-    queryFn: () => getUser(id),
+    queryFn: () => UserFetchPrivado.getUser(id),
   });
 
   useEffect(() => {
@@ -62,7 +38,7 @@ function UserPerfil() {
   }
 
   if (data.status == "success") {
-    const { user } = data;
+    const user = data.users[0];
 
     return (
       <div className="container">
@@ -95,33 +71,55 @@ function UserPerfil() {
             //   borderRight: "1px solid black",
             // }}
           >
-            {user.activity?.length &&
-              user.activity.map((activity) => (
-                <div key={activity._id} className="mb-3 text-center border p-2">
-                  <h3>
-                    {activity.name.charAt(0).toUpperCase() +
-                      activity.name.slice(1)}
-                  </h3>
+            {user.activity?.map((activity) => (
+              <div key={activity._id} className="mb-3 text-center border p-2">
+                <h3>
+                  {activity.name.charAt(0).toUpperCase() +
+                    activity.name.slice(1)}
+                </h3>
 
-                  <p>
-                    <b>Dias:</b>
-                    {activity.date.join(" - ")}
-                  </p>
-                  <p>
-                    <b>Horario:</b>
-                    {activity.hourStart} - {activity.hourFinish}{" "}
-                  </p>
-                  <p
-                    className={`card-text mb-1 ${
-                      user.status ? "text-success" : "text-danger"
-                    }`}
-                  >
-                    <b className="mb-1">
-                      {user.status ? "Habilitado" : "Esperando Habilitacion"}
-                    </b>
-                  </p>
-                </div>
-              ))}
+                <p>
+                  <b>Dias:</b>
+                  {activity.date.join(" - ")}
+                </p>
+                <p>
+                  <b>Horario:</b>
+                  {activity.hourStart} - {activity.hourFinish}{" "}
+                </p>
+                <p
+                  className={`card-text mb-1 ${
+                    user.status ? "text-success" : "text-danger"
+                  }`}
+                >
+                  <b className="mb-1">
+                    {user.status ? "Habilitado" : "Esperando Habilitacion"}
+                  </b>
+                </p>
+                {user.status && auth.role == "SUPER_ADMIN" ? (
+                  <div className="d-flex justify-content-center gap-4">
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() =>
+                        inhabilitar.mutate({
+                          activityId: activity._id,
+                          id: user._id,
+                        })
+                      }
+                    >
+                      Inhabilitar
+                    </button>
+                    <button
+                      className="btn btn-sm btn-success"
+                      onClick={() => {
+                        habilitar.mutate({ id: user._id });
+                      }}
+                    >
+                      Habilitar
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ))}
           </div>
           {/* Datos */}
           <div className={user.activity?.length ? "col-6" : "col-12"}>
@@ -238,7 +236,7 @@ function UserPerfil() {
 
                           eliminarNotificacion.mutate({
                             idNotificacion: notificacion._id,
-                            idUsuario: user._id,
+                            id: user._id,
                           });
                         }}
                       >
@@ -287,4 +285,4 @@ function UserPerfil() {
   }
 }
 
-export default UserPerfil;
+export { UserPerfil };

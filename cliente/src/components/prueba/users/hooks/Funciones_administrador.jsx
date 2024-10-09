@@ -1,50 +1,10 @@
-import { changeRol } from "../../../../helpers/usersFetch/cambiarRole";
 import { useMutation, useQueryClient } from "react-query";
 import { HabilitarUsuario } from "../../../../helpers/usersFetch/HabilitarUsuario";
-import { inhabilitarUsuario } from "../../../../helpers/usersFetch/inhabilitarUsuario";
-import { deleteNotificacion } from "../../../../helpers/usersFetch/notificaciones/deleteNotificacion";
 import Swal from "sweetalert2";
 import { baseUrl } from "../../../../helpers/url";
 
 import { toast } from "sonner";
-
-export const sendNotificacion = async (content) => {
-  try {
-    const response = await fetch(`${baseUrl}user/enviarNotificacion`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(content),
-    });
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const agregar_actividad = async (content) => {
-  try {
-    const response = await fetch(`${baseUrl}user/agregarUsuarioActividad`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem("token")}`,
-      },
-      body: JSON.stringify(content),
-    });
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
+import { UserFetchPrivado } from "../../../../helpers/UserFetchConClases/FETCH-privado/UserFetch-Privado";
 
 export const getActividades = async () => {
   try {
@@ -60,26 +20,7 @@ export const getActividades = async () => {
 
     const respuesta = await resp.json();
 
-    return respuesta.data;
-  } catch (error) {
-    return error;
-  }
-};
-export const quitar = async ({ id }) => {
-  try {
-    const url = `${baseUrl}falta/${id}`;
-    const token = localStorage.getItem("token");
-    const resp = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json",
-        authorization: token,
-      },
-    });
-
-    const respuesta = await resp.json();
-
-    return respuesta.data;
+    return respuesta;
   } catch (error) {
     return error;
   }
@@ -89,7 +30,7 @@ function Funciones_administrador() {
   const queryClient = useQueryClient();
 
   const cambiar = useMutation({
-    mutationFn: changeRol,
+    mutationFn: UserFetchPrivado.changeRol,
     onSuccess: (data) => {
       if (data.status === "success") {
         toast.success("Usuario Cambiado de rol");
@@ -103,17 +44,20 @@ function Funciones_administrador() {
   });
 
   const inhabilitar = useMutation({
-    mutationFn: inhabilitarUsuario,
+    mutationFn: UserFetchPrivado.inhabilitarUsuario,
 
     onSuccess: (data) => {
       if (data.status === "success") {
         toast.success("Usuario Inhabilitado");
-        quitar_lista.mutate({ id: data.data.user._id });
+        queryClient.invalidateQueries("getUserData");
+        queryClient.invalidateQueries("usuarios");
       } else {
         toast.error(data.message);
       }
     },
-    onError: (error) => {},
+    onError: () => {
+      return false;
+    },
   });
 
   const habilitar = useMutation({
@@ -130,19 +74,26 @@ function Funciones_administrador() {
         });
       }
     },
-    onError: (error) => {},
-  });
-
-  const eliminarNotificacion = useMutation(deleteNotificacion, {
-    onSuccess: () => {
-      toast.success("notificacion eliminada");
-
-      queryClient.invalidateQueries("getUserData");
-      queryClient.invalidateQueries("usuarios");
+    onError: () => {
+      return false;
     },
   });
 
-  const enviarNotificacion = useMutation(sendNotificacion, {
+  //listo
+  const eliminarNotificacion = useMutation(
+    UserFetchPrivado.deleteNotificacion,
+    {
+      onSuccess: () => {
+        toast.success("notificacion eliminada");
+
+        queryClient.invalidateQueries("getUserData");
+        queryClient.invalidateQueries("usuarios");
+      },
+    }
+  );
+
+  //Listo
+  const enviarNotificacion = useMutation(UserFetchPrivado.sendNotificacion, {
     onSuccess: (data) => {
       if (data.status == "success") {
         toast.success("notificacion enviada");
@@ -152,28 +103,23 @@ function Funciones_administrador() {
     },
   });
 
-  const agregar_usuario_actividad = useMutation(agregar_actividad, {
-    onSuccess: (data) => {
-      if (data.status == "success") {
-        toast.success("Usuario agregado a la actividad");
-      }
-      queryClient.invalidateQueries("getUserData");
-      queryClient.invalidateQueries("usuarios");
+  //Listo
+  const agregar_usuario_actividad = useMutation(
+    UserFetchPrivado.agregar_actividad,
+    {
+      onSuccess: (data) => {
+        if (data.status == "success") {
+          toast.success("Usuario agregado a la actividad");
+        }
+        queryClient.invalidateQueries("getUserData");
+        queryClient.invalidateQueries("usuarios");
 
-      if (data.status == "error") {
-        toast.error("Error al agregarusuario");
-      }
-    },
-  });
-
-  const quitar_lista = useMutation(quitar, {
-    onSuccess: () => {
-      toast.info("Usuario quitado de la lista");
-
-      queryClient.invalidateQueries("getUserData");
-      queryClient.invalidateQueries("usuarios");
-    },
-  });
+        if (data.status == "error") {
+          toast.error("Error al agregarusuario");
+        }
+      },
+    }
+  );
 
   return {
     cambiar,
@@ -182,7 +128,6 @@ function Funciones_administrador() {
     eliminarNotificacion,
     enviarNotificacion,
     agregar_usuario_actividad,
-    quitar_lista,
   };
 }
 

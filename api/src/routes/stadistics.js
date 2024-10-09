@@ -1,14 +1,13 @@
 import { Router } from "express";
 
 import { validarJWT } from "../middlewares/validar-jwt.js";
-
-import Stadistics from "../models/models/Stadistics.js";
+import { Stadistic } from "../models/index.js";
 
 const routerStadistics = Router();
 
 routerStadistics.get("/getStadistics", validarJWT, async (req, res) => {
   try {
-    const stadistics = await Stadistics.find({}).populate({
+    const stadistics = await Stadistic.find({}).populate({
       path: "activity",
     });
     res.json({ status: "ok", stadistics });
@@ -18,4 +17,4 @@ routerStadistics.get("/getStadistics", validarJWT, async (req, res) => {
   }
 });
 
-export default routerStadistics;
+export { routerStadistics };

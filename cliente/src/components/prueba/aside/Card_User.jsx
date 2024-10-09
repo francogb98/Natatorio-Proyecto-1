@@ -25,7 +25,7 @@ function calcular_fecha(fecha_carga) {
   return diasPasados;
 }
 
-function Card_User({ user, inasistencia }) {
+function Card_User({ user }) {
   const { auth } = useContext(AuthContext);
 
   const {
@@ -121,6 +121,7 @@ function Card_User({ user, inasistencia }) {
                           agregarUsuario.mutate({
                             customId: user.customId,
                             nombre: user.nombre,
+                            apellido: user.apellido,
                             actividad: activity.name,
                             pileta: activity.pileta,
                             horarioIngreso: activity.hourStart,

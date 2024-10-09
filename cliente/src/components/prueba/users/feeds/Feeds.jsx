@@ -153,4 +153,4 @@ function Feeds() {
   );
 }
 
-export default Feeds;
+export { Feeds };

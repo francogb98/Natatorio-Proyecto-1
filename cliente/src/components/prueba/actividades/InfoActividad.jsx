@@ -107,4 +107,4 @@ function InfoActividad() {
   }
 }
 
-export default InfoActividad;
+export { InfoActividad };

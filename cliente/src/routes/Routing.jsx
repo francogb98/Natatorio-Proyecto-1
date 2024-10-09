@@ -2,35 +2,35 @@ import { useContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-import Registro from "../components/publico/registro/RegistroPrueba";
+import Registro from "../components/publico/registro/Registro";
 import SignIn from "../components/publico/inicioDeSesion/SignIn";
-import Inscripcion from "../components/publico/layoutUser/inscripcion/Inscripcion";
-import Feed from "../components/publico/layoutUser/perfil/Feed";
 
-import UpdateFiles from "../components/publico/layoutUser/updateFiles/UpdateFiles";
-import HomeUser from "../components/publico/layoutUser/home/HomeUser";
-import Notificaciones from "../components/publico/layoutUser/notificaciones/Notificaciones";
-import EditarPerfil from "../components/publico/layoutUser/perfil/EditarPerfil";
 import RecuperarContraseña from "../components/publico/recuperarContraseña/RecuperarContraseña";
-import Publico from "../components/publico/vistas/Publico";
-import LayoutUser from "../components/prueba_publico/usuario/LayoutUser";
-import Actividades_lista from "../components/prueba_publico/actividades/Actividades_lista";
-import PruebaInscripciones from "../components/publico/layoutUser/inscripcion/PruebaInscripciones";
 
-import HomePrueba from "../components/prueba/HomePrueba";
-import Layout from "../components/prueba/piletas/buscarPileta/Layout";
+import {
+  HomePrueba,
+  RegistroUsuarios,
+  CreateActivity_prueba,
+  Feeds,
+  HabilitarConvencional,
+  InfoActividad,
+  Layout,
+  ListActivity,
+  UserPerfil,
+} from "../components/prueba/index";
 
-import RegistroUsuarios from "../components/prueba/piletas/RegistroUsuarios";
-import UserPerfil from "../components/prueba/users/userPerfil/UserPerfil";
-import HabilitarConvencional from "../components/prueba/users/habilitarUsuario/HabilitarConvencional";
-import Feeds from "../components/prueba/users/feeds/Feeds";
-
-import ListActivity from "../components/prueba/actividades/ListActivity";
-import InfoActividad from "../components/prueba/actividades/InfoActividad";
-import CreateActivity_prueba from "../components/prueba/actividades/CreateActivity";
+import {
+  EditarPerfil,
+  HomeUser,
+  Inscripcion,
+  LayoutUser,
+  Notificaciones,
+  Publico,
+  UpdateFiles,
+} from "../components/publico";
 
 function Routing() {
-  const { auth, restart, recargando, setRecargando } = useContext(AuthContext);
+  const { auth, restart, setRecargando } = useContext(AuthContext);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -89,7 +89,6 @@ function Routing() {
                 <Route path="perfil" element={<LayoutUser />} />
                 <Route path="perfil/editarPerfil" element={<EditarPerfil />} />
                 <Route path="notificaciones" element={<Notificaciones />} />
-                <Route path="feedback" element={<Feed />} />
               </Route>
             </>
           )}

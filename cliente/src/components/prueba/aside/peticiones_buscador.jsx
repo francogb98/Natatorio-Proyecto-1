@@ -4,33 +4,8 @@ import { useEffect, useState } from "react";
 
 import Swal from "sweetalert2";
 import { toast } from "sonner";
-
-const getUser = async (filtro) => {
-  const res = await fetch(`${baseUrl}user/findUser`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `${localStorage.getItem("token")}`,
-    },
-    body: JSON.stringify({ filtro }),
-  });
-  const data = await res.json();
-
-  return data;
-};
-
-const agregarUsuarioAlTurno = async (content) => {
-  // es la peticion de arriba pero es un patch y tengo que enviar un body
-  const res = await fetch(`${baseUrl}pileta`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(content),
-  });
-  const data = await res.json();
-  return data;
-};
+import { UserFetchPrivado } from "../../../helpers/UserFetchConClases/FETCH-privado/UserFetch-Privado";
+import { PiletaFetch } from "../../../helpers/piletas/Pileta-Fetch";
 
 const agregarUsuarioAlistaAutorizados = async (content) => {
   // es la peticion de arriba pero es un patch y tengo que enviar un body
@@ -63,7 +38,7 @@ function peticiones_buscador() {
 
   const queryClient = useQueryClient();
 
-  const buscarUsuario = useMutation(getUser, {
+  const buscarUsuario = useMutation(UserFetchPrivado.getUser, {
     onSuccess: (data) => {
       if (data.status == "success") {
         setUserEncontrado(true);
@@ -95,7 +70,7 @@ function peticiones_buscador() {
     },
   });
   const agregarUsuario = useMutation({
-    mutationFn: agregarUsuarioAlTurno,
+    mutationFn: PiletaFetch.agregarUsuarioAlTurno,
     onSuccess: (data) => {
       if (data.status === "success") {
         toast.success("Usuario agregado");

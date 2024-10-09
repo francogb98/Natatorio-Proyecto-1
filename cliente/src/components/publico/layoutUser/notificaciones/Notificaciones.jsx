@@ -4,13 +4,13 @@ import style from "./style.module.css";
 
 import { useMutation } from "react-query";
 
-import { updateNotificacion } from "../../../../helpers/usersFetch/notificaciones/updateNotificacion";
 import { AuthContext } from "../../../../context/AuthContext";
+import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 function Notificaciones() {
   const { auth, userRefetch } = useContext(AuthContext);
 
-  const mutation = useMutation(updateNotificacion, {
+  const mutation = useMutation(UserFetch.updateNotificacion, {
     onSuccess: () => {
       userRefetch();
     },
@@ -37,6 +37,7 @@ function Notificaciones() {
                       ? () => {
                           mutation.mutate({
                             idNotificacion: notificacion._id,
+                            userId: auth.user._id,
                           });
                         }
                       : null
@@ -65,4 +66,4 @@ function Notificaciones() {
   );
 }
 
-export default Notificaciones;
+export { Notificaciones };
