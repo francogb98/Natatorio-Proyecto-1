@@ -120,7 +120,7 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
           // Verificar si alguna de las respuestas fue un error
           if (resp.some((result) => !result)) {
             const error = new Error("Error al dar de baja al usuario");
-            return res.status(400).json({ error: error.message });
+            console.log(error.message);
           }
         }
 
