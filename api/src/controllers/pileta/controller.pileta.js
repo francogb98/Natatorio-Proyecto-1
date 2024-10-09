@@ -16,6 +16,11 @@ export class PiletaController {
         dia: fecha,
         hora: hora,
       });
+
+      piletas[1].users.map((user) => {
+        console.log(user);
+      });
+
       return res.status(200).json({ resultado: piletas });
     } catch (error) {
       console.log(error.message, "es aqio");

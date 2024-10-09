@@ -4,6 +4,7 @@ import { Pileta } from "../../../models/index.js";
 export const agregarUsuario = async ({
   customId,
   nombre,
+  apellido,
   actividad,
   pileta,
   horarioIngreso,
@@ -32,6 +33,7 @@ export const agregarUsuario = async ({
           users: {
             customid: customId,
             nombre: nombre,
+            apellido,
             pileta: pileta,
             actividad: actividad,
             horarioSalida: horarioSalida,
