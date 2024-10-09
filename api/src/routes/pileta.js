@@ -8,7 +8,6 @@ routerPileta.get("/", PiletaController.getInfoPiletas);
 routerPileta.patch("/", PiletaController.agregarUsuarioAPileta);
 routerPileta.put(
   "/",
-  PiletaController.verificarCambioDeTurno,
   verificacionEstadoUsuarios,
   PiletaController.iniciarTurno
 );

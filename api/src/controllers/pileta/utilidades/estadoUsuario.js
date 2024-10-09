@@ -124,20 +124,20 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
           }
         }
 
-        if (!user.notificaciones) {
-          user.notificaciones = [];
-        }
+        // if (!user.notificaciones) {
+        //   user.notificaciones = [];
+        // }
 
-        if (expiro > 9 && expiro < 14) {
-          user.notificaciones.push({
-            asunto: "Actualizar Certificado Pediculosis y Micosis",
-            cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
-              14 - expiro
-            } Dias. Atte: Natatorio Olimpico`,
-            fecha: fecha,
-          });
-          await user.save(); // Guardar cambios en las notificaciones
-        }
+        // if (expiro > 9 && expiro < 14) {
+        //   user.notificaciones.push({
+        //     asunto: "Actualizar Certificado Pediculosis y Micosis",
+        //     cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
+        //       14 - expiro
+        //     } Dias. Atte: Natatorio Olimpico`,
+        //     fecha: fecha,
+        //   });
+        //   await user.save(); // Guardar cambios en las notificaciones
+        // }
 
         if (expiro > 14) {
           let falta = await UsuariosFalta.findOne({
