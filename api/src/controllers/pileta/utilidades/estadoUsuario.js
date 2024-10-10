@@ -92,12 +92,6 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
     const allUsers = activities.flatMap((activity) => activity.users);
     await Promise.all(
       allUsers.map(async (user) => {
-        if (!user.fechaCargaCertificadoHongos) {
-          user.fechaCargaCertificadoHongos = fecha;
-        }
-
-        const expiro = calcular_fecha(user.fechaCargaCertificadoHongos);
-
         let ultimaAsistencia = user.asistencia[user.asistencia.length - 1];
         if (typeof ultimaAsistencia !== "string") {
           ultimaAsistencia = fecha;
@@ -122,40 +116,45 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
             const error = new Error("Error al dar de baja al usuario");
             console.log(error.message);
           }
-        }
+        } else {
+          if (!user.fechaCargaCertificadoHongos) {
+            user.fechaCargaCertificadoHongos = fecha;
+          }
 
-        // if (!user.notificaciones) {
-        //   user.notificaciones = [];
-        // }
+          const expiro = calcular_fecha(user.fechaCargaCertificadoHongos);
 
-        // if (expiro > 9 && expiro < 14) {
-        //   user.notificaciones.push({
-        //     asunto: "Actualizar Certificado Pediculosis y Micosis",
-        //     cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
-        //       14 - expiro
-        //     } Dias. Atte: Natatorio Olimpico`,
-        //     fecha: fecha,
-        //   });
-        //   await user.save(); // Guardar cambios en las notificaciones
-        // }
+          if (!user.notificaciones) {
+            user.notificaciones = [];
+          }
 
-        if (expiro > 14) {
-          let falta = await UsuariosFalta.findOne({
-            motivo: "certificado_expirado",
-          });
-
-          if (!falta) {
-            const nuevo = new UsuariosFalta({
-              motivo: "certificado_expirado",
-              users: [user],
+          if (expiro > 35 && expiro < 45) {
+            user.notificaciones.push({
+              asunto: "Actualizar Certificado Pediculosis y Micosis",
+              cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
+                45 - expiro
+              } Dias. Atte: Natatorio Olimpico`,
+              fecha: fecha,
             });
-            await nuevo.save();
-          } else {
-            await UsuariosFalta.findOneAndUpdate(
-              { motivo: "certificado_expirado" },
-              { $addToSet: { users: user._id } },
-              { new: true }
-            );
+            await user.save();
+          }
+          if (expiro >= 45) {
+            let falta = await UsuariosFalta.findOne({
+              motivo: "certificado_expirado",
+            });
+
+            if (!falta) {
+              const nuevo = new UsuariosFalta({
+                motivo: "certificado_expirado",
+                users: [user],
+              });
+              await nuevo.save();
+            } else {
+              await UsuariosFalta.findOneAndUpdate(
+                { motivo: "certificado_expirado" },
+                { $addToSet: { users: user._id } },
+                { new: true }
+              );
+            }
           }
         }
       })

@@ -145,17 +145,6 @@ export class PiletaController {
 
   static verificarCambioDeTurno = async (req, res, next) => {
     try {
-      next();
-    } catch (error) {
-      return res.status(400).json({
-        status: "error",
-        message: "Error en el servidor",
-      });
-    }
-  };
-
-  static iniciarTurno = async (req, res) => {
-    try {
       const { hora, fecha } = obtenerFechaYHoraArgentina();
       const resultado = await Pileta.find({
         dia: fecha,
@@ -167,6 +156,17 @@ export class PiletaController {
           message: "Todavia no es hora de cambiar el turno",
         });
       }
+      next();
+    } catch (error) {
+      return res.status(400).json({
+        status: "error",
+        message: "Error en el servidor",
+      });
+    }
+  };
+
+  static iniciarTurno = async (req, res) => {
+    try {
       const crear = await crearPileta();
       if (crear.status == "error") {
         return res
