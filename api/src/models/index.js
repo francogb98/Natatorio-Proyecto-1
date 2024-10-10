@@ -1,3 +1,5 @@
+export { Peticion } from "./Peticiones.js";
+
 export { UsuariosFalta } from "./UsuariosFaltas.js";
 
 export { Horarios } from "./Horarios.js";

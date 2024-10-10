@@ -42,22 +42,18 @@ import {
   UserRouter,
   routerActivity,
   routerHours,
+  routerPeticiones,
   routerPileta,
   routerStadistics,
 } from "./src/routes/index.js";
-
-import rutaUsuarioFalta from "./src/routes/faltaUsuarios.route.js";
 
 app.use("/user", UserRouter);
 app.use("/activity", routerActivity);
 app.use("/pileta", routerPileta);
 app.use("/hour", routerHours);
 app.use("/stadistics", routerStadistics);
-app.use("/a", rutaUsuarioFalta);
-
-// app.use("/autorizado", rutaAutorizado);
-// app.use("/falta", rutaUsuarioFalta);
+app.use("/peticion", routerPeticiones);
 
 server.listen(process.env.PORT, "0.0.0.0", () => {
-  console.log("Socket.IO server listening on port", process.env.PORT);
+  console.log("Servidor corriendo en el puerto: ", process.env.PORT);
 });
