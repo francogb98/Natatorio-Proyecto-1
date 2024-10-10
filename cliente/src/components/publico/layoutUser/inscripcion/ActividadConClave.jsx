@@ -19,7 +19,7 @@ const getActividadPorClave = async (clave) => {
   }
 };
 
-function ActividadConClave({ registerInActivity }) {
+function ActividadConClave({ registerInActivity, auth }) {
   const [actividadConClave, setActividadConClave] = useState(null);
   const [clave, setClave] = useState("");
   const [cargando, setCargando] = useState(false);
@@ -108,6 +108,7 @@ function ActividadConClave({ registerInActivity }) {
               onClick={() => {
                 registerInActivity.mutate({
                   idActividad: actividadConClave._id,
+                  userId: auth.user._id,
                 });
               }}
             >

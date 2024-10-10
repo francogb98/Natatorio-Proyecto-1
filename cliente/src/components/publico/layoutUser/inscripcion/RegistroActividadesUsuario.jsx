@@ -268,7 +268,10 @@ function RegistroActividadesUsuario() {
         </div>
 
         <hr />
-        <ActividadConClave registerInActivity={registerInActivity} />
+        <ActividadConClave
+          registerInActivity={registerInActivity}
+          auth={auth}
+        />
 
         <div
           className="modal fade"
