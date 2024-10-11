@@ -29,32 +29,28 @@ async function dar_de_baja({ userID, actividad, diferenciaDias }) {
     const activity = await Activity.findOneAndUpdate(
       { _id: actividad },
       { $pull: { users: user._id } },
-      //disminuyo el campo de userregister
       { new: true }
     );
 
     let asunto = "Baja de actividad";
     let cuerpo = `Usted ha sido dado de baja de la actividad: ${
       activity.name
-    } , en el horario de: en el horario de: ${activity.hourStart} - ${
+    }, en el horario de: ${activity.hourStart} - ${
       activity.hourFinish
     }, en los dias: ${activity.date.join(
       " - "
-    )}. Debido a que pasaron mas de ${diferenciaDias} Dias de su ultima asistencia.Ultima asistencia registrada: ${
+    )}. Debido a que pasaron más de ${diferenciaDias} días de su última asistencia. Última asistencia registrada: ${
       user.asistencia[user.asistencia.length - 1]
-    } .Por cualquier duda comunicarse con administracion.`;
+    }. Por cualquier duda comunicarse con administración.`;
 
-    //borro el campo activity del usuario
     user.activity = user.activity.filter(
       (activity) => activity._id.toString() !== actividad.toString()
     );
 
-    //creo una notificacion para el usuario
-
+    // Crear notificación
     if (!user.notificaciones) {
       user.notificaciones = [];
     }
-
     user.notificaciones.push({
       asunto: asunto,
       cuerpo: cuerpo,
@@ -73,10 +69,7 @@ async function dar_de_baja({ userID, actividad, diferenciaDias }) {
 export const verificacionEstadoUsuarios = async (req, res, next) => {
   try {
     const { horaAnterior, fecha } = obtenerFechaYHoraArgentina();
-
-    let date = new Date().toLocaleDateString("es-ES", {
-      weekday: "long",
-    });
+    let date = new Date().toLocaleDateString("es-ES", { weekday: "long" });
     date = date.charAt(0).toUpperCase() + date.slice(1);
     if (date === "Miércoles") date = "Miercoles";
 
@@ -86,22 +79,20 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
       hourStart: horaAnterior,
     }).populate({
       path: "users",
-      select: "customId fechaCargaCertificadoHongos asistencia activity", // Selecciona solo lo necesario
+      select: "customId fechaCargaCertificadoHongos asistencia activity",
     });
 
     const allUsers = activities.flatMap((activity) => activity.users);
+
     await Promise.all(
       allUsers.map(async (user) => {
-        let ultimaAsistencia = user.asistencia[user.asistencia.length - 1];
-        if (typeof ultimaAsistencia !== "string") {
-          ultimaAsistencia = fecha;
-        }
+        let ultimaAsistencia =
+          user.asistencia[user.asistencia.length - 1] || fecha;
         const diferenciaDias = calcular_fecha(ultimaAsistencia);
 
-        //SI PASARON MAS DE 30 DIAS DOY DE BAJA AL USUARIO
+        // Si pasaron más de 30 días, dar de baja al usuario
         if (diferenciaDias > 30) {
-          // Usar Promise.all para manejar múltiples promesas
-          const resp = await Promise.all(
+          await Promise.all(
             user.activity.map(async (actividad) => {
               return await dar_de_baja({
                 userID: user._id,
@@ -110,17 +101,9 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
               });
             })
           );
-
-          // Verificar si alguna de las respuestas fue un error
-          if (resp.some((result) => !result)) {
-            const error = new Error("Error al dar de baja al usuario");
-            console.log(error.message);
-          }
         } else {
-          if (!user.fechaCargaCertificadoHongos) {
-            user.fechaCargaCertificadoHongos = fecha;
-          }
-
+          user.fechaCargaCertificadoHongos =
+            user.fechaCargaCertificadoHongos || fecha;
           const expiro = calcular_fecha(user.fechaCargaCertificadoHongos);
 
           if (!user.notificaciones) {
@@ -130,18 +113,17 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
           if (expiro > 35 && expiro < 45) {
             user.notificaciones.push({
               asunto: "Actualizar Certificado Pediculosis y Micosis",
-              cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o sera dado de baja en los proximos ${
+              cuerpo: `Por favor Actualizar certificado de Pediculosis y Micosis o será dado de baja en los próximos ${
                 45 - expiro
-              } Dias. Atte: Natatorio Olimpico`,
+              } días. Atte: Natatorio Olimpico`,
               fecha: fecha,
             });
-            await user.save();
           }
+
           if (expiro >= 45) {
             let falta = await UsuariosFalta.findOne({
               motivo: "certificado_expirado",
             });
-
             if (!falta) {
               const nuevo = new UsuariosFalta({
                 motivo: "certificado_expirado",
@@ -157,6 +139,9 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
             }
           }
         }
+
+        // Guarda el usuario una sola vez
+        await user.save();
       })
     );
 

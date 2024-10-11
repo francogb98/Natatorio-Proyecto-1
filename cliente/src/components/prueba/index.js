@@ -1,3 +1,5 @@
+export { PeticionesLayout } from "./peticiones/PeticionesLayout";
+
 export { CreateActivity_prueba } from "./actividades/CreateActivity";
 export { HabilitarConvencional } from "./users/habilitarUsuario/HabilitarConvencional";
 

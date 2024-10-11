@@ -103,14 +103,15 @@ function Header() {
                 Habilitar Adaptada
               </Link>
             </li>
-            {/* <li>
-              <Link className="dropdown-item border-top" to="habilitar/faltas">
-                Faltas
-              </Link>
-            </li> */}
+
             <li>
               <Link className="dropdown-item" to="habilitar/certificado">
                 Certificado
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="peticiones">
+                Peticiones
               </Link>
             </li>
           </ul>
@@ -142,6 +143,11 @@ function Header() {
             <li>
               <Link className="dropdown-item" to="habilitar/certificado">
                 Certificado
+              </Link>
+            </li>
+            <li>
+              <Link className="dropdown-item" to="peticiones">
+                Peticiones
               </Link>
             </li>
           </ul>

@@ -2,6 +2,7 @@ import { baseUrl } from "../url";
 
 export class peticiones {
   static getPeticiones = async (estado) => {
+    console.log(estado);
     const res = await fetch(`${baseUrl}peticion/${estado}`, {
       method: "GET",
       headers: {

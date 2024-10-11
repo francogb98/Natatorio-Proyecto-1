@@ -12,6 +12,11 @@ const schema = new mongoose.Schema(
     asunto: { type: String, required: true }, // Asunto de la petición
     motivo: { type: String }, // Motivo de la petición (opcional)
     estado: { type: String, default: "pendiente" }, // Estado inicial de la petición
+    pedido: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
   { timestamps: true }
 ); // Añadir timestamps para createdAt y updatedAt

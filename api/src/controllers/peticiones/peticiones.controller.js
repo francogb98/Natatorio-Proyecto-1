@@ -1,9 +1,17 @@
 import { Peticion, User, Activity } from "../../models/index.js";
 import PeticionesService from "./peticiones.service.js";
 
+const estado = {
+  aceptado: "aceptado",
+  pendiente: "pendiente",
+  denegado: "denegado",
+};
+
 export class peticionesController {
   static createPeticion = async (req, res) => {
     try {
+      const { id } = req.user;
+      console.log(id);
       const { userId, actividadId } = req.params;
       const { motivo, asunto, activityBaja } = req.body;
 
@@ -44,6 +52,7 @@ export class peticionesController {
       const existingPeticion = await Peticion.findOne({
         user: userId,
         activity: actividadId,
+        estado: estado.pendiente,
       });
       if (existingPeticion) {
         return res.status(400).json({
@@ -55,7 +64,8 @@ export class peticionesController {
       const peticion = new Peticion({
         user: user._id,
         activity: activity._id,
-        estado: "pendiente",
+        pedido: id,
+        estado: estado.pendiente,
         motivo: motivo ?? "",
         asunto: asunto ?? "",
       });
@@ -77,9 +87,21 @@ export class peticionesController {
   static getPeticiones = async (req, res) => {
     try {
       const { estado } = req.params;
-      const peticiones = await Peticion.find({ estado })
-        .populate("activity")
-        .populate("user");
+      let peticiones;
+      if (estado === "todas") {
+        peticiones = await Peticion.find()
+          .populate("activity")
+          .populate("user")
+          .populate("activityBaja")
+          .populate("pedido");
+      } else {
+        peticiones = await Peticion.find({ estado })
+          .populate("activity")
+          .populate("user")
+          .populate("activityBaja")
+          .populate("pedido");
+      }
+
       return res.status(200).json({ peticiones });
     } catch (error) {
       console.log(error.message);
@@ -105,7 +127,7 @@ export class peticionesController {
         });
 
         if (result) {
-          peticion.estado = "acepatada";
+          peticion.estado = "aceptada";
           await peticion.save();
           return res.status(200).json({
             status: "success",
@@ -128,7 +150,7 @@ export class peticionesController {
           activityId: peticion.activity,
         });
         if (result) {
-          peticion.estado = "acepatada";
+          peticion.estado = estado.aceptado;
           await peticion.save();
           return res.status(200).json({
             status: "success",
@@ -159,7 +181,7 @@ export class peticionesController {
         });
 
         if (result) {
-          peticion.estado = "acepatada"; // Cambiar el estado de la petición
+          peticion.estado = estado.aceptado; // Cambiar el estado de la petición
           await peticion.save();
           return res.status(200).json({
             status: "success",
@@ -185,7 +207,7 @@ export class peticionesController {
       const peticion = await Peticion.findOneAndUpdate(
         { _id: id }, // Filtro para encontrar la petición
         {
-          estado: "denegada", // Actualiza el estado
+          estado: estado.denegado, // Actualiza el estado
           motivo: motivo, // Actualiza el motivo
         },
         { new: true } // Devuelve el documento actualizado

@@ -57,7 +57,7 @@ class PeticionesService {
       }
 
       user.activity = user.activity.filter(
-        (activity) => activity._id.toString() !== activityId
+        (activity) => activity._id.toString() !== activityId.toString()
       );
 
       user.notificaciones = user.notificaciones || [];

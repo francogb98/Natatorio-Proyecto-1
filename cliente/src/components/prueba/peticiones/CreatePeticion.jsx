@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { toast } from "sonner";
 

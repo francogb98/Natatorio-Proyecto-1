@@ -17,6 +17,7 @@ import {
   Layout,
   ListActivity,
   UserPerfil,
+  PeticionesLayout,
 } from "../components/prueba/index";
 
 import {
@@ -118,6 +119,7 @@ function Routing() {
                 path="habilitar/:filtro"
                 element={<HabilitarConvencional />}
               />
+              <Route path="peticiones" element={<PeticionesLayout />} />
             </Route>
           </>
         ) : (

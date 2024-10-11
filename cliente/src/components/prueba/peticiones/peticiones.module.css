@@ -1,0 +1,65 @@
+.cards__container{
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: center;
+}
+
+.header{
+    margin-bottom: 20px;
+}
+
+.loading{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card__body{
+    padding: 15px;
+    min-width: 350px;
+    max-width: 350px;
+    min-height: 400px;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3px;
+}
+
+.card__user{
+    text-align: center;
+}
+
+
+.buttons__body{
+    display: flex;
+    justify-content: space-around;
+}
+
+.img__container {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0,0.7);
+    position: absolute;
+    top: 0;
+    left: 0; /* Asegúrate de que ocupa desde la esquina superior izquierda */
+    overflow: hidden; /* Evita que la imagen se desborde */
+    display: flex;
+    justify-content: center;
+}
+.btn__close {
+    width: fit-content;
+    height: fit-content;
+    position: absolute; /* Posiciona el botón de manera absoluta */
+    right: 20px; /* Ajusta la distancia desde la derecha */
+    top: 15%; /* Ajusta la distancia desde la parte superior */
+}
+
+.img {
+    width: 60%;
+    height: 80%;
+    margin:auto;
+    position: absolute; /* Posiciona el botón de manera absoluta */
+    top: 15%; /* Ajusta la distancia desde la parte superior */
+}
