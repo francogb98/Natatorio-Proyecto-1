@@ -200,12 +200,10 @@ export class PiletaController {
         "users.customid": customid,
       });
 
-      console.log(pileta);
       pileta.users = pileta.users.filter((user) => user.customid !== customid);
 
       await pileta.save();
 
-      console.log(pileta);
       return res.status(200).json({
         status: "success",
         pileta,

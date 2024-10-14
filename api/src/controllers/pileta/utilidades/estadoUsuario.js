@@ -58,7 +58,6 @@ async function dar_de_baja({ userID, actividad, diferenciaDias }) {
     });
 
     await user.save();
-    console.log({ usuario: user.customId });
     return true;
   } catch (error) {
     console.log(error.message);
@@ -84,6 +83,7 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
 
     const allUsers = activities.flatMap((activity) => activity.users);
 
+    const savedUsers = new Set();
     await Promise.all(
       allUsers.map(async (user) => {
         let ultimaAsistencia =
@@ -101,6 +101,7 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
               });
             })
           );
+          return;
         } else {
           user.fechaCargaCertificadoHongos =
             user.fechaCargaCertificadoHongos || fecha;
@@ -129,7 +130,6 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
                 motivo: "certificado_expirado",
                 users: [user],
               });
-              await nuevo.save();
             } else {
               await UsuariosFalta.findOneAndUpdate(
                 { motivo: "certificado_expirado" },
@@ -141,7 +141,7 @@ export const verificacionEstadoUsuarios = async (req, res, next) => {
         }
 
         // Guarda el usuario una sola vez
-        await user.save();
+        return;
       })
     );
 
