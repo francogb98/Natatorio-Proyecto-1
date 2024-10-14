@@ -2,10 +2,12 @@ import { useMutation, useQueryClient } from "react-query";
 import style from "./peticiones.module.css";
 import { peticiones } from "../../../helpers/Peticiones/peticiones.helpers";
 import { toast, Toaster } from "sonner";
-import UserImages from "../users/utilidades/UserImages";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../../context/AuthContext";
 
 function PeticionCard({ peticion }) {
+  const { auth } = useContext(AuthContext);
+
   const [imagen, setImagen] = useState(peticion.user.certificadoHongos);
   const [view, setView] = useState(false);
   const colorBorde = {
@@ -135,7 +137,7 @@ function PeticionCard({ peticion }) {
             )}
           </section>
 
-          {peticion.estado === "pendiente" && (
+          {peticion.estado === "pendiente" && auth.role == "SUPER_ADMIN" && (
             <div className={style.buttons__body}>
               <button
                 className="btn btn-sm btn-success"

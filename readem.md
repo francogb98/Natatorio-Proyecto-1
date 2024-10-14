@@ -1,11 +1,9 @@
-## hacer la logica para peticiones en el front end
+## Hacer responsive la aprte de peticiones
 
 
-## si se niega la solicitud mandar una notificacion al usuario con el motivo
+## empezar a cambiar el layout de usuarios
 
-
-
-
+## ver el problema de actividades
 
 <div className="spinner-border text-primary mt-2" role="status">
       <span className="visually-hidden">Loading...</span>
