@@ -156,7 +156,7 @@ function Header() {
 
       <li>
         <button className="mt-1 btn btn-sm btn-warning" onClick={cerrarSesion}>
-          Cerrar cesion
+          <i className="bi bi-box-arrow-left fw-bold"></i>
         </button>
       </li>
     </nav>
