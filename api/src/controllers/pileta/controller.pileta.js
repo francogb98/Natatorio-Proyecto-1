@@ -1,4 +1,4 @@
-import { Pileta, User, Stadistic } from "../../models/index.js";
+import { Pileta, User, Stadistic, Activity } from "../../models/index.js";
 
 import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 
@@ -239,6 +239,60 @@ export class PiletaController {
       console.log(error.message);
     }
   };
+
+  static sin_conexion = async (req, res) => {
+    try {
+      const { horaAnterior, fecha } = obtenerFechaYHoraArgentina();
+      let date = new Date().toLocaleDateString("es-ES", { weekday: "long" });
+      date = date.charAt(0).toUpperCase() + date.slice(1);
+      if (date === "Miércoles") date = "Miercoles";
+
+      const crear = await crearPileta();
+      if (crear.status == "error") {
+        return res
+          .status(400)
+          .json({ status: "error", message: "error en el servidor" });
+      }
+
+      // Buscar actividades de la hora actual
+      const activities = await Activity.find({
+        date: { $in: [date] },
+        hourStart: horaAnterior,
+      }).populate({
+        path: "users",
+        select: "customId asistencia activity",
+      });
+      const allUsers = activities.flatMap((activity) => activity.users);
+
+      await Promise.all(
+        allUsers.map(async (user) => {
+          const resultadoAsistencia = await asistenciaUsuario(
+            user.customId,
+            fecha
+          );
+          if (resultadoAsistencia.status === "error") {
+            return res
+              .status(400)
+              .json({ status: "error", message: resultado.message });
+          }
+        })
+      );
+
+      return res
+        .status(200)
+        .json({
+          message: "Turno anulado. Asistencia colocada a los usuarios",
+          status: "success",
+        });
+    } catch (error) {
+      console.log(error.message);
+
+      return res.status(500).json({
+        message: "Error en el servidor, hable con el administrador",
+        status: "error",
+      });
+    }
+  };
 }
 
 const actualizarEstadistica = async (user) => {
@@ -292,12 +346,13 @@ const asistenciaUsuario = async (customId, fecha) => {
       },
       { new: true }
     );
+
+    console.log({ usuario: user.customId, asisntencia: user.asistencia });
     return {
       status: "success",
-      user,
     };
   } catch (error) {
     console.log(error.message);
-    res.status(400).json({ status: "error" });
+    return res.status(400).json({ status: "error" });
   }
 };

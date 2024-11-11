@@ -36,6 +36,27 @@ const autorizarUsuaRIO = async (content) => {
 function peticiones_buscador() {
   const [userEncontardo, setUserEncontrado] = useState(false);
 
+  const anularTurno = useMutation(PiletaFetch.anularTurno, {
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.status == "success") {
+        Swal.fire({
+          title: "Turno Anulado",
+          text: data.message,
+          icon: "success",
+          confirmButtonText: "Aceptar",
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: data.message,
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      }
+    },
+  });
+
   const queryClient = useQueryClient();
 
   const buscarUsuario = useMutation(UserFetchPrivado.getUser, {
@@ -112,6 +133,7 @@ function peticiones_buscador() {
     agregarUsuarioAListaAutorizado,
     agregarUsuario,
     autorizar,
+    anularTurno,
   };
 }
 

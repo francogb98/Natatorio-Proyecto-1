@@ -16,6 +16,8 @@ routerPileta.put("/eliminar", PiletaController.eliminarUsuarioDePileta);
 routerPileta.post("/obtenerPileta", PiletaController.obtener_pileta);
 routerPileta.post("/prueba", verificacionEstadoUsuarios);
 
+routerPileta.post("/sinConexion", PiletaController.sin_conexion);
+
 // routerPileta.patch("/autorizar", autorizar);
 
 // routerPileta.get("/enviar", async (req, res) => {

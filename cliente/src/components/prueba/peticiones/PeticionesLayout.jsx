@@ -6,13 +6,12 @@ import style from "./peticiones.module.css";
 import { useEffect, useState } from "react";
 
 function PeticionesLayout() {
-  const [estado, setEstado] = useState("todas");
+  const [estado, setEstado] = useState("pendiente");
 
-  const { data, isLoading, isError, isSuccess, isRefetching, refetch } =
-    useQuery({
-      queryKey: ["peticiones"],
-      queryFn: () => peticiones.getPeticiones(estado),
-    });
+  const { data, isLoading, isError, isSuccess, refetch } = useQuery({
+    queryKey: ["peticiones"],
+    queryFn: () => peticiones.getPeticiones(estado),
+  });
 
   const handleChange = (e) => {
     setEstado(e.target.value);
@@ -38,7 +37,7 @@ function PeticionesLayout() {
             id="estado"
             onChange={handleChange}
           >
-            <option value="todas">--seleccione un asunto--</option>
+            <option value="pendiente">--seleccione un asunto--</option>
             <option value="pendiente">Pendiente</option>
             <option value="aceptado">Aceptado</option>
             <option value="denegado">Denegado</option>
