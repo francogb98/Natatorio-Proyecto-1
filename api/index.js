@@ -18,6 +18,7 @@ const corsOptions = {
   origin: [
     "https://www.natatorioolimpicomdc.com",
     "http://localhost:5173",
+    "https://prueba-proyecto-mauve.vercel.app",
     "https://natatorio-proyecto-1-zvny.vercel.app",
     "https://natatorio-proyecto-1-zvny-git-main-francogb98.vercel.app/",
   ],
