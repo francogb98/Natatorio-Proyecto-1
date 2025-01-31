@@ -1,0 +1,10 @@
+.dropzone{
+    color: gray;
+}
+
+.dropzone:hover{
+    border: 2px dashed #007bff;
+    /* un colo tipo amarillo hoja */
+    cursor: pointer;
+    color: black;
+}

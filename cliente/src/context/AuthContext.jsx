@@ -38,6 +38,7 @@ export function AuthProvider({ children }) {
         });
         await dispatch({ type: "SET_USER", payload: { user: usuario } });
 
+        document.querySelector('[data-bs-dismiss="modal"]').click(); // Cierra el modal
         Swal.fire({
           icon: "success",
           title: "Bienvenido",
@@ -51,10 +52,9 @@ export function AuthProvider({ children }) {
             data.usuario.role === "usuario" ||
             data.usuario.role === "registrado"
           ) {
-            return navigate("/user/home");
+            return navigate("/");
           }
-          return navigate("/home");
-          // window.location.href = "/home";
+          return navigate("/");
         }, 1500);
       } else {
         Swal.fire({

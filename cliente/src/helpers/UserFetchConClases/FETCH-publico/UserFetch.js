@@ -155,6 +155,10 @@ export class UserFetch {
   static editar_informacion = async (content) => {
     const { body } = content;
 
+    {
+      console.log(body);
+    }
+
     try {
       const url = `${baseUrl}user/editarUsuario`;
       const resp = await fetch(url, {
@@ -165,7 +169,7 @@ export class UserFetch {
         },
         body: JSON.stringify(body),
       });
-      const { data } = await resp.json();
+      const data = await resp.json();
 
       return data;
     } catch (error) {

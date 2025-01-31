@@ -1,16 +1,24 @@
-import { barriosLaBanda, barrios, ciudades } from "./dataBarrios";
+import { useState } from "react";
+import { barriosLaBanda, barrios, ciudades } from "../../utils/dataBarrios";
+import PropTypes from "prop-types";
 
 function Barrio({ setUsuario, usuario }) {
-  const [ciudad, setCiudad] = React.useState("");
-  const [barrio, setBarrio] = React.useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [barrio, setBarrio] = useState("");
 
   return (
     <>
-      <label htmlFor="barrio" className={`form-label  mt-2 `}>
+      <label
+        htmlFor="barrio"
+        className={`form-label mt-2`}
+        style={{
+          marginBottom: "-10px",
+        }}
+      >
         Ciudad
       </label>
       <select
-        className={`form-select `}
+        className={`form-select`}
         name="ciudad"
         id="ciudad"
         onChange={(e) => {
@@ -61,5 +69,12 @@ function Barrio({ setUsuario, usuario }) {
     </>
   );
 }
+Barrio.propTypes = {
+  setUsuario: PropTypes.func.isRequired,
+  usuario: PropTypes.shape({
+    ciudad: PropTypes.string,
+    barrio: PropTypes.string,
+  }).isRequired,
+};
 
 export default Barrio;

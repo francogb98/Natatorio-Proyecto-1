@@ -1,0 +1,16 @@
+.cuerpo{
+    font-size: 18px;
+}
+
+@media (max-width: 772px) {
+  .cuerpo{
+    font-size: 14px;
+} 
+}
+
+
+@media (max-width: 450px) {
+    .cuerpo{
+        font-size: 12px;
+} 
+}

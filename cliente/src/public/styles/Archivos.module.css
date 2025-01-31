@@ -1,0 +1,16 @@
+.body{
+    padding-top: 15px;
+    font-size: 14px;
+}
+
+@media (max-width: 650px) {
+  .body{
+    font-size: 12px;
+}
+}
+
+@media (max-width: 400px) {
+  .body{
+    font-size: 10px;
+}
+}

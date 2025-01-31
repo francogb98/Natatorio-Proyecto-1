@@ -1,4 +1,4 @@
-import { User } from "../../models/index.js";
+import { Activity, User } from "../../models/index.js";
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
@@ -238,8 +238,8 @@ export class ClienteController {
       telefono,
       telefonoContacto,
       edad,
+      sexo,
     } = req.body;
-    console.log(req.body);
     try {
       //busco el usuario por su id
 
@@ -256,12 +256,13 @@ export class ClienteController {
       }
 
       user.dni = dni;
+      user.sexo = sexo;
       user.edad = edad;
       user.nombre = nombre;
       user.apellido = apellido;
       user.ciudad = ciudad;
       user.barrio = barrio;
-      user.natacionAdaptada = natacionAdaptada === "si" ? true : false;
+      user.natacionAdaptada = user.natacionAdaptada;
       user.telefono = telefono;
       user.telefonoContacto = telefonoContacto;
       await user.save();

@@ -21,4 +21,22 @@ export class ActividadesFetch {
       return error;
     }
   };
+  static getActivitiesSinToken = async () => {
+    try {
+      const url = `${baseUrl}activity/getAll`;
+      const resp = await fetch(url, {
+        method: "GET",
+
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+
+      const data = await resp.json();
+
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
 }
