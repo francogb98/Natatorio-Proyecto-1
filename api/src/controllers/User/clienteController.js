@@ -262,7 +262,7 @@ export class ClienteController {
       user.apellido = apellido;
       user.ciudad = ciudad;
       user.barrio = barrio;
-      user.natacionAdaptada = user.natacionAdaptada;
+      user.natacionAdaptada = natacionAdaptada;
       user.telefono = telefono;
       user.telefonoContacto = telefonoContacto;
       await user.save();
