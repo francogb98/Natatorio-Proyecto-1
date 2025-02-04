@@ -68,6 +68,15 @@ function LoginForm({ label }) {
           </span>
         </div>
 
+        <div className="mt-2" data-bs-dismiss="modal" aria-label="Close">
+          <NavLink
+            to="/olvidar-password"
+            className="text-decoration-underline text-primary"
+          >
+            Olvide mi contraseña
+          </NavLink>
+        </div>
+
         <small type="button" data-bs-dismiss="modal" aria-label="Close">
           ¿No tienes cuenta? <NavLink to={"/register"}>Registrate</NavLink>
         </small>

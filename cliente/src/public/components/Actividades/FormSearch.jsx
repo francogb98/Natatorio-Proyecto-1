@@ -16,7 +16,7 @@ function FormSearch({ filtro, setFiltro }) {
           placeholder="escuela de natacion, natacion infantil, etc."
           aria-label="Search"
           value={filtro}
-          onChange={(e) => setFiltro(e.target.value)}
+          onChange={(e) => setFiltro(e.target.value.toLowerCase())}
           style={{
             height: "50px",
             paddingLeft: "20px",

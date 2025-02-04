@@ -17,7 +17,7 @@ import {
   PeticionesLayout,
 } from "../components/prueba/index";
 
-import Modificando from "../ModificandoPagina/Modificando";
+import PublicRoutes from "../public/routes/PublicRoutes";
 
 function Routing() {
   const { auth, restart, setRecargando } = useContext(AuthContext);
@@ -33,7 +33,7 @@ function Routing() {
     return (
       <div>
         <Routes>
-          <Route path="/*" element={<Modificando />} />
+          <Route path="/*" element={<PublicRoutes />} />
         </Routes>
       </div>
     );
@@ -43,15 +43,15 @@ function Routing() {
       <Routes>
         {auth.logged &&
           (auth.role === "usuario" || auth.role === "registrado") && (
-            <Route path="/*" element={<Modificando />} />
+            <Route path="/*" element={<PublicRoutes />} />
           )}
         {(auth.logged && auth.role === "ADMINISTRATIVO") ||
         (auth.logged && auth.role === "PROFESOR") ||
         (auth.logged && auth.role === "GUARDAVIDA") ||
         (auth.logged && auth.role === "SUPER_ADMIN") ? (
           <>
-            <Route path="home" element={<HomePrueba />}>
-              <Route path="/home" element={<RegistroUsuarios />} />
+            <Route path="/" element={<HomePrueba />}>
+              <Route path="/" element={<RegistroUsuarios />} />
               <Route path="/home/buscar" element={<Layout />} />
               <Route path="usuario/:id" element={<UserPerfil />} />
               <Route path="usuario/feeds" element={<Feeds />} />

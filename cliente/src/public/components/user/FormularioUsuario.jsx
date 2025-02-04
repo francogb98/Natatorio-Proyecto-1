@@ -15,6 +15,7 @@ function FormularioUsuario({ user }) {
     setIsNatacionAdaptada,
     isDisabled,
     editarInformacionUsuario,
+    editarPerfil,
   } = useRegister();
 
   const [viewPass, setViewPass] = useState(false);
@@ -23,6 +24,7 @@ function FormularioUsuario({ user }) {
   useEffect(() => {
     if (user) {
       setUsuario(user);
+      setIsNatacionAdaptada(user.natacionAdaptada);
     }
   }, [user]);
 
@@ -129,6 +131,7 @@ function FormularioUsuario({ user }) {
               name="natacionAdaptada"
               id="no"
               value="no"
+              checked={!isNatacionAdaptada}
               onChange={() => {
                 setIsNatacionAdaptada(false);
                 setUsuario((prev) => ({ ...prev, natacionAdaptada: false }));
@@ -144,6 +147,7 @@ function FormularioUsuario({ user }) {
               name="natacionAdaptada"
               id="si"
               value="si"
+              checked={isNatacionAdaptada}
               onChange={() => {
                 setIsNatacionAdaptada(true);
                 setUsuario((prev) => ({ ...prev, natacionAdaptada: true }));
@@ -265,6 +269,14 @@ function FormularioUsuario({ user }) {
       </div>
 
       {registro.isLoading ? (
+        <div className="text-center mt-3">
+          <div className="spinner-border text-success" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : null}
+
+      {editarPerfil.isLoading ? (
         <div className="text-center mt-3">
           <div className="spinner-border text-success" role="status">
             <span className="visually-hidden">Loading...</span>

@@ -115,22 +115,18 @@ const schema = new mongoose.Schema({
 
   fichaMedica: {
     type: String,
-    minlength: 3,
   },
 
   certificadoHongos: {
     type: String,
-    minlength: 3,
   },
 
   fotoDocumento: {
     type: String,
-    minlength: 3,
   },
 
   fechaCargaCertificadoHongos: {
     type: String,
-    minlength: 3,
   },
 
   inasistencias: {

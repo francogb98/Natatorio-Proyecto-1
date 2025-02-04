@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { capitalizeFirstLetter } from "../../../utils/MayusculaPL";
 import PropTypes from "prop-types";
 import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
@@ -8,13 +8,13 @@ import { useContext } from "react";
 import { AuthContext } from "../../../../context/AuthContext";
 
 function CardActivity({ status, activity, i }) {
-  const { userRefetch } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
   const darDeBaja = useMutation({
     mutationFn: UserFetch.darDeBajaActividad,
     onSuccess: (data) => {
       toast.success(data.message);
-      userRefetch();
+      queryClient.invalidateQueries(["user"]);
     },
     onError: (error) => {
       toast.error(error.message);

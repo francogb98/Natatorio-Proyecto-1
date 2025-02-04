@@ -1,5 +1,5 @@
 import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "sonner";
 
 import PropTypes from "prop-types";
@@ -8,18 +8,36 @@ import { capitalizeFirstLetter } from "../../utils/MayusculaPL";
 import { AuthContext } from "../../../context/AuthContext";
 import { useContext } from "react";
 import Spinner from "../../utils/Spinner";
+import style from "./style.module.css";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 function CardActividad({ actividad }) {
   const { auth } = useContext(AuthContext);
+
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const registerInActivity = useMutation({
     mutationFn: UserFetch.registrarUsuarioEnActividad,
     onSuccess: (data) => {
       if (data.status === "success") {
-        toast.success("Usuario inscripto con exito!");
+        Swal.fire({
+          icon: "success",
+          title: "Usuario inscripto con exito!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        queryClient.invalidateQueries(["user"]);
       }
       if (data.status === "error") {
-        toast.error(data.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error de inscripcion",
+          text: data.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     },
   });
@@ -31,9 +49,24 @@ function CardActividad({ actividad }) {
       !auth.user.certificadoHongos ||
       !auth.user.fotoDocumento
     ) {
-      alert(
-        "Por favor cargar todos los ACHIVOS, verificar en el perfil el estado de sus archivos"
-      );
+      Swal.fire({
+        icon: "error",
+        title: "Falta cargar archivos.",
+        text: "Por favor cargar los archivos necesarios para poder inscribirse.",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      return;
+    }
+
+    if (auth.user.edad > actividad.hasta) {
+      alert("La actividad no corresponde a la edad del usuario");
+
+      return;
+    }
+    if (auth.user.edad < actividad.desde) {
+      alert("La actividad no corresponde a la edad del usuario");
+
       return;
     }
     registerInActivity.mutate({
@@ -42,12 +75,11 @@ function CardActividad({ actividad }) {
     });
   };
   return (
-    <div className="card shadow">
+    <div className={`card shadow ${style.card}`}>
       <div className="card-header bg-primary text-white">
-        <h4 className="mb-0">{capitalizeFirstLetter(actividad.name)}</h4>
+        <h6 className="mb-0">{capitalizeFirstLetter(actividad.name)}</h6>
       </div>
-      <div className="card-body">
-        <h5 className="card-title">Información de la Actividad</h5>
+      <div className={`card-body ${style.card__list}`}>
         <ul className="list-group list-group-flush mb-3">
           <li className="list-group-item">
             <strong>Pileta:</strong> {capitalizeFirstLetter(actividad.pileta)}
@@ -68,19 +100,14 @@ function CardActividad({ actividad }) {
             )}
           </li>
           <li className="list-group-item">
-            <strong>Edades permitidas:</strong> 4 - 70 años
+            <strong>Edades permitidas:</strong> {actividad.desde} -{" "}
+            {actividad.hasta}
           </li>
 
           <li className="list-group-item">
             <strong>Natación adaptada:</strong>{" "}
             {actividad.natacionAdaptada ? "Sí" : "No"}
           </li>
-          {actividad.codigoDeAcceso && (
-            <li className="list-group-item">
-              <strong>Código de acceso:</strong>{" "}
-              <b className="text-danger">{actividad.codigoDeAcceso} </b>
-            </li>
-          )}
         </ul>
 
         {auth.logged ? (
@@ -94,7 +121,7 @@ function CardActividad({ actividad }) {
                 actividad.cupos <= actividad.users.length
                   ? "btn-danger"
                   : "btn-success"
-              } w-100`}
+              } w-75 d-block mx-auto`}
               onClick={() => handleSubmit()}
               disabled={actividad.cupos <= actividad.users.length}
             >
@@ -110,7 +137,7 @@ function CardActividad({ actividad }) {
               actividad.cupos <= actividad.users.length
                 ? "btn-danger"
                 : "btn-success"
-            } w-100`}
+            } w-75 d-block mx-auto`}
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
             disabled={actividad.cupos <= actividad.users.length}
@@ -130,7 +157,7 @@ CardActividad.propTypes = {
     pileta: PropTypes.string.isRequired,
     hourStart: PropTypes.string.isRequired,
     hourFinish: PropTypes.string.isRequired,
-    codigoDeAcceso: PropTypes.string.isRequired,
+    codigoDeAcceso: PropTypes.string,
     _id: PropTypes.string.isRequired,
     natacionAdaptada: PropTypes.bool.isRequired,
     date: PropTypes.arrayOf(PropTypes.string).isRequired,

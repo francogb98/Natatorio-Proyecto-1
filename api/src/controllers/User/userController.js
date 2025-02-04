@@ -102,8 +102,15 @@ export class userController {
           message: "La actividad seleccionada no existe",
         });
       }
-      //verificamos si hay cupo
+
+      if (isActivityExist.natacionAdaptada !== user.natacionAdaptada) {
+        return res.status(400).json({
+          status: "error",
+          message: "Usuario no cumple los requisitos para esta actividad",
+        });
+      }
       if (isActivityExist.users.length >= isActivityExist.cupos) {
+        //verificamos si hay cupo
         return res.status(400).json({
           status: "error",
           message: "Cupos agotados",

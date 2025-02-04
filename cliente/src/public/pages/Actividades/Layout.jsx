@@ -1,12 +1,11 @@
 import { useQuery } from "react-query";
-import { useContext, useState } from "react";
-
+import { useContext, useState, useEffect } from "react";
 import { ActividadesFetch } from "../../../helpers/activitiesFetch/Actividades-fetch-class";
-
 import ActividadesLista from "./ActividadesLista";
 import { ModalIniciarSesion, FormSearch } from "../../components/Actividades";
 import Loading from "../../components/Loader/Loading";
 import { AuthContext } from "../../../context/AuthContext";
+import SelectForm from "../../components/Actividades/SelectForm";
 
 function Layout() {
   const {
@@ -16,12 +15,45 @@ function Layout() {
   const { data, isLoading } = useQuery({
     queryKey: "actividades",
     queryFn: ActividadesFetch.getActivitiesSinToken,
-    //quiero que no se ejecute cada vez que se renderiza el componente
     refetchOnWindowFocus: false,
   });
-  const [filtro, setFiltro] = useState("");
 
-  if (isLoading) {
+  const [filtro, setFiltro] = useState("");
+  const [actividadesParaUsuarios, setActividadesParaUsuarios] = useState([]);
+  const [nombreActividades, setNombreActividades] = useState([]);
+  const [filter, setFilter] = useState({
+    name: "default",
+    hour: "default",
+    day: "default",
+  });
+
+  useEffect(() => {
+    if (data?.actividades) {
+      const sortedActivities = data.actividades.sort((a, b) => {
+        const dateA = new Date(`1970-01-01T${a.hourStart}`);
+        const dateB = new Date(`1970-01-01T${b.hourStart}`);
+        return dateA - dateB;
+      });
+      setActividadesParaUsuarios(
+        sortedActivities.filter((actividad) => {
+          let filtroEdad =
+            user && user.edad
+              ? user.edad >= actividad.desde && user.edad <= actividad.hasta
+              : true;
+
+          return actividad.codigoDeAcceso === "" && filtroEdad;
+        })
+      );
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setNombreActividades([
+      ...new Set(actividadesParaUsuarios.map((act) => act.name)),
+    ]);
+  }, [actividadesParaUsuarios]);
+
+  if (isLoading || actividadesParaUsuarios.length == 0) {
     return (
       <div className="container">
         <div className="row">
@@ -33,15 +65,13 @@ function Layout() {
     );
   }
 
-  if (data && data.status === "success") {
-    const actividades = data.actividades.filter((actividad) => {
-      const tieneCodigo = actividad.codigoDeAcceso == "";
-      const estaHabilitada = actividad.actividadHabilitada;
-
-      return tieneCodigo && estaHabilitada;
-    });
-
-    const actividadesFiltradas = data.actividades.filter((actividad) => {
+  const handleFilter = (e) => {
+    const { name, value } = e.target;
+    setFilter((prev) => ({ ...prev, [name]: value }));
+  };
+  let filteredActivities = [];
+  if (filtro !== "") {
+    filteredActivities = data?.actividades.filter((actividad) => {
       const filtroNombre = filtro
         ? actividad.codigoDeAcceso === filtro ||
           (actividad.name.startsWith(filtro) && actividad.codigoDeAcceso === "")
@@ -56,34 +86,48 @@ function Layout() {
 
       return filtroNombre && filtroEdad && estaHabilitada;
     });
+  } else {
+    filteredActivities = actividadesParaUsuarios.filter((actividad) => {
+      let filtroEdad =
+        user && user.edad
+          ? user.edad >= actividad.desde && user.edad <= actividad.hasta
+          : true;
 
-    {
-      return (
-        <div className="container g-2">
-          <div className="row">
-            <h2 className="text-center">Lista de Actividades</h2>
-            <FormSearch filtro={filtro} setFiltro={setFiltro} />
-          </div>
-          <div className="row">
-            <ActividadesLista
-              actividades={filtro ? actividadesFiltradas : actividades}
-            />
-            {actividadesFiltradas.length === 0 && (
-              <h4 className="alert alert-warning text-center">
-                No se encontraron actividades con este nombre
-                <span className="text-danger mx-2">O</span>
-                no cumple con los requisitos para dicha actividad (edad)
-              </h4>
-            )}
-          </div>
-
-          <ModalIniciarSesion />
-        </div>
-      );
-    }
+      return Object.entries(filter).every(([key, value]) => {
+        if (value === "default") return true && filtroEdad;
+        if (key === "day") {
+          return actividad.date.includes(value) && filtroEdad;
+        }
+        if (key === "hour") return actividad.hourStart === value && filtroEdad;
+        if (key === "name") return actividad.name === value && filtroEdad;
+        return true && filtroEdad;
+      });
+    });
   }
 
-  return <h1>Error al cargar las actividades</h1>;
+  return (
+    <div className="container g-2">
+      <div className="row">
+        <label htmlFor="" className="form-label ms-2 fw-bold">
+          Buscar actividades
+        </label>
+        <FormSearch filtro={filtro} setFiltro={setFiltro} />
+      </div>
+      <div className="row pt-3">
+        <SelectForm
+          nombreActividades={nombreActividades}
+          handleFilter={handleFilter}
+        />
+        <ActividadesLista actividades={filteredActivities} />
+        {filteredActivities.length === 0 && (
+          <h4 className="alert alert-warning text-center">
+            No se encontraron actividades con este filtro
+          </h4>
+        )}
+      </div>
+      <ModalIniciarSesion />
+    </div>
+  );
 }
 
 export default Layout;

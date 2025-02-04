@@ -10,7 +10,7 @@ function PageActividades() {
   return (
     <ul className="list-group list-group-flush">
       <h2 className="text-center mt-2">Informacion Actividades Usuario</h2>
-      {user.activity.length === 0 && (
+      {user.activity?.length === 0 && (
         <div
           style={{
             height: "150px",

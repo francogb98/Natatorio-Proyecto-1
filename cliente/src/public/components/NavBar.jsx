@@ -1,7 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
 
 import style from "../styles/NavBar.module.css";
-import logo from "../../assets/Logo.jpg";
+import logo from "../../assets/Logo.png";
+import avatar from "../../assets/avatar.webp";
+
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -30,7 +32,7 @@ function NavBar() {
                 </span>
                 <img
                   className="rounded-circle "
-                  src={auth.user.foto}
+                  src={auth.user.foto ? auth.user.foto : avatar}
                   alt="perfil"
                   style={{ width: "45px", height: "45px" }}
                 />
@@ -43,17 +45,26 @@ function NavBar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className={`container ${style.navBar}`}>
-        {/* Logo alineado a la izquierda */}
+    <nav className={style.nav__container}>
+      {/* Logo alineado a la izquierda */}
+      <div className={style.logo__container}>
         <Link to="/">
-          <img src={logo} alt="logo" className={`${style.logo} img-fluid`} />
+          <img src={logo} alt="logo" className={`${style.logo}`} />
         </Link>
+      </div>
 
-        {/* Botones alineados a la derecha */}
+      {/* Botones alineados a la derecha */}
+      <div className="d-flex justify-content-between">
+        <div>
+          <NavLink to="/" className="btn btn-outline-primary fw-bold">
+            {" "}
+            Actividades
+          </NavLink>
+        </div>
         <div className="d-flex gap-2">
           <NavLink
-            className="btn btn-outline-success btn-sm btn-md btn-lg"
+            to="/login"
+            className="btn btn-outline-success fw-bold"
             style={{ height: "fit-content" }}
             type="button"
             data-bs-toggle="modal"
@@ -64,7 +75,7 @@ function NavBar() {
           </NavLink>
           <NavLink
             to="/register"
-            className="btn btn-outline-danger btn-sm btn-md btn-lg"
+            className="btn btn-outline-danger fw-bold"
             style={{ height: "fit-content" }}
           >
             Registrarse

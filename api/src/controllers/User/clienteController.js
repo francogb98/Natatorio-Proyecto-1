@@ -243,8 +243,9 @@ export class ClienteController {
     try {
       //busco el usuario por su id
 
+      console.log(req.body);
+
       let user = await User.findOne({ dni });
-      console.log();
       if (dni !== user.dni) {
         const isUserExist = await User.findOne({ dni });
         if (isUserExist) {
@@ -374,6 +375,12 @@ export class ClienteController {
             : process.env.CLOUDINARY_API_SECRET_2,
         secure: true,
       };
+
+      console.log(
+        user.customId % 2 === 0
+          ? process.env.CLOUDINARY_CLOUD_NAME
+          : process.env.CLOUDINARY_CLOUD_NAME_2
+      );
 
       cloudinary.config(cloudinaryConfig);
 

@@ -1,19 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Swal from "sweetalert2";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import { UserFetch } from "../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
-import { AuthContext } from "../../context/AuthContext";
 
 function useRegister() {
-  const { userRefetch } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
   const editarPerfil = useMutation({
     mutationFn: UserFetch.editar_informacion,
     onSuccess: (data) => {
-      console.log(data);
-
       if (data.status === "success") {
         Swal.fire({
           title: "Usuario Editado",
@@ -22,8 +19,7 @@ function useRegister() {
           confirmButtonText: "Aceptar",
         });
 
-        // queryClient.invalidateQueries("getUser");
-        userRefetch();
+        queryClient.invalidateQueries("user");
       }
       if (data.status === "error") {
         Swal.fire({
@@ -33,8 +29,7 @@ function useRegister() {
           confirmButtonText: "Aceptar",
         });
 
-        // queryClient.invalidateQueries("getUser");
-        userRefetch();
+        queryClient.invalidateQueries("user");
       }
     },
     onError: (error) => {
@@ -54,7 +49,7 @@ function useRegister() {
     dni: "",
     dniRepetir: "",
     sexo: "",
-    natacionAdaptada: "",
+    natacionAdaptada: false,
     diagnosticos: "",
     telefono: "",
     telefonoContacto: "",
@@ -238,6 +233,7 @@ function useRegister() {
     setIsNatacionAdaptada,
     isDisabled,
     editarInformacionUsuario,
+    editarPerfil,
   };
 }
 

@@ -11,12 +11,14 @@ import {
 } from "../pages/user";
 
 import { routesModel } from "../models";
+import OlvidarPassword from "../pages/OlvidarPassword/OlvidarPassword";
 
 function PublicRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />}>
         <Route path="register" element={<Register />} />
+        <Route path="olvidar-password" element={<OlvidarPassword />} />
         <Route path="login" element={<Login />} />
         <Route path={routesModel.user.root} element={<User />}>
           <Route

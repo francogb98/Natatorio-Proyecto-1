@@ -1,0 +1,42 @@
+.modal__dialog{
+    width: 70vw;
+    margin: auto;
+    margin-top: 7px;
+}
+
+.modal__body{
+    height: 70vh;
+    overflow: scroll;
+}
+
+.imagen__container{
+    padding: 2px;
+    height: 50%;
+}
+
+
+.btn__help {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgb(0, 123, 255,.4); /* Azul de Bootstrap */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 1000; /* Asegura que esté sobre todo */
+}
+
+.btn__help:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+

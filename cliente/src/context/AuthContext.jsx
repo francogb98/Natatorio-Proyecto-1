@@ -1,5 +1,5 @@
 import { createContext, useReducer, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
 import Swal from "sweetalert2";
 
@@ -11,6 +11,8 @@ import { UserFetch } from "../helpers/UserFetchConClases/FETCH-publico/UserFetch
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const [imageModal, setImageModal] = useState("");
+
   const [authState, dispatch] = useReducer(authReducer, initialState);
 
   const [recargando, setRecargando] = useState(false);
@@ -45,6 +47,8 @@ export function AuthProvider({ children }) {
           text: "Iniciaste sesion correctamente, seras redirigido al home",
           showConfirmButton: false,
         });
+
+        localStorage.setItem("modal", true);
 
         setTimeout(() => {
           Swal.close();
@@ -86,7 +90,8 @@ export function AuthProvider({ children }) {
     if (data.status == "success") {
       dispatch({ type: "SET_USER", payload: { user: data.user } });
     }
-    return data;
+
+    return data.user;
   };
 
   const restartPagina = async () => {
@@ -109,10 +114,19 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const useUser = () => {
+    return useQuery({
+      queryKey: ["user"], // Clave única para React Query
+      queryFn: getInfoUser, // Función que obtiene el usuario
+      retry: false, // No reintentar si falla
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
         auth: authState,
+        useUser,
 
         dispatch,
         login,
@@ -123,6 +137,8 @@ export function AuthProvider({ children }) {
         setRecargando,
 
         cerrarSesion,
+        imageModal,
+        setImageModal,
       }}
     >
       {children}

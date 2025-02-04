@@ -1,0 +1,86 @@
+.card{
+    font-size: 12px;
+    height: 400px;
+}
+
+.card__list {
+    padding-inline: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+
+
+
+/** FORM SELECT **/
+.select__body{
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 15px;
+}
+.select__data{
+  font-size: 12px;
+  width: 110px;
+}
+
+
+@media (min-width: 460px) {
+.card {
+    font-size: 14px;
+}
+
+.select__data{
+  font-size: 14px;
+  width: 130px;
+}
+
+}
+
+
+@media (min-width: 550px) {
+  .card {
+    font-size: 16px;
+    height: 500px;
+    
+    }
+    .card__list {
+    padding-inline: 20px;
+
+}
+
+.select__data{
+  font-size: 16px;
+  width: 160px;
+}
+
+}
+@media (min-width: 768px) {
+  .card {
+    font-size: 16px;
+    height: 500px;
+    
+    }
+    .card__list {
+    padding-inline: 20px;
+
+}
+.select__data{
+  font-size: 18px;
+  width: 200px;
+}
+}
+@media (min-width: 992px) {
+
+.select__data{
+  font-size: 18px;
+  width: 270px;
+}
+}
+@media (min-width: 1244px) {
+
+.select__data{
+  font-size: 18px;
+  width: 350px;
+}
+}

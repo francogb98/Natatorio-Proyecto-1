@@ -4,6 +4,8 @@ import { NavLink, Outlet } from "react-router-dom";
 
 import { routesModel } from "../../models";
 
+import avatar from "../../../assets/avatar.webp";
+
 function User() {
   const {
     auth: { user },
@@ -13,7 +15,7 @@ function User() {
     <div className="container py-5">
       <div className="card w-100 pt-3">
         <img
-          src={user.foto}
+          src={user.foto ? user.foto : avatar}
           className="card-img-top d-block mx-auto"
           style={{
             height: "250px",
