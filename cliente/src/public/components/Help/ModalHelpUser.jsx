@@ -2,7 +2,7 @@ import style from "./style.module.css";
 
 import Logo from "../../../assets/Logo.png";
 import Imagen from "../../../assets/Imagen_1.jpg";
-import Imagen_2 from "../../../assets/Imagen_1.png";
+import Imagen_2 from "../../../assets/Imagen_2.jpg";
 import Imagen_3 from "../../../assets/Imagen_3.jpg";
 import Imagen_4 from "../../../assets/Imagen_4.jpg";
 import { useEffect, useState } from "react";
