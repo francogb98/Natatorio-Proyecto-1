@@ -60,7 +60,7 @@ function HabilitarConvencional() {
           header: "Nombre y Apellido",
           accessorKey: "apellido",
           cell: ({ row }) => (
-            <Link to={`/home/usuario/${row.original.customId}`}>
+            <Link to={`/usuario/${row.original.customId}`}>
               {row.original.nombre} {row.original.apellido}
             </Link>
           ),
@@ -203,7 +203,7 @@ function HabilitarConvencional() {
           header: "Nombre y Apellido",
           accessorKey: "apellido",
           cell: ({ row }) => (
-            <Link to={`/home/usuario/${row.original.customId}`}>
+            <Link to={`/usuario/${row.original.customId}`}>
               {row.original.nombre} {row.original.apellido}
             </Link>
           ),

@@ -2,8 +2,6 @@ import { useContext, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-import RecuperarContraseña from "../components/publico/recuperarContraseña/RecuperarContraseña";
-
 import {
   HomePrueba,
   RegistroUsuarios,

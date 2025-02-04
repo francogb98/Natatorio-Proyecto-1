@@ -19,6 +19,8 @@ function UserPerfil() {
 
   const { id } = useParams();
 
+  console.log("entre aqui");
+
   const { eliminarNotificacion, inhabilitar, habilitar } =
     Funciones_administrador();
 
