@@ -49,7 +49,7 @@ function Routing() {
         (auth.logged && auth.role === "SUPER_ADMIN") ? (
           <>
             <Route path="/" element={<HomePrueba />}>
-              <Route path="/" element={<RegistroUsuarios />} />
+              <Route path="/home" element={<RegistroUsuarios />} />
               <Route path="/home/buscar" element={<Layout />} />
               <Route path="usuario/:id" element={<UserPerfil />} />
               <Route path="usuario/feeds" element={<Feeds />} />

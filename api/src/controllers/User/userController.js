@@ -29,7 +29,6 @@ export class userController {
       const { id, type } = req.params;
       // Crear el objeto de consulta
       const query = { [type]: id }; // Usar notación de corchetes para crear el objeto de consulta
-      console.log(query);
       const users = await User.find(query).populate({
         path: "activity",
         populate: {
@@ -37,13 +36,25 @@ export class userController {
         },
       });
 
-      if (!users) {
+      if (!users.length) {
+        const usersByLastName = await User.find({ dni: id }).populate({
+          path: "activity",
+          populate: {
+            path: "name",
+          },
+        });
+
+        if (!usersByLastName.length) {
+          return res
+            .status(404)
+            .json({ status: "error", message: "Usuario no encontrado" });
+        }
         return res
-          .status(404)
-          .json({ status: "error", message: "Usuario no encontrado" });
+          .status(200)
+          .json({ status: "success", users: usersByLastName });
       }
 
-      res.status(200).json({ status: "success", users });
+      return res.status(200).json({ status: "success", users });
     } catch (error) {
       console.log(error.message);
       res
@@ -55,7 +66,10 @@ export class userController {
   static getUserByLastName = async (req, res) => {
     try {
       const { apellido } = req.params;
-      const users = await User.find({
+
+      console.log(apellido.customId, "entre aqui");
+
+      const usersByLastName = await User.find({
         apellido: {
           $regex: new RegExp(apellido, "i"), // 'i' indica insensibilidad a mayúsculas y minúsculas
         },
@@ -65,13 +79,22 @@ export class userController {
           path: "name",
         },
       });
-      if (!users.length) {
-        return res.status(200).json({
-          status: "error",
-          message: "no se encontraron usuarios con el apellido: " + apellido,
+      if (!usersByLastName.length) {
+        const user = await User.find({
+          dni: apellido,
         });
+        if (!user.length) {
+          return res.status(200).json({
+            status: "error",
+            message: "no se encontraron usuarios con el apellido: " + apellido,
+          });
+        }
+
+        return res.status(200).json({ status: "success", users: user });
       }
-      return res.status(200).json({ status: "success", users });
+      return res
+        .status(200)
+        .json({ status: "success", users: usersByLastName });
     } catch (error) {
       console.log(error.message);
       return res

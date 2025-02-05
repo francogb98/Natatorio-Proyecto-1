@@ -38,7 +38,7 @@ function InfoActividad() {
         accessorKey: "apellido",
         cell: ({ row }) => (
           <Link
-            to={`/home/usuario/${row.original._id}`}
+            to={`/usuario/${row.original._id}`}
           >{`${row.original.apellido} ${row.original.nombre}`}</Link>
         ),
       },
@@ -50,7 +50,7 @@ function InfoActividad() {
     if (getActivity.data?.actividad.users) {
       return (
         <>
-          <Link to={"/home/actividades"}>
+          <Link to={"/actividades"}>
             <i
               className="bi bi-arrow-left-circle-fill"
               style={{

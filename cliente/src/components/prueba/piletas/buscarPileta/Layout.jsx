@@ -60,7 +60,7 @@ function Layout() {
       accessorKey: "apellido",
       cell: ({ row }) => (
         <Link
-          to={`/home/usuario/${row.original.customid}`}
+          to={`/usuario/${row.original.customid}`}
         >{`${row.original.nombre}`}</Link>
       ),
     },
