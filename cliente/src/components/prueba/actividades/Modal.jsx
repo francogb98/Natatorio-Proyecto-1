@@ -42,7 +42,6 @@ function Modal({ args, createActivity }) {
               className="btn btn-primary"
               data-bs-dismiss="modal"
               onClick={() => {
-                // console.log(args);
                 createActivity.mutate(args);
               }}
             >

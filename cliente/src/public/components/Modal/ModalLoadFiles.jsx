@@ -1,4 +1,4 @@
-import FormLoadFiles from "./FormLoadFiles";
+import FormLoadFiles from "../user/FormLoadFiles";
 
 function ModalLoadFiles() {
   return (
@@ -30,4 +30,4 @@ function ModalLoadFiles() {
   );
 }
 
-export default ModalLoadFiles;
+export { ModalLoadFiles };

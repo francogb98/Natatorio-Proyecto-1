@@ -16,6 +16,7 @@ import {
 } from "../components/prueba/index";
 
 import PublicRoutes from "../public/routes/PublicRoutes";
+import PrivateRoutes from "../components/prueba/private/routes/PrivateRoutes";
 
 function Routing() {
   const { auth, restart, setRecargando } = useContext(AuthContext);
@@ -65,10 +66,8 @@ function Routing() {
                 element={<CreateActivity_prueba />}
               />
 
-              <Route
-                path="habilitar/:filtro"
-                element={<HabilitarConvencional />}
-              />
+              <Route path="dashboard/*" element={<PrivateRoutes />} />
+
               <Route path="peticiones" element={<PeticionesLayout />} />
             </Route>
           </>

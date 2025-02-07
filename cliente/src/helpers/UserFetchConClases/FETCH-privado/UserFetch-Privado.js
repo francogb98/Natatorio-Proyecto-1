@@ -25,16 +25,19 @@ export class UserFetchPrivado {
 
   //Notificaciones usuario
 
-  static sendNotificacion = async ({ content, id }) => {
+  static sendNotificacion = async (content) => {
     try {
-      const response = await fetch(`${baseUrl}user/enviarNotificacion/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(content),
-      });
+      const response = await fetch(
+        `${baseUrl}user/enviarNotificacion/${content.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify(content),
+        }
+      );
 
       const data = await response.json();
 

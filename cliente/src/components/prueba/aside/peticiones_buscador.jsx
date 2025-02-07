@@ -38,7 +38,6 @@ function peticiones_buscador() {
 
   const anularTurno = useMutation(PiletaFetch.anularTurno, {
     onSuccess: (data) => {
-      console.log(data);
       if (data.status == "success") {
         Swal.fire({
           title: "Turno Anulado",

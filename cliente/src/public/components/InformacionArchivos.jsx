@@ -35,6 +35,9 @@ function InformacionArchivos() {
       <div className={style.body}>
         <TextArchivos archivo={user.fichaMedica} label={"Ficha Medica"} />
         <TextArchivos archivo={user.fotoDocumento} label={"Documento"} />
+        {user.natacionAdaptada && (
+          <TextArchivos archivo={user.cud} label={"CUD"} />
+        )}
         <TextArchivos
           archivo={user.certificadoHongos}
           label={"Certificado PyM"}

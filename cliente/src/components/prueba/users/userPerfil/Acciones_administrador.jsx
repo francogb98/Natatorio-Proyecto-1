@@ -79,7 +79,6 @@ function Acciones_administrador({ user }) {
             onClick={async () => {
               setAccion("agregar_actividad");
               const respuesta = await getActividades();
-              console.log(respuesta);
               setActividadesLista(respuesta.actividades);
               setEjecutarAccion(true);
             }}

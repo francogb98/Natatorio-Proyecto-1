@@ -89,23 +89,29 @@ function Header() {
           </a>
           <ul className="dropdown-menu">
             <li>
-              <Link className="dropdown-item" to="habilitar/todos">
+              <Link className="dropdown-item" to="/dashboard/user-list/todos">
                 Habilitar
               </Link>
             </li>
             <li>
-              <Link className="dropdown-item" to="habilitar/convencional">
+              <Link
+                className="dropdown-item"
+                to="dashboard/user-list/convencional"
+              >
                 Habilitar Convencional
               </Link>
             </li>
             <li>
-              <Link className="dropdown-item" to="habilitar/adaptada">
+              <Link className="dropdown-item" to="dashboard/user-list/adaptada">
                 Habilitar Adaptada
               </Link>
             </li>
 
             <li>
-              <Link className="dropdown-item" to="habilitar/certificado">
+              <Link
+                className="dropdown-item"
+                to="dashboard/user-list/certificado"
+              >
                 Certificado
               </Link>
             </li>

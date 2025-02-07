@@ -26,7 +26,6 @@ function PeticionesLayout() {
   }
 
   if (isSuccess && data) {
-    console.log(data);
     return (
       <div>
         <header className={style.header}>

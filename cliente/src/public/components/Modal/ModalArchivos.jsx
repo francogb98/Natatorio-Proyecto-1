@@ -47,4 +47,4 @@ function ModalArchivos() {
   );
 }
 
-export default ModalArchivos;
+export { ModalArchivos };

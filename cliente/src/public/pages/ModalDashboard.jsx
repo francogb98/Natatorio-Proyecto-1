@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { ModalIniciarSesion } from "../components/Actividades";
-import ModalArchivos from "../components/Archivos/ModalArchivos";
-import HelpButton from "../components/Help/HelpButton";
-import ModalHelpUser from "../components/Help/ModalHelpUser";
-import ModalLoadFiles from "../components/user/ModalLoadFiles";
 import { AuthContext } from "../../context/AuthContext";
+import {
+  ModalArchivos,
+  ModalHelpUser,
+  ModalIniciarSesion,
+  ModalLoadFiles,
+} from "../components/Modal";
+import HelpButton from "../components/Help/HelpButton";
 
 function ModalDashboard() {
   const { auth, useUser } = useContext(AuthContext);

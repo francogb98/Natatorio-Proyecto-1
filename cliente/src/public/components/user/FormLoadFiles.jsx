@@ -1,11 +1,16 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import style from "./style.module.css";
 import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 import { useMutation, useQueryClient } from "react-query";
 
 import { toast } from "sonner";
+import { AuthContext } from "../../../context/AuthContext";
 
 function FileUploadForm() {
+  const {
+    auth: { user },
+  } = useContext(AuthContext);
+
   const queryClient = useQueryClient();
 
   const [preview, setPreview] = useState(null);
@@ -104,6 +109,7 @@ function FileUploadForm() {
         <option value="fichaMedica">FichaMedica</option>
         <option value="fotoDocumento">Documento</option>
         <option value="certificadoHongos">CertificadoPyM</option>
+        {user.natacionAdaptada && <option value="cud">CUD</option>}
         <option value="foto">Foto de Perfil</option>
       </select>
 

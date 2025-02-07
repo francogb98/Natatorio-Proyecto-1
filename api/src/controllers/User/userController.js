@@ -1,3 +1,4 @@
+import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import { Activity, User } from "../../models/index.js";
 import jwt from "jsonwebtoken";
 
@@ -197,6 +198,18 @@ export class userController {
         status: "error",
         message: "error en el servidor",
       });
+    }
+  };
+
+  static generarQrCode = async (req, res) => {
+    try {
+      const { fecha } = obtenerFechaYHoraArgentina();
+
+      return res.status(200).json(fecha);
+    } catch (error) {
+      console.log(error.message);
+
+      return res.status(400).json({ message: "error en el servidor" });
     }
   };
 }

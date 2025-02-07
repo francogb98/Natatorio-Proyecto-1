@@ -63,7 +63,6 @@ export class AdminController {
     try {
       const user = req.userData;
 
-      console.log(user);
       if (user.notificaciones) {
         user.notificaciones.push({ asunto, cuerpo, fecha: obtenerFecha() });
       }

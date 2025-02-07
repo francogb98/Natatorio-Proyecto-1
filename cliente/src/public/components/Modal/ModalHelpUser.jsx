@@ -1,4 +1,4 @@
-import style from "./style.module.css";
+import style from "../Help/style.module.css";
 
 import Logo from "../../../assets/Logo.png";
 import Imagen from "../../../assets/Imagen_1.jpg";
@@ -17,8 +17,6 @@ function ModalHelpUser({ isModalOpen, setIsModalOpen }) {
   };
 
   useEffect(() => {
-    console.log(isModalOpen);
-
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -345,4 +343,4 @@ function ModalHelpUser({ isModalOpen, setIsModalOpen }) {
   );
 }
 
-export default ModalHelpUser;
+export { ModalHelpUser };
