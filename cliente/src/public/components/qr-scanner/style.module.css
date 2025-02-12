@@ -1,0 +1,64 @@
+.btn__help {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  border: none;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 1000; /* Asegura que esté sobre todo */
+}
+
+.btn__help:hover {
+  transform: scale(1.1);
+}
+
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro con opacidad */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegura que el modal esté por encima de otros elementos */
+}
+
+.modalContent {
+  position: relative;
+  background-color: transparent; /* Fondo transparente para el modal */
+  width: 90%;
+  max-width: 500px;
+  border-radius: 10px;
+  height: 80%;
+  overflow: hidden;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1001; /* Asegura que el botón esté por encima del video */
+}
+
+.closeButton:hover {
+  background-color: rgba(255, 255, 255, 1);
+}

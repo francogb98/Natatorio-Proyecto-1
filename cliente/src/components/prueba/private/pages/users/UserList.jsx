@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom";
 import { baseUrl } from "../../../../../helpers/url";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import UserCard from "../../components/user/UserCard";
+import UsersScheleton from "./UsersScheleton";
+import Pagination from "../../components/user/Pagination";
 
 const traerUsuarios = async (filtro) => {
   const res = await fetch(`${baseUrl}user/${filtro}`, {
@@ -14,64 +16,47 @@ const traerUsuarios = async (filtro) => {
 
 function UserList() {
   const { filtro } = useParams();
+  const [page, setPage] = useState(1); // Estado para la página actual
+  const usersPerPage = 12; // Número de usuarios por página
 
   const users = useQuery({
-    queryKey: ["users-list"],
+    queryKey: ["users-list", filtro],
     queryFn: () => traerUsuarios(filtro),
     refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
     users.refetch();
+    setPage(1);
   }, [filtro]);
 
   if (users.isFetching) {
-    return (
-      <div className="row mt-3 justify-content-around g-1">
-        {Array(12)
-          .fill()
-          .map((__, i) => (
-            <div key={i} className="col-6 col-lg-4 col-xl-3 p-3">
-              <div className="card" aria-hidden="true">
-                <div
-                  className="placeholder-glow"
-                  style={{
-                    width: "100%",
-                    height: "200px",
-                  }}
-                >
-                  {" "}
-                </div>
-                <div className="card-body">
-                  <h5 className="card-title placeholder-glow">
-                    <span className="placeholder col-6"></span>
-                  </h5>
-                  <p className="card-text placeholder-glow">
-                    <span className="placeholder col-7"></span>
-                    <span className="placeholder col-4"></span>
-                    <span className="placeholder col-4"></span>
-                    <span className="placeholder col-6"></span>
-                    <span className="placeholder col-8"></span>
-                  </p>
-                  <a
-                    className="btn btn-primary disabled placeholder col-6"
-                    aria-disabled="true"
-                  ></a>
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
-    );
+    return <UsersScheleton />;
   }
+
   if (users.isSuccess) {
+    const totalUsers = users.data.users.length;
+    const totalPages = Math.ceil(totalUsers / usersPerPage); // Calcular el número total de páginas
+
+    // Obtener los usuarios de la página actual
+    const startIndex = (page - 1) * usersPerPage;
+    const endIndex = startIndex + usersPerPage;
+    const currentUsers = users.data.users.slice(startIndex, endIndex);
+
     return (
       <div className="row mt-3 justify-content-around g-1">
-        {users.data.users.map((user) => (
+        <div className="d-flex justify-content-center">
+          <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+        </div>
+
+        {currentUsers.map((user) => (
           <div key={user._id} className="col-6 col-lg-4 col-xl-3 p-3">
             <UserCard user={user} />
           </div>
         ))}
+        <div className="d-flex justify-content-center">
+          <Pagination page={page} setPage={setPage} totalPages={totalPages} />
+        </div>
       </div>
     );
   }

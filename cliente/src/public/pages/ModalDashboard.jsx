@@ -7,6 +7,7 @@ import {
   ModalLoadFiles,
 } from "../components/Modal";
 import HelpButton from "../components/Help/HelpButton";
+import QrCodeScanner from "../components/qr-scanner/QrScanner-Prueba-2";
 
 function ModalDashboard() {
   const { auth, useUser } = useContext(AuthContext);
@@ -39,6 +40,7 @@ function ModalDashboard() {
       {auth.logged && (
         <>
           <HelpButton openModal={openModal} />
+          <QrCodeScanner />
         </>
       )}
     </>

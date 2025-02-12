@@ -10,6 +10,7 @@ import { useState } from "react";
 
 function UserCard({ user }) {
   const [send, setSend] = useState(false);
+  const [isDenegeted, setIsDenegeted] = useState(false);
   const [formData, setFormData] = useState({ asunto: "", cuerpo: "" });
 
   const queryClient = useQueryClient();
@@ -58,21 +59,21 @@ function UserCard({ user }) {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSendNotification = (e) => {
     e.preventDefault();
-    if (!formData.asunto || !formData.cuerpo) {
-      toast.error("Completa todos los campos");
+    const formData = new FormData(e.target);
+
+    if (!formData.get("asunto").trim() || !formData.get("cuerpo").trim()) {
+      toast.error("Por favor, completa ambos campos.");
       return;
     }
-    console.log(formData);
-
-    toast.info("Enviando notificación...");
-
     const content = {
       id: user._id,
-      asunto: formData.asunto,
-      cuerpo: formData.cuerpo,
+      asunto: formData.get("asunto"),
+      cuerpo: formData.get("cuerpo"),
     };
+
+    toast.info("Enviando mensaje");
     enviarNotificacion.mutate(content);
   };
 
@@ -140,29 +141,7 @@ function UserCard({ user }) {
           </button>
 
           {send && (
-            <form
-              action=""
-              onSubmit={(e) => {
-                e.preventDefault();
-                const formData = new FormData(e.target);
-
-                if (
-                  !formData.get("asunto").trim() ||
-                  !formData.get("cuerpo").trim()
-                ) {
-                  toast.error("Por favor, completa ambos campos.");
-                  return;
-                }
-                const content = {
-                  id: user._id,
-                  asunto: formData.get("asunto"),
-                  cuerpo: formData.get("cuerpo"),
-                };
-
-                toast.info("Enviando mensaje");
-                enviarNotificacion.mutate(content);
-              }}
-            >
+            <form action="" onSubmit={handleSendNotification}>
               <div className="mb-1 d-flex">
                 <label htmlFor="" className="form-label">
                   Asunto
