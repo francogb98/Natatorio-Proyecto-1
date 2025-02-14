@@ -80,16 +80,10 @@ function Footer() {
         {info_pileta.data.resultado.map((data) => {
           if (data.pileta === "pileta 25") {
             return (
-              <>
-                <li className="nav-link">
-                  Turno actual:{" "}
-                  <span className="text-success"> {data.hora}</span>
-                </li>
-                <li className="nav-link">
-                  Usuarios pileta 25:{" "}
-                  <span className="text-danger"> {data.users?.length}</span>
-                </li>
-              </>
+              <li className="nav-link">
+                Usuarios pileta 25:{" "}
+                <span className="text-danger"> {data.users?.length}</span>
+              </li>
             );
           }
           return (
