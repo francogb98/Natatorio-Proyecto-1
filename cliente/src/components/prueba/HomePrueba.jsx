@@ -24,7 +24,7 @@ function HomePrueba() {
           <Outlet />
         </div>
       </main>
-      <footer className="row fixed-bottom border-top border-dark d-sm-none d-md-block">
+      <footer className="row fixed-bottom border-top border-dark d-none d-md-block">
         <Footer />
       </footer>
     </div>
