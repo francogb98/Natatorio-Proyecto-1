@@ -40,7 +40,7 @@ function ModalDashboard() {
       {auth.logged && (
         <>
           <HelpButton openModal={openModal} />
-          <QrCodeScanner />
+          {/* <QrCodeScanner /> */}
         </>
       )}
     </>
