@@ -17,6 +17,7 @@ import {
 
 import PublicRoutes from "../public/routes/PublicRoutes";
 import PrivateRoutes from "../components/prueba/private/routes/PrivateRoutes";
+import QrPage from "../components/prueba/qr/QrPage";
 
 function Routing() {
   const { auth, restart, setRecargando } = useContext(AuthContext);
@@ -51,6 +52,7 @@ function Routing() {
           <>
             <Route path="/" element={<HomePrueba />}>
               <Route path="/home" element={<RegistroUsuarios />} />
+              <Route path="/qr" element={<QrPage />} />
               <Route path="/home/buscar" element={<Layout />} />
               <Route path="usuario/:id" element={<UserPerfil />} />
               <Route path="usuario/feeds" element={<Feeds />} />

@@ -17,6 +17,7 @@ UserRouter.param("userId", getUser);
 UserRouter.get("/:filter", getUsers);
 UserRouter.get("/infoUser/:token", userController.getUser);
 UserRouter.post("/generar-qr", userController.generarQrCode);
+UserRouter.post("/asistencia-qr", userController.asistenciaPorQr);
 
 UserRouter.post("/getinfoUser/:type/:id", userController.getUserById);
 UserRouter.post(

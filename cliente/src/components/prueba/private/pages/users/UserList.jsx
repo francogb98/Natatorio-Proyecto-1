@@ -34,7 +34,11 @@ function UserList() {
     return <UsersScheleton />;
   }
 
-  if (users.isSuccess) {
+  if (users.isSuccess && users.data) {
+    if (!users.data.users) {
+      return <h1 className="text-center mt-5">No se encontraron usuarios</h1>;
+    }
+
     const totalUsers = users.data.users.length;
     const totalPages = Math.ceil(totalUsers / usersPerPage); // Calcular el número total de páginas
 

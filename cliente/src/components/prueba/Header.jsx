@@ -33,6 +33,11 @@ function Header() {
               Buscar
             </Link>
           </li>
+          <li>
+            <Link className="dropdown-item" to="/qr">
+              QR
+            </Link>
+          </li>
         </ul>
       </li>
       {auth.role == "SUPER_ADMIN" && (

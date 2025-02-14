@@ -1,6 +1,7 @@
 import { User } from "../models/User.js"; // Asegúrate de poner la ruta correcta
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { obtenerFechaYHoraArgentina } from "../Helpers/traerInfoDelDia.js";
 dotenv.config();
 
 // Conexión a la base de datos
@@ -13,9 +14,11 @@ async function resetCUD() {
       useUnifiedTopology: true,
     });
 
-    const result = await User.updateMany({}, { $unset: { cud: "" } }); // Elimina el campo `cud`
+    const { fecha } = obtenerFechaYHoraArgentina();
 
-    console.log(`CUD reseteado en ${result.modifiedCount} documentos.`);
+    const result = await User.updateMany({}, { asistencia: [fecha] });
+
+    console.log(`Asistencia actualizada en ${result.modifiedCount} usuarios.`);
   } catch (error) {
     console.error("Error al resetear CUD:", error);
   } finally {

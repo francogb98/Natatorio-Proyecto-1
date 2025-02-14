@@ -109,9 +109,9 @@ function UserCard({ user }) {
         )}
       </ul>
       <div className="card-body d-flex flex-column justify-content-between gap-2">
-        <div className="d-flex justify-content-between">
+        <div className="d-flex flex-column justify-content-center align-items-center gap-2">
           <button
-            className="btn btn-sm btn-success"
+            className="btn btn-success w-100"
             onClick={() => {
               toast.info("Habilitando usuario...");
               aceptarUsuario.mutate({ id: user._id });
@@ -120,7 +120,7 @@ function UserCard({ user }) {
             Aceptar
           </button>
           <button
-            className="btn btn-sm btn-danger"
+            className="btn btn-danger w-100"
             onClick={() => {
               toast.info("inhabilitando usuario");
               denegarUsuario.mutate({
@@ -134,7 +134,7 @@ function UserCard({ user }) {
         </div>
         <div>
           <button
-            className="btn btn-sm btn-primary w-100"
+            className="btn btn-primary w-100"
             onClick={() => setSend(!send)}
           >
             {send ? "Cancelar" : "Enviar notificación"}

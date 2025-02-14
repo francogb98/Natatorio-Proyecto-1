@@ -278,12 +278,10 @@ export class PiletaController {
         })
       );
 
-      return res
-        .status(200)
-        .json({
-          message: "Turno anulado. Asistencia colocada a los usuarios",
-          status: "success",
-        });
+      return res.status(200).json({
+        message: "Turno anulado. Asistencia colocada a los usuarios",
+        status: "success",
+      });
     } catch (error) {
       console.log(error.message);
 
@@ -295,7 +293,7 @@ export class PiletaController {
   };
 }
 
-const actualizarEstadistica = async (user) => {
+export const actualizarEstadistica = async (user) => {
   try {
     const { mesNombre, fecha } = obtenerFechaYHoraArgentina();
     // Buscar la estadística para la actividad y el mes correspondiente
@@ -321,8 +319,6 @@ const actualizarEstadistica = async (user) => {
         estadisticaExistente.dias.push(fecha); // Asegúrate de guardar la fecha como un array si esperas múltiples fechas
       }
       await estadisticaExistente.save();
-
-      console.log(estadisticaExistente);
     }
 
     return { status: "success" };
@@ -332,7 +328,7 @@ const actualizarEstadistica = async (user) => {
   }
 };
 
-const asistenciaUsuario = async (customId, fecha) => {
+export const asistenciaUsuario = async (customId, fecha) => {
   try {
     const user = await User.findOneAndUpdate(
       { customId: customId },
@@ -347,7 +343,6 @@ const asistenciaUsuario = async (customId, fecha) => {
       { new: true }
     );
 
-    console.log({ usuario: user.customId, asisntencia: user.asistencia });
     return {
       status: "success",
     };

@@ -7,6 +7,7 @@ import { useMutation } from "react-query";
 import { PiletaFetch } from "../../../helpers/piletas/Pileta-Fetch";
 
 import style from "./style.module.css";
+import { QrFetch } from "../../../helpers/qr";
 
 const QrCodeScanner = () => {
   const [result, setResult] = useState("");
@@ -16,32 +17,7 @@ const QrCodeScanner = () => {
   } = useContext(AuthContext);
 
   const agregarUsuario = useMutation({
-    mutationFn: PiletaFetch.agregarUsuarioAlTurno,
-    onSuccess: (data) => {
-      if (data.status === "success") {
-        Swal.fire({
-          icon: "success",
-          title: "Usuario Autorizado",
-
-          html: `
-          <p> Usuario: <b> ${user.nombre} ${user.apellido}</b></p></br>
-          <p>Asistencia registrada en el dia de la fecha:<b>${result}</b></p>
-          </br>
-          <p>
-          Actividad:  <b>${user.activity[0].name}</b> </br>
-          Horario: <b>${user.activity[0].hourStart} -${user.activity[0].hourFinish} </b>
-          </p>
-          `,
-        });
-      }
-      if (data.status === "error") {
-        Swal.fire({
-          icon: "error",
-          title: "Usuario no autorizado",
-          text: data.message,
-        });
-      }
-    },
+    mutationFn: QrFetch.asistenciaPorQr,
   });
   const [isOpen, setIsOpen] = useState(false);
 
@@ -52,13 +28,6 @@ const QrCodeScanner = () => {
       agregarUsuario.mutate(
         {
           customId: user.customId,
-          nombre: user.nombre,
-          apellido: user.apellido,
-          actividad: user.activity[0].name,
-          pileta: user.activity[0].pileta,
-          horarioIngreso: user.activity[0].hourStart,
-          horarioSalida: user.activity[0].hourFinish,
-          codigoQR,
         },
         {
           onSuccess: (data) => {
@@ -67,9 +36,9 @@ const QrCodeScanner = () => {
                 icon: "success",
                 title: "Usuario Autorizado",
                 html: `
-                <p>Usuario: <b>${user.nombre} ${user.apellido}</b></p>
+                <p>Usuario: <h3>${user.nombre} ${user.apellido}</h3></p>
                 <br/>
-                <p>Asistencia registrada en el día de la fecha: <b>${codigoQR}</b></p>
+                <p>Asistencia registrada en el día de la fecha: <h3>${codigoQR}</h3></p>
                 <br/>
                 <p>
                   Actividad: <b>${user.activity[0].name}</b> <br/>

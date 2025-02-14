@@ -1,6 +1,25 @@
 import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import { Activity, User } from "../../models/index.js";
 import jwt from "jsonwebtoken";
+import { agregarUsuario } from "../pileta/utilidades/agegarUsuario.js";
+import {
+  actualizarEstadistica,
+  asistenciaUsuario,
+} from "../pileta/controller.pileta.js";
+
+const estaEnRango = (startTime, endTime, currentTime) => {
+  // Función para convertir "HH:MM" a minutos desde medianoche
+  const toMinutes = (time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+  };
+
+  const start = toMinutes(startTime);
+  const end = toMinutes(endTime);
+  const current = toMinutes(currentTime);
+
+  return current >= start && current <= end;
+};
 
 export class userController {
   static getUser = async (req, res) => {
@@ -210,6 +229,88 @@ export class userController {
       console.log(error.message);
 
       return res.status(400).json({ message: "error en el servidor" });
+    }
+  };
+
+  static asistenciaPorQr = async (req, res) => {
+    try {
+      const { customId } = req.body;
+      //traemos al usuario
+      const user = await User.findOne({ customId }).populate({
+        path: "activity",
+        populate: {
+          path: "name",
+        },
+      });
+
+      //verificamos que exista
+      if (!user) {
+        return res
+          .status(400)
+          .json({ status: "error", message: "Usuario no encontrado" });
+      }
+
+      //verificamos que tenga alguna actividad
+      if (!user.activity.length) {
+        return res
+          .status(400)
+          .json({ status: "error", message: "Actividad no encontrada" });
+      }
+
+      //verificamos que alguna de las actividades pertenezca a la hora actual y dia
+      const { diaNombre, hora, fecha } = obtenerFechaYHoraArgentina();
+      const found = user.activity.find((actividad) => {
+        return (
+          actividad.date.includes(diaNombre) &&
+          estaEnRango(actividad.hourStart, actividad.hourFinish, hora)
+        );
+      });
+
+      if (!found) {
+        return res.status(400).json({
+          status: "error",
+          message: "Horario o Dia Incorrecto de la actividad",
+        });
+      }
+      //registramos al usuario en pileta
+
+      const resultado = await agregarUsuario({
+        customId: user.customId,
+        nombre: user.nombre,
+        actividad: found.name,
+        pileta: found.pileta,
+        apellido: user.apellido,
+        horarioIngreso: found.hourStart,
+        horarioSalida: found.hourFinish,
+      });
+
+      if (resultado.status === "error") {
+        return res
+          .status(400)
+          .json({ status: "error", message: resultado.message });
+      }
+
+      //actualizar el campo de asistenciia del usuario
+      const resultadoAsistencia = await asistenciaUsuario(customId, fecha);
+      if (resultadoAsistencia.status === "error") {
+        return res
+          .status(400)
+          .json({ status: "error", message: resultado.message });
+      }
+
+      //actualizo la estadistica
+      await actualizarEstadistica(user);
+
+      return res.status(200).json({
+        status: "success",
+        message: "Usuario aceptado",
+      });
+    } catch (error) {
+      console.log(error.message);
+      return res.status(500).json({
+        status: "error",
+        message: error.message,
+      });
     }
   };
 }

@@ -20,12 +20,12 @@ justify-content: center;
     padding: 15px;
     min-width: 300px;
     max-width: 300px;
-    min-height: 350px;
-    max-height: 350px;
+    min-height: 373px;
+    max-height: 373px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 3px;
+    gap: 5px;
 }
 
 .card__user{
