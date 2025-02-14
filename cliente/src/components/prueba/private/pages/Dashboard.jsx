@@ -8,6 +8,7 @@ function Dashboard() {
       <Outlet />
 
       <ModalArchivos />
+
       <Toaster />
     </div>
   );

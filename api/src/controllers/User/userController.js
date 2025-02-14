@@ -189,7 +189,6 @@ export class userController {
         });
       }
 
-      //agregamos el usuario, e incrementamos el cupo
       const activityUpdate = await Activity.findOneAndUpdate(
         { _id: isActivityExist._id },
         { $push: { users: user }, $inc: { userRegister: 1 } },
@@ -201,6 +200,10 @@ export class userController {
       if (user.activity.length == 1) {
         user.status = false;
       }
+
+      const { fecha } = obtenerFechaYHoraArgentina();
+      user.asistencia = [];
+      user.asistencia.push(fecha);
 
       const userUpdate = await user.save();
 
