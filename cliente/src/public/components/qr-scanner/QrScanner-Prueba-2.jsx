@@ -104,7 +104,7 @@ const QrCodeScanner = () => {
             }}
           >
             <i
-              class="bi bi-qr-code-scan"
+              className="bi bi-qr-code-scan"
               style={{
                 fontSize: "50px",
               }}

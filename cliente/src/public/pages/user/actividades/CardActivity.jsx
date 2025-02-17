@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
 import { toast } from "sonner";
-import { useContext } from "react";
-import { AuthContext } from "../../../../context/AuthContext";
 
 function CardActivity({ status, activity, i }) {
   const queryClient = useQueryClient();
@@ -62,13 +60,64 @@ function CardActivity({ status, activity, i }) {
             {capitalizeFirstLetter(activity.pileta)}
           </span>
         </p>
-        <button className="btn btn-danger" onClick={() => handleBaja()}>
+        <button
+          type="button"
+          className="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#DarDeBajaModal
+        "
+        >
           Dar de baja
         </button>
+      </div>
+
+      <div
+        className="modal fade"
+        id="DarDeBajaModal"
+        tabIndex="-1"
+        aria-labelledby="DarDeBajaModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="DarDeBajaModalLabel">
+                Baja Actividad
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              ¿Estas seguro de dar de baja la actividad?
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+                onClick={() => handleBaja()}
+              >
+                Aceptar
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+
 CardActivity.propTypes = {
   status: PropTypes.bool.isRequired,
   activity: PropTypes.shape({

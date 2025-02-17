@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import style from "./style.module.css";
 import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 import { useMutation, useQueryClient } from "react-query";
@@ -74,6 +74,10 @@ function FileUploadForm() {
     } catch (error) {
       setError("Error al subir el archivo");
       return;
+    } finally {
+      setPreview(null);
+      setFile(null);
+      setFileType(null);
     }
   };
 
@@ -88,6 +92,10 @@ function FileUploadForm() {
         setFileType(null);
         setError(null);
         setPreview(null);
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
         queryClient.invalidateQueries("user");
       }
     },
@@ -102,7 +110,7 @@ function FileUploadForm() {
         name="fileType"
         id="fileType"
         className="form-select mb-3"
-        defaultValue={fileType}
+        value={fileType || "null"}
         onChange={(e) => setFileType(e.target.value)}
       >
         <option value="null">--Tipo de archivo--</option>

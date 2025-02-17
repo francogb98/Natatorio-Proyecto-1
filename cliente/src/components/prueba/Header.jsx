@@ -24,7 +24,7 @@ function Header() {
         </a>
         <ul className="dropdown-menu">
           <li>
-            <Link className="dropdown-item" to="/home">
+            <Link className="dropdown-item" to="/">
               Lista
             </Link>
           </li>

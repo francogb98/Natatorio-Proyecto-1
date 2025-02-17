@@ -152,7 +152,6 @@ function PeticionCard({ peticion }) {
           )}
         </>
       )}
-      <Toaster position="bottom-center" />
     </div>
   );
 }
