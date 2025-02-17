@@ -85,9 +85,12 @@ function UserCard({ user }) {
         style={{ width: "100%", height: "200px" }}
       />
       <div className="card-body">
-        <b className="card-title">
-          {user.nombre} {user.apellido}
-        </b>
+        <div className="d-flex flex-column justify-content-center align-items-center gap-2">
+          <b className="card-title">
+            {user.nombre} {user.apellido}
+          </b>
+          <p>{user.customId}</p>
+        </div>
         <p className="card-subtitle text-danger fw-bold mt-1">
           Actividad Inscripta
         </p>

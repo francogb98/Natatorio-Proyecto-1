@@ -63,6 +63,7 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.setPageIndex(0);
               }}
+              className="p-1 btn"
             >
               Primera Pagina
             </button>
@@ -70,6 +71,7 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.previousPage();
               }}
+              className="p-1 btn"
             >
               <i className="bi bi-arrow-left"></i>
             </button>
@@ -82,6 +84,7 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.nextPage();
               }}
+              className="p-1 btn"
             >
               <i className="bi bi-arrow-right"></i>
             </button>
@@ -89,6 +92,7 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.setPageIndex(table.getPageCount() - 1);
               }}
+              className="p-1 btn"
             >
               Ultima Pagina
             </button>
@@ -142,6 +146,7 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.setPageIndex(0);
               }}
+              className="p-1 btn"
             >
               Primera Pagina
             </button>
@@ -149,6 +154,7 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.previousPage();
               }}
+              className="p-1 btn"
             >
               <i className="bi bi-arrow-left"></i>
             </button>
@@ -161,6 +167,7 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.nextPage();
               }}
+              className="p-1 btn"
             >
               <i className="bi bi-arrow-right"></i>
             </button>
@@ -168,13 +175,14 @@ function Tabla({ data, columns, type, pageStart }) {
               onClick={() => {
                 table.setPageIndex(table.getPageCount() - 1);
               }}
+              className="p-1 btn"
             >
               Ultima Pagina
             </button>
           </>
         )}
         <span className="flex items-center gap-1 ms-3">
-          <div>pagina</div>
+          <div>Pagina</div>
           <strong>
             {table.getState().pagination.pageIndex + 1} / {table.getPageCount()}
           </strong>
