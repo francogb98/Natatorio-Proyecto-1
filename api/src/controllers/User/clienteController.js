@@ -376,8 +376,6 @@ export class ClienteController {
         secure: true,
       };
 
-      
-
       console.log(
         user.customId % 2 === 0
           ? process.env.CLOUDINARY_CLOUD_NAME

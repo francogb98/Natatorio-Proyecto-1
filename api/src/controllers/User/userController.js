@@ -271,10 +271,11 @@ export class userController {
 
       //verificamos que alguna de las actividades pertenezca a la hora actual y dia
       const found = user.activity.find((actividad) => {
-        return (
-          actividad.date.includes(diaNombre) &&
-          estaEnRango(actividad.hourStart, actividad.hourFinish, hora)
-        );
+        return actividad.date.includes(diaNombre);
+
+        //HACER QUE LA ACTIVIDAD ACEPTE A PARTIR DE UNA HOARA ANTES
+
+        // && estaEnRango(actividad.hourStart, actividad.hourFinish, hora)
       });
 
       if (!found) {
