@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { useMutation } from "react-query";
 import { QrFetch } from "../../../helpers/qr";
+import { useNavigate } from "react-router-dom";
 
 const QrPage = () => {
   const [text, setText] = useState(null);
+
+  const navigate = useNavigate();
 
   const generarFecha = useMutation({
     mutationFn: QrFetch.generarFecha,
@@ -16,12 +19,22 @@ const QrPage = () => {
   return (
     <>
       <div className="flex flex-col items-center gap-4 p-4">
-        <button
-          className="btn btn-outline-primary"
-          onClick={() => generarFecha.mutate()}
-        >
-          Generar Qr
-        </button>
+        <div className="d-flex gap-2">
+          <button
+            className="btn btn-outline-danger"
+            onClick={() => navigate("/")}
+          >
+            {/* icono de flechita para atras */}
+            <i className="bi bi-arrow-left-short pt-3"></i>
+            Volver
+          </button>
+          <button
+            className="btn btn-outline-primary"
+            onClick={() => generarFecha.mutate()}
+          >
+            Generar Qr
+          </button>
+        </div>
 
         {generarFecha.isLoading && <h2>Cargando qr...</h2>}
       </div>

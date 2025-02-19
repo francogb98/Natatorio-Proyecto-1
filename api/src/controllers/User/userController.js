@@ -237,8 +237,17 @@ export class userController {
 
   static asistenciaPorQr = async (req, res) => {
     try {
-      const { customId } = req.body;
+      const { customId, qr } = req.body;
       //traemos al usuario
+
+      const { diaNombre, hora, fecha } = obtenerFechaYHoraArgentina();
+
+      if (qr !== fecha) {
+        return res
+          .status(400)
+          .json({ status: "error", message: "La fecha es incorrecta." });
+      }
+
       const user = await User.findOne({ customId }).populate({
         path: "activity",
         populate: {
@@ -261,7 +270,6 @@ export class userController {
       }
 
       //verificamos que alguna de las actividades pertenezca a la hora actual y dia
-      const { diaNombre, hora, fecha } = obtenerFechaYHoraArgentina();
       const found = user.activity.find((actividad) => {
         return (
           actividad.date.includes(diaNombre) &&

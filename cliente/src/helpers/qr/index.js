@@ -22,8 +22,6 @@ export class QrFetch {
 
   static asistenciaPorQr = async (args) => {
     try {
-      console.log(args);
-
       const url = `${baseUrl}user/asistencia-qr`;
 
       const resp = await fetch(url, {

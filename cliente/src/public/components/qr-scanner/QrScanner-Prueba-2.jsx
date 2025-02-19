@@ -28,6 +28,7 @@ const QrCodeScanner = () => {
       agregarUsuario.mutate(
         {
           customId: user.customId,
+          qr: codigoQR,
         },
         {
           onSuccess: (data) => {
