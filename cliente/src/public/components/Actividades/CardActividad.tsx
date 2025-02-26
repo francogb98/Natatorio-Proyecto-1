@@ -1,18 +1,25 @@
+import React from "react";
+
 import { UserFetch } from "../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 import { useMutation, useQueryClient } from "react-query";
-import { toast } from "sonner";
 
-import PropTypes from "prop-types";
 import { capitalizeFirstLetter } from "../../utils/MayusculaPL";
 
 import { AuthContext } from "../../../context/AuthContext";
 import { useContext } from "react";
 import Spinner from "../../utils/Spinner";
-import style from "./style.module.css";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-function CardActividad({ actividad }) {
+import style from "./style.module.css";
+
+import { Actividad } from "../../models/index";
+
+export interface CardActividadProps {
+  actividad: Actividad;
+}
+
+function CardActividad({ actividad }: CardActividadProps) {
   const { auth } = useContext(AuthContext);
 
   const queryClient = useQueryClient();
@@ -59,12 +66,16 @@ function CardActividad({ actividad }) {
       return;
     }
 
-    if (auth.user.edad > actividad.hasta) {
+    if (!actividad) {
+      return;
+    }
+
+    if (auth.user.edad > actividad.hasta!) {
       alert("La actividad no corresponde a la edad del usuario");
 
       return;
     }
-    if (auth.user.edad < actividad.desde) {
+    if (auth.user.edad < actividad.desde!) {
       alert("La actividad no corresponde a la edad del usuario");
 
       return;
@@ -151,19 +162,5 @@ function CardActividad({ actividad }) {
     </div>
   );
 }
-CardActividad.propTypes = {
-  actividad: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    pileta: PropTypes.string.isRequired,
-    hourStart: PropTypes.string.isRequired,
-    hourFinish: PropTypes.string.isRequired,
-    codigoDeAcceso: PropTypes.string,
-    _id: PropTypes.string.isRequired,
-    natacionAdaptada: PropTypes.bool.isRequired,
-    date: PropTypes.arrayOf(PropTypes.string).isRequired,
-    cupos: PropTypes.number.isRequired,
-    users: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }).isRequired,
-};
 
 export { CardActividad };

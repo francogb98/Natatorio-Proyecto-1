@@ -1,8 +1,13 @@
-import PropTypes from "prop-types";
+import React from "react";
 
 import { CardActividad } from "../../components/Actividades";
+import { Actividad } from "../../models";
 
-function ActividadesLista({ actividades }) {
+interface ActividadProps {
+  actividades: Actividad[];
+}
+
+function ActividadesLista({ actividades }: ActividadProps) {
   //TRAE TODAS LAS ACTIVIDADES
 
   return (
@@ -16,7 +21,4 @@ function ActividadesLista({ actividades }) {
   );
 }
 
-ActividadesLista.propTypes = {
-  actividades: PropTypes.array,
-};
 export default ActividadesLista;

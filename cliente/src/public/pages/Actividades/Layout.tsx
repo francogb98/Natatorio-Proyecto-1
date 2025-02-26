@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useQuery } from "react-query";
 import { useContext, useState, useEffect } from "react";
 import { ActividadesFetch } from "../../../helpers/activitiesFetch/Actividades-fetch-class";
@@ -6,6 +8,7 @@ import { ModalIniciarSesion, FormSearch } from "../../components/Actividades";
 import Loading from "../../components/Loader/Loading";
 import { AuthContext } from "../../../context/AuthContext";
 import SelectForm from "../../components/Actividades/SelectForm";
+import { Actividad } from "../../models";
 
 function Layout() {
   const {
@@ -19,8 +22,10 @@ function Layout() {
   });
 
   const [filtro, setFiltro] = useState("");
-  const [actividadesParaUsuarios, setActividadesParaUsuarios] = useState([]);
-  const [nombreActividades, setNombreActividades] = useState([]);
+  const [actividadesParaUsuarios, setActividadesParaUsuarios] = useState<
+    Actividad[]
+  >([]);
+  const [nombreActividades, setNombreActividades] = useState<string[]>([]);
   const [filter, setFilter] = useState({
     name: "default",
     hour: "default",
@@ -29,16 +34,18 @@ function Layout() {
 
   useEffect(() => {
     if (data?.actividades) {
+      //souciona el error que me tira aca abajo
+
       const sortedActivities = data.actividades.sort((a, b) => {
         const dateA = new Date(`1970-01-01T${a.hourStart}`);
         const dateB = new Date(`1970-01-01T${b.hourStart}`);
         return dateA - dateB;
       });
       setActividadesParaUsuarios(
-        sortedActivities.filter((actividad) => {
+        sortedActivities.filter((actividad: Actividad) => {
           let filtroEdad =
             user && user.edad
-              ? user.edad >= actividad.desde && user.edad <= actividad.hasta
+              ? user.edad >= actividad.desde! && user.edad <= actividad.hasta!
               : true;
 
           return actividad.codigoDeAcceso === "" && filtroEdad;
@@ -48,9 +55,9 @@ function Layout() {
   }, [data]);
 
   useEffect(() => {
-    setNombreActividades([
-      ...new Set(actividadesParaUsuarios.map((act) => act.name)),
-    ]);
+    setNombreActividades(
+      Array.from(new Set(actividadesParaUsuarios.map((act) => act.name)))
+    );
   }, [actividadesParaUsuarios]);
 
   if (isLoading || actividadesParaUsuarios.length == 0) {
@@ -71,7 +78,7 @@ function Layout() {
   };
   let filteredActivities = [];
   if (filtro !== "") {
-    filteredActivities = data?.actividades.filter((actividad) => {
+    filteredActivities = data?.actividades.filter((actividad: Actividad) => {
       const filtroNombre = filtro
         ? actividad.codigoDeAcceso === filtro ||
           (actividad.name.startsWith(filtro) && actividad.codigoDeAcceso === "")
@@ -79,7 +86,7 @@ function Layout() {
 
       const filtroEdad =
         user && user.edad
-          ? user.edad >= actividad.desde && user.edad <= actividad.hasta
+          ? user.edad >= actividad.desde! && user.edad <= actividad.hasta!
           : true;
 
       const estaHabilitada = actividad.actividadHabilitada;
@@ -87,22 +94,25 @@ function Layout() {
       return filtroNombre && filtroEdad && estaHabilitada;
     });
   } else {
-    filteredActivities = actividadesParaUsuarios.filter((actividad) => {
-      let filtroEdad =
-        user && user.edad
-          ? user.edad >= actividad.desde && user.edad <= actividad.hasta
-          : true;
+    filteredActivities = actividadesParaUsuarios.filter(
+      (actividad: Actividad) => {
+        let filtroEdad =
+          user && user.edad
+            ? user.edad >= actividad.desde! && user.edad <= actividad.hasta!
+            : true;
 
-      return Object.entries(filter).every(([key, value]) => {
-        if (value === "default") return true && filtroEdad;
-        if (key === "day") {
-          return actividad.date.includes(value) && filtroEdad;
-        }
-        if (key === "hour") return actividad.hourStart === value && filtroEdad;
-        if (key === "name") return actividad.name === value && filtroEdad;
-        return true && filtroEdad;
-      });
-    });
+        return Object.entries(filter).every(([key, value]) => {
+          if (value === "default") return true && filtroEdad;
+          if (key === "day") {
+            return actividad.date.includes(value) && filtroEdad;
+          }
+          if (key === "hour")
+            return actividad.hourStart === value && filtroEdad;
+          if (key === "name") return actividad.name === value && filtroEdad;
+          return true && filtroEdad;
+        });
+      }
+    );
   }
 
   return (

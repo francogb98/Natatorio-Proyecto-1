@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { cambioTurno } from "../helpers/cambiarTurno.js";
 
@@ -9,6 +9,8 @@ import Swal from "sweetalert2";
 
 function FormularioBuscarUsuario() {
   const [filtro, setFiltro] = useState("");
+
+  const [timeoutId, setTimeoutId] = useState(null);
 
   const { userEncontardo, setUserEncontrado, buscarUsuario, anularTurno } =
     peticiones_buscador();
@@ -51,6 +53,27 @@ function FormularioBuscarUsuario() {
     buscarUsuario.mutate(filtro);
   };
 
+  const handleChange = (e) => {
+    setFiltro(e.target.value);
+
+    if (e.target.value.length < 3) {
+      return;
+    }
+
+    // Limpiar el timeout anterior si el usuario sigue escribiendo
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    // Configurar un nuevo timeout
+    const newTimeoutId = setTimeout(() => {
+      if (e.target.value.length > 2) {
+        buscarUsuario.mutate(e.target.value);
+      }
+    }, 300);
+
+    setTimeoutId(newTimeoutId);
+  };
   return (
     <>
       <section className="container">
@@ -120,7 +143,7 @@ function FormularioBuscarUsuario() {
               <input
                 type="text"
                 value={filtro}
-                onChange={(e) => setFiltro(e.target.value)}
+                onChange={handleChange}
                 className="form-control"
                 placeholder="buscar usuario"
               />
@@ -129,34 +152,17 @@ function FormularioBuscarUsuario() {
               </button>
             </form>
             {buscarUsuario.isLoading ? (
-              <div className="spinner-border text-primary ms-1" role="status">
-                <span className="visually-hidden">Loading...</span>
+              <div className="d-flex justify-content-center mt-3">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
               </div>
             ) : null}
-            {buscarUsuario.data?.status === "error" ? (
+            {buscarUsuario.data?.status === "error" && filtro.length > 2 ? (
               <h3>{buscarUsuario.data.message}</h3>
             ) : null}
-            {userEncontardo && (
+            {userEncontardo && filtro.length > 2 && (
               <div className="row mt-3 d-flex flex-column align-items-center">
-                <button
-                  className="btn btn-danger"
-                  style={{ width: "fit-content" }}
-                  onClick={() => {
-                    setUserEncontrado(false);
-                  }}
-                >
-                  cerrar
-                </button>
-                {buscarUsuario.data?.status == "success"
-                  ? buscarUsuario.data?.users.map((user, i) => (
-                      <div
-                        className={`col-12 d-flex justify-content-center g-1`}
-                        key={i}
-                      >
-                        <Card_User key={i} user={user}></Card_User>
-                      </div>
-                    ))
-                  : null}
                 {buscarUsuario.data?.status === "success"
                   ? buscarUsuario.data.users.length > 4 && (
                       <button
@@ -169,6 +175,20 @@ function FormularioBuscarUsuario() {
                         cerrar
                       </button>
                     )
+                  : null}
+                {buscarUsuario.data?.status == "success"
+                  ? buscarUsuario.data?.users.map((user, i) => (
+                      <div
+                        className={`col-12 d-flex justify-content-center g-1`}
+                        key={i}
+                      >
+                        <Card_User
+                          key={i}
+                          user={user}
+                          setUserEncontrado={setUserEncontrado}
+                        ></Card_User>
+                      </div>
+                    ))
                   : null}
               </div>
             )}

@@ -42,8 +42,6 @@ function RegistroUsuarios() {
     );
   }
 
-  console.log(info_pileta.data);
-
   const columns = [
     {
       header: "ID",

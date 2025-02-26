@@ -3,7 +3,7 @@ import App from "./App.jsx";
 import "./index.css";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <QueryClientProvider client={new QueryClient()}>

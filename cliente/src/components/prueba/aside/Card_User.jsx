@@ -5,6 +5,9 @@ import { AuthContext } from "../../../context/AuthContext";
 
 import { Toaster, toast } from "sonner";
 import CreatePeticion from "../peticiones/CreatePeticion";
+import ImagenUser from "./ImagenUser";
+
+import avatar from "../../../assets/avatar.webp";
 
 function calcular_fecha(fecha_carga) {
   // Convertir la cadena de fecha en un objeto de fecha
@@ -26,7 +29,7 @@ function calcular_fecha(fecha_carga) {
   return diasPasados;
 }
 
-function Card_User({ user }) {
+function Card_User({ user, setUserEncontrado }) {
   const { auth } = useContext(AuthContext);
   const [solicitar, setSolicitar] = useState(false);
 
@@ -34,12 +37,8 @@ function Card_User({ user }) {
     setSolicitar(!solicitar);
   };
 
-  const {
-    setUserEncontrado,
-    agregarUsuarioAListaAutorizado,
-    agregarUsuario,
-    autorizar,
-  } = peticiones_buscador();
+  const { agregarUsuarioAListaAutorizado, agregarUsuario, autorizar } =
+    peticiones_buscador();
 
   useEffect(() => {
     if (user.fechaCargaCertificadoHongos) {
@@ -52,6 +51,20 @@ function Card_User({ user }) {
       <div className="card px-2" style={{ width: "18rem", fontSize: "12px" }}>
         {!solicitar && (
           <div className="card-body">
+            {/* poner boton de cerrar en la parte superior derecha */}
+            <button
+              type="button"
+              className="btn-close d-block ms-auto"
+              aria-label="Close"
+              onClick={() => {
+                setUserEncontrado(false);
+              }}
+            ></button>
+
+            {/* imagen del usuario centrada y que no sea grande */}
+
+            <ImagenUser foto={user.foto ? user.foto : avatar} />
+
             <h5 className="card-title fs-6 text-center">
               <Link
                 to={`usuario/${user._id}`}
