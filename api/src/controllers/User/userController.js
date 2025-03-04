@@ -40,6 +40,8 @@ export class userController {
 
       res.status(200).json({ status: "success", user });
     } catch (error) {
+      console.log(error.message);
+
       res.status(404).json({ status: "error", message: error.message });
     }
   };
