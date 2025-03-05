@@ -147,7 +147,10 @@ function Header() {
           </a>
           <ul className="dropdown-menu">
             <li>
-              <Link className="dropdown-item" to="habilitar/convencional">
+              <Link
+                className="dropdown-item"
+                to="dashboard/user-list/convencional"
+              >
                 Habilitar Convencional
               </Link>
             </li>

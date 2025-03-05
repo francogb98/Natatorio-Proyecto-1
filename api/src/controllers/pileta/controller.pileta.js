@@ -5,7 +5,6 @@ import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import { agregarUsuario } from "./utilidades/agegarUsuario.js";
 import { intercambioDeUsuarios } from "./utilidades/intercambiarUsuariosTurno.js";
 import { crearPileta } from "./utilidades/crearPileta.js";
-import { verificacionEstadoUsuarios } from "./utilidades/estadoUsuario.js";
 
 export class PiletaController {
   static getInfoPiletas = async (req, res) => {

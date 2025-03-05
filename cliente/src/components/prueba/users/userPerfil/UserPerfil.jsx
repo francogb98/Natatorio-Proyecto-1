@@ -10,6 +10,8 @@ import Funciones_administrador from "../hooks/Funciones_administrador";
 import { Toaster, toast } from "sonner";
 import Acciones_mesa_entrada from "./Acciones_mesa_entrada";
 import { UserFetchPrivado } from "../../../../helpers/UserFetchConClases/FETCH-privado/UserFetch-Privado";
+import ImagenPerfil from "./ImagenPerfil";
+import PopoverButton from "../utilidades/Popover";
 
 function UserPerfil() {
   const { auth } = useContext(AuthContext);
@@ -43,21 +45,20 @@ function UserPerfil() {
     return (
       <div className="container">
         <div className="row justify-content-center text-center">
-          <img
-            src={user.foto ?? avatar}
-            alt=""
-            style={{
-              height: "200px",
-              width: "200px",
-            }}
-            className="col-12"
-          />
+          <ImagenPerfil foto={user.foto ? user.foto : avatar} />
           <div className="col-12 mt-2">
             <h2>
               {user.nombre.charAt(0).toUpperCase() + user.nombre.slice(1)}{" "}
               {user.apellido.charAt(0).toUpperCase() + user.apellido.slice(1)}
             </h2>
             <h4>{user.customId}</h4>
+          </div>
+          <div
+            style={{
+              width: "200px",
+            }}
+          >
+            <PopoverButton user={user} />
           </div>
         </div>
 

@@ -159,7 +159,14 @@ function FormularioBuscarUsuario() {
               </div>
             ) : null}
             {buscarUsuario.data?.status === "error" && filtro.length > 2 ? (
-              <h3>{buscarUsuario.data.message}</h3>
+              <h4
+                className="mx-auto bg-warning mt-2 p-2 rounded"
+                style={{
+                  width: "fit-content",
+                }}
+              >
+                {buscarUsuario.data.message}
+              </h4>
             ) : null}
             {userEncontardo && filtro.length > 2 && (
               <div className="row mt-3 d-flex flex-column align-items-center">
