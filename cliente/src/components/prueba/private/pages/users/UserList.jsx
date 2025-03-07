@@ -47,6 +47,10 @@ function UserList() {
     const endIndex = startIndex + usersPerPage;
     const currentUsers = users.data.users.slice(startIndex, endIndex);
 
+    if (currentUsers.length === 0) {
+      return <h1 className="text-center mt-5">No se encontraron usuarios</h1>;
+    }
+
     return (
       <div className="row mt-3 justify-content-around g-1">
         <div className="d-flex justify-content-center">

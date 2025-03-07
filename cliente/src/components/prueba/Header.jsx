@@ -14,12 +14,21 @@ function Header() {
   const [showActividadesDropdown, setShowActividadesDropdown] = useState(false);
 
   // Funciones para alternar la visibilidad de los dropdowns
-  const togglePiletasDropdown = () =>
+  const togglePiletasDropdown = () => {
+    setShowUsuariosDropdown(false);
+    setShowActividadesDropdown(false);
     setShowPiletasDropdown(!showPiletasDropdown);
-  const toggleUsuariosDropdown = () =>
+  };
+  const toggleUsuariosDropdown = () => {
+    setShowActividadesDropdown(false);
+    setShowPiletasDropdown(false);
     setShowUsuariosDropdown(!showUsuariosDropdown);
-  const toggleActividadesDropdown = () =>
+  };
+  const toggleActividadesDropdown = () => {
+    setShowPiletasDropdown(false);
+    setShowUsuariosDropdown(false);
     setShowActividadesDropdown(!showActividadesDropdown);
+  };
 
   return (
     <nav className="nav justify-content-around">
@@ -35,17 +44,29 @@ function Header() {
         </a>
         <ul className={`dropdown-menu ${showPiletasDropdown ? "show" : ""}`}>
           <li>
-            <Link className="dropdown-item" to="/dashboard">
+            <Link
+              className="dropdown-item"
+              to="/dashboard"
+              onClick={togglePiletasDropdown}
+            >
               Inicio
             </Link>
           </li>
           <li>
-            <Link className="dropdown-item" to="/home/buscar">
+            <Link
+              className="dropdown-item"
+              to="/home/buscar"
+              onClick={togglePiletasDropdown}
+            >
               Buscar
             </Link>
           </li>
           <li>
-            <Link className="dropdown-item" to="/qr">
+            <Link
+              className="dropdown-item"
+              to="/qr"
+              onClick={togglePiletasDropdown}
+            >
               QR
             </Link>
           </li>
@@ -67,12 +88,20 @@ function Header() {
             className={`dropdown-menu ${showActividadesDropdown ? "show" : ""}`}
           >
             <li>
-              <Link className="dropdown-item" to="actividades">
+              <Link
+                className="dropdown-item"
+                to="actividades"
+                onClick={toggleActividadesDropdown}
+              >
                 Lista
               </Link>
             </li>
             <li>
-              <Link className="dropdown-item" to="actividades/create">
+              <Link
+                className="dropdown-item"
+                to="actividades/create"
+                onClick={toggleActividadesDropdown}
+              >
                 Crear
               </Link>
             </li>
@@ -82,7 +111,11 @@ function Header() {
 
       {/* Si no es SUPER_ADMIN, solo mostrar el link sin dropdown */}
       {auth.role !== "SUPER_ADMIN" && (
-        <Link to="actividades" className="nav-link">
+        <Link
+          to="actividades"
+          className="nav-link"
+          onClick={togglePiletasDropdown}
+        >
           Actividades
         </Link>
       )}
@@ -105,6 +138,7 @@ function Header() {
                   <Link
                     className="dropdown-item"
                     to="/dashboard/user-list/todos"
+                    onClick={toggleUsuariosDropdown}
                   >
                     Habilitar
                   </Link>
@@ -113,6 +147,7 @@ function Header() {
                   <Link
                     className="dropdown-item"
                     to="dashboard/user-list/convencional"
+                    onClick={toggleUsuariosDropdown}
                   >
                     Habilitar Convencional
                   </Link>
@@ -121,6 +156,7 @@ function Header() {
                   <Link
                     className="dropdown-item"
                     to="dashboard/user-list/adaptada"
+                    onClick={toggleUsuariosDropdown}
                   >
                     Habilitar Adaptada
                   </Link>
@@ -129,6 +165,7 @@ function Header() {
                   <Link
                     className="dropdown-item"
                     to="dashboard/user-list/certificado"
+                    onClick={toggleUsuariosDropdown}
                   >
                     Certificado
                   </Link>
@@ -141,19 +178,28 @@ function Header() {
                   <Link
                     className="dropdown-item"
                     to="dashboard/user-list/convencional"
+                    onClick={toggleUsuariosDropdown}
                   >
                     Habilitar Convencional
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="habilitar/certificado">
+                  <Link
+                    className="dropdown-item"
+                    to="habilitar/certificado"
+                    onClick={toggleUsuariosDropdown}
+                  >
                     Certificado
                   </Link>
                 </li>
               </>
             )}
             <li>
-              <Link className="dropdown-item" to="peticiones">
+              <Link
+                className="dropdown-item"
+                to="peticiones"
+                onClick={toggleUsuariosDropdown}
+              >
                 Peticiones
               </Link>
             </li>

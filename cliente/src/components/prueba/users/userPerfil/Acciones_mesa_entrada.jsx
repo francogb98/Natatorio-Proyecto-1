@@ -11,16 +11,12 @@ function Acciones_mesa_entrada({ user }) {
 
   useEffect(() => {}, [accion, ejecutarAccion]);
 
-  const {
-    habilitar,
-  } = Funciones_administrador();
+  const { habilitar } = Funciones_administrador();
 
   return (
     <div className="row mb-4 border">
       <h2 className="text-center ">Acciones Administrador</h2>
       <div className="col-12">
-        
-
         {user.activity?.length ? (
           <>
             <label className="fw-bold">Actividad:</label>
@@ -33,14 +29,10 @@ function Acciones_mesa_entrada({ user }) {
               >
                 Habilitar Usuario
               </button>
-             
             </div>
           </>
         ) : null}
-        
       </div>
-     
-      <Toaster position="bottom-left" richColors />
     </div>
   );
 }

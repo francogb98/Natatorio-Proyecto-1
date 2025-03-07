@@ -1,6 +1,7 @@
 import PopoverButton from "../../utils/Popover";
 import { User } from "../../../models";
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface TablaPiletaProps {
   users: User[];
@@ -12,6 +13,8 @@ function TablaPileta({ users }: TablaPiletaProps) {
   const usersLength = users.filter((user, index) => {
     return index < 10;
   });
+
+  console.log(usersLength);
 
   return (
     <table className="table table-striped table-hover table-bordered table-responsive">

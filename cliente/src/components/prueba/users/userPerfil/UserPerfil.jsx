@@ -53,13 +53,6 @@ function UserPerfil() {
             </h2>
             <h4>{user.customId}</h4>
           </div>
-          <div
-            style={{
-              width: "200px",
-            }}
-          >
-            <PopoverButton user={user} />
-          </div>
         </div>
 
         <hr />
