@@ -6,8 +6,6 @@ import Header from "./Header";
 function HomePrueba() {
   const { pathname } = useLocation();
 
-  console.log(pathname);
-
   return (
     <div className="container-fluid">
       {pathname === "/qr" ? (

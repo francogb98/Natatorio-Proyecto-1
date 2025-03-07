@@ -18,6 +18,7 @@ import {
 import PublicRoutes from "../public/routes/PublicRoutes";
 import PrivateRoutes from "../components/prueba/private/routes/PrivateRoutes";
 import QrPage from "../components/prueba/qr/QrPage";
+import LayoutPileta from "../components/prueba/private/pages/piletas/LayoutPileta";
 
 function Routing() {
   const { auth, restart, setRecargando } = useContext(AuthContext);
@@ -51,7 +52,7 @@ function Routing() {
         (auth.logged && auth.role === "SUPER_ADMIN") ? (
           <>
             <Route path="/" element={<HomePrueba />}>
-              <Route path="/" element={<RegistroUsuarios />} />
+              <Route path="/" element={<LayoutPileta />} />
               <Route path="/qr" element={<QrPage />} />
               <Route path="/home/buscar" element={<Layout />} />
               <Route path="usuario/:id" element={<UserPerfil />} />

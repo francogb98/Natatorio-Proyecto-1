@@ -58,7 +58,7 @@ export function AuthProvider({ children }) {
           ) {
             return navigate("/");
           }
-          return navigate("/");
+          return navigate("/dashboard");
         }, 1500);
       } else {
         Swal.fire({

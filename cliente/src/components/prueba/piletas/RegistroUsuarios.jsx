@@ -42,6 +42,18 @@ function RegistroUsuarios() {
     );
   }
 
+  return (
+    <div>
+      <main className="row">
+        {info_pileta.data.resultado.map((data) => (
+          <div key={data._id} className="col-12 col-md-6">
+            <h2>{data.pileta}</h2>
+          </div>
+        ))}
+      </main>
+    </div>
+  );
+
   const columns = [
     {
       header: "ID",

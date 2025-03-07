@@ -2,18 +2,7 @@ import mongoose from "mongoose";
 
 const piletaSchema = new mongoose.Schema({
   pileta: String,
-  users: [
-    {
-      customid: Number,
-      nombre: String,
-      apellido: String,
-      actividad: String,
-      horarioSalida: String,
-      horarioIngreso: String,
-      pileta: String,
-      piletaTurnoSiguiente: Boolean,
-    },
-  ],
+  users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   dia: String,
   hora: String,
 });

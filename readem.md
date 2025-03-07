@@ -1,10 +1,4 @@
-## Hacer responsive la aprte de peticiones
+## actualizar la parte de agregar usuarios a la pileta, ademas de las piletas la forma de buscar usuarios ya que ahora se almacenan por id  para poder mostrar mas informacion
 
 
-## empezar a cambiar el layout de usuarios
-
-## ver el problema de actividades
-
-<div className="spinner-border text-primary mt-2" role="status">
-      <span className="visually-hidden">Loading...</span>
-</div>
+## seguir actualizando los popovers quitar la referencia de la informacion de usuarios

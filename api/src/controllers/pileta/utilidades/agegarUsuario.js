@@ -1,60 +1,37 @@
 import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
-import { Pileta } from "../../../models/index.js";
+import { Pileta, User } from "../../../models/index.js"; // Assuming your model import is correct
 
-export const agregarUsuario = async ({
-  customId,
-  nombre,
-  apellido,
-  actividad,
-  pileta,
-  horarioIngreso,
-  horarioSalida,
-}) => {
+export const agregarUsuario = async ({ customId, pileta }) => {
   try {
+    const user = await User.findOne({ customId });
+    if (!user) {
+      throw new Error("Usuario no encontrado");
+    }
+
     const { hora, fecha } = obtenerFechaYHoraArgentina();
 
-    const resultado = await Pileta.find({
-      dia: fecha,
-      hora: hora,
-    });
-    let [horaActual] = hora.split(":");
-    let [horaIngresoActual] = horarioIngreso.split(":");
-    // turnoSiguiente
-    const piletaExist = await Pileta.findOneAndUpdate(
+    const resultado = await Pileta.findOneAndUpdate(
       {
-        pileta: horaIngresoActual > horaActual ? "turnoSiguiente" : pileta,
         dia: fecha,
         hora: hora,
-        "users.customid": { $ne: customId }, // Asegura que el usuario no esté en la lista ya
+        pileta: pileta,
       },
       {
         $addToSet: {
-          // Utiliza $addToSet en lugar de $push
-          users: {
-            customid: customId,
-            nombre: nombre,
-            apellido,
-            pileta: pileta,
-            actividad: actividad,
-            horarioSalida: horarioSalida,
-            horarioIngreso: horarioIngreso,
-            piletaTurnoSiguiente: horaIngresoActual !== horaActual ?? false,
-          },
+          users: user._id, // Add user ObjectId instead of user data directly
         },
       },
-      {
-        new: true,
-      }
+      { new: true }
     );
 
-    return {
-      pileta: piletaExist,
-      status: "success",
-    };
+    if (!resultado) {
+      throw new Error("No se pudo actualizar la pileta");
+    }
+    console.log(resultado);
+
+    return { status: "success", pileta: resultado };
   } catch (error) {
-    console.log(error.message);
-    return {
-      status: "error",
-    };
+    console.error(error.message);
+    return { status: "error", message: error.message };
   }
 };

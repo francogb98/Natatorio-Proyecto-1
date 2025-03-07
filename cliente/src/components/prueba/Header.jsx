@@ -36,8 +36,8 @@ function Header() {
         </a>
         <ul className={`dropdown-menu ${showPiletasDropdown ? "show" : ""}`}>
           <li>
-            <Link className="dropdown-item" to="/">
-              Lista
+            <Link className="dropdown-item" to="/dashboard">
+              Inicio
             </Link>
           </li>
           <li>

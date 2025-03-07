@@ -14,6 +14,11 @@ export class PiletaController {
       const piletas = await Pileta.find({
         dia: fecha,
         hora: hora,
+      }).populate({
+        path: "users",
+        populate: {
+          path: "activity",
+        },
       });
 
       return res.status(200).json({ resultado: piletas });
@@ -27,21 +32,15 @@ export class PiletaController {
   };
 
   static agregarUsuarioAPileta = async (req, res) => {
-    const {
-      customId,
-      nombre,
-      apellido,
-      actividad,
-      pileta,
-      horarioIngreso,
-      horarioSalida,
-    } = req.body;
+    const { customId, pileta, horarioIngreso, horarioSalida } = req.body;
+
     try {
       const { hora, fecha, diaNombre } = obtenerFechaYHoraArgentina();
 
       let [horaActual] = hora.split(":");
       let [horaIngresoUsuario] = horarioIngreso.split(":");
 
+      // Validation: Check if the user is in the allowed time range
       if (
         horaIngresoUsuario > horaActual &&
         horaIngresoUsuario - horaActual >= 2
@@ -60,10 +59,11 @@ export class PiletaController {
         return res.status(400).json({
           status: "error",
           message:
-            "El usuario todavia no esta en horario de ser registrado.  Acceso denegado",
+            "El usuario todavia no esta en horario de ser registrado. Acceso denegado",
         });
       }
 
+      // Check if the pool for the given date and time exists
       const resultadoPileta = await Pileta.find({
         dia: fecha,
         hora: hora,
@@ -76,6 +76,7 @@ export class PiletaController {
         });
       }
 
+      // Fetch the user details and validate their activities
       const user = await User.findOne({ customId: customId }).populate({
         path: "activity",
         populate: {
@@ -83,6 +84,7 @@ export class PiletaController {
         },
       });
 
+      // Check if the user activity corresponds to the current day
       if (user.activity[0].codigoDeAcceso == null) {
         if (!user.activity[0].date.includes(diaNombre)) {
           return res.status(400).json({
@@ -92,8 +94,9 @@ export class PiletaController {
           });
         }
       }
+
+      // Check for second activity
       if (user.activity[1] && user.activity[1]?.codigoDeAcceso == null) {
-        console.log("entre aqui 2");
         if (!user.activity[1]?.date.includes(diaNombre)) {
           return res.status(400).json({
             status: "error",
@@ -103,36 +106,37 @@ export class PiletaController {
         }
       }
 
+      // Add the user to the pool (Pileta)
       const resultado = await agregarUsuario({
         customId,
-        nombre,
-        actividad,
         pileta,
-        apellido,
-        horarioIngreso,
-        horarioSalida,
       });
 
       if (resultado.status === "error") {
-        return res
-          .status(400)
-          .json({ status: "error", message: resultado.message });
+        return res.status(400).json({
+          status: "error",
+          message: resultado.message,
+        });
       }
 
-      //actualizar el campo de asistenciia del usuario
+      // Update the user's attendance
       const resultadoAsistencia = await asistenciaUsuario(customId, fecha);
       if (resultadoAsistencia.status === "error") {
-        return res
-          .status(400)
-          .json({ status: "error", message: resultado.message });
+        return res.status(400).json({
+          status: "error",
+          message: resultado.message,
+        });
       }
 
-      //actualizo la estadistica
+      // Update user statistics
       await actualizarEstadistica(resultadoAsistencia.user);
 
-      return res
-        .status(200)
-        .json({ status: "success", resultado, user: customId });
+      // Return success response
+      return res.status(200).json({
+        status: "success",
+        resultado,
+        user: customId,
+      });
     } catch (error) {
       console.log(error.message);
       return res.status(500).json({
