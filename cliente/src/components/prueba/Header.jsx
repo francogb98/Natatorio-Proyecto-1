@@ -27,7 +27,6 @@ function Header() {
       <li className="nav-item dropdown" style={{ listStyle: "none" }}>
         <a
           className="nav-link dropdown-toggle"
-          href="#"
           role="button"
           onClick={togglePiletasDropdown}
           aria-expanded={showPiletasDropdown}
@@ -58,7 +57,6 @@ function Header() {
         <li className="nav-item dropdown" style={{ listStyle: "none" }}>
           <a
             className="nav-link dropdown-toggle"
-            href="#"
             role="button"
             onClick={toggleActividadesDropdown}
             aria-expanded={showActividadesDropdown}
@@ -94,7 +92,6 @@ function Header() {
         <li className="nav-item dropdown" style={{ listStyle: "none" }}>
           <a
             className="nav-link dropdown-toggle"
-            href="#"
             role="button"
             onClick={toggleUsuariosDropdown}
             aria-expanded={showUsuariosDropdown}

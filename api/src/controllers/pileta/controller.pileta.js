@@ -110,6 +110,7 @@ export class PiletaController {
       const resultado = await agregarUsuario({
         customId,
         pileta,
+        horaIngresoUsuario,
       });
 
       if (resultado.status === "error") {
