@@ -26,7 +26,14 @@ function HomePrueba() {
             <div className="col-12 col-sm-4">
               <FormularioBuscarUsuario />
             </div>
-            <div className="col-12 col-sm-8 mt-3">
+            <div
+              className="col-12 col-sm-8 mt-3 pb-5"
+              style={{
+                height: "100vh",
+                overflowY: "auto",
+                overflowX: "hidden",
+              }}
+            >
               <Outlet />
             </div>
           </main>

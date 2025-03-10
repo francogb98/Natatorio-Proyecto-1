@@ -19,8 +19,6 @@ function LayoutPileta() {
     return <div>Error al cargar la informacion de las piletas</div>;
   }
 
-  console.log(info_pileta.data.resultado);
-
   return (
     <div>
       {info_pileta.data.resultado.map((data: Pileta) => (
