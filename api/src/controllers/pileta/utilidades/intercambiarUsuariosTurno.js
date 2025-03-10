@@ -4,11 +4,11 @@ import { agregarUsuario } from "./agegarUsuario.js";
 
 export const intercambioDeUsuarios = async () => {
   try {
-    const { hora } = obtenerFechaYHoraArgentina();
+    const { fecha, horaAnterior, hora } = obtenerFechaYHoraArgentina();
 
     const piletasTurnoAnterior = await Pileta.find({
-      dia: "10/03/2025",
-      hora: "17:00",
+      dia: fecha,
+      hora: horaAnterior,
     }).populate({
       path: "users",
       populate: {
