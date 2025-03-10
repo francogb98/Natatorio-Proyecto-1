@@ -1,4 +1,7 @@
-## actualizar la parte de agregar usuarios a la pileta, ademas de las piletas la forma de buscar usuarios ya que ahora se almacenan por id  para poder mostrar mas informacion
+## Solucionar problema de buscar pileta por fecha
 
+## Ver problema de que se pone pantalla en blanco cuando ingreso en seccion de usuarios
 
-## seguir actualizando los popovers quitar la referencia de la informacion de usuarios
+## Redireccionar usuario a su pagina desde la tabla
+
+## Solucionar problemas de rutas y pantalla en blanco

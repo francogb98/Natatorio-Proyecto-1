@@ -3,34 +3,57 @@ import { Pileta } from "../../../models/index.js";
 import { agregarUsuario } from "./agegarUsuario.js";
 
 export const intercambioDeUsuarios = async () => {
-  const { hora, fecha, horaAnterior } = obtenerFechaYHoraArgentina();
+  try {
+    const { hora } = obtenerFechaYHoraArgentina();
 
-  const piletasAnterior = await Pileta.find({ dia: fecha, hora: horaAnterior });
+    const piletasTurnoAnterior = await Pileta.find({
+      dia: "10/03/2025",
+      hora: "17:00",
+    }).populate({
+      path: "users",
+      populate: {
+        path: "activity",
+      },
+    });
 
-  //verifico todos los usuarios de las piletas anteriores, en caso de que su horario de salida sea mayor que la hora actual los agrego a las piletas del turno actual
-  const resultado = await Promise.all(
-    piletasAnterior.map(async (pileta) => {
-      return await Promise.all(
-        pileta.users.map(async (user) => {
-          let [horaActual] = hora.split(":");
-          let [horarioSalida] = user.horarioSalida.split(":");
+    await Promise.all(
+      piletasTurnoAnterior.map(async (pileta) => {
+        if (pileta.pileta === "turnoSiguiente") {
+          await Promise.all(
+            pileta.users.map(async (user) => {
+              const actividad = user.activity.filter((act) => {
+                let [inicioActividad] = act.hourStart.split(":").map(Number);
+                let [finActividad] = act.hourFinish.split(":").map(Number);
+                let [horaActual] = hora.split(":").map(Number);
 
-          // verificamos que el horario de salida, sea mayor al horario actual
-          if (horarioSalida > horaActual) {
-            const resultado = await agregarUsuario({
-              customId: user.customid,
-              nombre: user.nombre,
-              actividad: user.actividad,
-              pileta: user.pileta,
-              horarioSalida: user.horarioSalida,
-              horarioIngreso: user.horarioIngreso ?? horaActual,
-            });
-            if (resultado.status === "error") {
-              return resultado.message;
-            }
-          }
-        })
-      );
-    })
-  );
+                return (
+                  inicioActividad <= horaActual && finActividad > horaActual
+                );
+              });
+
+              if (actividad.length > 0) {
+                try {
+                  const resultado = await agregarUsuario({
+                    customId: user.customId,
+                    pileta: actividad[0].pileta,
+                  });
+                  if (resultado.status === "success") {
+                    console.log("usuario agregado a pileta", user.customId);
+                  }
+                } catch (error) {
+                  return res
+                    .status(400)
+                    .json({ status: "error", msg: error.message });
+                }
+              }
+            })
+          );
+        }
+      })
+    );
+
+    return { status: "success", msg: "ok" };
+  } catch (error) {
+    return { status: "error", msg: error.message };
+  }
 };

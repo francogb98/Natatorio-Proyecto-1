@@ -72,7 +72,6 @@ const schema = new mongoose.Schema({
     required: true,
     minlength: 3,
   },
-
   activity: [{ type: mongoose.Schema.Types.ObjectId, ref: "Activity" }],
 
   notificaciones: [

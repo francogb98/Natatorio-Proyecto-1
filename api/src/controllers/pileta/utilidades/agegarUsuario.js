@@ -1,5 +1,5 @@
 import { obtenerFechaYHoraArgentina } from "../../../Helpers/traerInfoDelDia.js";
-import { Pileta, User } from "../../../models/index.js"; // Assuming your model import is correct
+import { Pileta, User } from "../../../models/index.js";
 
 export const agregarUsuario = async ({
   customId,
@@ -12,12 +12,10 @@ export const agregarUsuario = async ({
       throw new Error("Usuario no encontrado");
     }
 
-    console.log(horaIngresoUsuario);
-
     const { hora, fecha } = obtenerFechaYHoraArgentina();
 
     // Si la hora de ingreso del usuario es mayor a la hora actual, cambiamos el valor de "pileta"
-    if (horaIngresoUsuario > hora) {
+    if (horaIngresoUsuario > hora && horaIngresoUsuario) {
       pileta = "turnoSiguiente";
     }
 
@@ -29,7 +27,7 @@ export const agregarUsuario = async ({
       },
       {
         $addToSet: {
-          users: user._id, // Add user ObjectId instead of user data directly
+          users: user._id,
         },
       },
       { new: true }
@@ -38,7 +36,6 @@ export const agregarUsuario = async ({
     if (!resultado) {
       throw new Error("No se pudo actualizar la pileta");
     }
-    console.log(resultado);
 
     return { status: "success", pileta: resultado };
   } catch (error) {

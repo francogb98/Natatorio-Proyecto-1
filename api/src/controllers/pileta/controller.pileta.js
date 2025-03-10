@@ -179,6 +179,12 @@ export class PiletaController {
       }
       //ejecuto el cambio de turn
       const resultadoCambio = await intercambioDeUsuarios();
+      if (resultadoCambio.status === "error") {
+        return res.status(400).json({
+          status: "error",
+          message: resultadoCambio.message,
+        });
+      }
 
       return res.status(200).json({
         status: "ok",
