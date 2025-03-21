@@ -11,8 +11,4 @@ export { Feeds } from "./users/feeds/Feeds";
 
 export { UserPerfil } from "./users/userPerfil/UserPerfil";
 
-export { Layout } from "./piletas/buscarPileta/Layout";
-
-export { RegistroUsuarios } from "./piletas/RegistroUsuarios";
-
 export { HomePrueba } from "./HomePrueba";

@@ -1,9 +1,9 @@
-import { info_tablas } from "../../../helpers/info_tablas.fetch";
+import { info_tablas } from "./helpers/fetch.pileta";
 import React from "react";
 import { useQuery } from "react-query";
 
 import { Pileta } from "../../../models";
-import TablaPileta from "./TablaPileta";
+import TablaPileta from "./components/TablaPileta";
 
 function LayoutPileta() {
   const info_pileta = useQuery({
@@ -20,7 +20,7 @@ function LayoutPileta() {
   }
 
   return (
-    <div>
+    <>
       {info_pileta.data.resultado.map((data: Pileta) => (
         <div key={data.pileta}>
           <h2 className="text-center">
@@ -35,8 +35,8 @@ function LayoutPileta() {
           )}
         </div>
       ))}
-    </div>
+    </>
   );
 }
 
-export default LayoutPileta;
+export { LayoutPileta };

@@ -230,13 +230,15 @@ export class PiletaController {
   static obtener_pileta = async (req, res) => {
     try {
       const { dia, hora } = req.body;
-      console.log(dia, hora);
       const pileta = await Pileta.find({
         dia,
         hora,
+      }).populate({
+        path: "users",
+        populate: {
+          path: "activity",
+        },
       });
-
-      console.log(pileta);
 
       if (!pileta.length) {
         return res

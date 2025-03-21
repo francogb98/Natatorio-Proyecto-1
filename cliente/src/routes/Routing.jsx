@@ -4,13 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 
 import {
   HomePrueba,
-  RegistroUsuarios,
-  CreateActivity_prueba,
   Feeds,
-  HabilitarConvencional,
-  InfoActividad,
-  Layout,
-  ListActivity,
   UserPerfil,
   PeticionesLayout,
 } from "../components/prueba/index";
@@ -18,7 +12,6 @@ import {
 import PublicRoutes from "../public/routes/PublicRoutes";
 import PrivateRoutes from "../components/prueba/private/routes/PrivateRoutes";
 import QrPage from "../components/prueba/qr/QrPage";
-import LayoutPileta from "../components/prueba/private/pages/piletas/LayoutPileta";
 
 function Routing() {
   const { auth, restart, setRecargando } = useContext(AuthContext);
@@ -52,26 +45,13 @@ function Routing() {
         (auth.logged && auth.role === "SUPER_ADMIN") ? (
           <>
             <Route path="/" element={<HomePrueba />}>
-              <Route path="/" element={<LayoutPileta />} />
-              <Route path="/qr" element={<QrPage />} />
-              <Route path="/home/buscar" element={<Layout />} />
+              <Route path="/dashboard/*" element={<PrivateRoutes />} />
+              <Route path="qr" element={<QrPage />} />
               <Route path="usuario/:id" element={<UserPerfil />} />
               <Route path="usuario/feeds" element={<Feeds />} />
-
-              {/* actividades */}
-              <Route path="actividades" element={<ListActivity />} />
-              <Route
-                path="actividades/infoActividad/:id"
-                element={<InfoActividad />}
-              />
-              <Route
-                path="actividades/create"
-                element={<CreateActivity_prueba />}
-              />
-
-              <Route path="dashboard/*" element={<PrivateRoutes />} />
-
               <Route path="peticiones" element={<PeticionesLayout />} />
+
+              {/* Rutas privadas dentro de HomePrueba */}
             </Route>
           </>
         ) : (

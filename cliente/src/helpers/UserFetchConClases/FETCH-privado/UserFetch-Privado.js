@@ -23,6 +23,21 @@ export class UserFetchPrivado {
     return data;
   };
 
+  static getUserById = async ({ id }) => {
+    {
+      const res = await fetch(`${baseUrl}user/getinfoUser/customId/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `${localStorage.getItem("token")}`,
+        },
+      });
+      const data = await res.json();
+
+      return data;
+    }
+  };
+
   //Notificaciones usuario
 
   static sendNotificacion = async (content) => {

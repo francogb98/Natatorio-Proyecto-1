@@ -22,7 +22,7 @@ const QrPage = () => {
         <div className="d-flex gap-2">
           <button
             className="btn btn-outline-danger"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/dashboard")}
           >
             {/* icono de flechita para atras */}
             <i className="bi bi-arrow-left-short pt-3"></i>

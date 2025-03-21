@@ -55,7 +55,7 @@ function Header() {
           <li>
             <Link
               className="dropdown-item"
-              to="/home/buscar"
+              to="dashboard/buscar-pileta"
               onClick={togglePiletasDropdown}
             >
               Buscar
@@ -64,7 +64,7 @@ function Header() {
           <li>
             <Link
               className="dropdown-item"
-              to="/qr"
+              to="qr"
               onClick={togglePiletasDropdown}
             >
               QR
@@ -90,7 +90,7 @@ function Header() {
             <li>
               <Link
                 className="dropdown-item"
-                to="actividades"
+                to="dashboard/actividades"
                 onClick={toggleActividadesDropdown}
               >
                 Lista
@@ -99,7 +99,7 @@ function Header() {
             <li>
               <Link
                 className="dropdown-item"
-                to="actividades/create"
+                to="dashboard/actividades/create"
                 onClick={toggleActividadesDropdown}
               >
                 Crear
@@ -112,7 +112,7 @@ function Header() {
       {/* Si no es SUPER_ADMIN, solo mostrar el link sin dropdown */}
       {auth.role !== "SUPER_ADMIN" && (
         <Link
-          to="actividades"
+          to="dashboard/actividades"
           className="nav-link"
           onClick={togglePiletasDropdown}
         >
@@ -137,7 +137,7 @@ function Header() {
                 <li>
                   <Link
                     className="dropdown-item"
-                    to="/dashboard/user-list/todos"
+                    to="dashboard/user-list/todos"
                     onClick={toggleUsuariosDropdown}
                   >
                     Habilitar
@@ -186,7 +186,7 @@ function Header() {
                 <li>
                   <Link
                     className="dropdown-item"
-                    to="habilitar/certificado"
+                    to="dashboard/habilitar/certificado"
                     onClick={toggleUsuariosDropdown}
                   >
                     Certificado

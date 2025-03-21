@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Footer from "./Footer";
+// import Footer from "./Footer";
 import FormularioBuscarUsuario from "./aside/FormularioBuscarUsuario";
 import Header from "./Header";
 
@@ -20,7 +20,6 @@ function HomePrueba() {
             className="row"
             style={{
               marginTop: "50px",
-              marginBottom: "100px",
             }}
           >
             <div className="col-12 col-sm-4">
@@ -37,9 +36,9 @@ function HomePrueba() {
               <Outlet />
             </div>
           </main>
-          <footer className="row fixed-bottom border-top border-dark d-none d-md-block">
+          {/* <footer className="row fixed-bottom border-top border-dark d-none d-md-block">
             <Footer />
-          </footer>
+          </footer> */}
         </>
       )}
     </div>

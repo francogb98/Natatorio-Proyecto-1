@@ -1,5 +1,5 @@
-import PopoverButton from "../../utils/Popover";
-import { User } from "../../../models";
+import PopoverButton from "../../../utils/Popover";
+import { User } from "../../../../models";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 

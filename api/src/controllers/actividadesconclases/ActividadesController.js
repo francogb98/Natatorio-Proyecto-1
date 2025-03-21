@@ -142,6 +142,8 @@ export class ActividadController {
       codigoDeAcceso,
     } = req.body;
 
+    console.log(req.body);
+
     try {
       if (!name || !pileta || !hourStart || !hourFinish || !date) {
         return res.status(400).json({

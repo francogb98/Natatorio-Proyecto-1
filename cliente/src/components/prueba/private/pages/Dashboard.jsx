@@ -4,7 +4,7 @@ import { Toaster } from "sonner";
 
 function Dashboard() {
   return (
-    <div className="container">
+    <div>
       <Outlet />
 
       <ModalArchivos />

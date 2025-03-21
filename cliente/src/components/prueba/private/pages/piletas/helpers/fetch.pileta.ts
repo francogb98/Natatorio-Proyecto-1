@@ -1,4 +1,12 @@
-import { baseUrl } from "../../../helpers/url";
+import { baseUrl } from "../../../../../../helpers/url";
+
+export const info_tablas = async () => {
+  try {
+    const res = await fetch(`${baseUrl}pileta`);
+    const data = await res.json();
+    return data;
+  } catch (error) {}
+};
 
 export const buscar_piletas = async (content) => {
   const res = await fetch(`${baseUrl}pileta/obtenerPileta`, {
