@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { cambioTurno } from "../helpers/cambiarTurno.js";
-
 import peticiones_buscador from "./peticiones_buscador.jsx";
-
 import Card_User from "./Card_User.jsx";
 import Swal from "sweetalert2";
 
 function FormularioBuscarUsuario() {
   const [filtro, setFiltro] = useState("");
-
   const [timeoutId, setTimeoutId] = useState(null);
+  const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
 
   const { userEncontardo, setUserEncontrado, buscarUsuario, anularTurno } =
     peticiones_buscador();
-
   const queryClient = useQueryClient();
 
   const cambiarTurno = useMutation(cambioTurno, {
@@ -25,11 +22,12 @@ function FormularioBuscarUsuario() {
           icon: "success",
           confirmButtonText: "Aceptar",
         });
-
-        queryClient.invalidateQueries("getUsrsByDate");
-        queryClient.invalidateQueries("piletas");
-        queryClient.invalidateQueries("usuariosTurnoSiguiente");
-      } else if (data.status === "error") {
+        queryClient.invalidateQueries([
+          "getUsrsByDate",
+          "piletas",
+          "usuariosTurnoSiguiente",
+        ]);
+      } else {
         Swal.fire({
           title: "Error",
           text: data.message,
@@ -38,216 +36,182 @@ function FormularioBuscarUsuario() {
         });
       }
     },
-    onError: (data) => {
+    onError: (error) => {
       Swal.fire({
         title: "Error",
-        text: data.message,
+        text: error.message || "Ocurrió un error",
         icon: "error",
         confirmButtonText: "Aceptar",
       });
     },
   });
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    buscarUsuario.mutate(filtro);
-  };
-
-  const handleChange = (e) => {
-    setFiltro(e.target.value);
-
-    if (e.target.value.length < 3) {
+  const handleAnularTurno = () => {
+    if (!mostrarConfirmacion) {
+      setMostrarConfirmacion(true);
       return;
     }
 
-    // Limpiar el timeout anterior si el usuario sigue escribiendo
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+    anularTurno.mutate();
+    setMostrarConfirmacion(false);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (filtro.length > 2) {
+      buscarUsuario.mutate(filtro);
+    }
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setFiltro(value);
+
+    if (value.length < 3) {
+      if (timeoutId) clearTimeout(timeoutId);
+      return;
     }
 
-    // Configurar un nuevo timeout
+    if (timeoutId) clearTimeout(timeoutId);
+
     const newTimeoutId = setTimeout(() => {
-      if (e.target.value.length > 2) {
-        buscarUsuario.mutate(e.target.value);
-      }
-    }, 300);
+      buscarUsuario.mutate(value);
+    }, 500);
 
     setTimeoutId(newTimeoutId);
   };
+
   return (
-    <>
-      <section className="container">
-        <div className="col-12 d-flex gap-2 flex-column justify-content-center align-items-center mb-3">
+    <div className="card shadow-sm border-0 p-3">
+      <div className="d-flex flex-column gap-3 mb-4">
+        <button
+          className="btn btn-outline-success d-flex align-items-center justify-content-center gap-2 fw-bold"
+          onClick={() => cambiarTurno.mutate()}
+          disabled={cambiarTurno.isLoading}
+        >
+          <i className="bi bi-arrow-repeat"></i>
+          {cambiarTurno.isLoading ? "Procesando..." : "Iniciar Turno"}
+        </button>
+
+        {/* Nuevo sistema de confirmación */}
+        {!mostrarConfirmacion ? (
           <button
-            className="btn btn-lg btn-danger"
-            onClick={() => {
-              cambiarTurno.mutate();
-            }}
+            type="button"
+            className="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2"
+            onClick={() => setMostrarConfirmacion(true)}
+            disabled={anularTurno.isLoading}
           >
-            Iniciar Turno
+            <i className="bi bi-x-circle"></i>
+            Anular Turno
           </button>
-          <div>
+        ) : (
+          <div className="d-flex gap-2">
             <button
               type="button"
-              className="btn btn-sm btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
+              className="btn btn-danger flex-grow-1"
+              onClick={handleAnularTurno}
+              disabled={anularTurno.isLoading}
             >
-              Anular Turno
+              {anularTurno.isLoading ? "Procesando..." : "Confirmar Anulación"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={() => setMostrarConfirmacion(false)}
+            >
+              Cancelar
             </button>
           </div>
-        </div>
+        )}
+      </div>
 
-        {cambiarTurno.isLoading || anularTurno.isLoading ? (
-          <div
-            className="d-flex flex-column"
-            style={{
-              alignItems: "center",
-            }}
-          >
-            {anularTurno.isLoading ? (
-              <>
-                <h5 className="text-center">Anulando turno...</h5>
-                <small>colocando asistencia de usuarios</small>
-                <div className="spinner-border text-primary mt-2" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <h5 className="text-center">Iniciando un nuevo turno...</h5>
-                <small>verificando certificado de usuarios</small>
-                <small>verificando asistencia de usuarios</small>
-                <div className="spinner-border text-primary mt-2" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </>
-            )}
+      {/* Resto del código permanece igual */}
+      {(cambiarTurno.isLoading || anularTurno.isLoading) && (
+        <div className="text-center p-4">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Cargando...</span>
           </div>
-        ) : (
-          <>
-            <form
-              action=""
-              onSubmit={handleSearch}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                border: "1px solid #000",
-                padding: "10px",
-                borderRadius: "5px",
-                backgroundColor: "#f5f5f5",
-                width: "100%",
-              }}
-            >
+          <p className="mt-2">
+            {anularTurno.isLoading
+              ? "Anulando turno y registrando asistencias..."
+              : "Iniciando nuevo turno, verificando certificados..."}
+          </p>
+        </div>
+      )}
+
+      {!(cambiarTurno.isLoading || anularTurno.isLoading) && (
+        <>
+          <form onSubmit={handleSearch} className="mb-3">
+            <div className="input-group">
               <input
                 type="text"
                 value={filtro}
                 onChange={handleChange}
                 className="form-control"
-                placeholder="buscar usuario"
+                placeholder="Buscar por nombre, apellido o ID"
+                aria-label="Buscar usuario"
               />
-              <button type="submit" className="btn btn-success  ms-3">
-                Buscar
-              </button>
-            </form>
-            {buscarUsuario.isLoading ? (
-              <div className="d-flex justify-content-center mt-3">
-                <div className="spinner-border text-primary" role="status">
-                  <span className="visually-hidden">Loading...</span>
-                </div>
-              </div>
-            ) : null}
-            {buscarUsuario.data?.status === "error" && filtro.length > 2 ? (
-              <h4
-                className="mx-auto bg-warning mt-2 p-2 rounded"
-                style={{
-                  width: "fit-content",
-                }}
+              <button
+                type="submit"
+                className="btn btn-success"
+                disabled={filtro.length < 3}
               >
-                {buscarUsuario.data.message}
-              </h4>
-            ) : null}
-            {userEncontardo && filtro.length > 2 && (
-              <div className="row mt-3 d-flex flex-column align-items-center">
-                {buscarUsuario.data?.status === "success"
-                  ? buscarUsuario.data.users.length > 4 && (
-                      <button
-                        className="btn btn-danger mt-2"
-                        style={{ width: "fit-content" }}
-                        onClick={() => {
-                          setUserEncontrado(false);
-                        }}
-                      >
-                        cerrar
-                      </button>
-                    )
-                  : null}
-                {buscarUsuario.data?.status == "success"
-                  ? buscarUsuario.data?.users.map((user, i) => (
-                      <div
-                        className={`col-12 d-flex justify-content-center g-1`}
-                        key={i}
-                      >
-                        <Card_User
-                          key={i}
-                          user={user}
-                          setUserEncontrado={setUserEncontrado}
-                        ></Card_User>
-                      </div>
-                    ))
-                  : null}
-              </div>
+                <i className="bi bi-search"></i>
+              </button>
+            </div>
+            {filtro.length > 0 && filtro.length < 3 && (
+              <small className="text-muted">
+                Ingrese al menos 3 caracteres
+              </small>
             )}
-          </>
-        )}
-      </section>
+          </form>
 
-      <div
-        className="modal fade"
-        id="exampleModal"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
-                Anular Turno
-              </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+          {buscarUsuario.isLoading && (
+            <div className="text-center mt-3">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Buscando...</span>
+              </div>
             </div>
-            <div className="modal-body">
-              En caso de anular el turno, se colocara asistencia a todos los
-              usuarios del respectivo horario .
+          )}
+
+          {buscarUsuario.data?.status === "error" && filtro.length > 2 && (
+            <div className="alert alert-warning text-center">
+              {buscarUsuario.data.message}
             </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                data-bs-dismiss="modal"
-                onClick={() => anularTurno.mutate()}
-              >
-                Anular
-              </button>
+          )}
+
+          {userEncontardo && buscarUsuario.data?.status === "success" && (
+            <div className="mt-3">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h5 className="mb-0">Resultados de búsqueda</h5>
+                {buscarUsuario.data.users.length > 4 && (
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={() => setUserEncontrado(false)}
+                  >
+                    <i className="bi bi-x-lg"></i> Cerrar
+                  </button>
+                )}
+              </div>
+
+              <div className="row g-3 ">
+                {buscarUsuario.data.users.map((user) => (
+                  <div
+                    className="col-12 d-flex justify-content-center"
+                    key={user._id}
+                  >
+                    <Card_User
+                      user={user}
+                      setUserEncontrado={setUserEncontrado}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </>
+          )}
+        </>
+      )}
+    </div>
   );
 }
 

@@ -1,7 +1,5 @@
-## Solucionar problema de buscar pileta por fecha
+## Ficha Medica
 
-## Ver problema de que se pone pantalla en blanco cuando ingreso en seccion de usuarios
+Permitir realizar observaciones, en caso de que haya algo inconcluso en la ficha enviar una notificacion al usuario, que la notificacion tenga una fecha, y que si pasado los 15 dias no la corrige dar de baja al usuario.
 
-## Redireccionar usuario a su pagina desde la tabla
-
-## Solucionar problemas de rutas y pantalla en blanco
+Que la notificacion se muestre cuando el adminstrador busca un usuario, como un "revisar ficha medica (con un simbolo de warning)" 

@@ -1,4 +1,5 @@
 import { User, UsuariosFalta } from "../../models/index.js";
+import { RevisionArchivosEstado } from "./models/index.js";
 
 const usuariosParaHabilitar = async ({ adaptada = false, codigo = false }) => {
   let usersSearch = await User.find({
@@ -77,6 +78,21 @@ export const getUsers = async (req, res) => {
       result = users;
       totalUsers = total;
     }
+
+    if (filter === "revision") {
+      console.log(filter);
+      const users = await User.find({
+        revisionArchivo: RevisionArchivosEstado.REVISAR,
+      }).populate({
+        path: "activity",
+      });
+
+      result = users;
+      console.log(users);
+
+      totalUsers = users.length;
+    }
+
     if (filter === "adaptada") {
       const { users, total } = await usuariosParaHabilitar({
         adaptada: true,

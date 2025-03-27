@@ -131,6 +131,15 @@ const schema = new mongoose.Schema({
   inasistencias: {
     type: [String],
   },
+
+  revisionArchivo: {
+    type: String,
+    default: "aprobado",
+  },
+
+  fechaExpiracionRevisionArchivo: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", schema);

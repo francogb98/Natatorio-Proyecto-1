@@ -6,6 +6,7 @@ import {
   actualizarEstadistica,
   asistenciaUsuario,
 } from "../pileta/controller.pileta.js";
+import { RevisionArchivosEstado } from "./models/index.js";
 
 const estaEnRango = (startTime, endTime, currentTime) => {
   // Función para convertir "HH:MM" a minutos desde medianoche
@@ -324,6 +325,46 @@ export class userController {
       return res.status(500).json({
         status: "error",
         message: error.message,
+      });
+    }
+  };
+
+  static revisarArchivo = async (req, res) => {
+    try {
+      const { customId, notificacion, dias = 30 } = req.body;
+      let user = await User.findOne({ customId });
+
+      if (!user) {
+        return res
+          .status(404)
+          .json({ status: "error", message: "Usuario no encontrado" });
+      }
+
+      let fecha = new Date();
+      fecha.setDate(fecha.getDate() + dias);
+      fecha = fecha.toLocaleDateString("es-AR", {
+        timeZone: "America/Argentina/Buenos_Aires",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      });
+
+      user.notificaciones.push(notificacion);
+      user.revisionArchivo = RevisionArchivosEstado.REVISAR;
+      user.fechaExpiracionRevisionArchivo = fecha;
+
+      await user.save();
+
+      return res.status(200).json({
+        status: "success",
+        message: "Usuario aceptado",
+        return: user,
+      });
+    } catch (error) {
+      console.log(error.message);
+      return res.status(500).json({
+        status: "error",
+        message: "error en el servidor",
       });
     }
   };

@@ -79,6 +79,11 @@ function Card_User({ user, setUserEncontrado }) {
             <h6 className="card-subtitle mb-1 text-body-secondary fs-6 text-center">
               {user.customId}
             </h6>
+            {user.revisionArchivo && user.revisionArchivo === "revisar" && (
+              <p className="text-dark bg-warning p-1 text-center fw-bold">
+                Revisar Archivos <i class="bi bi-exclamation-circle-fill"></i>
+              </p>
+            )}
             {!user.activity || !user.activity.length ? (
               <p className="card-text">No tiene actividad registrada</p>
             ) : (

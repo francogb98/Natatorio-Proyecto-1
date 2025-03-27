@@ -1,218 +1,311 @@
 import { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 function Header() {
   const { auth, cerrarSesion } = useContext(AuthContext);
+  const location = useLocation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Estados para controlar la visibilidad de los dropdowns
-  const [showPiletasDropdown, setShowPiletasDropdown] = useState(false);
-  const [showUsuariosDropdown, setShowUsuariosDropdown] = useState(false);
-  const [showActividadesDropdown, setShowActividadesDropdown] = useState(false);
+  // Estado para dropdowns
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
-  // Funciones para alternar la visibilidad de los dropdowns
-  const togglePiletasDropdown = () => {
-    setShowUsuariosDropdown(false);
-    setShowActividadesDropdown(false);
-    setShowPiletasDropdown(!showPiletasDropdown);
+  const toggleDropdown = (dropdown) => {
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
   };
-  const toggleUsuariosDropdown = () => {
-    setShowActividadesDropdown(false);
-    setShowPiletasDropdown(false);
-    setShowUsuariosDropdown(!showUsuariosDropdown);
+
+  const closeAllDropdowns = () => {
+    setActiveDropdown(null);
+    setMobileMenuOpen(false);
   };
-  const toggleActividadesDropdown = () => {
-    setShowPiletasDropdown(false);
-    setShowUsuariosDropdown(false);
-    setShowActividadesDropdown(!showActividadesDropdown);
-  };
+
+  // Verificar si la ruta está activa
+  const isActive = (path) => location.pathname.includes(path);
 
   return (
-    <nav className="nav justify-content-around">
-      {/* Dropdown para Piletas */}
-      <li className="nav-item dropdown" style={{ listStyle: "none" }}>
-        <a
-          className="nav-link dropdown-toggle"
-          role="button"
-          onClick={togglePiletasDropdown}
-          aria-expanded={showPiletasDropdown}
-        >
-          Piletas
-        </a>
-        <ul className={`dropdown-menu ${showPiletasDropdown ? "show" : ""}`}>
-          <li>
-            <Link
-              className="dropdown-item"
-              to="/dashboard"
-              onClick={togglePiletasDropdown}
-            >
-              Inicio
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="dropdown-item"
-              to="dashboard/buscar-pileta"
-              onClick={togglePiletasDropdown}
-            >
-              Buscar
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="dropdown-item"
-              to="qr"
-              onClick={togglePiletasDropdown}
-            >
-              QR
-            </Link>
-          </li>
-        </ul>
-      </li>
-
-      {/* Dropdown para Actividades (solo si es SUPER_ADMIN) */}
-      {auth.role === "SUPER_ADMIN" && (
-        <li className="nav-item dropdown" style={{ listStyle: "none" }}>
-          <a
-            className="nav-link dropdown-toggle"
-            role="button"
-            onClick={toggleActividadesDropdown}
-            aria-expanded={showActividadesDropdown}
-          >
-            Actividades
-          </a>
-          <ul
-            className={`dropdown-menu ${showActividadesDropdown ? "show" : ""}`}
-          >
-            <li>
-              <Link
-                className="dropdown-item"
-                to="dashboard/actividades"
-                onClick={toggleActividadesDropdown}
-              >
-                Lista
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="dropdown-item"
-                to="dashboard/actividades/create"
-                onClick={toggleActividadesDropdown}
-              >
-                Crear
-              </Link>
-            </li>
-          </ul>
-        </li>
-      )}
-
-      {/* Si no es SUPER_ADMIN, solo mostrar el link sin dropdown */}
-      {auth.role !== "SUPER_ADMIN" && (
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div className="container-fluid">
+        {/* Logo/Brand */}
         <Link
-          to="dashboard/actividades"
-          className="nav-link"
-          onClick={togglePiletasDropdown}
+          className="navbar-brand d-flex align-items-center"
+          to="/dashboard"
+          onClick={closeAllDropdowns}
         >
-          Actividades
+          <i className="bi bi-water me-2"></i>
+          <span className="d-none d-sm-inline">Sistema Piletas</span>
         </Link>
-      )}
 
-      {/* Dropdown para Usuarios (dependiendo del rol) */}
-      {auth.role === "SUPER_ADMIN" || auth.role === "ADMINISTRATIVO" ? (
-        <li className="nav-item dropdown" style={{ listStyle: "none" }}>
-          <a
-            className="nav-link dropdown-toggle"
-            role="button"
-            onClick={toggleUsuariosDropdown}
-            aria-expanded={showUsuariosDropdown}
-          >
-            Usuarios
-          </a>
-          <ul className={`dropdown-menu ${showUsuariosDropdown ? "show" : ""}`}>
-            {auth.role === "SUPER_ADMIN" && (
-              <>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="dashboard/user-list/todos"
-                    onClick={toggleUsuariosDropdown}
-                  >
-                    Habilitar
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="dashboard/user-list/convencional"
-                    onClick={toggleUsuariosDropdown}
-                  >
-                    Habilitar Convencional
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="dashboard/user-list/adaptada"
-                    onClick={toggleUsuariosDropdown}
-                  >
-                    Habilitar Adaptada
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="dashboard/user-list/certificado"
-                    onClick={toggleUsuariosDropdown}
-                  >
-                    Certificado
-                  </Link>
-                </li>
-              </>
-            )}
-            {auth.role === "ADMINISTRATIVO" && (
-              <>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="dashboard/user-list/convencional"
-                    onClick={toggleUsuariosDropdown}
-                  >
-                    Habilitar Convencional
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="dashboard/habilitar/certificado"
-                    onClick={toggleUsuariosDropdown}
-                  >
-                    Certificado
-                  </Link>
-                </li>
-              </>
-            )}
-            <li>
-              <Link
-                className="dropdown-item"
-                to="peticiones"
-                onClick={toggleUsuariosDropdown}
-              >
-                Peticiones
-              </Link>
-            </li>
-          </ul>
-        </li>
-      ) : null}
-
-      {/* Botón de Cerrar sesión */}
-      <li>
-        <button className="mt-1 btn btn-sm btn-warning" onClick={cerrarSesion}>
-          <i className="bi bi-box-arrow-left fw-bold"></i>
+        {/* Mobile Toggle */}
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
         </button>
-      </li>
+
+        {/* Main Menu */}
+        <div
+          className={`collapse navbar-collapse ${mobileMenuOpen ? "show" : ""}`}
+        >
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            {/* Piletas Dropdown */}
+            <li className="nav-item dropdown">
+              <button
+                className={`nav-link dropdown-toggle d-flex align-items-center ${
+                  isActive("dashboard") || isActive("qr") ? "active" : ""
+                }`}
+                onClick={() => toggleDropdown("piletas")}
+                aria-expanded={activeDropdown === "piletas"}
+              >
+                <i className="bi bi-droplet me-1 d-lg-none"></i>
+                Piletas
+              </button>
+              <ul
+                className={`dropdown-menu ${
+                  activeDropdown === "piletas" ? "show" : ""
+                }`}
+              >
+                <li>
+                  <Link
+                    className={`dropdown-item ${
+                      isActive("dashboard") && !isActive("buscar-pileta")
+                        ? "active"
+                        : ""
+                    }`}
+                    to="/dashboard"
+                    onClick={closeAllDropdowns}
+                  >
+                    <i className="bi bi-house-door me-2"></i>Inicio
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={`dropdown-item ${
+                      isActive("buscar-pileta") ? "active" : ""
+                    }`}
+                    to="dashboard/buscar-pileta"
+                    onClick={closeAllDropdowns}
+                  >
+                    <i className="bi bi-search me-2"></i>Buscar
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={`dropdown-item ${
+                      isActive("qr") ? "active" : ""
+                    }`}
+                    to="qr"
+                    onClick={closeAllDropdowns}
+                  >
+                    <i className="bi bi-qr-code me-2"></i>QR
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+            {/* Actividades - Conditional Rendering */}
+            {auth.role === "SUPER_ADMIN" ? (
+              <li className="nav-item dropdown">
+                <button
+                  className={`nav-link dropdown-toggle d-flex align-items-center ${
+                    isActive("actividades") ? "active" : ""
+                  }`}
+                  onClick={() => toggleDropdown("actividades")}
+                  aria-expanded={activeDropdown === "actividades"}
+                >
+                  <i className="bi bi-calendar3 me-1 d-lg-none"></i>
+                  Actividades
+                </button>
+                <ul
+                  className={`dropdown-menu ${
+                    activeDropdown === "actividades" ? "show" : ""
+                  }`}
+                >
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        isActive("actividades") && !isActive("create")
+                          ? "active"
+                          : ""
+                      }`}
+                      to="dashboard/actividades"
+                      onClick={closeAllDropdowns}
+                    >
+                      <i className="bi bi-list-ul me-2"></i>Lista
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        isActive("create") ? "active" : ""
+                      }`}
+                      to="dashboard/actividades/create"
+                      onClick={closeAllDropdowns}
+                    >
+                      <i className="bi bi-plus-circle me-2"></i>Crear
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <Link
+                  className={`nav-link d-flex align-items-center ${
+                    isActive("actividades") ? "active" : ""
+                  }`}
+                  to="dashboard/actividades"
+                  onClick={closeAllDropdowns}
+                >
+                  <i className="bi bi-calendar3 me-1 d-lg-none"></i>
+                  <span className="d-inline d-lg-inline">Actividades</span>
+                </Link>
+              </li>
+            )}
+
+            {/* Usuarios - Conditional Rendering */}
+            {(auth.role === "SUPER_ADMIN" ||
+              auth.role === "ADMINISTRATIVO") && (
+              <li className="nav-item dropdown">
+                <button
+                  className={`nav-link dropdown-toggle d-flex align-items-center ${
+                    isActive("user-list") ||
+                    isActive("habilitar") ||
+                    isActive("peticiones")
+                      ? "active"
+                      : ""
+                  }`}
+                  onClick={() => toggleDropdown("usuarios")}
+                  aria-expanded={activeDropdown === "usuarios"}
+                >
+                  <i className="bi bi-people me-1 d-lg-none"></i>
+                  Usuarios
+                </button>
+                <ul
+                  className={`dropdown-menu ${
+                    activeDropdown === "usuarios" ? "show" : ""
+                  }`}
+                >
+                  {auth.role === "SUPER_ADMIN" && (
+                    <>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            isActive("user-list/todos") ? "active" : ""
+                          }`}
+                          to="dashboard/user-list/todos"
+                          onClick={closeAllDropdowns}
+                        >
+                          <i className="bi bi-check-circle me-2"></i>Habilitar
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            isActive("user-list/convencional") ? "active" : ""
+                          }`}
+                          to="dashboard/user-list/convencional"
+                          onClick={closeAllDropdowns}
+                        >
+                          <i className="bi bi-person me-2"></i>Convencional
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            isActive("user-list/adaptada") ? "active" : ""
+                          }`}
+                          to="dashboard/user-list/adaptada"
+                          onClick={closeAllDropdowns}
+                        >
+                          <i className="bi bi-person-wheelchair me-2"></i>
+                          Adaptada
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            isActive("user-list/certificado") ? "active" : ""
+                          }`}
+                          to="dashboard/user-list/certificado"
+                          onClick={closeAllDropdowns}
+                        >
+                          <i className="bi bi-file-earmark-medical me-2"></i>
+                          Certificado
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            isActive("user-list/revision") ? "active" : ""
+                          }`}
+                          to="dashboard/user-list/revision"
+                          onClick={closeAllDropdowns}
+                        >
+                          <i className="bi bi-eye me-2"></i>Revisión
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                  {auth.role === "ADMINISTRATIVO" && (
+                    <>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            isActive("user-list/convencional") ? "active" : ""
+                          }`}
+                          to="dashboard/user-list/convencional"
+                          onClick={closeAllDropdowns}
+                        >
+                          <i className="bi bi-person me-2"></i>Convencional
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          className={`dropdown-item ${
+                            isActive("habilitar/certificado") ? "active" : ""
+                          }`}
+                          to="dashboard/habilitar/certificado"
+                          onClick={closeAllDropdowns}
+                        >
+                          <i className="bi bi-file-earmark-medical me-2"></i>
+                          Certificado
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                  <li>
+                    <Link
+                      className={`dropdown-item ${
+                        isActive("peticiones") ? "active" : ""
+                      }`}
+                      to="peticiones"
+                      onClick={closeAllDropdowns}
+                    >
+                      <i className="bi bi-envelope me-2"></i>Peticiones
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
+          </ul>
+
+          {/* Logout Button */}
+          <div className="d-flex">
+            <button
+              className="btn btn-outline-light d-flex align-items-center"
+              onClick={cerrarSesion}
+              title="Cerrar sesión"
+            >
+              <i className="bi bi-box-arrow-left me-1"></i>
+              <span className="d-none d-lg-inline">Salir</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </nav>
   );
 }

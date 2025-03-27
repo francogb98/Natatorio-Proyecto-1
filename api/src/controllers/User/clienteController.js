@@ -11,6 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
+import { RevisionArchivosEstado } from "./models/index.js";
 
 export const generateVerificationToken = () => {
   const token = jwt.sign({ data: "verification" }, process.env.JWT_SECRET, {
@@ -426,6 +427,26 @@ export class ClienteController {
       return res.status(200).json({ status: "success", user });
     } catch (error) {
       console.error("Error al subir el archivo:", error);
+      return res
+        .status(500)
+        .json({ status: "error", message: "Error en el servidor." });
+    }
+  };
+
+  static revisionArchivo = async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      if (!user) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+      user.revisionArchivo = RevisionArchivosEstado.PENDIENTE;
+      await user.save();
+
+      return res
+        .status(200)
+        .json({ status: "success", message: "Archivo enviado a revisión" });
+    } catch (error) {
+      console.error("Error al actualizar el estado del archivo:", error);
       return res
         .status(500)
         .json({ status: "error", message: "Error en el servidor." });

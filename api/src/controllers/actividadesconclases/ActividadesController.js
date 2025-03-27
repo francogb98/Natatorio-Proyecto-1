@@ -277,24 +277,26 @@ export class ActividadController {
 
   static editActivity = async (req, res) => {
     try {
-      const actividad = await Activity.findOneAndUpdate(
-        { _id: req.body.id },
-        {
-          name: req.body.args.name,
-          pileta: req.body.args.pileta,
-          hourStart: req.body.args.hourStart,
-          hourFinish: req.body.args.hourFinish,
-          date: req.body.args.date,
-          users: req.body.args.users,
-          userRegister: req.body.args.userRegister,
-          stadistics: req.body.args.stadistics,
-          cupos: req.body.args.cupos,
-          actividadEspecial: req.body.args.actividadEspecial,
-          desde: req.body.args.desde,
-          hasta: req.body.args.hasta,
+      console.log(req.body);
 
-          codigoDeAcceso: req.body.args.codigoDeAcceso ?? "",
-          actividadHabilitada: req.body.args.actividadHabilitada ?? true,
+      const actividad = await Activity.findOneAndUpdate(
+        { _id: req.body._id },
+        {
+          name: req.body.name,
+          pileta: req.body.pileta,
+          hourStart: req.body.hourStart,
+          hourFinish: req.body.hourFinish,
+          date: req.body.date,
+          users: req.body.users,
+          userRegister: req.body.userRegister,
+          stadistics: req.body.stadistics,
+          cupos: req.body.cupos,
+          actividadEspecial: req.body.actividadEspecial,
+          desde: req.body.desde,
+          hasta: req.body.hasta,
+
+          codigoDeAcceso: req.body.codigoDeAcceso ?? "",
+          actividadHabilitada: req.body.actividadHabilitada ?? true,
         },
         { new: true }
       );

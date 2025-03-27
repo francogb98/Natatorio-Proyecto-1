@@ -1,46 +1,51 @@
 import { Outlet, useLocation } from "react-router-dom";
-// import Footer from "./Footer";
 import FormularioBuscarUsuario from "./aside/FormularioBuscarUsuario";
 import Header from "./Header";
 
 function HomePrueba() {
   const { pathname } = useLocation();
 
-  return (
-    <div className="container-fluid">
-      {pathname === "/qr" ? (
-        <Outlet />
-      ) : (
-        <>
-          <header className="row fixed-top bg-light border-bottom border-dark">
-            <Header />
-          </header>
+  // Estilos para el layout principal
+  const mainStyle = {
+    marginTop: "56px", // Altura del header
+    height: "calc(100vh - 56px)", // Altura total menos el header
+    overflow: "hidden",
+  };
 
-          <main
-            className="row"
-            style={{
-              marginTop: "50px",
-            }}
-          >
-            <div className="col-12 col-sm-4">
+  const contentStyle = {
+    height: "100%",
+    overflowY: "auto",
+  };
+
+  if (pathname === "/qr") {
+    return <Outlet />;
+  }
+
+  return (
+    <div className="d-flex flex-column vh-100">
+      {/* Header fijo en la parte superior */}
+      <header className="fixed-top shadow-sm">
+        <Header />
+      </header>
+
+      {/* Contenido principal */}
+      <main style={mainStyle} className="container-fluid">
+        <div className="row h-100 g-0">
+          {/* Barra lateral - Solo visible en pantallas medianas/grandes */}
+          <aside className="d-none d-sm-block col-sm-4 col-md-3 bg-light border-end p-2 h-100 overflow-y-auto">
+            <div className="sticky-top" style={{ top: "70px" }}>
               <FormularioBuscarUsuario />
             </div>
-            <div
-              className="col-12 col-sm-8 mt-3 pb-5"
-              style={{
-                height: "100vh",
-                overflowY: "auto",
-                overflowX: "hidden",
-              }}
-            >
+          </aside>
+
+          {/* Área de contenido principal */}
+          <div className="col-12 col-sm-8 col-md-9" style={contentStyle}>
+            <div className="p-3">
               <Outlet />
             </div>
-          </main>
-          {/* <footer className="row fixed-bottom border-top border-dark d-none d-md-block">
-            <Footer />
-          </footer> */}
-        </>
-      )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

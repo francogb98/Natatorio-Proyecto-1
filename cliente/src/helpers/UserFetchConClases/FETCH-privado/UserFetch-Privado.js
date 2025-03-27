@@ -146,4 +146,25 @@ export class UserFetchPrivado {
       return error;
     }
   };
+
+  //Enviar a revision
+  static enviarRevisionArchivo = async (content) => {
+    try {
+      const resp = await fetch(baseUrl + `user/revisarArchivo`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(content),
+      });
+
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      console.log(error.message);
+
+      return error;
+    }
+  };
 }

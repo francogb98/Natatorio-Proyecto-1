@@ -7,6 +7,7 @@ import { userController } from "../controllers/User/userController.js";
 import { AdminController } from "../controllers/User/AdminController.js";
 import { ClienteController } from "../controllers/User/clienteController.js";
 import { getUsers } from "../controllers/User/UsuariosFalta.js";
+import { User } from "../models/User.js";
 
 const UserRouter = Router();
 
@@ -25,6 +26,8 @@ UserRouter.post(
   validarJWT,
   userController.getUserByLastName
 );
+
+UserRouter.post("/revisarArchivo", userController.revisarArchivo);
 
 //*-------------- Super Admin -----------------*/
 
@@ -64,6 +67,12 @@ UserRouter.post("/modificar-password", ClienteController.modificarContraseña);
 UserRouter.patch("/editarUsuario", ClienteController.editarUsuario);
 /**----Archivos */
 UserRouter.put("/upload", validarJWT, ClienteController.subirArchivos);
+
+UserRouter.post(
+  "/revisionArchivo",
+  validarJWT,
+  ClienteController.revisionArchivo
+);
 
 /**----Actividades */
 UserRouter.post(
