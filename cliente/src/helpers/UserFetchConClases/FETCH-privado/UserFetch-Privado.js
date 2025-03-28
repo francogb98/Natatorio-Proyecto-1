@@ -126,6 +126,28 @@ export class UserFetchPrivado {
   };
 
   //inhabilitar user
+  static darDeBajaPorCertificado = async (content) => {
+    console.log(content);
+
+    try {
+      const url = `${baseUrl}user/darDeBajaCertificado`;
+
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify(content),
+      });
+
+      const body = await resp.json();
+
+      return body;
+    } catch (error) {
+      return error;
+    }
+  };
   static inhabilitarUsuario = async ({ activityId, id }) => {
     try {
       const url = `${baseUrl}user/deshabilitar/${id}`;

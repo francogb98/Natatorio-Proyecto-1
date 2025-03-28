@@ -107,7 +107,7 @@ export const getUsers = async (req, res) => {
       }).populate({
         path: "users",
         select:
-          "nombre apellido _id customId certificadoHongos fechaCargaCertificadoHongos", // Campos del usuario
+          "nombre apellido _id customId certificadoHongos fechaCargaCertificadoHongos foto", // Campos del usuario
         populate: {
           path: "activity",
         },

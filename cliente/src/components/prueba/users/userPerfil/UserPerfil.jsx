@@ -293,61 +293,64 @@ function UserPerfil() {
                   className="list-group list-group-flush"
                   style={{ maxHeight: "400px", overflowY: "auto" }}
                 >
-                  {user.notificaciones.map((notificacion) => (
-                    <div
-                      key={notificacion._id}
-                      className={`list-group-item list-group-item-action ${
-                        notificacion.leido ? "" : "bg-light"
-                      }`}
-                    >
-                      <div className="d-flex justify-content-between align-items-start mb-2">
-                        <h6
-                          className={`mb-0 ${
-                            notificacion.leido
-                              ? "text-muted"
-                              : "text-primary fw-bold"
-                          }`}
-                        >
-                          {notificacion.asunto}
-                        </h6>
-                        <button
-                          className="btn btn-sm btn-link text-danger p-0"
-                          onClick={() => {
-                            toast.info("Notificación eliminada");
-                            eliminarNotificacion.mutate({
-                              idNotificacion: notificacion._id,
-                              id: user._id,
-                            });
-                          }}
-                          aria-label="Eliminar notificación"
-                        >
-                          <i className="bi bi-trash3"></i>
-                        </button>
-                      </div>
-
-                      <p
-                        className={`small mb-2 ${
-                          notificacion.leido ? "text-muted" : ""
+                  {user.notificaciones
+                    .slice()
+                    .reverse()
+                    .map((notificacion) => (
+                      <div
+                        key={notificacion._id}
+                        className={`list-group-item list-group-item-action ${
+                          notificacion.leido ? "" : "bg-light"
                         }`}
                       >
-                        {notificacion.cuerpo}
-                      </p>
+                        <div className="d-flex justify-content-between align-items-start mb-2">
+                          <h6
+                            className={`mb-0 ${
+                              notificacion.leido
+                                ? "text-muted"
+                                : "text-primary fw-bold"
+                            }`}
+                          >
+                            {notificacion.asunto}
+                          </h6>
+                          <button
+                            className="btn btn-sm btn-link text-danger p-0"
+                            onClick={() => {
+                              toast.info("Notificación eliminada");
+                              eliminarNotificacion.mutate({
+                                idNotificacion: notificacion._id,
+                                id: user._id,
+                              });
+                            }}
+                            aria-label="Eliminar notificación"
+                          >
+                            <i className="bi bi-trash3"></i>
+                          </button>
+                        </div>
 
-                      <div className="d-flex justify-content-between align-items-center">
-                        <small className="text-muted">
-                          <i className="bi bi-calendar me-1"></i>
-                          {notificacion.fecha ?? "Sin fecha"}
-                        </small>
-                        <span
-                          className={`badge ${
-                            notificacion.leido ? "bg-success" : "bg-warning"
+                        <p
+                          className={`small mb-2 ${
+                            notificacion.leido ? "text-muted" : ""
                           }`}
                         >
-                          {notificacion.leido ? "Leído" : "No leído"}
-                        </span>
+                          {notificacion.cuerpo}
+                        </p>
+
+                        <div className="d-flex justify-content-between align-items-center">
+                          <small className="text-muted">
+                            <i className="bi bi-calendar me-1"></i>
+                            {notificacion.fecha ?? "Sin fecha"}
+                          </small>
+                          <span
+                            className={`badge ${
+                              notificacion.leido ? "bg-success" : "bg-warning"
+                            }`}
+                          >
+                            {notificacion.leido ? "Leído" : "No leído"}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </div>

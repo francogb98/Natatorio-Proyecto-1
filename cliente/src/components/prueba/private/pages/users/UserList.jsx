@@ -62,7 +62,11 @@ function UserList() {
 
         {currentUsers.map((user) => (
           <div key={user._id} className="col-6 col-lg-4 col-xl-3 p-3">
-            <UserCard user={user} />
+            {filtro === "certificado" ? (
+              <UserCard user={user} certificado={true} />
+            ) : (
+              <UserCard user={user} />
+            )}
           </div>
         ))}
         <div className="d-flex justify-content-center">

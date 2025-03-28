@@ -12,6 +12,7 @@ const __dirname = dirname(__filename);
 
 import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import { RevisionArchivosEstado } from "./models/index.js";
+import { calcularDiasDesde } from "../../middlewares/calcularDiasDeCertificado.js";
 
 export const generateVerificationToken = () => {
   const token = jwt.sign({ data: "verification" }, process.env.JWT_SECRET, {
@@ -303,6 +304,56 @@ export class ClienteController {
           (usuario) => usuario != id
         );
         actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
+        await actividadABorrar.save();
+
+        return res.status(200).json({
+          status: "success",
+          message: "Actividad dada de baja con exito",
+        });
+      } else {
+        return res.status(400).json({
+          status: "error",
+          message: "El usuario no esta inscripto en la actividad",
+        });
+      }
+    } catch (error) {
+      return res.status(400).json({ status: "error", message: error.message });
+    }
+  };
+  static darDeBajaPorCertificado = async (req, res) => {
+    try {
+      //viene por la confirmacion de jwt
+      const { idActividad, id } = req.body;
+      const { fecha } = obtenerFechaYHoraArgentina();
+      const user = await User.findById(id);
+      const actividad = user.activity.find(
+        (actividad) => actividad == idActividad
+      );
+      if (actividad) {
+        user.activity = user.activity.filter(
+          (actividad) => actividad != idActividad
+        );
+
+        //borro al usuario de la actividad
+        let actividadABorrar = await Activity.findById(idActividad);
+        actividadABorrar.users = actividadABorrar.users.filter(
+          (usuario) => usuario != id
+        );
+        actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
+
+        user.notificaciones.push({
+          asunto: "Baja de actividad",
+          cuerpo: `Usted a sido dado de baja de la actividad ${
+            actividadABorrar.name
+          } en el horario de ${actividadABorrar.hourStart} - ${
+            actividadABorrar.hourFinish
+          }, debido a que el sistema registro que pasaron ${calcularDiasDesde(
+            user.fechaCargaCertificadoHongos
+          )} Dias de la ultima vez que renovo su certificado De Pediculosis y Micosis`,
+          fecha: fecha,
+        });
+
+        await user.save();
         await actividadABorrar.save();
 
         return res.status(200).json({

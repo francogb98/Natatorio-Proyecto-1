@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import Swal from "sweetalert2";
 import { useState } from "react";
 
-function UserCard({ user }) {
+function UserCard({ user, certificado = false }) {
   const [send, setSend] = useState(false);
   const [isDenegeted, setIsDenegeted] = useState(false);
   const [formData, setFormData] = useState({ asunto: "", cuerpo: "" });
@@ -58,6 +58,18 @@ function UserCard({ user }) {
       }
     },
   });
+  const darDeBaja = useMutation({
+    mutationFn: UserFetchPrivado.darDeBajaPorCertificado,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        toast.success("Usuario Inhabilitado");
+        queryClient.invalidateQueries("getUserData");
+        queryClient.invalidateQueries("users-list");
+      } else {
+        toast.error(data.message);
+      }
+    },
+  });
 
   const handleSendNotification = (e) => {
     e.preventDefault();
@@ -75,6 +87,12 @@ function UserCard({ user }) {
 
     toast.info("Enviando mensaje");
     enviarNotificacion.mutate(content);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    darDeBaja.mutate({ id: user._id, idActividad: user.activity[0]._id });
   };
 
   return (
@@ -111,67 +129,86 @@ function UserCard({ user }) {
           <li className="list-group-item">CUD no cargado</li>
         )}
       </ul>
-      <div className="card-body d-flex flex-column justify-content-between gap-2">
-        <div className="d-flex flex-column justify-content-center align-items-center gap-2">
-          <button
-            className="btn btn-success w-100"
-            onClick={() => {
-              toast.info("Habilitando usuario...");
-              aceptarUsuario.mutate({ id: user._id });
-            }}
-          >
-            Aceptar
-          </button>
-          <button
-            className="btn btn-danger w-100"
-            onClick={() => {
-              toast.info("inhabilitando usuario");
-              denegarUsuario.mutate({
-                id: user._id,
-                activityId: user.activity[0]._id,
-              });
-            }}
-          >
-            Denegar
-          </button>
-        </div>
-        <div>
-          <button
-            className="btn btn-primary w-100"
-            onClick={() => setSend(!send)}
-          >
-            {send ? "Cancelar" : "Enviar notificación"}
-          </button>
 
-          {send && (
-            <form action="" onSubmit={handleSendNotification}>
-              <div className="mb-1 d-flex">
-                <label htmlFor="" className="form-label">
-                  Asunto
-                </label>
-                <input
-                  type="text"
-                  name="asunto"
-                  id=""
-                  className="form-control"
-                />
+      {certificado ? (
+        <>
+          {darDeBaja.isLoading ? (
+            <div className="text-center py-3">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
-              <div className="mb-1 d-flex">
-                <label htmlFor="" className="form-label">
-                  cuerpo
-                </label>
-                <textarea
-                  type="text"
-                  name="cuerpo"
-                  id=""
-                  className="form-control"
-                />
-              </div>
-              <button className="btn btn-warning">Enviar</button>
+            </div>
+          ) : (
+            <form className="form-control" onClick={handleSubmit}>
+              <button className="w-100 btn btn-danger">Dar de Baja</button>
             </form>
           )}
-        </div>
-      </div>
+        </>
+      ) : (
+        <>
+          <div className="card-body d-flex flex-column justify-content-between gap-2">
+            <div className="d-flex flex-column justify-content-center align-items-center gap-2">
+              <button
+                className="btn btn-success w-100"
+                onClick={() => {
+                  toast.info("Habilitando usuario...");
+                  aceptarUsuario.mutate({ id: user._id });
+                }}
+              >
+                Aceptar
+              </button>
+              <button
+                className="btn btn-danger w-100"
+                onClick={() => {
+                  toast.info("inhabilitando usuario");
+                  denegarUsuario.mutate({
+                    id: user._id,
+                    activityId: user.activity[0]._id,
+                  });
+                }}
+              >
+                Denegar
+              </button>
+            </div>
+            <div>
+              <button
+                className="btn btn-primary w-100"
+                onClick={() => setSend(!send)}
+              >
+                {send ? "Cancelar" : "Enviar notificación"}
+              </button>
+
+              {send && (
+                <form action="" onSubmit={handleSendNotification}>
+                  <div className="mb-1 d-flex">
+                    <label htmlFor="" className="form-label">
+                      Asunto
+                    </label>
+                    <input
+                      type="text"
+                      name="asunto"
+                      id=""
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="mb-1 d-flex">
+                    <label htmlFor="" className="form-label">
+                      cuerpo
+                    </label>
+                    <textarea
+                      type="text"
+                      name="cuerpo"
+                      id=""
+                      className="form-control"
+                    />
+                  </div>
+                  <button className="btn btn-warning">Enviar</button>
+                </form>
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
