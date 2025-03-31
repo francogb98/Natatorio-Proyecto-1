@@ -8,6 +8,26 @@ import { toast } from "sonner";
 import Swal from "sweetalert2";
 import { useState } from "react";
 
+function calcular_fecha(fecha_carga) {
+  // Convertir la cadena de fecha en un objeto de fecha
+  var partesFecha = fecha_carga.split("/");
+
+  // Crear el objeto de fecha
+  var fecha = new Date(partesFecha[2], partesFecha[1] - 1, partesFecha[0]);
+  // Obtener la fecha actual
+  var fechaActual = new Date();
+
+  fecha.setMonth(fecha.getMonth() + 1);
+
+  // Calcular la diferencia en milisegundos
+  var diferenciaMilisegundos = fechaActual - fecha;
+
+  // Convertir la diferencia de milisegundos a días
+  var diasPasados = Math.floor(diferenciaMilisegundos / (1000 * 60 * 60 * 24));
+
+  return diasPasados;
+}
+
 function UserCard({ user, certificado = false }) {
   const [send, setSend] = useState(false);
   const [isDenegeted, setIsDenegeted] = useState(false);
@@ -132,8 +152,29 @@ function UserCard({ user, certificado = false }) {
 
       {certificado ? (
         <>
+          <p
+            className={`${
+              calcular_fecha(user.fechaCargaCertificadoHongos) > 0
+                ? "text-success text-center my-1"
+                : "text-success"
+            }`}
+          >
+            {calcular_fecha(user.fechaCargaCertificadoHongos) > 0 ? (
+              <span>
+                Pasaron{" "}
+                <b className="text-danger">
+                  {Math.abs(calcular_fecha(user.fechaCargaCertificadoHongos))}{" "}
+                </b>
+                Dias de ulitma actualizacion
+              </span>
+            ) : (
+              `Faltan ${Math.abs(
+                calcular_fecha(user.fechaCargaCertificadoHongos)
+              )} Dias`
+            )}
+          </p>
           {darDeBaja.isLoading ? (
-            <div className="text-center py-3">
+            <div className="text-center py-1">
               <div className="spinner-border" role="status">
                 <span className="visually-hidden">Loading...</span>
               </div>
