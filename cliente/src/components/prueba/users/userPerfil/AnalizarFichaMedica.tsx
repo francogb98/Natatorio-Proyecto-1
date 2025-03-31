@@ -28,6 +28,9 @@ function AnalizarFichaMedica({
     },
   });
 
+  console.log(placeholder);
+  console.log(imagen);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

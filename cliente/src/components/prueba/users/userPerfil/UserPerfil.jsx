@@ -145,7 +145,14 @@ function UserPerfil() {
                         {activity.name.charAt(0).toUpperCase() +
                           activity.name.slice(1)}
                       </h4>
-                      {user.status && auth.role === "SUPER_ADMIN" && (
+                      <small
+                        className={`
+                          ${user.status ? "text-success" : "text-warning"} mt-1
+                          `}
+                      >
+                        {user.status ? "Habilitado" : "Pendiente"}
+                      </small>
+                      {auth.role === "SUPER_ADMIN" && (
                         <div className="btn-group btn-group-sm">
                           <button
                             className="btn btn-outline-danger btn-sm"

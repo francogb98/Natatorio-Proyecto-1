@@ -255,24 +255,24 @@ function Header() {
                       <li>
                         <Link
                           className={`dropdown-item ${
-                            isActive("user-list/convencional") ? "active" : ""
+                            isActive("user-list/certificado") ? "active" : ""
                           }`}
-                          to="dashboard/user-list/convencional"
+                          to="dashboard/user-list/certificado"
                           onClick={closeAllDropdowns}
                         >
-                          <i className="bi bi-person me-2"></i>Convencional
+                          <i className="bi bi-file-earmark-medical me-2"></i>
+                          Certificado
                         </Link>
                       </li>
                       <li>
                         <Link
                           className={`dropdown-item ${
-                            isActive("habilitar/certificado") ? "active" : ""
+                            isActive("user-list/revision") ? "active" : ""
                           }`}
-                          to="dashboard/habilitar/certificado"
+                          to="dashboard/user-list/revision"
                           onClick={closeAllDropdowns}
                         >
-                          <i className="bi bi-file-earmark-medical me-2"></i>
-                          Certificado
+                          <i className="bi bi-eye me-2"></i>Revisión
                         </Link>
                       </li>
                     </>
