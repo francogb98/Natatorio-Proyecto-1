@@ -149,6 +149,11 @@ function Acciones_administrador({ user }) {
                           <option key={actividad._id} value={actividad._id}>
                             {actividad.name} ({actividad.hourStart}-
                             {actividad.hourFinish})
+                            <small>
+                              <span className="text-danger0"> | </span>
+
+                              {actividad.date.join(" - ")}
+                            </small>
                           </option>
                         ))}
                       </select>
