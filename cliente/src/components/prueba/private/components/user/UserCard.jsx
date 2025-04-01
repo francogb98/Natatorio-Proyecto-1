@@ -132,11 +132,19 @@ function UserCard({ user, certificado = false }) {
         <p className="card-subtitle text-danger fw-bold mt-1">
           Actividad Inscripta
         </p>
-        <b className="card-text">{user.activity[0].name}</b>
-        <p className="card-text mt-2">
-          {user.activity[0].hourStart} - {user.activity[0].hourFinish}
-        </p>
-        <p className="card-text">{user.activity[0].date.join(" - ")}</p>
+        {user.length > 0 ? (
+          <>
+            <b className="card-text">{user.activity[0].name}</b>
+            <p className="card-text mt-2">
+              {user.activity[0].hourStart} - {user.activity[0].hourFinish}
+            </p>
+            <p className="card-text">{user.activity[0].date.join(" - ")}</p>
+          </>
+        ) : (
+          <div>
+            <p>El usuario no se encuentra inscripto en ninguna actividad</p>
+          </div>
+        )}
       </div>
       <ul className="list-group list-group-flush">
         <LiElement archivo={user.fichaMedica} label={"Ficha Medica"} />

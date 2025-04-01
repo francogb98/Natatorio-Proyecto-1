@@ -276,7 +276,7 @@ function Header() {
                           Certificado
                         </Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link
                           className={`dropdown-item ${
                             isActive("user-list/revision") ? "active" : ""
@@ -286,7 +286,7 @@ function Header() {
                         >
                           <i className="bi bi-eye me-2"></i>Revisión
                         </Link>
-                      </li>
+                      </li> */}
                     </>
                   )}
                   <li>
