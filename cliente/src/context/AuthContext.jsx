@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
             return navigate("/");
           }
           return navigate("/dashboard");
-        }, 1500);
+        }, 500);
       } else {
         Swal.fire({
           icon: "error",

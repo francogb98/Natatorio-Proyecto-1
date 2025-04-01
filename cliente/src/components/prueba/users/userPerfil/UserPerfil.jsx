@@ -10,16 +10,17 @@ import Acciones_mesa_entrada from "./Acciones_mesa_entrada";
 import ImagenPerfil from "./ImagenPerfil";
 import AnalizarFichaMedica from "./AnalizarFichaMedica";
 import avatar from "../../../../assets/avatar.webp";
+import { div } from "@tensorflow/tfjs";
 
 function UserPerfil() {
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
-  const [imagen, setImagen] = useState(null);
-  const [view, setView] = useState(false);
   const [archivo, setArchivo] = useState(null);
   const [nombreArchivo, setNombreArchivo] = useState("Ficha Médica");
   const [estado, setEstado] = useState("informacion");
   const [activeTab, setActiveTab] = useState("informacion");
+
+  const [loading, setLoading] = useState(false);
 
   const { eliminarNotificacion, inhabilitar, habilitar } =
     Funciones_administrador();
@@ -35,6 +36,14 @@ function UserPerfil() {
     setArchivo(null);
     refetch();
   }, [id]);
+
+  useEffect(() => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, [archivo]);
 
   if (isLoading) {
     return (
@@ -407,6 +416,12 @@ function UserPerfil() {
                     color: "secondary",
                   },
                   { label: "DNI", value: user.fotoDocumento, color: "success" },
+
+                  user.natacionAdaptada && {
+                    label: "CUD",
+                    value: user.cud,
+                    color: "warning",
+                  },
                 ].map((doc, index) => (
                   <button
                     key={index}
@@ -427,6 +442,7 @@ function UserPerfil() {
                 imagen={archivo}
                 placeholder={nombreArchivo}
                 customId={user.customId}
+                loading={loading}
               />
             </div>
           </div>

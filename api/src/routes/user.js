@@ -91,6 +91,11 @@ UserRouter.post(
   ClienteController.darDeBajaPorCertificado
 );
 UserRouter.post(
+  "/darDeBajaRevision",
+  validarJWT,
+  ClienteController.darDeBajaPorRevision
+);
+UserRouter.post(
   "/notificaciones/update/:userId",
   validarJWT,
   ClienteController.notificacionLeida

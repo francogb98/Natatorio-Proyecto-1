@@ -28,7 +28,7 @@ function calcular_fecha(fecha_carga) {
   return diasPasados;
 }
 
-function UserCard({ user, certificado = false }) {
+function UserCard({ user, type }) {
   const [send, setSend] = useState(false);
   const [isDenegeted, setIsDenegeted] = useState(false);
   const [formData, setFormData] = useState({ asunto: "", cuerpo: "" });
@@ -78,6 +78,18 @@ function UserCard({ user, certificado = false }) {
       }
     },
   });
+  const darDeBajaRevision = useMutation({
+    mutationFn: UserFetchPrivado.darDeBajaPorRevision,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        toast.success("Usuario Inhabilitado");
+        queryClient.invalidateQueries("getUserData");
+        queryClient.invalidateQueries("users-list");
+      } else {
+        toast.error(data.message);
+      }
+    },
+  });
   const darDeBaja = useMutation({
     mutationFn: UserFetchPrivado.darDeBajaPorCertificado,
     onSuccess: (data) => {
@@ -112,7 +124,20 @@ function UserCard({ user, certificado = false }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    darDeBaja.mutate({ id: user._id, idActividad: user.activity[0]._id });
+    if (type === "certificado") {
+      darDeBaja.mutate({
+        id: user._id,
+        idActividad: user.activity[0]._id,
+        motivo,
+      });
+    }
+    if (type === "archivo") {
+      console.log("entre aqui");
+
+      darDeBajaRevision.mutate({
+        id: user._id,
+      });
+    }
   };
 
   return (
@@ -158,7 +183,7 @@ function UserCard({ user, certificado = false }) {
         )}
       </ul>
 
-      {certificado ? (
+      {type === "certificado" || type === "archivo" ? (
         <>
           <p
             className={`${

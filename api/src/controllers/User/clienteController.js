@@ -320,10 +320,11 @@ export class ClienteController {
       return res.status(400).json({ status: "error", message: error.message });
     }
   };
+
   static darDeBajaPorCertificado = async (req, res) => {
     try {
       //viene por la confirmacion de jwt
-      const { idActividad, id } = req.body;
+      const { idActividad, id, motivo } = req.body;
       const { fecha } = obtenerFechaYHoraArgentina();
       const user = await User.findById(id);
       const actividad = user.activity.find(
@@ -341,17 +342,19 @@ export class ClienteController {
         );
         actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
 
-        user.notificaciones.push({
-          asunto: "Baja de actividad",
-          cuerpo: `Usted a sido dado de baja de la actividad ${
-            actividadABorrar.name
-          } en el horario de ${actividadABorrar.hourStart} - ${
-            actividadABorrar.hourFinish
-          }, debido a que el sistema registro que pasaron ${calcularDiasDesde(
-            user.fechaCargaCertificadoHongos
-          )} Dias de la ultima vez que renovo su certificado De Pediculosis y Micosis`,
-          fecha: fecha,
-        });
+        if (motivo === "certificado") {
+          user.notificaciones.push({
+            asunto: "Baja de actividad",
+            cuerpo: `Usted a sido dado de baja de la actividad ${
+              actividadABorrar.name
+            } en el horario de ${actividadABorrar.hourStart} - ${
+              actividadABorrar.hourFinish
+            }, debido a que el sistema registro que pasaron ${calcularDiasDesde(
+              user.fechaCargaCertificadoHongos
+            )} Dias de la ultima vez que renovo su certificado De Pediculosis y Micosis`,
+            fecha: fecha,
+          });
+        }
 
         await user.save();
         await actividadABorrar.save();
@@ -501,6 +504,42 @@ export class ClienteController {
       return res
         .status(500)
         .json({ status: "error", message: "Error en el servidor." });
+    }
+  };
+
+  static darDeBajaPorRevision = async (req, res) => {
+    try {
+      //viene por la confirmacion de jwt
+      const { id } = req.body;
+      const { fecha } = obtenerFechaYHoraArgentina();
+      const user = await User.findById(id);
+
+      if (user.activity.length > 0) {
+        user.activity.forEach(async (act) => {
+          let actividadABorrar = await Activity.findById(act);
+          actividadABorrar.users = actividadABorrar.users.filter(
+            (usuario) => usuario != id
+          );
+          actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
+          await actividadABorrar.save();
+        });
+      }
+
+      user.activity = [];
+      user.notificaciones.push({
+        asunto: "Baja de actividad",
+        cuerpo: `Usted a sido dado de baja de las actividades debido a la no revision de archivos como se le informo en las notificaciones anteriores. Por consultas hablar con administracion.`,
+        fecha: fecha,
+      });
+      user.revisionArchivo = RevisionArchivosEstado.RECHAZADO;
+      await user.save();
+
+      return res.status(200).json({
+        status: "success",
+        message: "Usuario dado de baja con exito",
+      });
+    } catch (error) {
+      return res.status(400).json({ status: "error", message: error.message });
     }
   };
 }

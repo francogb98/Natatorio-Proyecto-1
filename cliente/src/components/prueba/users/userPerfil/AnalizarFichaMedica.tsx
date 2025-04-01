@@ -7,10 +7,12 @@ function AnalizarFichaMedica({
   imagen,
   placeholder,
   customId,
+  loading,
 }: {
   imagen: string;
   placeholder: string;
   customId: number;
+  loading: boolean;
 }) {
   const [error, setError] = useState("");
   const [observacion, setObservacion] = useState("");
@@ -27,9 +29,6 @@ function AnalizarFichaMedica({
       toast.error("Error al enviar la revisión");
     },
   });
-
-  console.log(placeholder);
-  console.log(imagen);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -90,12 +89,21 @@ function AnalizarFichaMedica({
               className="border rounded-3 p-3 bg-light"
               style={{ maxHeight: "70vh", overflow: "auto" }}
             >
-              <img
-                src={imagen}
-                alt={`Documento ${placeholder}`}
-                className="img-fluid rounded shadow-sm d-block mx-auto"
-                style={{ maxWidth: "100%" }}
-              />
+              {loading ? (
+                <div className="d-block mx-auto text-center">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                  <p>Cargando Imagen...</p>
+                </div>
+              ) : (
+                <img
+                  src={imagen}
+                  alt={`Documento ${placeholder}`}
+                  className="img-fluid rounded shadow-sm d-block mx-auto"
+                  style={{ maxWidth: "100%" }}
+                />
+              )}
             </div>
           ) : (
             <div className="text-center py-4 bg-light rounded-3">

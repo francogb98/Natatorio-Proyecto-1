@@ -62,8 +62,11 @@ function UserList() {
 
         {currentUsers.map((user) => (
           <div key={user._id} className="col-6 col-lg-4 col-xl-3 p-3">
-            {filtro === "certificado" ? (
-              <UserCard user={user} certificado={true} />
+            {filtro === "certificado" || filtro === "revision" ? (
+              <UserCard
+                user={user}
+                type={filtro === "certificado" ? filtro : "archivo"}
+              />
             ) : (
               <UserCard user={user} />
             )}
