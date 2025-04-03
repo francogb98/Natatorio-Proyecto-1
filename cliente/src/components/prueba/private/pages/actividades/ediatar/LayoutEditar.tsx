@@ -3,12 +3,11 @@ import { useQuery, useMutation } from "react-query";
 import { useParams, useNavigate } from "react-router-dom";
 import { Activity } from "../../../../models/index";
 import { toast } from "sonner";
-
-const baseUrl = "http://localhost:4000/activity/";
+import { baseUrl } from "../../../../../../helpers/url";
 
 async function getActividad(id: string) {
   const token = localStorage.getItem("token");
-  const resp = await fetch(baseUrl + "getActividad/" + id, {
+  const resp = await fetch(baseUrl + "activity/getActividad/" + id, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -110,13 +109,13 @@ function LayoutEditar() {
       </div>
     );
 
-  // if (error)
-  //   return (
-  //     <div className="alert alert-danger text-center">
-  //       <i className="bi bi-exclamation-triangle-fill me-2"></i>
-  //       Error al cargar la actividad: {(error as Error).message}
-  //     </div>
-  //   );
+  if (error)
+    return (
+      <div className="alert alert-danger text-center">
+        <i className="bi bi-exclamation-triangle-fill me-2"></i>
+        Error al cargar la actividad: {(error as Error).message}
+      </div>
+    );
 
   if (!actividad) return null;
 
