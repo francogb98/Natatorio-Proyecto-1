@@ -9,11 +9,15 @@ export function PageNotificaciones() {
     userRefetch,
   } = useContext(AuthContext);
 
+  const notificacionesNoLeidas = user?.notificaciones?.filter(
+    (notif) => !notif.leido
+  ).length;
+
   return (
     <div className="notifications-container">
       <div className="notifications-header">
         <h2>Notificaciones</h2>
-        <span className="badge">{user.notificaciones?.length || 0}</span>
+        <span className="badge">{notificacionesNoLeidas || 0}</span>
       </div>
 
       {user.notificaciones?.length === 0 ? (

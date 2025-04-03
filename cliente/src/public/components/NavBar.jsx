@@ -12,6 +12,10 @@ import { routesModel } from "../models";
 function NavBar() {
   const { auth } = useContext(AuthContext);
 
+  const notificacionesNoLeidas = auth.user?.notificaciones?.filter(
+    (notif) => !notif.leido
+  ).length;
+
   if (auth.logged) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -23,6 +27,19 @@ function NavBar() {
 
           {/* Botones alineados a la derecha */}
           <div className="d-flex gap-2 align-items-center justify-content-end">
+            {/* Ícono de campana con badge si hay notificaciones no leídas */}
+            <Link to="/user/notificaciones" className="position-relative">
+              <i className="bi bi-bell fs-4"></i>
+              {notificacionesNoLeidas > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {notificacionesNoLeidas}
+                  <span className="visually-hidden">
+                    Notificaciones no leídas
+                  </span>
+                </span>
+              )}
+            </Link>
+
             <NavLink
               to={`/${routesModel.user.root}/${routesModel.user.actividades}`}
             >
@@ -31,7 +48,7 @@ function NavBar() {
                   <i className="bi bi-list fs-3"></i>
                 </span>
                 <img
-                  className="rounded-circle "
+                  className="rounded-circle"
                   src={auth.user.foto ? auth.user.foto : avatar}
                   alt="perfil"
                   style={{ width: "45px", height: "45px" }}

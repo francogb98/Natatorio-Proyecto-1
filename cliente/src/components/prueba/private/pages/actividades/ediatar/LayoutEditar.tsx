@@ -121,7 +121,6 @@ function LayoutEditar() {
     );
 
   if (!actividad) return null;
-  console.log(actividad);
   return (
     <div className="container py-4">
       <div className="card shadow-sm">
