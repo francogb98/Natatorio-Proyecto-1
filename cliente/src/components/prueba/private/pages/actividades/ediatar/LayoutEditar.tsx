@@ -30,7 +30,7 @@ async function updateActividad({
   data: Partial<Activity>;
 }) {
   const token = localStorage.getItem("token");
-  const resp = await fetch(baseUrl + "editaractividad", {
+  const resp = await fetch(baseUrl + "activity/editaractividad", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -93,6 +93,9 @@ function LayoutEditar() {
       date: diasSeleccionados,
     };
 
+    delete actividadActualizada.users;
+
+    console.log("Datos a enviar:", actividadActualizada);
     updateMutation.mutate({ id, data: actividadActualizada });
   };
 
@@ -118,7 +121,7 @@ function LayoutEditar() {
     );
 
   if (!actividad) return null;
-
+  console.log(actividad);
   return (
     <div className="container py-4">
       <div className="card shadow-sm">

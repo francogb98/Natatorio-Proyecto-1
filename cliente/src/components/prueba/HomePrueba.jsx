@@ -30,7 +30,7 @@ function HomePrueba() {
 
       {/* Contenido principal */}
       <main style={mainStyle} className="container-fluid">
-        <div className="row h-100 g-0 overflow-auto">
+        <div className="row h-100 overflow-auto">
           {/* Barra lateral - Solo visible en pantallas medianas/grandes */}
           <aside className="col-12 col-sm-4 col-md-3 bg-light border-end p-2 h-sm-100 overflow-y-auto">
             <div className="sticky-top" style={{ top: "70px" }}>
