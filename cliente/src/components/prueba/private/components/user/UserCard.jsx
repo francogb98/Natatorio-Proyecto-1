@@ -157,7 +157,7 @@ function UserCard({ user, type }) {
         <p className="card-subtitle text-danger fw-bold mt-1">
           Actividad Inscripta
         </p>
-        {user.length > 0 ? (
+        {user.activity.length > 0 ? (
           <>
             <b className="card-text">{user.activity[0].name}</b>
             <p className="card-text mt-2">

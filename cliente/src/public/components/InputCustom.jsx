@@ -8,36 +8,30 @@ function InputCustom({
   placeholder,
   onChange,
   errores,
+  className = "",
+  required = false,
 }) {
   return (
-    <div className="col-sm-6">
-      <label
-        htmlFor="nombre"
-        style={{
-          marginBottom: "10px",
-        }}
-      >
+    <div className={`form-group ${className}`}>
+      <label htmlFor={name} className="form-label">
         {label}
+        {required && <span className="text-danger">*</span>}
       </label>
       <input
         type={type}
         name={name}
-        value={value}
+        id={name}
+        value={value || ""}
         placeholder={placeholder}
-        className="form-control"
-        autoComplete="off"
-        style={{
-          marginTop: "-10px",
-        }}
+        className={`form-control ${errores ? "is-invalid" : ""}`}
         onChange={onChange}
+        required={required}
       />
-
-      {errores ? (
-        <div className="text-danger text-center fw-bold">{errores}</div>
-      ) : null}
+      {errores && <div className="invalid-feedback d-block">{errores}</div>}
     </div>
   );
 }
+
 InputCustom.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
@@ -46,5 +40,8 @@ InputCustom.propTypes = {
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   errores: PropTypes.string,
+  className: PropTypes.string,
+  required: PropTypes.bool,
 };
+
 export default InputCustom;

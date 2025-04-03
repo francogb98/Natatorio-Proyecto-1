@@ -1,16 +1,145 @@
-.cuerpo{
-    font-size: 18px;
+.notifications-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-@media (max-width: 772px) {
-  .cuerpo{
-    font-size: 14px;
-} 
+.notifications-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 
+.notifications-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
 
-@media (max-width: 450px) {
-    .cuerpo{
-        font-size: 12px;
-} 
+.notifications-header .badge {
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.empty-notifications {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-notifications svg {
+  stroke: #cbd5e1;
+  margin-bottom: 16px;
+}
+
+.empty-notifications p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notification-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.notification-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.notification-card.read {
+  opacity: 0.8;
+  border-left: 4px solid #e2e8f0;
+}
+
+.notification-card.unread {
+  border-left: 4px solid #3b82f6;
+}
+
+.notification-header {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  gap: 12px;
+}
+
+.notification-status {
+  width: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.unread-badge {
+  background-color: #3b82f6;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 9999px;
+}
+
+.notification-title {
+  flex: 1;
+}
+
+.notification-title h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e293b;
+}
+
+.notification-time {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+.notification-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  transition: transform 0.2s ease;
+}
+
+.notification-toggle.expanded {
+  transform: rotate(180deg);
+}
+
+.notification-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.notification-body {
+  padding: 0 16px 16px 60px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.notification-body p {
+  margin: 0;
 }

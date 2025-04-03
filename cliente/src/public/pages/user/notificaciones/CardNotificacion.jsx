@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { useMutation } from "react-query";
 import { UserFetch } from "../../../../helpers/UserFetchConClases/FETCH-publico/UserFetch";
 
-import "./style.css";
-
 const NotificacionCard = ({ notificacion, userRefetch, user }) => {
   const mutation = useMutation(UserFetch.updateNotificacion, {
     onSuccess: () => {
@@ -27,44 +25,53 @@ const NotificacionCard = ({ notificacion, userRefetch, user }) => {
 
   return (
     <div
-      className={`card ${
-        notificacion.leido ? "notificacion-leida" : "notificacion-no-leida"
-      }`}
-      style={{
-        border: `2px solid ${notificacion.leido ? "#28a745" : "#dc3545"}`, // Verde o rojo
-        borderLeft: `5px solid ${notificacion.leido ? "#28a745" : "#dc3545"}`, // Verde o rojo
-      }}
+      className={`notification-card ${notificacion.leido ? "read" : "unread"}`}
+      onClick={toggleBody}
     >
-      <div className="card-header d-flex justify-content-between align-items-center">
-        <div className="d-flex flex-column gap-1">
-          <div>{notificacion.asunto}</div>
-          <div className="text-muted" style={{ fontSize: "0.85rem" }}>
-            {notificacion.fecha}
-          </div>
+      <div className="notification-header">
+        <div className="notification-status">
+          {!notificacion.leido && <span className="unread-badge">Nuevo</span>}
+        </div>
+        <div className="notification-title">
+          <h4>{notificacion.asunto}</h4>
+          <span className="notification-time">{notificacion.fecha}</span>
         </div>
         <button
-          onClick={toggleBody}
-          className="btn btn-link"
-          style={{ textDecoration: "none" }}
+          className={`notification-toggle ${isExpanded ? "expanded" : ""}`}
+          aria-expanded={isExpanded}
         >
-          {isExpanded ? "Ocultar" : "Ver más"}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path
+              d="M6 9l6 6 6-6"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </button>
       </div>
+
       <div
-        className="card-body-container"
+        className="notification-content"
+        ref={contentRef}
         style={{
           maxHeight: isExpanded ? `${contentRef.current?.scrollHeight}px` : "0",
-          overflow: "hidden",
-          transition: "max-height 0.4s ease",
         }}
       >
-        <div ref={contentRef} className="card-body cuerpo">
+        <div className="notification-body">
           <p>{notificacion.cuerpo}</p>
         </div>
       </div>
     </div>
   );
 };
+
 NotificacionCard.propTypes = {
   notificacion: PropTypes.shape({
     asunto: PropTypes.string.isRequired,

@@ -110,13 +110,13 @@ function LayoutEditar() {
       </div>
     );
 
-  if (error)
-    return (
-      <div className="alert alert-danger text-center">
-        <i className="bi bi-exclamation-triangle-fill me-2"></i>
-        Error al cargar la actividad: {(error as Error).message}
-      </div>
-    );
+  // if (error)
+  //   return (
+  //     <div className="alert alert-danger text-center">
+  //       <i className="bi bi-exclamation-triangle-fill me-2"></i>
+  //       Error al cargar la actividad: {(error as Error).message}
+  //     </div>
+  //   );
 
   if (!actividad) return null;
 
