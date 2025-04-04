@@ -1,9 +1,10 @@
 import { useEffect, useId, useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { cambioTurno } from "../helpers/cambiarTurno.js";
 import peticiones_buscador from "./peticiones_buscador.jsx";
 import Card_User from "./Card_User.jsx";
 import Swal from "sweetalert2";
+import { baseUrl } from "../../../helpers/url.js";
 
 function FormularioBuscarUsuario() {
   const [filtro, setFiltro] = useState("");
@@ -75,8 +76,10 @@ function FormularioBuscarUsuario() {
     if (timeoutId) clearTimeout(timeoutId);
 
     const newTimeoutId = setTimeout(() => {
+      console.log(value);
+
       buscarUsuario.mutate(value);
-    }, 500);
+    }, 300);
 
     setTimeoutId(newTimeoutId);
   };

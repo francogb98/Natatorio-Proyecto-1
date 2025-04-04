@@ -15,10 +15,16 @@ routerActivity.get(
   validarJWT,
   ActividadController.getActividadesParaUsuario
 );
+
 routerActivity.get(
   "/getActividad/:id",
   validarJWT,
   ActividadController.getInfoActividades
+);
+
+routerActivity.get(
+  "/getActividadPorTurno",
+  ActividadController.getActividadesPorTurno
 );
 
 routerActivity.post(

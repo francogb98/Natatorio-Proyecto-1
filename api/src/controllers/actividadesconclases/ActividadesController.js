@@ -1,3 +1,4 @@
+import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import {
   Activity,
   Day,
@@ -123,6 +124,33 @@ export class ActividadController {
     } catch (error) {
       console.log(error.message);
       return res.status(500).json({ message: "error en el servidor" });
+    }
+  };
+
+  static getActividadesPorTurno = async (req, res) => {
+    try {
+      const { diaNombre, hora } = obtenerFechaYHoraArgentina();
+
+      const actividades = await Activity.find({
+        hourStart: hora,
+        //dia es un array de strings
+        date: { $in: [diaNombre] },
+      }).populate("users");
+
+      if (!actividades || actividades.length === 0) {
+        return res.status(404).json({ msg: "no hay actividades" });
+      }
+
+      // necesito devolver todos los usuarios que tengan actividades en ese dia y hora
+      const usuarios = actividades.map((actividad) => {
+        return actividad.users.map((user) => user);
+      });
+      // aplanar el array de usuarios
+      const usuariosAplanados = [].concat(...usuarios);
+
+      return res.status(200).json({ usuarios: usuariosAplanados });
+    } catch (error) {
+      return res.status(400).json({ msg: "error en el servidor" });
     }
   };
 

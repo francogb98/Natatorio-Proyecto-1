@@ -9,6 +9,7 @@ import {
   ListaActividades,
   LayoutCrearActividad,
   LayoutEditar,
+  InfoActividad,
 } from "../pages/actividades";
 
 function PrivateRoutes() {
@@ -25,6 +26,7 @@ function PrivateRoutes() {
           <Route index element={<ListaActividades />} />
           <Route path="create" element={<LayoutCrearActividad />} />
           <Route path="editar/:id" element={<LayoutEditar />} />
+          <Route path=":id" element={<InfoActividad />} />
         </Route>
       </Route>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />

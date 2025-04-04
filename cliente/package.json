@@ -28,6 +28,7 @@
     "react-qr-code": "^2.0.15",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.15.0",
+    "react-tooltip": "^5.28.0",
     "sonner": "^1.4.32",
     "sweetalert2": "^11.7.23",
     "tesseract.js": "^6.0.0"

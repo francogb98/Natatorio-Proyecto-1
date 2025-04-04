@@ -77,7 +77,13 @@ function UserPerfil() {
   return (
     <div className="container py-4">
       <Toaster richColors position="top-center" />
-
+      <button
+        className="btn btn-outline-secondary mb-4"
+        onClick={() => window.history.back()}
+        aria-label="Volver a la página anterior"
+      >
+        <i className="bi bi-arrow-left"></i> Volver
+      </button>
       {/* Header del perfil */}
       <div className="profile-header text-center mb-4">
         <div className="position-relative d-inline-block">

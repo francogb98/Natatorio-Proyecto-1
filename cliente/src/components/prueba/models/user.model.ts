@@ -28,6 +28,14 @@ export interface User {
   fichaMedica: string;
 }
 
+export interface Stadistic {
+  _id: string;
+  usersQuantity: number;
+  dias: string[];
+  mes: string;
+  activity: string;
+  __v: number;
+}
 export interface Activity {
   _id: string;
   name: string;
@@ -35,9 +43,9 @@ export interface Activity {
   hourStart: string;
   hourFinish: string;
   date: string[];
-  users: string[];
+  users: User[];
   userRegister: number;
-  stadistics: any[];
+  stadistics: Stadistic[];
   cupos: number;
   actividadEspecial: boolean;
   natacionAdaptada: boolean;

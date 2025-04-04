@@ -1,6 +1,6 @@
 import React from "react";
 import { Activity } from "../../../../models";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface ActividadesProps {
   actividades: Activity[];
@@ -54,7 +54,9 @@ function TablaActividadesItem({ actividades }: ActividadesProps) {
                   </div>
                 </td>
                 <td data-label="Nombre">
-                  <span className="fw-semibold">{activity.name}</span>
+                  <Link to={`${activity._id}`} className="text-decoration-none">
+                    <span className="fw-semibold">{activity.name}</span>
+                  </Link>
                 </td>
                 <td data-label="Dias" className="d-none d-md-table-cell">
                   <div className="d-flex flex-wrap gap-1">
