@@ -1,0 +1,11 @@
+.user-highlight-combo {
+  animation: highlightPulse 2s infinite;
+  border-left: 4px solid #28a745;
+  box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3);
+}
+
+@keyframes highlightPulse {
+  0% { background-color: rgba(40, 167, 69, 0.2); }
+  50% { background-color: rgba(40, 167, 69, 0.5); }
+  100% { background-color: rgba(40, 167, 69, 0.2); }
+}

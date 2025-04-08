@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import { AuthContext } from "../../../../context/AuthContext";
+import { AuthContext } from "@/context/AuthContext";
 import { Toaster, toast } from "sonner";
 import { UserFetchPrivado } from "../../../../helpers/UserFetchConClases/FETCH-privado/UserFetch-Privado";
 import Funciones_administrador from "../hooks/Funciones_administrador";
@@ -10,7 +10,6 @@ import Acciones_mesa_entrada from "./Acciones_mesa_entrada";
 import ImagenPerfil from "./ImagenPerfil";
 import AnalizarFichaMedica from "./AnalizarFichaMedica";
 import avatar from "../../../../assets/avatar.webp";
-import { div } from "@tensorflow/tfjs";
 
 function UserPerfil() {
   const { auth } = useContext(AuthContext);

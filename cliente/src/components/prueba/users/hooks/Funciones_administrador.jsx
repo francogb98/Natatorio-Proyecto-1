@@ -73,6 +73,8 @@ function Funciones_administrador() {
           text: "Algo salio mal",
         });
       }
+      queryClient.invalidateQueries("getUserData");
+      queryClient.invalidateQueries("usuarios");
     },
     onError: () => {
       return false;

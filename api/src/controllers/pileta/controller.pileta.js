@@ -21,6 +21,9 @@ export class PiletaController {
         },
       });
 
+      piletas.forEach((pileta) => {
+        pileta.users = pileta.users.reverse();
+      });
       return res.status(200).json({ resultado: piletas });
     } catch (error) {
       return res.status(500).json({

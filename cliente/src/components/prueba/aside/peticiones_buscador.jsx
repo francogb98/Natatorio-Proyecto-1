@@ -91,9 +91,11 @@ function peticiones_buscador() {
   });
   const agregarUsuario = useMutation({
     mutationFn: PiletaFetch.agregarUsuarioAlTurno,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (data.status === "success") {
+        await localStorage.setItem("newUser", JSON.stringify(data.user));
         toast.success("Usuario agregado");
+        queryClient.invalidateQueries("piletas");
       }
       if (data.status === "error") {
         toast.error(data.message);

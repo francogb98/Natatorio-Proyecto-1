@@ -1,6 +1,6 @@
 import PopoverButton from "../../../utils/Popover";
 import { User } from "../../../../models";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge, Button, Table } from "react-bootstrap";
 import {
@@ -9,6 +9,8 @@ import {
   FaUserClock,
   FaSwimmer,
 } from "react-icons/fa";
+
+import "./tablaStyles.css";
 
 interface TablaPiletaProps {
   users: User[];
@@ -24,6 +26,21 @@ function TablaPileta({ users }: TablaPiletaProps) {
   const handleNext = () => page < totalPages && setPage(page + 1);
   const handleFirst = () => setPage(1);
   const handleLast = () => setPage(totalPages);
+
+  const [newUser, setNewUser] = useState(false);
+  const newUserAdd = localStorage.getItem("newUser");
+
+  useEffect(() => {
+    console.log("newUserAdd", newUserAdd);
+
+    if (newUserAdd) {
+      setNewUser(true);
+    }
+
+    setTimeout(() => {
+      setNewUser(false);
+    }, 2500);
+  }, [newUserAdd]);
 
   return (
     <div className="card shadow-sm border-0">
@@ -95,8 +112,16 @@ function TablaPileta({ users }: TablaPiletaProps) {
             </thead>
             <tbody>
               {usersPage.length > 0 ? (
+                //da vuelta el array para mostrar el último primero
                 usersPage.map((user: User) => (
-                  <tr key={user._id} className="align-middle">
+                  <tr
+                    key={user._id}
+                    className={`align-middle ${
+                      newUser && newUserAdd === user.customId.toString()
+                        ? "user-highlight-combo fw-bold table-success"
+                        : ""
+                    }`}
+                  >
                     <td>
                       <Link
                         to={`/usuario/${user._id}`}
