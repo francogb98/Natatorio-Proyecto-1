@@ -23,8 +23,6 @@ export class PiletaController {
 
       return res.status(200).json({ resultado: piletas });
     } catch (error) {
-      console.log(error.message, "es aqio");
-
       return res.status(500).json({
         message: "Hable con el administrador",
       });
@@ -130,6 +128,7 @@ export class PiletaController {
       }
 
       // Update user statistics
+
       await actualizarEstadistica(resultadoAsistencia.user);
 
       // Return success response
@@ -139,7 +138,6 @@ export class PiletaController {
         user: customId,
       });
     } catch (error) {
-      console.log(error.message);
       return res.status(500).json({
         status: "error",
         message: "Hable con el administrador",
@@ -191,7 +189,6 @@ export class PiletaController {
         message: "Horario cambiado con exito!,",
       });
     } catch (error) {
-      console.log(error.message);
       return res
         .status(400)
         .json({ status: "error", message: "error en el servidor" });
@@ -220,7 +217,6 @@ export class PiletaController {
         message: "Usuario eliminado de la pileta",
       });
     } catch (err) {
-      console.log(err.message);
       return res.status(500).json({
         message: "Error en el servidor, hable con el administrador",
       });
@@ -247,9 +243,7 @@ export class PiletaController {
       }
 
       return res.status(200).json({ status: "success", pileta });
-    } catch (error) {
-      console.log(error.message);
-    }
+    } catch (error) {}
   };
 
   static sin_conexion = async (req, res) => {
@@ -295,8 +289,6 @@ export class PiletaController {
         status: "success",
       });
     } catch (error) {
-      console.log(error.message);
-
       return res.status(500).json({
         message: "Error en el servidor, hable con el administrador",
         status: "error",
@@ -322,6 +314,7 @@ export const actualizarEstadistica = async (user) => {
         mes: mesNombre,
         activity: user.activity[0]._id,
       });
+
       await nuevaEstadistica.save();
     } else {
       // Si ya existe una estadística para la actividad y el mes, actualizarla
@@ -357,9 +350,9 @@ export const asistenciaUsuario = async (customId, fecha) => {
 
     return {
       status: "success",
+      user,
     };
   } catch (error) {
-    console.log(error.message);
     return res.status(400).json({ status: "error" });
   }
 };
