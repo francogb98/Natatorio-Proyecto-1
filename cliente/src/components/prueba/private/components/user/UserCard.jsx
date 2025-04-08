@@ -128,7 +128,7 @@ function UserCard({ user, type }) {
       darDeBaja.mutate({
         id: user._id,
         idActividad: user.activity[0]._id,
-        motivo,
+        motivo: type,
       });
     }
     if (type === "archivo") {
