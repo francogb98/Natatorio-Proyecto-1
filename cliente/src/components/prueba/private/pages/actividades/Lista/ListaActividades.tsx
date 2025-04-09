@@ -4,11 +4,17 @@ import { ActividadesFetch } from "../../../../../../helpers/activitiesFetch/Acti
 import TablaActividadesItem from "./TablaActividadesItem";
 import FormFilterActividades from "./FormFilterActividades";
 import { Activity } from "../../../../models";
+import { set } from "date-fns";
 
 function ListaActividades() {
   const [nombre, setNombre] = useState("");
   const [dia, setDia] = useState("");
   const [horario, setHorario] = useState("");
+
+  const [paginacion, setPaginacion] = useState({
+    page: 1,
+    limit: 10,
+  });
 
   const getActivity = useQuery({
     queryKey: ["activitys"],
@@ -44,13 +50,78 @@ function ListaActividades() {
     return (
       <div>
         <h2 className="text-center mb-3">Lista de actividades</h2>
+
         <FormFilterActividades
           actividades={actividades}
           setNombre={setNombre}
           setDia={setDia}
           setHorario={setHorario}
         />
-        <TablaActividadesItem actividades={actividadesFiltradas} />
+        <div className="d-flex justify-content-end mt-3">
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-center">
+              <li
+                className={`page-item ${
+                  paginacion.page == 1 ? "disabled" : ""
+                }`}
+              >
+                <button
+                  className="page-link"
+                  tabIndex={-1}
+                  onClick={() => {
+                    setPaginacion({ ...paginacion, page: paginacion.page - 1 });
+                  }}
+                >
+                  Anterior
+                </button>
+              </li>
+              {Array.from({
+                length: Math.ceil(
+                  actividadesFiltradas.length / paginacion.limit
+                ),
+              }).map((_, index) => (
+                <li
+                  className={`page-item ${
+                    paginacion.page == index + 1 ? "active" : ""
+                  }`}
+                  key={index}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => {
+                      setPaginacion({ ...paginacion, page: index + 1 });
+                    }}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li
+                className={`page-item ${
+                  paginacion.page ==
+                  Math.ceil(actividadesFiltradas.length / paginacion.limit)
+                    ? "disabled"
+                    : ""
+                }`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => {
+                    setPaginacion({ ...paginacion, page: paginacion.page + 1 });
+                  }}
+                >
+                  Siguiente
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <TablaActividadesItem
+          actividades={actividadesFiltradas.slice(
+            (paginacion.page - 1) * paginacion.limit,
+            paginacion.page * paginacion.limit
+          )}
+        />
       </div>
     );
   }

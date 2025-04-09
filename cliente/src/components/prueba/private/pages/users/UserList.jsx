@@ -17,8 +17,6 @@ const traerUsuarios = async (filtro) => {
 function UserList() {
   const { filtro } = useParams();
 
-  console.log(filtro);
-
   const [page, setPage] = useState(1); // Estado para la página actual
   const usersPerPage = 12; // Número de usuarios por página
 

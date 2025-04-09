@@ -40,3 +40,356 @@
 }
 
 
+/* Backdrop */
+.modalBackdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Main Modal Container */
+.modalContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalDialog {
+  max-width: 900px;
+  margin: 1.75rem auto;
+}
+
+.modalContent {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Header */
+.modalHeader {
+  background: linear-gradient(135deg, #007bff, #00a1ff);
+  color: white;
+  border-bottom: none;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.modalTitle {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.closeButton {
+  filter: brightness(0) invert(1);
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.closeButton:hover {
+  opacity: 1;
+}
+
+/* Progress Indicator */
+.progressContainer {
+  padding: 0 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.progressBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.stepNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.progressStep.active .stepNumber {
+  background-color: #007bff;
+  color: white;
+}
+
+.progressStep.current .stepNumber {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+}
+
+.connector {
+  height: 2px;
+  background-color: #e9ecef;
+  flex-grow: 1;
+  margin: 0 -15px;
+  position: relative;
+  top: 16px;
+}
+
+.progressStep.active ~ .progressStep .connector,
+.progressStep.active .connector {
+  background-color: #e9ecef;
+}
+
+.progressStep.active + .progressStep.active .connector {
+  background-color: #007bff;
+}
+
+/* Content */
+.modalBody {
+  padding: 2rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.contentContainer {
+  padding: 0 1rem;
+}
+
+/* Welcome Section */
+.welcomeSection {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.welcomeTitle {
+  color: #007bff;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.welcomeContent {
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.tipBox {
+  background-color: #f8f9fa;
+  border-left: 4px solid #ffc107;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.tipIcon {
+  color: #ffc107;
+  font-size: 1.2rem;
+  margin-top: 2px;
+}
+
+/* Content Sections */
+.contentSection {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sectionTitle {
+  color: #007bff;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionIcon {
+  font-size: 1.2rem;
+}
+
+.featureList {
+  margin-bottom: 1.5rem;
+}
+
+.featureItem {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 1rem;
+  align-items: flex-start;
+}
+
+.featureNumber {
+  background-color: #007bff;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.featureText {
+  line-height: 1.5;
+}
+
+.imageContainer {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.helpImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Completion Message */
+.completionMessage {
+  text-align: center;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+}
+
+.completionIcon {
+  color: #28a745;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Footer */
+.modalFooter {
+  border-top: 1px solid #e9ecef;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.navigationButtons {
+  display: flex;
+  gap: 15px;
+}
+
+.navButton {
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.prevButton {
+  background-color: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+}
+
+.prevButton:hover {
+  background-color: #e9ecef;
+}
+
+.nextButton {
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+}
+
+.nextButton:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.finishButton {
+  background-color: #28a745;
+  color: white;
+  border: 1px solid #28a745;
+  padding: 0.5rem 2rem;
+  border-radius: 50px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.finishButton:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+}
+
+
+
+/* Header Responsive */
+/* Header alternativo para responsive */
+@media (max-width: 768px) {
+  .logoContainer {
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 5px;
+  }
+  
+  .logo {
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .modalTitle {
+    font-size: 1.2rem;
+    text-align: center;
+    flex-basis: 100%;
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+}
+@media (max-width: 576px) {
+  .modalTitle {
+    font-size: 1.1rem;
+    padding-right: 30px; /* Espacio para el botón de cerrar */
+  }
+  
+  .logo {
+    height: 35px;
+  }
+}

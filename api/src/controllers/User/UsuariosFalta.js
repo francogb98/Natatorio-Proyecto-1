@@ -80,7 +80,6 @@ export const getUsers = async (req, res) => {
     }
 
     if (filter === "revision") {
-      console.log(filter);
       const users = await User.find({
         revisionArchivo: RevisionArchivosEstado.REVISAR,
       }).populate({
@@ -88,7 +87,6 @@ export const getUsers = async (req, res) => {
       });
 
       result = users;
-      console.log(users);
 
       totalUsers = users.length;
     }
@@ -107,7 +105,7 @@ export const getUsers = async (req, res) => {
       }).populate({
         path: "users",
         select:
-          "nombre apellido _id customId certificadoHongos fechaCargaCertificadoHongos foto", // Campos del usuario
+          "nombre apellido _id customId certificadoHongos fechaCargaCertificadoHongos foto fichaMedica dni", // Campos del usuario
         populate: {
           path: "activity",
         },

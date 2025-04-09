@@ -30,7 +30,6 @@ function calcular_fecha(fecha_carga) {
 
 function UserCard({ user, type }) {
   const [send, setSend] = useState(false);
-  const [isDenegeted, setIsDenegeted] = useState(false);
   const [formData, setFormData] = useState({ asunto: "", cuerpo: "" });
 
   const queryClient = useQueryClient();
@@ -132,8 +131,6 @@ function UserCard({ user, type }) {
       });
     }
     if (type === "archivo") {
-      console.log("entre aqui");
-
       darDeBajaRevision.mutate({
         id: user._id,
       });
@@ -198,13 +195,19 @@ function UserCard({ user, type }) {
                 <b className="text-danger">
                   {Math.abs(calcular_fecha(user.fechaCargaCertificadoHongos))}{" "}
                 </b>
-                Dias de ulitma actualizacion
+                Dias de su vencimiento.
               </span>
             ) : (
               `Faltan ${Math.abs(
                 calcular_fecha(user.fechaCargaCertificadoHongos)
               )} Dias`
             )}
+          </p>
+          <p className="text-center text-info">
+            Fecha de carga:
+            <span className="text-danger ms-1">
+              {user.fechaCargaCertificadoHongos}
+            </span>
           </p>
           {darDeBaja.isLoading ? (
             <div className="text-center py-1">
