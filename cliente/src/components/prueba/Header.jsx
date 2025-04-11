@@ -257,7 +257,7 @@ function Header() {
                           className={`dropdown-item ${
                             isActive("user-list/convencional") ? "active" : ""
                           }`}
-                          to="dashboard/user-list/convencional"
+                          to="dashboard/user-list/todos"
                           onClick={closeAllDropdowns}
                         >
                           <i className="bi bi-person me-2"></i>Habilitar
