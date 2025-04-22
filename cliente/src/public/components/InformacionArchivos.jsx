@@ -33,11 +33,19 @@ function InformacionArchivos() {
         ))}
       </div>
       <div className={style.body}>
+        {!user.activity.length && (
+          <div className="alert alert-info mt-3">
+            Carga todos los archivos necesarios para la inscripcion a la
+            actividad
+          </div>
+        )}
+
         <TextArchivos archivo={user.fichaMedica} label={"Ficha Medica"} />
         <TextArchivos archivo={user.fotoDocumento} label={"Documento"} />
         {user.natacionAdaptada && (
           <TextArchivos archivo={user.cud} label={"CUD"} />
         )}
+        <TextArchivos archivo={user.foto} label={"Foto Perfil"} />
         <TextArchivos
           archivo={user.certificadoHongos}
           label={"Certificado PyM"}

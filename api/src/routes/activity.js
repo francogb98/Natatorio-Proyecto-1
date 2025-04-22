@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { validarJWT } from "../middlewares/validar-jwt.js";
 import { ActividadController } from "../controllers/actividadesconclases/ActividadesController.js";
+import { Activity } from "../models/Actividades.js";
 
 const routerActivity = Router();
 
@@ -44,16 +45,69 @@ routerActivity.post(
   ActividadController.editActivity
 );
 
-/**------------   En revision  --------- */
-// routerActivity.get("/getUsersFromActivity", validarJWT, getUsersFromActivity);
+routerActivity.post("/filterAll", async (req, res) => {
+  try {
+    // Obtener todas las actividades
+    const activities = await Activity.find({}).populate("users");
 
-// routerActivity.get("/getActividadesPorHora", getActivitiesByDate);
-// routerActivity.post("/getActivityByName", validarJWT, getActividadesByNames);
-// routerActivity.post("/getActivitiesByDate", validarJWT, getActivitiesByDate);
+    if (!activities || activities.length === 0) {
+      return res.status(404).json({ message: "No se encontraron actividades" });
+    }
 
-// routerActivity.get(
-//   "/getActividadesPorHoraNextTurn",
-//   getActivitiesByDateNextTurn
-// );
+    let totalActivitiesProcessed = 0;
+    let totalDuplicatesRemoved = 0;
+    const results = [];
+
+    // Procesar cada actividad
+    for (const activity of activities) {
+      const uniqueUsers = [];
+      const userIds = new Set();
+      let duplicatesInActivity = 0;
+
+      // Filtrar usuarios duplicados
+      for (const user of activity.users) {
+        if (!userIds.has(user._id.toString())) {
+          userIds.add(user._id.toString());
+          uniqueUsers.push(user._id);
+        } else {
+          duplicatesInActivity++;
+        }
+      }
+
+      // Si hay duplicados, actualizar la actividad
+      if (duplicatesInActivity > 0) {
+        activity.users = uniqueUsers;
+        activity.userRegister = uniqueUsers.length;
+        await activity.save();
+
+        totalDuplicatesRemoved += duplicatesInActivity;
+      }
+
+      results.push({
+        activityId: activity._id,
+        activityName: activity.name,
+        duplicatesRemoved: duplicatesInActivity,
+        totalUsersNow: uniqueUsers.length,
+      });
+
+      totalActivitiesProcessed++;
+    }
+
+    return res.json({
+      success: true,
+      message: `Procesadas ${totalActivitiesProcessed} actividades. Se eliminaron ${totalDuplicatesRemoved} usuarios duplicados en total.`,
+      totalActivitiesProcessed,
+      totalDuplicatesRemoved,
+      details: results,
+    });
+  } catch (error) {
+    console.error("Error en /filterAll:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error al procesar la solicitud",
+      error: error.message,
+    });
+  }
+});
 
 export { routerActivity };

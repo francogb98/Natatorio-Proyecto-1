@@ -116,9 +116,9 @@ function FileUploadForm() {
         <option value="null">--Tipo de archivo--</option>
         <option value="fichaMedica">FichaMedica</option>
         <option value="fotoDocumento">Documento</option>
-        <option value="certificadoHongos">CertificadoPyM</option>
         {user.natacionAdaptada && <option value="cud">CUD</option>}
         <option value="foto">Foto de Perfil</option>
+        <option value="certificadoHongos">CertificadoPyM</option>
       </select>
 
       <div
