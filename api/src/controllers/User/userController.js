@@ -49,8 +49,11 @@ export class userController {
 
   static getUserById = async (req, res) => {
     try {
-      const { id, type } = req.params;
+      let { id, type } = req.params;
       // Crear el objeto de consulta
+      if (id.length > 10) {
+        type = "_id";
+      }
       const query = { [type]: id }; // Usar notación de corchetes para crear el objeto de consulta
       const users = await User.find(query).populate({
         path: "activity",
