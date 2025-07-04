@@ -134,24 +134,26 @@
   z-index: 101;
   transform: translateX(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+ 
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
 
   padding: 5px;
+}
+
+.menuLateralContent{
+  /* background-color: red; */
+}
+.menuLateralFooter{
+   display: flex;
+   justify-content: center;
+   align-items: end;
 }
 
 .menuLateralOpen {
   transform: translateX(0);
 }
-
-
-
-.menuLateralContent{
-      margin-top: -45px;
-}
-
 
 /* Header con perfil */
 /* .menuLateral .d-flex.justify-content-between {

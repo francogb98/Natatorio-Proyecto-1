@@ -160,7 +160,7 @@ function NavBar() {
                 </NavLink>
               </div>
             </div>
-            <div>
+            <div className={style.menuLateralFooter}>
               <button
                 className={style.btn_outline_warning}
                 onClick={() => cerrarSesion()}
