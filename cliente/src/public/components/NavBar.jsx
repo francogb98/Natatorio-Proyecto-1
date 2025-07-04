@@ -160,14 +160,15 @@ function NavBar() {
                 </NavLink>
               </div>
             </div>
-
-            <button
-              className={style.btn_outline_warning}
-              onClick={() => cerrarSesion()}
-            >
-              <i className="bi bi-box-arrow-right me-1"></i>
-              <span>Cerrar Sesion</span>
-            </button>
+            <div>
+              <button
+                className={style.btn_outline_warning}
+                onClick={() => cerrarSesion()}
+              >
+                <i className="bi bi-box-arrow-right me-1"></i>
+                <span>Cerrar Sesion</span>
+              </button>
+            </div>
           </div>
         </>
 
