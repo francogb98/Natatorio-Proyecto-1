@@ -78,7 +78,7 @@ function NavBar() {
           <div
             className={`${style.menuLateral} ${open && style.menuLateralOpen}`}
           >
-            <div>
+            <div className={style.menuLateralContent}>
               {/* header */}
               <div className="d-flex justify-content-between align-items-center mb-1 p-2">
                 <NavLink

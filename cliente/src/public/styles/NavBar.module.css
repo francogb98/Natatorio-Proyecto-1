@@ -146,6 +146,13 @@
   transform: translateX(0);
 }
 
+
+
+.menuLateralContent{
+      margin-top: -45px;
+}
+
+
 /* Header con perfil */
 /* .menuLateral .d-flex.justify-content-between {
   padding: 20px;
