@@ -116,7 +116,7 @@ function Layout() {
   }
 
   return (
-    <div className="container g-2">
+    <div className="container g-2" style={{ marginTop: "80px" }}>
       <div className="row">
         <label htmlFor="" className="form-label ms-2 fw-bold">
           Buscar actividades
