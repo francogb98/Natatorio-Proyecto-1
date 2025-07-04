@@ -345,7 +345,7 @@ export const asistenciaUsuario = async (customId, fecha) => {
           asistencia: fecha,
         },
         $unset: {
-          inasistencias: "", // Puedes poner cualquier valor en blanco aquí
+          inasistencias: "",
         },
       },
       { new: true }

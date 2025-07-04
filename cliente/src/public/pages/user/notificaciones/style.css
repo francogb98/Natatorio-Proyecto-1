@@ -1,7 +1,19 @@
 .notifications-container {
   max-width: 800px;
   margin: 0 auto;
-  padding: 20px;
+  background: #f8fafc; /* Gris azulado claro */
+  padding: 24px;
+  border-radius: 12px;
+}
+
+
+
+.reload-button {
+  background: #3b82f6;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-top: 12px;
 }
 
 .notifications-header {
@@ -62,7 +74,7 @@
 }
 
 .notification-card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 
@@ -104,8 +116,9 @@
 .notification-title h4 {
   margin: 0;
   font-size: 16px;
-  font-weight: 500;
   color: #1e293b;
+  font-weight: 600;
+
 }
 
 .notification-time {
@@ -113,6 +126,7 @@
   font-size: 12px;
   color: #64748b;
   margin-top: 4px;
+  font-weight: 400
 }
 
 .notification-toggle {

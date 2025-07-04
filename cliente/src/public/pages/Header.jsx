@@ -15,8 +15,8 @@ function Header() {
         <NavBar />
       </div>
       {auth.logged && (
-        <div className="row mt-4">
-          <CargarCerrarBotones />
+        <div className="row" style={{ marginTop: "76px" }}>
+          {/* <CargarCerrarBotones /> */}
 
           {pathname === "/" && <InformacionArchivos />}
         </div>

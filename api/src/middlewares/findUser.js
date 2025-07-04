@@ -1,7 +1,6 @@
 import { User } from "../models/index.js";
 
 export const getUser = async (req, res, next) => {
-  console.log("entre aqui");
   try {
     let { userId, type } = req.params;
 
@@ -12,7 +11,9 @@ export const getUser = async (req, res, next) => {
     } else if (!type) {
       type = "customId";
     }
-
+    if (userId.length > 10) {
+      type = "_id";
+    }
     const query = { [type]: userId }; // Usar notación de corchetes para crear el objeto de consulta
 
     const user = await User.findOne(query).populate({

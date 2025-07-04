@@ -14,9 +14,7 @@ export class AdminController {
   static agregarUsuarioAUnaActividad = async (req, res) => {
     try {
       const { idActividad } = req.body;
-
       const user = req.userData;
-
       const activityUpdate = await Activity.findOneAndUpdate(
         { _id: idActividad },
         { $push: { users: user }, $inc: { userRegister: 1 } },
@@ -246,6 +244,3 @@ export class AdminController {
     }
   };
 }
-
-
-

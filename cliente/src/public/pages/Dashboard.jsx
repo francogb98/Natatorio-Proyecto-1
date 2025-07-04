@@ -1,9 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-
 import Layout from "./Actividades/Layout";
 import Header from "./Header";
 import ModalDashboard from "./ModalDashboard";
@@ -20,7 +17,12 @@ function Dashboard() {
     >
       <Header />
 
-      <div className="row px-2 pb-2 mt-2">
+      <div
+        className="row px-sm-5 pb-2"
+        style={{
+          marginTop: "30px",
+        }}
+      >
         {pathname === "/" ? <Layout /> : <Outlet />}
       </div>
       <ModalDashboard />

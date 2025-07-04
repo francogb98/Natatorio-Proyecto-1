@@ -6,8 +6,8 @@ function HelpButton({ openModal }) {
       type="button"
       className={`${style.btn__help}`}
       style={{
-        left: "auto",
-        marginRight: "15px",
+        //a la izquierda
+        left: "10px",
       }}
       onClick={openModal}
     >

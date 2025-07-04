@@ -9,7 +9,7 @@ function CargarCerrarBotones() {
 
   return (
     <>
-      <div className="col-6 d-flex justify-content-center">
+      {/* <div className="col-6 d-flex justify-content-center">
         {location.pathname === "/" ? (
           <button
             className="btn w-100 btn-outline-danger fw-bold"
@@ -37,7 +37,7 @@ function CargarCerrarBotones() {
           <i className="bi bi-box-arrow-right me-1"></i>
           <span>Cerrar Sesion</span>
         </button>
-      </div>
+      </div> */}
     </>
   );
 }

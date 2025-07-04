@@ -9,6 +9,8 @@ function App() {
       style={{
         height: "100vh",
         overflow: "auto",
+        //celeste agua
+        backgroundColor: "#E0F2F1",
       }}
     >
       <Routing></Routing>

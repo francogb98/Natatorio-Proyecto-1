@@ -39,8 +39,19 @@ function InformacionArchivos() {
             actividad
           </div>
         )}
+        <div className="d-flex justify-content-between">
+          <TextArchivos archivo={user.fichaMedica} label={"Ficha Medica"} />
 
-        <TextArchivos archivo={user.fichaMedica} label={"Ficha Medica"} />
+          <button
+            className="btn btn-sm btn-danger"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#loadFileModal"
+          >
+            Cargar archivos
+            <i class="bi bi-upload ms-1"></i>
+          </button>
+        </div>
         <TextArchivos archivo={user.fotoDocumento} label={"Documento"} />
         {user.natacionAdaptada && (
           <TextArchivos archivo={user.cud} label={"CUD"} />
