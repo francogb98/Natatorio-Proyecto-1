@@ -78,85 +78,87 @@ function NavBar() {
           <div
             className={`${style.menuLateral} ${open && style.menuLateralOpen}`}
           >
-            {/* header */}
-            <div className="d-flex justify-content-between align-items-center mb-5 p-2">
-              <NavLink
-                to={`/${routesModel.user.root}/${routesModel.user.actividades}`}
-                className={style.menuLateralItemPerfil}
-                onClick={() => setOpen(false)}
-              >
-                <img
-                  className="rounded-circle"
-                  src={auth.user.foto ? auth.user.foto : avatar}
-                  alt="perfil"
-                />
-                <div>
-                  <span>
-                    {auth.user.nombre} {auth.user.apellido}
-                  </span>
-                  <span>{auth.user.customId}</span>
-                </div>
-              </NavLink>
-              <button className={style.btn} onClick={() => setOpen(false)}>
-                X
-              </button>
-            </div>
-
-            {/* Items */}
-            <div className="d-flex flex-column">
-              <NavLink
-                to="/"
-                className={style.menuLateralItem}
-                onClick={() => setOpen(false)}
-              >
-                Inicio
-                <i class="bi bi-house"></i>
-              </NavLink>
-              <NavLink
-                to="/user/notificaciones"
-                className={style.menuLateralItem}
-                onClick={() => setOpen(false)}
-              >
-                Notificaciones
-                <span className="position-relative">
-                  <i className="bi bi-bell fs-4"></i>
-                  {notificacionesNoLeidas !== 0 && (
-                    <span className={style.menuLateralBadge}>
-                      {notificacionesNoLeidas}
-                      <span className="visually-hidden">
-                        Notificaciones no leídas
-                      </span>
+            <div>
+              {/* header */}
+              <div className="d-flex justify-content-between align-items-center mb-1 p-2">
+                <NavLink
+                  to={`/${routesModel.user.root}/${routesModel.user.actividades}`}
+                  className={style.menuLateralItemPerfil}
+                  onClick={() => setOpen(false)}
+                >
+                  <img
+                    className="rounded-circle"
+                    src={auth.user.foto ? auth.user.foto : avatar}
+                    alt="perfil"
+                  />
+                  <div>
+                    <span>
+                      {auth.user.nombre} {auth.user.apellido}
                     </span>
-                  )}
-                </span>
-              </NavLink>
-              <NavLink
-                to="/user/actividades"
-                className={style.menuLateralItem}
-                onClick={() => setOpen(false)}
-              >
-                Mis Actividades
-                <i class="bi bi-card-list"></i>
-              </NavLink>
-              <NavLink
-                to="/user/dashboard"
-                className={style.menuLateralItem}
-                onClick={() => setOpen(false)}
-              >
-                Configuracion
-                <i class="bi bi-gear"></i>
-              </NavLink>
-              <NavLink
-                to="/user/dashboard"
-                className={`${style.menuLateralItem} ${style.menuLateralItemDestacado}`}
-                onClick={() => setOpen(false)}
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#loadFileModal"
-              >
-                Cargar Archivos
-                <i class="bi bi-upload"></i>
-              </NavLink>
+                    <span>{auth.user.customId}</span>
+                  </div>
+                </NavLink>
+                <button className={style.btn} onClick={() => setOpen(false)}>
+                  X
+                </button>
+              </div>
+
+              {/* Items */}
+              <div className="d-flex flex-column">
+                <NavLink
+                  to="/"
+                  className={style.menuLateralItem}
+                  onClick={() => setOpen(false)}
+                >
+                  Inicio
+                  <i class="bi bi-house"></i>
+                </NavLink>
+                <NavLink
+                  to="/user/notificaciones"
+                  className={style.menuLateralItem}
+                  onClick={() => setOpen(false)}
+                >
+                  Notificaciones
+                  <span className="position-relative">
+                    <i className="bi bi-bell fs-4"></i>
+                    {notificacionesNoLeidas !== 0 && (
+                      <span className={style.menuLateralBadge}>
+                        {notificacionesNoLeidas}
+                        <span className="visually-hidden">
+                          Notificaciones no leídas
+                        </span>
+                      </span>
+                    )}
+                  </span>
+                </NavLink>
+                <NavLink
+                  to="/user/actividades"
+                  className={style.menuLateralItem}
+                  onClick={() => setOpen(false)}
+                >
+                  Mis Actividades
+                  <i class="bi bi-card-list"></i>
+                </NavLink>
+                <NavLink
+                  to="/user/dashboard"
+                  className={style.menuLateralItem}
+                  onClick={() => setOpen(false)}
+                >
+                  Configuracion
+                  <i class="bi bi-gear"></i>
+                </NavLink>
+                <NavLink
+                  to="/user/dashboard"
+                  className={`${style.menuLateralItem} ${style.menuLateralItemDestacado}`}
+                  onClick={() => setOpen(false)}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#loadFileModal"
+                >
+                  Cargar Archivos
+                  <i class="bi bi-upload"></i>
+                </NavLink>
+              </div>
             </div>
 
             <button
