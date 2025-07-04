@@ -115,8 +115,13 @@ function Layout() {
     );
   }
 
+  console.log(user.customId ? "si loggueado" : "no loggueado");
+
   return (
-    <div className="container g-2" style={{ marginTop: "10px" }}>
+    <div
+      className="container g-2"
+      style={{ marginTop: `${user.customId ? "10px" : "80px"}` }}
+    >
       <div className="row">
         <label htmlFor="" className="form-label ms-2 fw-bold">
           Buscar actividades
