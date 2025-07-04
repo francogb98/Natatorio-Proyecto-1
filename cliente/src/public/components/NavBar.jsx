@@ -158,16 +158,15 @@ function NavBar() {
                   Cargar Archivos
                   <i class="bi bi-upload"></i>
                 </NavLink>
+
+                <button
+                  className={style.btn_outline_warning}
+                  onClick={() => cerrarSesion()}
+                >
+                  <i className="bi bi-box-arrow-right me-1"></i>
+                  <span>Cerrar Sesion</span>
+                </button>
               </div>
-            </div>
-            <div className={style.menuLateralFooter}>
-              <button
-                className={style.btn_outline_warning}
-                onClick={() => cerrarSesion()}
-              >
-                <i className="bi bi-box-arrow-right me-1"></i>
-                <span>Cerrar Sesion</span>
-              </button>
             </div>
           </div>
         </>
