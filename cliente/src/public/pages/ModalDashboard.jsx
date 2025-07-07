@@ -31,7 +31,7 @@ function ModalDashboard() {
       <ModalIniciarSesion />
       <ModalLoadFiles />
       <ModalArchivos />
-      {auth.logged && (
+      {/* {auth.logged && (
         <ModalHelpUser
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
@@ -41,7 +41,7 @@ function ModalDashboard() {
         <>
           <HelpButton openModal={openModal} />
         </>
-      )}
+      )} */}
     </>
   );
 }
