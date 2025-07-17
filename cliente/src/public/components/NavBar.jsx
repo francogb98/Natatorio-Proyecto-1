@@ -6,6 +6,8 @@ import logo from "../../assets/Logo.png";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
+import avatar from "../../assets/avatar.webp";
+
 import { routesModel } from "../models/index.js";
 
 function NavBar() {

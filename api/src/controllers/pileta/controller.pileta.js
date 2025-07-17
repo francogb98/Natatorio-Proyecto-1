@@ -5,6 +5,7 @@ import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import { agregarUsuario } from "./utilidades/agegarUsuario.js";
 import { intercambioDeUsuarios } from "./utilidades/intercambiarUsuariosTurno.js";
 import { crearPileta } from "./utilidades/crearPileta.js";
+import { contarInasistencias } from "./utilidades/contadorInasistencias.js";
 
 export class PiletaController {
   static getInfoPiletas = async (req, res) => {
@@ -172,13 +173,15 @@ export class PiletaController {
 
   static iniciarTurno = async (req, res) => {
     try {
+      // CREAR NUEVAS PILETAS
       const crear = await crearPileta();
       if (crear.status == "error") {
         return res
           .status(400)
           .json({ status: "error", message: "error en el servidor" });
       }
-      //ejecuto el cambio de turn
+
+      //VERIFICO LOS USUARIOS DEL TURNO ANTERIOR SI PASAN AL TURNO ACTUAL
       const resultadoCambio = await intercambioDeUsuarios();
       if (resultadoCambio.status === "error") {
         return res.status(400).json({
@@ -296,6 +299,37 @@ export class PiletaController {
         message: "Error en el servidor, hable con el administrador",
         status: "error",
       });
+    }
+  };
+
+  static verificar_estado_usuario = async (req, res) => {
+    try {
+      const actividad = await Activity.findOne({
+        date: { $in: ["Lunes"] },
+        hourStart: "14:00",
+      }).populate({
+        path: "users",
+        select: "nombre apellido customId asistencia activity",
+      });
+
+      const estadistica = await Stadistic.find({
+        activity: actividad._id,
+      });
+
+      const filtered2025 = estadistica
+        .filter((item) => item.dias.some((dia) => dia.includes("/2025")))
+        .map((item) => ({
+          dias: item.dias.filter((dia) => dia.includes("/2025")),
+        }));
+
+      const result = contarInasistencias(actividad.users, filtered2025);
+
+      return res.status(200).json({ status: "success", filtered2025, result });
+    } catch (error) {
+      console.log(error.message);
+      return res
+        .status(400)
+        .json({ status: "error", message: "error en el servidor" });
     }
   };
 }
