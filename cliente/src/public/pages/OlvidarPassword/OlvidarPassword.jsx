@@ -99,9 +99,9 @@ function OlvidarPassword() {
   };
 
   return (
-    <div>
+    <div className="mt-5 pt-4">
       <div className={`form-group`} style={{ padding: "20px" }}>
-        <h3>Recuperar Contraseña</h3>
+        <h3 className="text-center">Recuperar Contraseña</h3>
 
         {!datos ? (
           <form
