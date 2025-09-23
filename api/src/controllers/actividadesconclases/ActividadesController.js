@@ -170,8 +170,6 @@ export class ActividadController {
       codigoDeAcceso,
     } = req.body;
 
-    console.log(req.body);
-
     try {
       if (!name || !pileta || !hourStart || !hourFinish || !date) {
         return res.status(400).json({
@@ -217,7 +215,6 @@ export class ActividadController {
         });
       }
 
-      //si hour start o hour finish tienen este formato 8:00 lo convertimos en 08:00, osea que si antes de los dos puntos hay un solo numero le agregamos un 0
       if (hourStart.length === 4) {
         hourStart = `0${hourStart}`;
       }
