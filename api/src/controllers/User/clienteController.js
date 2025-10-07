@@ -120,6 +120,8 @@ export class ClienteController {
   static loginUser = async (req, res) => {
     const { dni, password } = req.body;
 
+    console.log({ dni, password });
+
     try {
       const user = await User.findOne({ dni }).populate({
         path: "activity",
