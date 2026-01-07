@@ -95,7 +95,6 @@ function LayoutEditar() {
 
     delete actividadActualizada.users;
 
-    console.log("Datos a enviar:", actividadActualizada);
     updateMutation.mutate({ id, data: actividadActualizada });
   };
 

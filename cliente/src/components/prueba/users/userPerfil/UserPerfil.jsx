@@ -14,6 +14,7 @@ import avatar from "../../../../assets/avatar.webp";
 function UserPerfil() {
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
+
   const [archivo, setArchivo] = useState(null);
   const [nombreArchivo, setNombreArchivo] = useState("Ficha Médica");
   const [estado, setEstado] = useState("informacion");
@@ -38,7 +39,6 @@ function UserPerfil() {
 
   useEffect(() => {
     setLoading(true);
-
     setTimeout(() => {
       setLoading(false);
     }, 500);

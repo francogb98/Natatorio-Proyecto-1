@@ -1,4 +1,6 @@
+import { obtenerFechaYHoraArgentina } from "../../Helpers/traerInfoDelDia.js";
 import { Activity, User } from "../../models/index.js";
+import cloudinary from "cloudinary";
 
 const obtenerFecha = () => {
   const dateNow = new Date();
@@ -9,6 +11,32 @@ const obtenerFecha = () => {
   const dateNowSave = `${day}/${month}/${year}`;
   return dateNowSave;
 };
+
+async function eliminarFichaMedicaCloudinary(user) {
+  cloudinary.config({
+    cloud_name:
+      user.customId % 2 === 0
+        ? process.env.CLOUDINARY_CLOUD_NAME
+        : process.env.CLOUDINARY_CLOUD_NAME_2,
+    api_key:
+      user.customId % 2 === 0
+        ? process.env.CLOUDINARY_API_KEY
+        : process.env.CLOUDINARY_API_KEY_2,
+    api_secret:
+      user.customId % 2 === 0
+        ? process.env.CLOUDINARY_API_SECRET
+        : process.env.CLOUDINARY_API_SECRET_2,
+    secure: true,
+  });
+
+  const partes = user.fichaMedica.split("/");
+  const nombre = partes[partes.length - 1];
+  const [public_id] = nombre.split(".");
+
+  await cloudinary.uploader.destroy(`Natatorio/${public_id}`, {
+    resource_type: "auto",
+  });
+}
 
 export class AdminController {
   static agregarUsuarioAUnaActividad = async (req, res) => {
@@ -191,6 +219,7 @@ export class AdminController {
       const user = req.userData;
 
       user.role = role;
+      console.log({ rol: user.role });
       await user.save();
       res.status(200).json({
         status: "success",
@@ -240,6 +269,71 @@ export class AdminController {
       return res.status(500).json({
         status: "error",
         message: error.message,
+      });
+    }
+  };
+
+  static bajaFichaMedica = async (req, res) => {
+    try {
+      const { id } = req.body;
+
+      const user = await User.findById(id);
+
+      if (!user) {
+        return res.status(404).json({
+          status: "error",
+          message: "Usuario no encontrado",
+        });
+      }
+
+      const { fecha } = obtenerFechaYHoraArgentina();
+
+      /** 1. Dar de baja de todas las actividades */
+      for (const idActividad of user.activity) {
+        const actividad = await Activity.findById(idActividad);
+        if (!actividad) continue;
+
+        actividad.users = actividad.users.filter(
+          (u) => u.toString() !== user._id.toString()
+        );
+
+        actividad.userRegister = Math.max(0, actividad.userRegister - 1);
+        await actividad.save();
+      }
+
+      user.activity = [];
+
+      /** 2. Eliminar ficha médica */
+      if (user.fichaMedica) {
+        await eliminarFichaMedicaCloudinary(user);
+        user.fichaMedica = "";
+      }
+
+      /** 3. Cambiar estado */
+      user.status = false;
+
+      /** 4. Notificación */
+      user.notificaciones.push({
+        asunto: "Ficha médica desactualizada",
+        cuerpo:
+          "La ficha médica presentada no corresponde al año actual o no tiene fecha de vencimiento. " +
+          "Para poder inscribirse o continuar participando en actividades, " +
+          "deberá renovar dicho archivo desde su perfil. " +
+          "Una vez actualizado, podrá volver a inscribirse.",
+        fecha,
+      });
+
+      await user.save();
+
+      return res.status(200).json({
+        status: "success",
+        message: "Ficha médica dada de baja correctamente",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: "error",
+        message: "No se pudo dar de baja la ficha médica",
       });
     }
   };

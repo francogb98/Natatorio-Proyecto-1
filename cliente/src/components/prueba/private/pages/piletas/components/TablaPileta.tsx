@@ -31,8 +31,6 @@ function TablaPileta({ users }: TablaPiletaProps) {
   const newUserAdd = localStorage.getItem("newUser");
 
   useEffect(() => {
-    console.log("newUserAdd", newUserAdd);
-
     if (newUserAdd) {
       setNewUser(true);
     }

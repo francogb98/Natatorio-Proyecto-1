@@ -64,6 +64,18 @@ function UserCard({ user, type }) {
       }
     },
   });
+  const bajaFichaMedica = useMutation({
+    mutationFn: UserFetchPrivado.darDeBajaPorFichaMedica,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        toast.success("Usuario dado de baja por ficha médica");
+        queryClient.invalidateQueries("getUserData");
+        queryClient.invalidateQueries("users-list");
+      } else {
+        toast.error(data.message);
+      }
+    },
+  });
 
   const denegarUsuario = useMutation({
     mutationFn: UserFetchPrivado.inhabilitarUsuario,
@@ -77,6 +89,7 @@ function UserCard({ user, type }) {
       }
     },
   });
+
   const darDeBajaRevision = useMutation({
     mutationFn: UserFetchPrivado.darDeBajaPorRevision,
     onSuccess: (data) => {
@@ -245,6 +258,26 @@ function UserCard({ user, type }) {
                 }}
               >
                 Denegar
+              </button>
+              <button
+                className="btn btn-warning w-100"
+                onClick={() => {
+                  Swal.fire({
+                    title: "¿Dar de baja por ficha médica?",
+                    text: "Se eliminará la ficha médica y el usuario será inhabilitado",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, dar de baja",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      toast.info("Dando de baja por ficha médica...");
+                      bajaFichaMedica.mutate({ id: user._id });
+                    }
+                  });
+                }}
+              >
+                Baja por ficha médica
               </button>
             </div>
             <div>

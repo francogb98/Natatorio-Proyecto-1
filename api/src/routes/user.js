@@ -58,6 +58,7 @@ UserRouter.post(
   validarJWT,
   AdminController.deleteNotificacion
 );
+UserRouter.post("/bajaUsuario", validarJWT, AdminController.bajaFichaMedica);
 
 /** -------- Usuarios convencionales --------*/
 UserRouter.post("/create", ClienteController.createUser);

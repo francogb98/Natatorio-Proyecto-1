@@ -207,4 +207,23 @@ export class UserFetchPrivado {
       return error;
     }
   };
+  static darDeBajaPorFichaMedica = async ({ id }) => {
+    try {
+      const url = `${baseUrl}user/bajaUsuario`;
+
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
 }

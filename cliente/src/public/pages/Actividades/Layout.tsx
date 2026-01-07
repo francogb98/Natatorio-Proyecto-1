@@ -115,8 +115,6 @@ function Layout() {
     );
   }
 
-  console.log(user.customId ? "si loggueado" : "no loggueado");
-
   return (
     <div
       className="container g-2"

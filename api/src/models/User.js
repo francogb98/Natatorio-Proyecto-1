@@ -115,6 +115,10 @@ const schema = new mongoose.Schema({
   fichaMedica: {
     type: String,
   },
+  renovacionFichaMedica: {
+    type: Boolean,
+    default: false,
+  },
 
   certificadoHongos: {
     type: String,
