@@ -34,25 +34,33 @@ function Layout() {
 
   useEffect(() => {
     if (data?.actividades) {
-      //souciona el error que me tira aca abajo
-
       const sortedActivities = data.actividades.sort((a, b) => {
         const dateA = new Date(`1970-01-01T${a.hourStart}`);
         const dateB = new Date(`1970-01-01T${b.hourStart}`);
-        return dateA - dateB;
+        return dateA.getTime() - dateB.getTime();
       });
+
       setActividadesParaUsuarios(
         sortedActivities.filter((actividad: Actividad) => {
-          let filtroEdad =
+          const filtroEdad =
             user && user.edad
               ? user.edad >= actividad.desde! && user.edad <= actividad.hasta!
               : true;
 
-          return actividad.codigoDeAcceso === "" && filtroEdad;
+          const filtroNatacionAdaptada = user?.natacionAdaptada
+            ? actividad.natacionAdaptada === true
+            : actividad.natacionAdaptada !== true;
+
+          return (
+            actividad.codigoDeAcceso === "" &&
+            filtroEdad &&
+            filtroNatacionAdaptada &&
+            actividad.actividadHabilitada
+          );
         })
       );
     }
-  }, [data]);
+  }, [data, user]);
 
   useEffect(() => {
     setNombreActividades(
@@ -89,9 +97,16 @@ function Layout() {
           ? user.edad >= actividad.desde! && user.edad <= actividad.hasta!
           : true;
 
-      const estaHabilitada = actividad.actividadHabilitada;
+      const filtroNatacionAdaptada = user?.natacionAdaptada
+        ? actividad.natacionAdaptada === true
+        : actividad.natacionAdaptada !== true;
 
-      return filtroNombre && filtroEdad && estaHabilitada;
+      return (
+        filtroNombre &&
+        filtroEdad &&
+        filtroNatacionAdaptada &&
+        actividad.actividadHabilitada
+      );
     });
   } else {
     filteredActivities = actividadesParaUsuarios.filter(
