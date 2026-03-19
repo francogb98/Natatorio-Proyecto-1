@@ -119,6 +119,8 @@ export class ClienteController {
 
   static loginUser = async (req, res) => {
     const { dni, password } = req.body;
+
+    console.log({ dni, password });
     try {
       const user = await User.findOne({ dni }).populate({
         path: "activity",
@@ -209,7 +211,7 @@ export class ClienteController {
         },
         {
           password: hashedPassword,
-        }
+        },
       );
 
       if (!user) {
@@ -288,18 +290,18 @@ export class ClienteController {
       const { idActividad } = req.body;
       const user = await User.findById(id);
       const actividad = user.activity.find(
-        (actividad) => actividad == idActividad
+        (actividad) => actividad == idActividad,
       );
       if (actividad) {
         user.activity = user.activity.filter(
-          (actividad) => actividad != idActividad
+          (actividad) => actividad != idActividad,
         );
         await user.save();
 
         //borro al usuario de la actividad
         let actividadABorrar = await Activity.findById(idActividad);
         actividadABorrar.users = actividadABorrar.users.filter(
-          (usuario) => usuario != id
+          (usuario) => usuario != id,
         );
         actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
         await actividadABorrar.save();
@@ -326,17 +328,17 @@ export class ClienteController {
       const { fecha } = obtenerFechaYHoraArgentina();
       const user = await User.findById(id);
       const actividad = user.activity.find(
-        (actividad) => actividad == idActividad
+        (actividad) => actividad == idActividad,
       );
       if (actividad) {
         user.activity = user.activity.filter(
-          (actividad) => actividad != idActividad
+          (actividad) => actividad != idActividad,
         );
 
         //borro al usuario de la actividad
         let actividadABorrar = await Activity.findById(idActividad);
         actividadABorrar.users = actividadABorrar.users.filter(
-          (usuario) => usuario != id
+          (usuario) => usuario != id,
         );
         actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
 
@@ -348,7 +350,7 @@ export class ClienteController {
             } en el horario de ${actividadABorrar.hourStart} - ${
               actividadABorrar.hourFinish
             }, debido a que el sistema registro que pasaron ${calcularDiasDesde(
-              user.fechaCargaCertificadoHongos
+              user.fechaCargaCertificadoHongos,
             )} Dias de la ultima vez que renovo su certificado De Pediculosis y Micosis`,
             fecha: fecha,
           });
@@ -432,7 +434,7 @@ export class ClienteController {
       console.log(
         user.customId % 2 === 0
           ? process.env.CLOUDINARY_CLOUD_NAME
-          : process.env.CLOUDINARY_CLOUD_NAME_2
+          : process.env.CLOUDINARY_CLOUD_NAME_2,
       );
 
       cloudinary.config(cloudinaryConfig);
@@ -516,7 +518,7 @@ export class ClienteController {
         user.activity.forEach(async (act) => {
           let actividadABorrar = await Activity.findById(act);
           actividadABorrar.users = actividadABorrar.users.filter(
-            (usuario) => usuario != id
+            (usuario) => usuario != id,
           );
           actividadABorrar.userRegister = actividadABorrar.userRegister - 1;
           await actividadABorrar.save();
