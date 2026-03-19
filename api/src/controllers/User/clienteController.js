@@ -156,6 +156,8 @@ export class ClienteController {
         id: user._id,
       };
 
+      console.log({ dni: user.dni, tel: user.telefono });
+
       return res.status(200).json({
         status: "success",
         token: jwt.sign(userForToken, process.env.JWT_SECRET, {
