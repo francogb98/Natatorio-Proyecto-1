@@ -51,7 +51,7 @@ export class UserFetchPrivado {
             Authorization: `${localStorage.getItem("token")}`,
           },
           body: JSON.stringify(content),
-        }
+        },
       );
 
       const data = await response.json();
@@ -96,7 +96,7 @@ export class UserFetchPrivado {
             Authorization: `${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({ idActividad }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -210,6 +210,26 @@ export class UserFetchPrivado {
   static darDeBajaPorFichaMedica = async ({ id }) => {
     try {
       const url = `${baseUrl}user/bajaUsuario`;
+
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          authorization: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  static darDeBajaPorCertificadoAdmin = async ({ id }) => {
+    try {
+      const url = `${baseUrl}user/bajaCertificado`;
 
       const resp = await fetch(url, {
         method: "POST",

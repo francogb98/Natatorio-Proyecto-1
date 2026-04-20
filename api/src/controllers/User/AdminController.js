@@ -38,6 +38,32 @@ async function eliminarFichaMedicaCloudinary(user) {
   });
 }
 
+async function eliminarCertificadoCloudinary(user) {
+  cloudinary.config({
+    cloud_name:
+      user.customId % 2 === 0
+        ? process.env.CLOUDINARY_CLOUD_NAME
+        : process.env.CLOUDINARY_CLOUD_NAME_2,
+    api_key:
+      user.customId % 2 === 0
+        ? process.env.CLOUDINARY_API_KEY
+        : process.env.CLOUDINARY_API_KEY_2,
+    api_secret:
+      user.customId % 2 === 0
+        ? process.env.CLOUDINARY_API_SECRET
+        : process.env.CLOUDINARY_API_SECRET_2,
+    secure: true,
+  });
+
+  const partes = user.certificadoHongos.split("/");
+  const nombre = partes[partes.length - 1];
+  const [public_id] = nombre.split(".");
+
+  await cloudinary.uploader.destroy(`Natatorio/${public_id}`, {
+    resource_type: "auto",
+  });
+}
+
 export class AdminController {
   static agregarUsuarioAUnaActividad = async (req, res) => {
     try {
@@ -46,7 +72,7 @@ export class AdminController {
       const activityUpdate = await Activity.findOneAndUpdate(
         { _id: idActividad },
         { $push: { users: user }, $inc: { userRegister: 1 } },
-        { new: true }
+        { new: true },
       );
 
       if (!activityUpdate) {
@@ -124,7 +150,7 @@ export class AdminController {
         { $pull: { users: user._id } },
         //disminuyo el campo de userregister
         { $set: { userRegister: user.activity[0].userRegister - 1 } },
-        { new: true }
+        { new: true },
       );
 
       if (!req.body.asunto || !req.body.cuerpo) {
@@ -134,7 +160,7 @@ export class AdminController {
         } , en el horario de: ${activity.hourStart} - ${
           activity.hourFinish
         }, en los dias: ${activity.date.join(
-          " - "
+          " - ",
         )}. Para más información, comuníquese con el administrador del natatorio.`;
       } else {
         asunto = req.body.asunto;
@@ -143,7 +169,7 @@ export class AdminController {
 
       //borro el campo activity del usuario
       user.activity = user.activity.filter(
-        (activity) => activity._id.toString() !== activityId
+        (activity) => activity._id.toString() !== activityId,
       );
 
       //creo una notificacion para el usuario
@@ -294,7 +320,7 @@ export class AdminController {
         if (!actividad) continue;
 
         actividad.users = actividad.users.filter(
-          (u) => u.toString() !== user._id.toString()
+          (u) => u.toString() !== user._id.toString(),
         );
 
         actividad.userRegister = Math.max(0, actividad.userRegister - 1);
@@ -334,6 +360,68 @@ export class AdminController {
       return res.status(500).json({
         status: "error",
         message: "No se pudo dar de baja la ficha médica",
+      });
+    }
+  };
+
+  static bajaCertificadoHongos = async (req, res) => {
+    try {
+      const { id } = req.body;
+
+      const user = await User.findById(id);
+
+      if (!user) {
+        return res.status(404).json({
+          status: "error",
+          message: "Usuario no encontrado",
+        });
+      }
+
+      const { fecha } = obtenerFechaYHoraArgentina();
+
+      /** 1. Dar de baja de todas las actividades */
+      for (const idActividad of user.activity) {
+        const actividad = await Activity.findById(idActividad);
+        if (!actividad) continue;
+
+        actividad.users = actividad.users.filter(
+          (u) => u.toString() !== user._id.toString(),
+        );
+
+        actividad.userRegister = Math.max(0, actividad.userRegister - 1);
+        await actividad.save();
+      }
+
+      user.activity = [];
+
+      /** 2. Eliminar certificado de Cloudinary */
+      if (user.certificadoHongos) {
+        await eliminarCertificadoCloudinary(user);
+        user.certificadoHongos = "";
+      }
+
+      /** 3. Cambiar estado */
+      user.status = false;
+
+      /** 4. Notificación */
+      user.notificaciones.push({
+        asunto: "Problemas con el certificado de Pediculosis y Micosis",
+        cuerpo:
+          "Revisar el archivo de Certificado de pediculosis y Micosis, Ya sea que su fecha este actualizada o visible para poder ser aceptado en la actividad. Atte: Administracion.",
+        fecha,
+      });
+
+      await user.save();
+
+      return res.status(200).json({
+        status: "success",
+        message: "Certificado dado de baja correctamente",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        status: "error",
+        message: "No se pudo dar de baja el certificado",
       });
     }
   };

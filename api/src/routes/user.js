@@ -24,7 +24,7 @@ UserRouter.post("/getinfoUser/:type/:id", userController.getUserById);
 UserRouter.post(
   "/findUserByLastName/:apellido",
   validarJWT,
-  userController.getUserByLastName
+  userController.getUserByLastName,
 );
 
 UserRouter.post("/revisarArchivo", userController.revisarArchivo);
@@ -34,31 +34,36 @@ UserRouter.post("/revisarArchivo", userController.revisarArchivo);
 UserRouter.patch(
   "/agregarUsuarioActividad/:userId",
   validarJWT,
-  AdminController.agregarUsuarioAUnaActividad
+  AdminController.agregarUsuarioAUnaActividad,
 );
 UserRouter.patch(
   "/enviarNotificacion/:userId",
   validarJWT,
-  AdminController.enviarNotificacion
+  AdminController.enviarNotificacion,
 );
 UserRouter.post("/deshabilitar/:userId", AdminController.DeshabilitarUser);
 UserRouter.post(
   "/habilitar/:userId",
   validarJWT,
-  AdminController.HabilitarUser
+  AdminController.HabilitarUser,
 );
 
 UserRouter.post(
   "/cambiarRole/:role/:userId",
   validarJWT,
-  AdminController.cambiarRole
+  AdminController.cambiarRole,
 );
 UserRouter.post(
   "/notificaciones/delete/:userId",
   validarJWT,
-  AdminController.deleteNotificacion
+  AdminController.deleteNotificacion,
 );
 UserRouter.post("/bajaUsuario", validarJWT, AdminController.bajaFichaMedica);
+UserRouter.post(
+  "/bajaCertificado",
+  validarJWT,
+  AdminController.bajaCertificadoHongos,
+);
 
 /** -------- Usuarios convencionales --------*/
 UserRouter.post("/create", ClienteController.createUser);
@@ -72,34 +77,34 @@ UserRouter.put("/upload", validarJWT, ClienteController.subirArchivos);
 UserRouter.post(
   "/revisionArchivo",
   validarJWT,
-  ClienteController.revisionArchivo
+  ClienteController.revisionArchivo,
 );
 
 /**----Actividades */
 UserRouter.post(
   "/resgisterActivity/:userId",
   validarJWT,
-  userController.solicitudDeInscripcion
+  userController.solicitudDeInscripcion,
 );
 UserRouter.post(
   "/darDeBajaActividad",
   validarJWT,
-  ClienteController.darDeBajaActividad
+  ClienteController.darDeBajaActividad,
 );
 UserRouter.post(
   "/darDeBajaCertificado",
   validarJWT,
-  ClienteController.darDeBajaPorCertificado
+  ClienteController.darDeBajaPorCertificado,
 );
 UserRouter.post(
   "/darDeBajaRevision",
   validarJWT,
-  ClienteController.darDeBajaPorRevision
+  ClienteController.darDeBajaPorRevision,
 );
 UserRouter.post(
   "/notificaciones/update/:userId",
   validarJWT,
-  ClienteController.notificacionLeida
+  ClienteController.notificacionLeida,
 );
 
 export { UserRouter };

@@ -77,6 +77,19 @@ function UserCard({ user, type }) {
     },
   });
 
+  const bajaCertificado = useMutation({
+    mutationFn: UserFetchPrivado.darDeBajaPorCertificadoAdmin,
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        toast.success("Usuario dado de baja por certificado");
+        queryClient.invalidateQueries("getUserData");
+        queryClient.invalidateQueries("users-list");
+      } else {
+        toast.error(data.message);
+      }
+    },
+  });
+
   const denegarUsuario = useMutation({
     mutationFn: UserFetchPrivado.inhabilitarUsuario,
     onSuccess: (data) => {
@@ -206,13 +219,15 @@ function UserCard({ user, type }) {
               <span>
                 Pasaron{" "}
                 <b className="text-danger">
-                  {Math.abs(calcular_fecha(user.fechaCargaCertificadoHongos))}{" "}
+                  {Math.abs(
+                    calcular_fecha(user.fechaCargaCertificadoHongos),
+                  )}{" "}
                 </b>
                 Dias de su vencimiento.
               </span>
             ) : (
               `Faltan ${Math.abs(
-                calcular_fecha(user.fechaCargaCertificadoHongos)
+                calcular_fecha(user.fechaCargaCertificadoHongos),
               )} Dias`
             )}
           </p>
@@ -278,6 +293,26 @@ function UserCard({ user, type }) {
                 }}
               >
                 Baja por ficha médica
+              </button>
+              <button
+                className="btn btn-warning w-100"
+                onClick={() => {
+                  Swal.fire({
+                    title: "¿Dar de baja por certificado?",
+                    text: "Se eliminará el certificado y el usuario será inhabilitado",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Sí, dar de baja",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      toast.info("Dando de baja por certificado...");
+                      bajaCertificado.mutate({ id: user._id });
+                    }
+                  });
+                }}
+              >
+                Baja por certificado
               </button>
             </div>
             <div>
