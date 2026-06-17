@@ -81,7 +81,7 @@ function Card_User({ user, setUserEncontrado }) {
             </h6>
             {user.revisionArchivo && user.revisionArchivo === "revisar" && (
               <p className="text-dark bg-warning p-1 text-center fw-bold">
-                Revisar Archivos <i class="bi bi-exclamation-circle-fill"></i>
+                Revisar Archivos <i className="bi bi-exclamation-circle-fill"></i>
               </p>
             )}
             {!user.activity || !user.activity.length ? (

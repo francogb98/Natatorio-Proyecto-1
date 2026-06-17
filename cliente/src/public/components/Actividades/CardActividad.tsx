@@ -50,7 +50,17 @@ function CardActividad({ actividad }: CardActividadProps) {
   });
 
   const handleSubmit = () => {
-    //quiero comprobar que el usuario tenga los archivos cargados
+    if (auth.user.accesoBloqueado) {
+      Swal.fire({
+        icon: "error",
+        title: "Acceso bloqueado",
+        text: "Usuario con acceso bloqueado a las actividades, para más información comunicarse con los administradores del natatorio",
+        showConfirmButton: true,
+        confirmButtonText: "Entendido",
+      });
+      return;
+    }
+
     if (
       !auth.user.fichaMedica ||
       !auth.user.certificadoHongos ||
@@ -129,16 +139,18 @@ function CardActividad({ actividad }: CardActividadProps) {
             <button
               type="button"
               className={`btn ${
-                actividad.cupos <= actividad.users.length
+                actividad.cupos <= actividad.users.length || auth.user.accesoBloqueado
                   ? "btn-danger"
                   : "btn-success"
               } w-75 d-block mx-auto`}
               onClick={() => handleSubmit()}
-              disabled={actividad.cupos <= actividad.users.length}
+              disabled={actividad.cupos <= actividad.users.length || auth.user.accesoBloqueado}
             >
-              {actividad.cupos <= actividad.users.length
-                ? "Agotado"
-                : "Inscribirse"}
+              {auth.user.accesoBloqueado
+                ? "Acceso bloqueado"
+                : actividad.cupos <= actividad.users.length
+                  ? "Agotado"
+                  : "Inscribirse"}
             </button>
           )
         ) : (

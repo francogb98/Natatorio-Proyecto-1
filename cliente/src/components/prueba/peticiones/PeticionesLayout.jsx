@@ -4,6 +4,7 @@ import PeticionCard from "./PeticionCard";
 
 import style from "./peticiones.module.css";
 import { useEffect, useState } from "react";
+import SkeletonLoader from "../../../utilidades/SkeletonLoader";
 
 function PeticionesLayout() {
   const [estado, setEstado] = useState("pendiente");
@@ -44,10 +45,7 @@ function PeticionesLayout() {
         </header>
         {isLoading ? (
           <div className={style.loading}>
-            <h3>Cargando solicitudes</h3>
-            <div className="spinner-border text-primary mt-2" role="status">
-              <span className="visually-hidden">Loading...</span>
-            </div>
+            <SkeletonLoader type="card" />
           </div>
         ) : (
           <>

@@ -3,6 +3,7 @@ import { baseUrl } from "../../../../helpers/url";
 
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import Swal from "sweetalert2";
+import SkeletonLoader from "../../../../utilidades/SkeletonLoader";
 
 const responder = async (content) => {
   try {
@@ -135,9 +136,9 @@ function Feeds() {
     },
   });
 
-  // if (getFeeds.isRefetching) return <h1>Cargando</h1>;
-  if (getFeeds.isLoading) return <h1>Cargando</h1>;
-  if (getFeeds.isSuccess && !getFeeds.data) return <h1>Cargando</h1>;
+  // if (getFeeds.isRefetching) return <SkeletonLoader />;
+  if (getFeeds.isLoading) return <SkeletonLoader type="card" />;
+  if (getFeeds.isSuccess && !getFeeds.data) return <SkeletonLoader type="card" />;
   return (
     <>
       <div className="row">

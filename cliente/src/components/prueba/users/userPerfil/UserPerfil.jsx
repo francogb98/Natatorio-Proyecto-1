@@ -10,6 +10,7 @@ import Acciones_mesa_entrada from "./Acciones_mesa_entrada";
 import ImagenPerfil from "./ImagenPerfil";
 import AnalizarFichaMedica from "./AnalizarFichaMedica";
 import avatar from "../../../../assets/avatar.webp";
+import SkeletonLoader from "../../../../utilidades/SkeletonLoader";
 
 function UserPerfil() {
   const { auth } = useContext(AuthContext);
@@ -50,7 +51,7 @@ function UserPerfil() {
         className="d-flex justify-content-center align-items-center"
         style={{ height: "80vh" }}
       >
-        <h3>Cargando...</h3>
+        <SkeletonLoader type="card" />
       </div>
     );
   }
@@ -259,6 +260,16 @@ function UserPerfil() {
                         label: "Rol",
                         value: user.role,
                         badge: "bg-info",
+                      },
+                      {
+                        icon: "bi-lock",
+                        label: "Acceso Actividades",
+                        value: user.accesoBloqueado
+                          ? "Bloqueado"
+                          : "Habilitado",
+                        badge: user.accesoBloqueado
+                          ? "bg-danger"
+                          : "bg-success",
                       },
                     ].map((item, index) => (
                       <li

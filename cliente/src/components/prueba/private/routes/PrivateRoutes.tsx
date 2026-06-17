@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import UserList from "../pages/users/UserList";
 
-import { BuscarPileta, LayoutPileta } from "../pages/piletas";
+import { BuscarPileta, LayoutPileta, CrearPileta } from "../pages/piletas";
 import {
   Layout,
   ListaActividades,
@@ -19,6 +19,7 @@ function PrivateRoutes() {
         {/* Rutas hijas dentro del Dashboard */}
         <Route index element={<LayoutPileta />} />
         <Route path="buscar-pileta" element={<BuscarPileta />} />
+        <Route path="crear-pileta" element={<CrearPileta />} />
         <Route path="user-list/:filtro" element={<UserList />} />
 
         {/* Sección de actividades */}

@@ -425,4 +425,48 @@ export class AdminController {
       });
     }
   };
+
+  static bloquearAcceso = async (req, res) => {
+    try {
+      const user = req.userData;
+
+      user.accesoBloqueado = !user.accesoBloqueado;
+
+      if (!user.notificaciones) {
+        user.notificaciones = [];
+      }
+
+      if (user.accesoBloqueado) {
+        user.notificaciones.push({
+          asunto: "Acceso bloqueado",
+          cuerpo:
+            "Usuario con acceso bloqueado a las actividades, para más información comunicarse con los administradores del natatorio",
+          fecha: obtenerFecha(),
+        });
+      } else {
+        user.notificaciones.push({
+          asunto: "Acceso desbloqueado",
+          cuerpo:
+            "Su acceso a las actividades ha sido restablecido. Ya puede inscribirse nuevamente.",
+          fecha: obtenerFecha(),
+        });
+      }
+
+      await user.save();
+
+      return res.status(200).json({
+        status: "success",
+        message: user.accesoBloqueado
+          ? "Acceso bloqueado correctamente"
+          : "Acceso desbloqueado correctamente",
+        accesoBloqueado: user.accesoBloqueado,
+      });
+    } catch (error) {
+      console.log(error.message);
+      return res.status(500).json({
+        status: "error",
+        message: "Error en el servidor",
+      });
+    }
+  };
 }

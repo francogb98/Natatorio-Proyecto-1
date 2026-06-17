@@ -62,7 +62,7 @@ function InfoActividad() {
           </Link>
 
           <div className="text-center">
-            <h1>Acitividad: {getActivity.data.actividad.name}</h1>
+            <h1>Actividad: {getActivity.data.actividad.name}</h1>
             <h3>
               {" "}
               <b>Dias:</b> {getActivity.data.actividad.date.join(" - ")}

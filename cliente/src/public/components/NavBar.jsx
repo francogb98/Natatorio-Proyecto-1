@@ -113,7 +113,7 @@ function NavBar() {
                   onClick={() => setOpen(false)}
                 >
                   Inicio
-                  <i class="bi bi-house"></i>
+                  <i className="bi bi-house"></i>
                 </NavLink>
                 <NavLink
                   to="/user/notificaciones"
@@ -139,7 +139,7 @@ function NavBar() {
                   onClick={() => setOpen(false)}
                 >
                   Mis Actividades
-                  <i class="bi bi-card-list"></i>
+                  <i className="bi bi-card-list"></i>
                 </NavLink>
                 <NavLink
                   to="/user/dashboard"
@@ -147,7 +147,7 @@ function NavBar() {
                   onClick={() => setOpen(false)}
                 >
                   Configuracion
-                  <i class="bi bi-gear"></i>
+                  <i className="bi bi-gear"></i>
                 </NavLink>
                 <NavLink
                   to="/user/dashboard"
@@ -158,7 +158,7 @@ function NavBar() {
                   data-bs-target="#loadFileModal"
                 >
                   Cargar Archivos
-                  <i class="bi bi-upload"></i>
+                  <i className="bi bi-upload"></i>
                 </NavLink>
 
                 <button
@@ -213,7 +213,7 @@ function NavBar() {
                 >
                   Menu
                 </p>
-                <i class="bi bi-list "></i>
+                <i className="bi bi-list "></i>
               </button>
             )}
           </div>

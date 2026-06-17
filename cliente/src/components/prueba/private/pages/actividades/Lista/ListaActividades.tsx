@@ -4,7 +4,7 @@ import { ActividadesFetch } from "../../../../../../helpers/activitiesFetch/Acti
 import TablaActividadesItem from "./TablaActividadesItem";
 import FormFilterActividades from "./FormFilterActividades";
 import { Activity } from "../../../../models";
-import { set } from "date-fns";
+import SkeletonLoader from "../../../../../../utilidades/SkeletonLoader";
 
 function ListaActividades() {
   const [nombre, setNombre] = useState("");
@@ -21,7 +21,7 @@ function ListaActividades() {
     queryFn: ActividadesFetch.getActivities,
   });
 
-  if (getActivity.isLoading) return <div>Cargando Actividades...</div>;
+  if (getActivity.isLoading) return <SkeletonLoader type="table" />;
 
   if (getActivity.isError) return <div>Error al cargar las actividades</div>;
 

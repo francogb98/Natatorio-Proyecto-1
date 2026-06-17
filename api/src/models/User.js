@@ -144,6 +144,11 @@ const schema = new mongoose.Schema({
   fechaExpiracionRevisionArchivo: {
     type: String,
   },
+
+  accesoBloqueado: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = mongoose.model("User", schema);

@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 
 import { Pileta } from "../../../models";
 import TablaPileta from "./components/TablaPileta";
+import SkeletonLoader from "../../../../../utilidades/SkeletonLoader";
 
 function LayoutPileta() {
   const info_pileta = useQuery({
@@ -12,7 +13,7 @@ function LayoutPileta() {
   });
 
   if (info_pileta.isLoading) {
-    return <div>Cargando...</div>;
+    return <SkeletonLoader type="table" />;
   }
 
   if (info_pileta.isError) {

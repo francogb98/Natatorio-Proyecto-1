@@ -145,6 +145,14 @@ export class userController {
         _id: idActividad,
       });
 
+      if (user.accesoBloqueado) {
+        return res.status(403).json({
+          status: "error",
+          message:
+            "Usuario con acceso bloqueado a las actividades, para más información comunicarse con los administradores del natatorio",
+        });
+      }
+
       if (!isActivityExist) {
         return res.status(400).json({
           status: "error",

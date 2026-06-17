@@ -9,8 +9,13 @@ function Acciones_administrador({ user }) {
   const [idActividad, setIdActividad] = useState(null);
   const [listaActividades, setActividadesLista] = useState([]);
 
-  const { cambiar, habilitar, enviarNotificacion, agregar_usuario_actividad } =
-    Funciones_administrador();
+  const {
+    cambiar,
+    habilitar,
+    enviarNotificacion,
+    agregar_usuario_actividad,
+    bloquearAcceso,
+  } = Funciones_administrador();
 
   const roles = [
     { value: "SUPER_ADMIN", label: "Super Administrador" },
@@ -75,6 +80,33 @@ function Acciones_administrador({ user }) {
                   Habilitar Usuario
                 </button>
               )}
+
+              <button
+                className={`btn d-flex align-items-center justify-content-center gap-2 ${
+                  user.accesoBloqueado
+                    ? "btn-outline-success"
+                    : "btn-danger"
+                }`}
+                onClick={() => {
+                  toast.info(
+                    user.accesoBloqueado
+                      ? "Desbloqueando acceso..."
+                      : "Bloqueando acceso..."
+                  );
+                  bloquearAcceso.mutate({ id: user._id });
+                }}
+              >
+                <i
+                  className={`bi ${
+                    user.accesoBloqueado
+                      ? "bi-unlock-fill"
+                      : "bi-lock-fill"
+                  }`}
+                ></i>
+                {user.accesoBloqueado
+                  ? "Desbloquear Acceso"
+                  : "Bloquear Acceso"}
+              </button>
 
               <div className="mb-3">
                 <label className="form-label fw-bold d-flex align-items-center gap-2">

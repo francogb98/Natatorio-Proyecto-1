@@ -235,9 +235,28 @@ export class UserFetchPrivado {
         method: "POST",
         headers: {
           "Content-type": "application/json",
-          authorization: localStorage.getItem("token"),
+          authorization: `${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({ id }),
+      });
+
+      const data = await resp.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  static bloquearAcceso = async ({ id }) => {
+    try {
+      const url = `${baseUrl}user/bloquearAcceso/${id}`;
+
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          authorization: `${localStorage.getItem("token")}`,
+        },
       });
 
       const data = await resp.json();

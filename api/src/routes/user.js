@@ -64,6 +64,11 @@ UserRouter.post(
   validarJWT,
   AdminController.bajaCertificadoHongos,
 );
+UserRouter.post(
+  "/bloquearAcceso/:userId",
+  validarJWT,
+  AdminController.bloquearAcceso,
+);
 
 /** -------- Usuarios convencionales --------*/
 UserRouter.post("/create", ClienteController.createUser);

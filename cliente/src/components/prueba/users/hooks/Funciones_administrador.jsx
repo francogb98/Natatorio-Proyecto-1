@@ -123,6 +123,18 @@ function Funciones_administrador() {
     }
   );
 
+  const bloquearAcceso = useMutation(UserFetchPrivado.bloquearAcceso, {
+    onSuccess: (data) => {
+      if (data.status === "success") {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+      queryClient.invalidateQueries("getUserData");
+      queryClient.invalidateQueries("usuarios");
+    },
+  });
+
   return {
     cambiar,
     inhabilitar,
@@ -130,6 +142,7 @@ function Funciones_administrador() {
     eliminarNotificacion,
     enviarNotificacion,
     agregar_usuario_actividad,
+    bloquearAcceso,
   };
 }
 

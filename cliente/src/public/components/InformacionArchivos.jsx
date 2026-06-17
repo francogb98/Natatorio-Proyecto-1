@@ -49,7 +49,7 @@ function InformacionArchivos() {
             data-bs-target="#loadFileModal"
           >
             Cargar archivos
-            <i class="bi bi-upload ms-1"></i>
+            <i className="bi bi-upload ms-1"></i>
           </button>
         </div>
         <TextArchivos archivo={user.fotoDocumento} label={"Documento"} />
